@@ -1,17 +1,40 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import FinanceComponent from './temp/FinanceComponent';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [count, setCount] = useState(0);
+    const [data, setData] = useState([])
+    const [sum, setSum] = useState(0)
+    const formatter = new Intl.NumberFormat('pl-PL', {style: 'currency', currency: 'PLN'});
+
+
+    useEffect(() => {
+        (async () => {
+            const data = await fetch('https://zapp.hostingasp.pl/information/integer/G6XLgrfsEAIR21t7RgNsgP84UeGeM9QWkq4j6tycNjw/finanseministrantow')
+                .then(res => res.json())
+            setData(data)
+            let tempSum = 0
+            for (let index = 0; index < data.length; index++)
+            {
+                tempSum = tempSum + data[index].output
+            }
+            setSum(tempSum)
+        })()
+    }, [])
+    
 
   return (
     <>
-      <div>
+          <div>
+
+
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
+
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
@@ -27,7 +50,18 @@ function App() {
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
-      </p>
+          </p>
+          <div>
+              {
+                  data.map(item => (
+                  <FinanceComponent key={item.id} information_id={item.id} amount={item.output} />
+                  ))
+              }
+          </div>
+
+          <div>
+              Suma: {formatter.format(sum / 100)}
+          </div>
     </>
   )
 }
