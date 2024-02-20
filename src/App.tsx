@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import FinanceComponent from './temp/FinanceComponent';
 
+
 function App() {
     const [count, setCount] = useState(0);
     const [data, setData] = useState([])
@@ -15,8 +16,8 @@ function App() {
         (async () => {
             const data = await fetch('https://zapp.hostingasp.pl/information/integer/G6XLgrfsEAIR21t7RgNsgP84UeGeM9QWkq4j6tycNjw/finanseministrantow')
                 .then(res => res.json())
-            setData(data)
             let tempSum = 0
+            setData(data)
             for (let index = 0; index < data.length; index++)
             {
                 tempSum = tempSum + data[index].output
@@ -53,7 +54,7 @@ function App() {
           </p>
           <div>
               {
-                  data.map(item => (
+                  data.map((item: { id: string; output: number; }) => (
                   <FinanceComponent key={item.id} information_id={item.id} amount={item.output} />
                   ))
               }
