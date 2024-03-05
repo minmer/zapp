@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 import FinanceComponent from '../temp/FinanceComponent';
+import { useParams } from "react-router-dom";
 
 interface JSON_Object {
     id: string;
     output: number;
 }
 
-export default function Contact() {
+export default function Finance() {
 
+    const { context } = useParams();
     const [data, setData] = useState([] as JSON_Object[])
     const [sum, setSum] = useState(0)
     const formatter = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' });
@@ -15,7 +17,7 @@ export default function Contact() {
 
     useEffect(() => {
         (async () => {
-            const data = await fetch('https://zapp.hostingasp.pl/information/integer/G6XLgrfsEAIR21t7RgNsgP84UeGeM9QWkq4j6tycNjw/finanseministrantow')
+            const data = await fetch('https://zapp.hostingasp.pl/information/integer/G6XLgrfsEAIR21t7RgNsgP84UeGeM9QWkq4j6tycNjw/' + context)
                 .then(res => res.json() as unknown as JSON_Object[])
             setData(data)
             let tempSum = 0
@@ -24,7 +26,7 @@ export default function Contact() {
             }
             setSum(tempSum)
         })()
-    }, [])
+    })
 
     return (
 

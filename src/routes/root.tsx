@@ -23,7 +23,7 @@ export default function Root() {
                             </h2>
                             <ul>
                                 <li>
-                                    <Link to={`/finance/lso`}>Środki LSO</Link>
+                                    <Link to={`/finance/finanseministrantow`}>Środki LSO</Link>
                                 </li>
                                 <li>
                                     <Link to={`/finance/dofinansowanie`}>Dofinansowanie do wyjazdów</Link>
