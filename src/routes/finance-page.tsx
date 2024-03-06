@@ -87,7 +87,7 @@ export default function Finance() {
                         type="number"
                         value={number}
                         placeholder="Number"
-                        onChange={(e) => setNumber(e.target.value)}
+                        onChange={(e) => setNumber(Number(e.target.value))}
                     />
 
                     <button type="submit">New</button>
