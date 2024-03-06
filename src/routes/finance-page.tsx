@@ -13,6 +13,7 @@ export default function Finance() {
     const [data, setData] = useState([] as JSON_Object[])
     const [sum, setSum] = useState(0)
     const formatter = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' });
+    const [number, setNumber] = useState(0);
 
 
     useEffect(() => {
@@ -27,6 +28,48 @@ export default function Finance() {
             setSum(tempSum)
         })()
     })
+    
+    const handleClick = async () => {
+        try {
+            console.log("Hello 1");
+            console.log(number);
+
+            const res = await fetch('https://zapp.hostingasp.pl/token/',
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+            /*const res = await fetch('https://zapp.hostingasp.pl/information/integer/',
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
+                        "integer": 13,
+                        "token": "DWD0VEwKl_MzZEqzr3g73eQUG3UxNjNveeDKYeEx9Js",
+                        "id": "ab2d5670-6eeb-4fe7-b812-c0513fedf98f",
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });*/
+            console.log("Hello 2");
+            const resJson = await res.json();
+
+            console.log("Hello 3");
+            console.log(resJson);
+            if (res.status === 200) {
+                setNumber(0);
+            }
+        } catch (err) {
+            console.log("Hello 4");
+            console.log(err);
+        }
+    };
 
     return (
 
@@ -38,7 +81,19 @@ export default function Finance() {
                     ))
                 }
             </div>
+            <div>
+                <form onSubmit={handleClick}>
+                    <input
+                        type="number"
+                        value={number}
+                        placeholder="Number"
+                        onChange={(e) => setNumber(e.target.value)}
+                    />
 
+                    <button type="submit">New</button>
+                </form>
+
+            </div>
             <div>
                 Suma: {formatter.format(sum / 100)}
             </div>
