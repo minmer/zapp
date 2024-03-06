@@ -33,18 +33,7 @@ export default function Finance() {
         try {
             console.log("Hello 1");
             console.log(number);
-
-            const res = await fetch('https://zapp.hostingasp.pl/token/',
-                {
-                    method: "POST",
-                    body: JSON.stringify({
-                        "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-            /*const res = await fetch('https://zapp.hostingasp.pl/information/integer/',
+            const res = await fetch('https://zapp.hostingasp.pl/information/integer/',
                 {
                     method: "POST",
                     body: JSON.stringify({
@@ -56,7 +45,7 @@ export default function Finance() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                });*/
+                });
             console.log("Hello 2");
             const resJson = await res.json();
 
