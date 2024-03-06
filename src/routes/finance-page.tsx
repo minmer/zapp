@@ -63,10 +63,8 @@ export default function Finance() {
                             'Content-Type': 'application/json',
                         },
                     });
-                console.log("asd");
             }
         } catch (err) {
-            console.log("Hello 4");
             console.log(err);
         }
     };
