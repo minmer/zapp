@@ -10,17 +10,20 @@ import './index.css';
 import Root from "./routes/root";
 import ErrorPage from "./routes/error-page";
 import FinancePage from "./routes/finance-page";
+import LoginPage from './routes/login-page';
 
 const router = createHashRouter(
             createRoutesFromElements(
 
-                <Route path="/:token" element={<Root />} >,
+                <Route path="/" element={<LoginPage />} >,
+                    <Route path="/:token" element={<Root />} >,
                     <Route
                             path="finance/:context"
                         element={<FinancePage />}
                         errorElement={<ErrorPage />}
                         />
                     </Route>
+                </Route>
             ));
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
