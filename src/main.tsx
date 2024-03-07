@@ -5,18 +5,19 @@ import {
     createRoutesFromElements,
     RouterProvider,
     Route,
+    createHashRouter,
 } from "react-router-dom";
 import './index.css';
 import Root from "./routes/root";
 import ErrorPage from "./routes/error-page";
 import FinancePage from "./routes/finance-page";
 
-const router = createBrowserRouter(
+const router = createHashRouter(
             createRoutesFromElements(
 
-                <Route path="/:token/" element={<Root />} >,
+                <Route path="/:token" element={<Root />} >,
                     <Route
-                            path="/:token/finance/:context"
+                            path="finance/:context"
                         element={<FinancePage />}
                         errorElement={<ErrorPage />}
                         />
