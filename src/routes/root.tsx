@@ -1,7 +1,6 @@
-import { Outlet, Link, useParams } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 export default function Root() {
-
-    const { token } = useParams();
+    
     return (
         <>
             <div id="sidebar">
