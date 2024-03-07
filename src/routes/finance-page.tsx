@@ -9,7 +9,7 @@ interface JSON_Object {
 
 export default function Finance() {
 
-    const { context } = useParams();
+    const { token, context } = useParams();
     const [data, setData] = useState([] as JSON_Object[])
     const [sum, setSum] = useState(0)
     const formatter = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' });
@@ -18,7 +18,7 @@ export default function Finance() {
 
     useEffect(() => {
         (async () => {
-            const data = await fetch('https://zapp.hostingasp.pl/information/integer/G6XLgrfsEAIR21t7RgNsgP84UeGeM9QWkq4j6tycNjw/' + context)
+            const data = await fetch('https://zapp.hostingasp.pl/information/integer/' + token + '/' + context)
                 .then(res => res.json() as unknown as JSON_Object[])
             setData(data)
             let tempSum = 0
@@ -37,7 +37,7 @@ export default function Finance() {
                     body: JSON.stringify({
                         "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
                         "integer": Math.round(number * 100),
-                        "token": "DWD0VEwKl_MzZEqzr3g73eQUG3UxNjNveeDKYeEx9Js",
+                        "token": token,
                         "id": "ab2d5670-6eeb-4fe7-b812-c0513fedf98f",
                     }),
                     headers: {
@@ -52,7 +52,7 @@ export default function Finance() {
                         method: "POST",
                         body: JSON.stringify({
                             "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
-                            "token": "DWD0VEwKl_MzZEqzr3g73eQUG3UxNjNveeDKYeEx9Js",
+                            "token": token,
                             "id": "ab2d5670-6eeb-4fe7-b812-c0513fedf98f",
                             "information": informationID,
                             "context": context,

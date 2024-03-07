@@ -1,6 +1,7 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useParams } from "react-router-dom";
 export default function Root() {
-    
+
+    const { token } = useParams();
     return (
         <>
             <div id="sidebar">
@@ -13,10 +14,10 @@ export default function Root() {
                             </h2>
                             <ul>
                                 <li>
-                                    <Link to={`/intenction`}>Intencje mszalne</Link>
+                                    <Link to={`intention`}>Intencje mszalne</Link>
                                 </li>
                                 <li>
-                                    <Link to={`/obits`}>Intencje pogrzebowe</Link>
+                                    <Link to={`obits`}>Intencje pogrzebowe</Link>
                                 </li>
                             </ul>
                             <h2>
@@ -24,13 +25,13 @@ export default function Root() {
                             </h2>
                             <ul>
                                 <li>
-                                    <Link to={`/finance/finanseministrantow`}>Środki LSO</Link>
+                                    <Link to={`finance/finanseministrantow`}>Środki LSO</Link>
                                 </li>
                                 <li>
-                                    <Link to={`/finance/dofinansowanie`}>Dofinansowanie do wyjazdów</Link>
+                                    <Link to={`finance/dofinansowanie`}>Dofinansowanie do wyjazdów</Link>
                                 </li>
                                 <li>
-                                    <Link to={`/finance/zakopane`}>Ferie Zakopane (21-23.02.2024 r.)</Link>
+                                    <Link to={`finance/zakopane`}>Ferie Zakopane (21-23.02.2024 r.)</Link>
                                 </li>
                             </ul>
                         </li>

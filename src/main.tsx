@@ -14,13 +14,13 @@ import FinancePage from "./routes/finance-page";
 const router = createBrowserRouter(
             createRoutesFromElements(
 
-                <Route path="/" element={<Root />} >,
-                <Route
-                    path="finance/:context"
-                    element={<FinancePage />}
-                    errorElement={<ErrorPage />}
-    />
-                </Route>
+                <Route path="/:token/" element={<Root />} >,
+                    <Route
+                            path="/:token/finance/:context"
+                        element={<FinancePage />}
+                        errorElement={<ErrorPage />}
+                        />
+                    </Route>
             ));
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
