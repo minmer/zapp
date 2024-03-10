@@ -450,3 +450,87 @@ i {
     justify-content: center;
     width: 100%;
 }
+
+.asd00 {
+    font-family: Times;
+    width: 776px;
+}
+.asd01 {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+}
+.asd02 {
+    font-size: 22px;
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 18px;
+}
+.asd03 {
+    display: grid;
+    grid-template-columns: 1px 148px 1px 52px 1px 20px Auto 1px;
+}
+.asd04 {
+    background: black;
+    grid-column: 1/span 8;
+}
+.asd05 {
+    grid-column: 2;
+    align-self: center;
+}
+.asd06 {
+    padding: 20px;
+}
+.asd07 {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+.asd08 {
+    font-size: 20px;
+    text-align: center;
+}
+.asd09 {
+    font-size:14px;
+    font-style: italic;
+    text-align: center;
+    line-height: 12px;
+    margin-top: 6px;
+}
+.asd10 {
+    font-size: 20px;
+    text-align: center;
+    grid-column: 4;
+    align-self: center;
+}
+.asd11 {
+    width: 5px;
+    border-right: 1px solid black;
+    text-align: center;
+    grid-column: 5;
+}
+.asd12 {
+    font-size: 20px;
+    grid-column: 7;
+    align-self: center;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-right: 12px;
+    padding-left: 12px;
+}
+.asd13 {
+    font-size: 20px;
+    grid-column: 6;
+    align-self: center;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-right: 6px;
+    padding-left: 9px;
+}
+.asd14 {
+    background: black;
+    grid-column: 3/span 6;
+}
+.asd15 {
+    background: black;
+}

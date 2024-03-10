@@ -13,10 +13,7 @@ export default function Root() {
                             </h2>
                             <ul>
                                 <li>
-                                    <Link to={`intention`}>Intencje mszalne</Link>
-                                </li>
-                                <li>
-                                    <Link to={`obits`}>Intencje pogrzebowe</Link>
+                                    <Link to={`intention/*`}>Intencje mszalne</Link>
                                 </li>
                             </ul>
                             <h2>
