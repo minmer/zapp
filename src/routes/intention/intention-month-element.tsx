@@ -9,7 +9,7 @@ export default function ItentionMonthElement() {
 
         <>
             <div>
-                <h3>Intencje w tym miesi¹cu</h3>
+                <h3>Intencje w tym miesiÄ…cu</h3>
                 <input id="inputDate" type="date"
                     value={date.toISOString().substring(0, 10)}
                     onChange={(e) => setDate(new Date(e.target.value))} />

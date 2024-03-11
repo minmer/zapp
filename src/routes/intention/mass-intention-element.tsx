@@ -126,15 +126,15 @@ function MassIntentionElement({ information_id, date }: { information_id: string
                     onChange={(e) => {
                         setNewIntention(e.target.value)
                     }} />
-                <button onClick={deleteMass}>Usuñ Mszê</button>
-                <button onClick={addMass}>Dodaj Intencjê</button>
+                <button onClick={deleteMass}>UsuÅ„ MszÄ™</button>
+                <button onClick={addMass}>Dodaj IntencjÄ™</button>
             </div >
             <div>
                 {
                     data.map(item => (
                         <>
                             <div key={item.id}>{item.output}</div>
-                            <button onClick={() => deleteIntention(item.id)}>Usuñ Intencjê</button>
+                            <button onClick={() => deleteIntention(item.id)}>UsuÅ„ IntencjÄ™</button>
                         </>
                     ))
                 }
