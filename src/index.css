@@ -536,3 +536,19 @@ i {
 .asd15 {
     background: black;
 }
+.asd16 {
+    content: "";
+    display: table;
+    clear: both;
+}
+.asd17 {
+    max-width: 550px;
+}
+.asd18 {
+    float: left;
+    width: 20%;
+}
+.asd19 {
+    float: left;
+    width: 70%;
+}

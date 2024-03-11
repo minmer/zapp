@@ -1,22 +1,40 @@
-import { useState, useEffect } from 'react'
+import { useParams } from "react-router-dom";
 
 
-function FinanceComponent({ information_id, amount }: { information_id: string, amount: number }) {
+function FinanceComponent({ information_id, amount, description }: { information_id: string, amount: number, description: string }) {
     const formatter = new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' });
-    const [name, setName] = useState("");
+    const { token} = useParams();
 
-    useEffect(() => {
-        (async () => {
-            const data = await fetch('https://zapp.hostingasp.pl/information/text/G6XLgrfsEAIR21t7RgNsgP84UeGeM9QWkq4j6tycNjw/' + information_id + 'name')
-                .then(res => res.json());
-            setName((data[0]).output);
-        })()
-    }, [])
+
+    const deleteItem = async () => {
+        try {
+            await fetch('https://zapp.hostingasp.pl/information/',
+                {
+                    method: "DELETE",
+                    body: JSON.stringify({
+                        "token": token,
+                        "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
+                        "permission": "ab2d5670-6eeb-4fe7-b812-c0513fedf98f",
+                        "id": information_id,
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
-        <div title={name}>
-            <p>{formatter.format(amount / 100)}</p>
+        <>
+        <div className="asd17" >
+                <div className="asd18">{formatter.format(amount / 100)}</div>
+                <div className="asd19">{description}</div>
+                <button onClick={deleteItem}>X</button>
         </div>
+        <div className="asd16" ></div>
+        </>
   );
 }
 
