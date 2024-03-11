@@ -29,7 +29,7 @@ function MassIntentionElement({ information_id, date }: { information_id: string
         }
         loadIntentions()
     }, [token, information_id, date])
-    
+
     const addMass = async () => {
         try {
             console.log(112)
@@ -72,6 +72,46 @@ function MassIntentionElement({ information_id, date }: { information_id: string
         }
     }
 
+    const deleteMass = async () => {
+        try {
+            await fetch('https://zapp.hostingasp.pl/information/',
+                {
+                    method: "DELETE",
+                    body: JSON.stringify({
+                        "token": token,
+                        "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
+                        "permission": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                        "id": information_id,
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const deleteIntention = async(id: string ) => {
+        try {
+            await fetch('https://zapp.hostingasp.pl/information/',
+                {
+                    method: "DELETE",
+                    body: JSON.stringify({
+                        "token": token,
+                        "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
+                        "permission": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                        "id": id,
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
 
         <>
@@ -86,12 +126,16 @@ function MassIntentionElement({ information_id, date }: { information_id: string
                     onChange={(e) => {
                         setNewIntention(e.target.value)
                     }} />
+                <button onClick={deleteMass}>Usuñ Mszê</button>
                 <button onClick={addMass}>Dodaj Intencjê</button>
             </div >
             <div>
                 {
                     data.map(item => (
-                        <div key={item.id}>{item.output}</div>
+                        <>
+                            <div key={item.id}>{item.output}</div>
+                            <button onClick={() => deleteIntention(item.id)}>Usuñ Intencjê</button>
+                        </>
                     ))
                 }
             </div>

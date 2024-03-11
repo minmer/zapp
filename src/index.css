@@ -454,6 +454,7 @@ i {
 .asd00 {
     font-family: Times;
     width: 776px;
+    background-color: white;
 }
 .asd01 {
     font-size: 28px;
@@ -467,6 +468,7 @@ i {
     margin-bottom: 18px;
 }
 .asd03 {
+    background-color: white;
     display: grid;
     grid-template-columns: 1px 148px 1px 52px 1px 20px Auto 1px;
 }

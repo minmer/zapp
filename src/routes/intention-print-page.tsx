@@ -223,8 +223,7 @@ export default function IntentionPage() {
                             gridRow: rows
                         }}></div>
                 </div>
-
-            </div >
+            </div>
         </>
     );
 }
