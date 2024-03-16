@@ -80,7 +80,7 @@ export default function Finance() {
                             "id": "ab2d5670-6eeb-4fe7-b812-c0513fedf98f",
                             "information": informationID,
                             "context": context,
-                            "preorder": 1234,
+                            "preorder": Date.now(),
 
                         }),
                         headers: {

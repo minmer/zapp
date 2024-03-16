@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import LoadingComponent from "../components/loading-component";
 
 interface IntentionDays {
     day: Date,
@@ -42,6 +43,7 @@ export default function IntentionPage() {
     const [days, setDays] = useState([] as IntentionDays[])
     const [span, setSpan] = useState("")
     const [rows, setRows] = useState(0)
+    const [loading, setLoading] = useState("block")
     const loadMasses = async function loadMasses() {
         const tempDays = [] as IntentionDays[]
         let daySpan = -1;
@@ -111,6 +113,7 @@ export default function IntentionPage() {
         setSpan(span)
         setRows(dayRow-1)
         console.log(tempDays)
+        setLoading("none")
     }
     if (days.length == 0)
         loadMasses();
@@ -123,6 +126,13 @@ export default function IntentionPage() {
                 <div className="asd01">Intencje Mszy Świętych</div>
                 <div className="asd02">
                     {(startDate.getDate() + '.').padStart(3, '0') + (startDate.getMonth() + '.').padStart(3, '0') + startDate.getFullYear() + ' r. - ' + (endDate.getDate() + '.').padStart(3, '0') + (endDate.getMonth() + '.').padStart(3, '0') + endDate.getFullYear() + ' r.'}
+                </div>
+                <div style=
+                    {{
+                        height: "500px",
+                        display: loading,
+                    }}>
+                    <LoadingComponent />
                 </div>
                 <div className="asd03" style=
                     {{
