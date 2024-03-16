@@ -717,3 +717,9 @@ i {
     bottom: 10%;
     position: absolute;
     }
+
+.home div, .home h1, .home img {
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+}
