@@ -718,6 +718,10 @@ i {
     position: absolute;
     }
 
+.home {
+    width: 100%;
+}
+
 .home div, .home h1, .home img {
     margin-left: 25%;
     margin-right: 25%;
