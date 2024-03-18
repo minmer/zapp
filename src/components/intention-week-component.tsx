@@ -16,15 +16,15 @@ export default function ItentionWeekElement() {
     ]
     const { token, init_date } = useParams();
     const [selectedDate, setSelectedDate] = useState(new Date(Number(init_date)))
-    const [week, setWeek] = useState(new Date(Number(init_date)))
-    const [endWeek, setEndWeek] = useState(new Date(Number(init_date)))
+    const [week, setWeek] = useState(new Date(0))
+    const [endWeek, setEndWeek] = useState(new Date(0))
     const [days, setDays] = useState([] as Day[])
     const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
         const newWeek = new Date(selectedDate.getTime())
         newWeek.setDate(newWeek.getDate() - newWeek.getDay() + 1 - (newWeek.getDay() == 0 ? 7 : 0))
         newWeek.setHours(0, 0, 0, 0)
-        if (newWeek.getTime() != week.getTime()) {
+        if (newWeek.getTime() != week?.getTime()) {
             {
                 setWeek(new Date(newWeek.getTime()))
                 newWeek.setDate(newWeek.getDate() + 7)

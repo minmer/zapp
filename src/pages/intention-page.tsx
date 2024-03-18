@@ -1,9 +1,28 @@
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useParams } from 'react-router-dom';
 import baner from '../assets/intention.jpg'
 import NewIntentionElement from '../routes/intention/new-intention-element';
 import IntentionWeekComponent from '../components/intention-week-component';
 import IntentionMonthComponent from '../components/intention-month-component';
+import { useEffect, useState } from 'react';
+import { FetchGetAll } from '../features/FetchGet';
 export default function IntentionPage() {
+    const { token } = useParams();
+    const [isViewer, setIsViewer] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(false)
+
+    useEffect(() => {
+        (async function () {
+            try {
+                if (token !== undefined) {
+                    setIsViewer((await FetchGetAll('text', token, 'intention')).length != 0)
+                    setIsAdmin((await FetchGetAll('text', token, 'intentionadmin')).length != 0)
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        })();
+    }, [token])
+
     return (
 
         <>
@@ -16,16 +35,24 @@ export default function IntentionPage() {
                 </div>
                 <div className="tabs">
                     <ul>
-                        <li>
+                        <li style={{
+                            display: isViewer ? 'block' : 'none',
+                        }}>
                             <Link to={`week/` + Date.now()}>Tydzień</Link>
                         </li>
-                        <li>
+                        <li style={{
+                            display: isViewer ? 'block' : 'none',
+                        }}>
                             <Link to={`month/` + Date.now()}>Miesiąc</Link>
                         </li>
-                        <li>
+                        <li style={{
+                            display: isAdmin ? 'block' : 'none',
+                        } }>
                             <Link to={`report`}>Podsumowania</Link>
                         </li>
-                        <li>
+                        <li style={{
+                            display: isAdmin ? 'block' : 'none',
+                        }}>
                             <Link to={`edit`}>Edycja intencji</Link>
                         </li>
                         <div className="clear"></div>
