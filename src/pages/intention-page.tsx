@@ -38,12 +38,12 @@ export default function IntentionPage() {
                         <li style={{
                             display: isViewer ? 'block' : 'none',
                         }}>
-                            <Link to={`week/` + Date.now()}>Tydzień</Link>
+                            <Link to={`week`}>Tydzień</Link>
                         </li>
                         <li style={{
                             display: isViewer ? 'block' : 'none',
                         }}>
-                            <Link to={`month/` + Date.now()}>Miesiąc</Link>
+                            <Link to={`month`}>Miesiąc</Link>
                         </li>
                         <li style={{
                             display: isAdmin ? 'block' : 'none',

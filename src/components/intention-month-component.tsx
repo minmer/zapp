@@ -15,7 +15,7 @@ export default function ItentionMonthElement() {
         "Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"
     ]
     const { token, init_date } = useParams();
-    const [date, setDate] = useState(new Date(Number(init_date)))
+    const [date, setDate] = useState(new Date(Number(init_date ?? Date.now())))
     const [preMonth, setPreMonth] = useState([] as string[])
     const [month, setMonth] = useState([] as Date[])
     const [nextMonth, setNextMonth] = useState([] as string[])

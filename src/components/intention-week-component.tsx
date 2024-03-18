@@ -15,7 +15,7 @@ export default function ItentionWeekElement() {
         "Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"
     ]
     const { token, init_date } = useParams();
-    const [selectedDate, setSelectedDate] = useState(new Date(Number(init_date)))
+    const [selectedDate, setSelectedDate] = useState(new Date(Number(init_date ?? Date.now())))
     const [week, setWeek] = useState(new Date(0))
     const [endWeek, setEndWeek] = useState(new Date(0))
     const [days, setDays] = useState([] as Day[])

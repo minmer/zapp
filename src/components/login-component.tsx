@@ -1,15 +1,22 @@
 import { useState } from "react";
 import LoadingComponent from "./loading-component";
 import { useNavigate } from "react-router-dom";
+import { FetchUserGet, UserOutput } from "../features/FetchUserGet";
 
 export default function LoginComponent() {
     const [loading, setLoading] = useState("none")
     const [user, setUser] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate();
-    const login = () => {
+
+    const login = async () => {
         setLoading("")
-        navigate('/token');
+        const output = await FetchUserGet(user, password)
+        console.log(output)
+        if (output !== undefined) {
+            navigate((output as unknown as UserOutput).token);
+        }
+        setLoading("none")
     }
 
     return (
