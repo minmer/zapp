@@ -15,9 +15,7 @@ export async function FetchGetAll(type: string, token: string, context: string) 
     return data
 }
 export async function FetchGet(type: string, token: string, context: string, start: number, end: number) {
-    console.log('asd2')
     const data = await fetch('https://zapp.hostingasp.pl/information/' + type + '/' + token + '/' + context + '/' + start + '/' + end).then(res => res.json())
-    console.log('asd2 - ' + data.length)
     if (type == 'text')
         data.map((data: unknown) => data as StringOutput[])
     else if (type == 'integer')

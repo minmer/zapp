@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FetchGet, FetchGetAll, NumberOutput, StringOutput } from "../features/FetchGet";
+import LoadingComponent from "./loading-component";
 interface Day {
     day: Date,
     masses: Mass[]
@@ -15,9 +16,10 @@ export default function ItentionWeekElement() {
     const [week, setWeek] = useState(new Date(Number(init_date)))
     const [endWeek, setEndWeek] = useState(new Date(Number(init_date)))
     const [days, setDays] = useState([] as Day[])
+    const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
         const newWeek = new Date(selectedDate.getTime())
-        newWeek.setDate(newWeek.getDate() - newWeek.getDay())
+        newWeek.setDate(newWeek.getDate() - newWeek.getDay() + 1 - (newWeek.getDay() == 0 ? 7 : 0))
         newWeek.setHours(0, 0, 0, 0)
         if (newWeek.getTime() != week.getTime()) {
             {
@@ -33,16 +35,14 @@ export default function ItentionWeekElement() {
             try {
 
                 if (token !== undefined) {
-                    console.log('asd')
-                    console.log('asd')
+                    setIsLoading(true)
+                    setDays([])
                     const tempDays = [] as Day[]
                     for (let i = 0; i < 7; i++) {
                         const massData = await FetchGet('integer', token, 'zielonki_mass', week.getTime() + (i * 86400000), week.getTime() + ((i + 1) * 86400000)) as unknown as NumberOutput[]
-                        console.log('asd0 - ' + massData.length)
                         const tempMasses = [] as Mass[]
                         for (let j = 0; j < massData.length; j++) {
                             const intentionData = await FetchGetAll('text', token, massData[j].id + 'intention') as unknown as StringOutput[]
-                            console.log('asd1 - ' + intentionData.length)
                             tempMasses.push({
                                 time: new Date(massData[j].output),
                                 intentions: intentionData.map(item => item.output),
@@ -53,18 +53,21 @@ export default function ItentionWeekElement() {
                             masses: tempMasses,
                         })
                     }
-                    setDays(tempDays)
+                    if (!(tempDays[0]?.day?.getDay() != 1)) {
+                        setIsLoading(false)
+                        setDays(tempDays)
+                    }
                 }
             } catch (e) {
                 console.error(e);
             }
         })();
-    }, [week, token, days])
+    }, [week, token])
 
     return (
 
         <>
-            <div className="content">
+            <div className="content-intentionweek">
                 <h3>Intencje w tygodniu ({(week.getDate() + '.').padStart(3, '0') + ((week.getMonth() + 1) + '.').padStart(3, '0') + week.getFullYear() + ' r. - ' + (endWeek.getDate() + '.').padStart(3, '0') + ((endWeek.getMonth() + 1) + '.').padStart(3, '0') + endWeek.getFullYear() + ' r.'})</h3>
                 <input id="inputDate" type="date"
                     value={selectedDate.toISOString().substring(0, 10)}
@@ -93,7 +96,23 @@ export default function ItentionWeekElement() {
                     </>
                 ))
                 }
+                <div className="loadingcontainer" style=
+                    {{
+                    display: isLoading ? 'block' : 'none',
+                    }}>
+                    <LoadingComponent/>
+                </div>
             </div >
+            <Link to={`/intentionprint/` + token + '/' + week.getTime()} style=
+                {{
+                    display: isLoading ? 'none' : 'block',
+                    margin: "36px 72px",
+                    fontSize: "1.5em",
+                }}>
+                <h4>
+                    Przygotuj pełną rozpiskę do wydruku
+                </h4>
+            </Link >
         </>
     );
 }

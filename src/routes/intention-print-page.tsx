@@ -54,7 +54,7 @@ export default function IntentionPage() {
             const newDay = new Date(startDate.getTime());
             newDay.setDate(i);
             const start = new Date(newDay.getTime());
-            start.setUTCHours(0, 0, 0, 0)
+            start.setHours(0, 0, 0, 0)
             const end = new Date(start.getTime());
             end.setDate(end.getDate() + 1)
             const massData = await fetch('https://zapp.hostingasp.pl/information/integer/' + token + '/zielonki_mass/' + start.getTime() + '/' + end.getTime())
@@ -84,13 +84,13 @@ export default function IntentionPage() {
                     intentionRow += 2
                 }
                 const colorData = await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + massData[j].id + 'color')
-                   .then(res => res.json() as unknown as JSON_String[])
-
+                    .then(res => res.json() as unknown as JSON_String[])
+                console.log(colorData)
                 masses.push({
                     row: massRow,
                     time: new Date(massData[j].output),
                     intentions: intentions,
-                    color: colorData[0].output,
+                    color: colorData[0]?.output ?? '#fff',
                     rowSpan: intentions.length*2-1
                 });
                 massRow += intentions.length * 2

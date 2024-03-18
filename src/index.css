@@ -173,8 +173,8 @@ form[action$="destroy"] button {
 
 #root {
     display: flex;
-    height: 100%;
     width: 100%;
+    height: 100%;
 }
 
 #menu {
@@ -727,6 +727,8 @@ i {
 }
 .page {
     width: 100%;
+    height: 100%;
+    overflow: auto;
 }
 .description {
     font-family: 'Segoe UI';
@@ -746,7 +748,7 @@ i {
 
 .logincontainer {
     max-width: 512px;
-    margin: auto;
+    margin: 72px auto;
     box-shadow: 3px 3px 10px rgba(0,0,0,.4);
     padding: 16px;
     border-radius: 32px;
@@ -824,17 +826,24 @@ i {
         background: #fff;
     }
 
-.content {
+.content-intentionweek {
     display: grid;
     grid-template-columns: auto auto 200px;
+    margin: 36px;
+    border: black;
+    border-width: 1px;
+    border-style: solid;
+    position: relative;
 }
 
-    .content h3 {
+    .content-intentionweek h3 {
         grid-column: 1 / span 2;
         text-align: center;
+        margin: auto 0;
+        padding: 18px;
     }
 
-    .content h4 {
+    .content-intentionweek h4 {
         grid-column: 1 / span 3;
         text-align: center;
         font-size: 1.7em;
@@ -842,21 +851,34 @@ i {
         padding: 12px 24px;
     }
 
-    .content .masshour {
+    .content-intentionweek .masshour {
         text-align: center;
         padding: 12px 24px;
         font-size: 1.5em;
     }
 
-    .content .intention {
+    .content-intentionweek .intention {
         grid-column: span 2;
     }
-        .content .intention div {
+        .content-intentionweek .intention div {
             padding: 3px 24px;
             margin: auto 0;
         }
-    .content > * {
+    .content-intentionweek > * {
         border: black;
         border-width: 1px;
         border-style: solid;
+        border-radius: 0;
     }
+.loadingcontainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    min-height: 256px;
+}
+.loadingcontainer {
+    position:relative;
+    grid-column: span 3;
+}
