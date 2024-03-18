@@ -27,7 +27,7 @@ export default function Root() {
                 <Route path="/confession" element={<ConfessionPage />} />
                 <Route path="/confirmation" element={<ConfirmationPage />} />
                 <Route path="/finance" element={<FinancePage />} />
-                <Route path="/intention" element={<IntentionPage />} />
+                <Route path="/intention/*" element={<IntentionPage />} />
                 <Route path="/minister" element={<MinisterPage />} />
                 <Route path="/obit" element={<ObitPage />} />
                 <Route path="/pursuit_saint" element={<PursuitSaintPage />} />

@@ -1,4 +1,4 @@
-export async function FetchGet(type: string, token: string, id: string, context: string[], value: [string, number], preorder: number[]) {
+export async function FetchPost(type: string, token: string, id: string, context: string[], value: [string, number], preorder: number[]) {
     try {
         const res = await fetch('https://zapp.hostingasp.pl/information/' + type + '/',
             {

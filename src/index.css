@@ -690,9 +690,6 @@ i {
 
 .baner {
     position: relative;
-    height: max-content;
-    width: 100%;
-    background: white;
     box-shadow: 0 0 25px black;
 }
 
@@ -716,14 +713,150 @@ i {
     font-size: 5em;
     bottom: 10%;
     position: absolute;
-    }
+    width: 250%;
+}
 
 .home {
     width: 100%;
 }
 
-.home div, .home h1, .home img {
+.homedescription div, .homedescription h1, .homedescription img {
     margin-left: 25%;
     margin-right: 25%;
     width: 50%;
 }
+.page {
+    width: 100%;
+}
+.description {
+    font-family: 'Segoe UI';
+    font-size: 1.5em;
+    padding: 36px;
+    border-style: solid;
+    border-color: #bbb;
+    border-width: 2px 0 0 0;
+    margin-top: 24px;
+}
+    .description p, .description ul, .description li {
+        margin-left: 36px;
+        margin-right: 36px;
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+
+.logincontainer {
+    max-width: 512px;
+    margin: auto;
+    box-shadow: 3px 3px 10px rgba(0,0,0,.4);
+    padding: 16px;
+    border-radius: 32px;
+    display: grid;
+    column-gap: 16px;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto auto auto;
+    position: relative;
+}
+
+    .logincontainer h2 {
+        margin-left: 32px;
+    }
+
+.logincontainer > div {
+    margin: 12px;
+}
+
+    .logincontainer > input {
+        margin: 12px;
+    }
+
+.loginloading {
+    position: absolute;
+    background: #ffffffbb;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.clear{
+    clear:both;
+}
+
+.tabs li {
+    float: left;
+    font-size: 1.3em;
+    border: white;
+    border-width: 0;
+    border-right-width: 2px;
+    border-style: solid;
+    padding: 24px 0px 18px 0px;
+}
+    .tabs a {
+        padding: 18px;
+        color: black
+    }
+.baner + div.description {
+    border-style: none;
+}
+.tabs + div.description {
+    border-style: none;
+}
+.tabs {
+    background: #f8f8f8;
+    padding-left: 36px;
+}
+
+    .tabs ul {
+        list-style: none;
+        margin: 0;
+        border: white;
+        border-width: 0;
+        border-left-width: 2px;
+        border-style: solid;
+        padding: 0;
+    }
+
+    .tabs li:hover {
+        background: #eee;
+    }
+
+    .tabs li:focus {
+        background: #fff;
+    }
+
+.content {
+    display: grid;
+    grid-template-columns: auto auto 200px;
+}
+
+    .content h3 {
+        grid-column: 1 / span 2;
+        text-align: center;
+    }
+
+    .content h4 {
+        grid-column: 1 / span 3;
+        text-align: center;
+        font-size: 1.7em;
+        margin: 0;
+        padding: 12px 24px;
+    }
+
+    .content .masshour {
+        text-align: center;
+        padding: 12px 24px;
+        font-size: 1.5em;
+    }
+
+    .content .intention {
+        grid-column: span 2;
+    }
+        .content .intention div {
+            padding: 3px 24px;
+            margin: auto 0;
+        }
+    .content > * {
+        border: black;
+        border-width: 1px;
+        border-style: solid;
+    }

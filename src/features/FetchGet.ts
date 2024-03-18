@@ -6,11 +6,21 @@ export interface NumberOutput {
     id: string,
     output: number,
 }
-export async function FetchGet(type: string, token: string, context: string) {
+export async function FetchGetAll(type: string, token: string, context: string) {
     const data = await fetch('https://zapp.hostingasp.pl/information/' + type + '/' + token + '/' + context).then(res => res.json())
     if (type == 'text')
-        data.then((data: unknown) => data as StringOutput[])
-    else if (type == 'number')
-        data.then((data: unknown) => data as StringOutput[])
+        data.map((data: unknown) => data as StringOutput[])
+    else if (type == 'integer')
+        data.map((data: unknown) => data as StringOutput[])
+    return data
+}
+export async function FetchGet(type: string, token: string, context: string, start: number, end: number) {
+    console.log('asd2')
+    const data = await fetch('https://zapp.hostingasp.pl/information/' + type + '/' + token + '/' + context + '/' + start + '/' + end).then(res => res.json())
+    console.log('asd2 - ' + data.length)
+    if (type == 'text')
+        data.map((data: unknown) => data as StringOutput[])
+    else if (type == 'integer')
+        data.map((data: unknown) => data as StringOutput[])
     return data
 }

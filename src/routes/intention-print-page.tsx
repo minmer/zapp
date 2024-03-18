@@ -83,14 +83,14 @@ export default function IntentionPage() {
                     })
                     intentionRow += 2
                 }
-                //const colorData = await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + massData[j].id + 'description')
-                //   .then(res => res.json() as unknown as JSON_String[])
+                const colorData = await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + massData[j].id + 'color')
+                   .then(res => res.json() as unknown as JSON_String[])
 
                 masses.push({
                     row: massRow,
                     time: new Date(massData[j].output),
                     intentions: intentions,
-                    color: "#7F00FF", //colorData[0].output,
+                    color: colorData[0].output,
                     rowSpan: intentions.length*2-1
                 });
                 massRow += intentions.length * 2
