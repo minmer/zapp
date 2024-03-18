@@ -85,7 +85,6 @@ export default function IntentionPage() {
                 }
                 const colorData = await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + massData[j].id + 'color')
                     .then(res => res.json() as unknown as JSON_String[])
-                console.log(colorData)
                 masses.push({
                     row: massRow,
                     time: new Date(massData[j].output),
@@ -112,7 +111,6 @@ export default function IntentionPage() {
         setDays(tempDays)
         setSpan(span)
         setRows(dayRow-1)
-        console.log(tempDays)
         setLoading("none")
     }
     if (days.length == 0)

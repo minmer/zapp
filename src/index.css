@@ -871,14 +871,72 @@ i {
         border-radius: 0;
     }
 .loadingcontainer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
     min-height: 256px;
 }
-.loadingcontainer {
-    position:relative;
+.content-intentionweek .loadingcontainer {
     grid-column: span 3;
 }
+
+.content-intentionmonth .navigation input {
+    width: 20%;
+    float: left;
+}
+
+.content-intentionmonth .navigation h3 {
+    width: 60%;
+    float: left;
+    text-align: center;
+}
+
+.content-intentionmonth .calendar {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+}
+
+    .content-intentionmonth .calendar div {
+        background: #ddd;
+    }
+
+    .content-intentionmonth .calendar input {
+        border-radius: 0;
+        cursor: pointer;
+    }
+
+        .content-intentionmonth .calendar div.spelling {
+            background: #bbb;
+            text-align: center;
+            padding: 12px;
+        }
+
+    .content-intentionmonth .calendar input:hover {
+        background: #eee;
+    }
+
+.content-intentionmonth .daygrid {
+    display: grid;
+    grid-template-columns: auto auto;
+    border: black solid .5px;
+    margin: 36px 72px;
+}
+
+.content-intentionmonth .day {
+    position: relative;
+}
+
+.content-intentionmonth .day h4 {
+    font-size: 2em;
+    padding: 36px 72px 0px 104px;
+    margin:0;
+}
+.content-intentionmonth .loadingcontainer {
+    height: 256px;
+}
+
+.content-intentionmonth .daygrid > div {
+    border: black solid .5px;
+    font-size: 1.5em;
+    padding: 6px 12px;
+}
+    .content-intentionmonth .daygrid .masshour {
+        text-align: center;
+    }

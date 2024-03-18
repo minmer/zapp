@@ -11,6 +11,9 @@ interface Mass {
     intentions: string[]
 }
 export default function ItentionWeekElement() {
+    const daySpelling = [
+        "Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"
+    ]
     const { token, init_date } = useParams();
     const [selectedDate, setSelectedDate] = useState(new Date(Number(init_date)))
     const [week, setWeek] = useState(new Date(Number(init_date)))
@@ -74,7 +77,7 @@ export default function ItentionWeekElement() {
                     onChange={(e) => setSelectedDate(new Date(e.target.value))} />
                 {days.map(day => (
                     <>
-                        <h4>{(day.day.getDate() + '.').padStart(3, '0') + ((day.day.getMonth() + 1) + '.').padStart(3, '0') + day.day.getFullYear() + ' r.'} </h4>
+                        <h4>{daySpelling[day.day.getDay()] + ' ' + (day.day.getDate() + '.').padStart(3, '0') + ((day.day.getMonth() + 1) + '.').padStart(3, '0') + day.day.getFullYear() + ' r.'} </h4>
                         {day.masses.map(mass => (
                             <>
                                 <div className="masshour" style={{
