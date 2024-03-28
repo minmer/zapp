@@ -123,7 +123,7 @@ export default function IntentionPage() {
             <div className="asd00">
                 <div className="asd01">Intencje Mszy Świętych</div>
                 <div className="asd02">
-                    {(startDate.getDate() + '.').padStart(3, '0') + ((startDate.getMonth() + 1) + '.').padStart(3, '0') + startDate.getFullYear() + ' r. - ' + (endDate.getDate() + '.').padStart(3, '0') + (endDate.getMonth() + '.').padStart(3, '0') + endDate.getFullYear() + ' r.'}
+                    {(startDate.getDate() + '.').padStart(3, '0') + ((startDate.getMonth() + 1) + '.').padStart(3, '0') + startDate.getFullYear() + ' r. - ' + (endDate.getDate() + '.').padStart(3, '0') + ((endDate.getMonth() + 1) + '.').padStart(3, '0') + endDate.getFullYear() + ' r.'}
                 </div>
                 <div style=
                     {{
