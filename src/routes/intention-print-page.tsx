@@ -75,7 +75,7 @@ export default function IntentionPage() {
                 let intentionRow = massRow;
                 for (let k = 0; k < intentionData.length; k++) {
                     intentions.push({
-                        title: intentionData[k].output,
+                        title: intentionData[k].output.replace(" ", " "),
                         row: intentionRow,
                         columnspan: intentionData.length == 1 ? 2 : 1,
                         column: intentionData.length == 1 ? 6 : 7,
@@ -123,7 +123,7 @@ export default function IntentionPage() {
             <div className="asd00">
                 <div className="asd01">Intencje Mszy Świętych</div>
                 <div className="asd02">
-                    {(startDate.getDate() + '.').padStart(3, '0') + (startDate.getMonth() + '.').padStart(3, '0') + startDate.getFullYear() + ' r. - ' + (endDate.getDate() + '.').padStart(3, '0') + (endDate.getMonth() + '.').padStart(3, '0') + endDate.getFullYear() + ' r.'}
+                    {(startDate.getDate() + '.').padStart(3, '0') + ((startDate.getMonth() + 1) + '.').padStart(3, '0') + startDate.getFullYear() + ' r. - ' + (endDate.getDate() + '.').padStart(3, '0') + (endDate.getMonth() + '.').padStart(3, '0') + endDate.getFullYear() + ' r.'}
                 </div>
                 <div style=
                     {{
@@ -150,7 +150,7 @@ export default function IntentionPage() {
                                     {daySpelling[item.day.getDay()]}
                                 </div>
                             <div className="asd08">
-                                        {(item.day.getDate() + '.').padStart(3, '0') + (item.day.getMonth() + '.').padStart(3, '0') + item.day.getFullYear() + ' r.'}
+                                        {(item.day.getDate() + '.').padStart(3, '0') + ((item.day.getMonth() + 1) + '.').padStart(3, '0') + item.day.getFullYear() + ' r.'}
                                     </div>
 
                                     {item.description.map(desc => (
