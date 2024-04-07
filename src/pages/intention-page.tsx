@@ -4,7 +4,7 @@ import NewIntentionElement from '../routes/intention/new-intention-element';
 import IntentionWeekComponent from '../components/intention-week-component';
 import IntentionMonthComponent from '../components/intention-month-component';
 import { useEffect, useState } from 'react';
-import { FetchGetAll } from '../features/FetchGet';
+import { FetchCheckOwner } from '../features/FetchCheckOwner';
 export default function IntentionPage() {
     const { token } = useParams();
     const [isViewer, setIsViewer] = useState(false)
@@ -14,8 +14,8 @@ export default function IntentionPage() {
         (async function () {
             try {
                 if (token !== undefined) {
-                    setIsViewer((await FetchGetAll('text', token, 'key_intention_viewer')).length != 0)
-                    setIsAdmin((await FetchGetAll('text', token, 'key_intention_admin')).length != 0)
+                    setIsViewer((await FetchCheckOwner(token, 'intention_viewer'))?? false)
+                    setIsAdmin((await FetchCheckOwner(token, 'intention_admin'))?? false)
                 }
             } catch (e) {
                 console.error(e);
