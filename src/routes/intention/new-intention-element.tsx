@@ -40,7 +40,7 @@ export default function ItentionMonthElement() {
                         "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
                         "integer": date.getTime(),
                         "token": token,
-                        "id": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                        "key": "intention_admin",
                     }),
                     headers: {
                         'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export default function ItentionMonthElement() {
                         body: JSON.stringify({
                             "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
                             "token": token,
-                            "id": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                            "key": "intention_admin",
                             "information": informationID,
                             "context": "zielonki_mass",
                             "preorder": date.getTime(),
@@ -72,7 +72,7 @@ export default function ItentionMonthElement() {
                             "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
                             "text": description,
                             "token": token,
-                            "id": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                            "key": "intention_admin",
                         }),
                         headers: {
                             'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export default function ItentionMonthElement() {
                         body: JSON.stringify({
                             "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
                             "token": token,
-                            "id": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                            "key": "intention_admin",
                             "information": informationID2,
                             "context": informationID + 'description',
                             "preorder": 0,
@@ -103,7 +103,7 @@ export default function ItentionMonthElement() {
                             "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
                             "text": color,
                             "token": token,
-                            "id": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                            "key": "intention_admin",
                         }),
                         headers: {
                             'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ export default function ItentionMonthElement() {
                         body: JSON.stringify({
                             "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
                             "token": token,
-                            "id": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                            "key": "intention_admin",
                             "information": informationID3,
                             "context": informationID + 'color',
                             "preorder": 0,

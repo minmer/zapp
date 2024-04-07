@@ -14,8 +14,8 @@ export default function IntentionPage() {
         (async function () {
             try {
                 if (token !== undefined) {
-                    setIsViewer((await FetchGetAll('text', token, 'intention')).length != 0)
-                    setIsAdmin((await FetchGetAll('text', token, 'intentionadmin')).length != 0)
+                    setIsViewer((await FetchGetAll('text', token, 'key_intention_viewer')).length != 0)
+                    setIsAdmin((await FetchGetAll('text', token, 'key_intention_admin')).length != 0)
                 }
             } catch (e) {
                 console.error(e);

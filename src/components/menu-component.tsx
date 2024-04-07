@@ -70,6 +70,16 @@ export default function Root() {
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <h2>
+                                Ustawienia
+                            </h2>
+                            <ul>
+                                <li>
+                                    <Link to={`user`}>Użytkownik</Link>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
             </div>

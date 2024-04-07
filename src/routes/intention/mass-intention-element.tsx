@@ -40,7 +40,7 @@ function MassIntentionElement({ information_id, date }: { information_id: string
                         "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
                         "text": newIntention,
                         "token": token,
-                        "id": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                        "key": "intention_admin",
                     }),
                     headers: {
                         'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ function MassIntentionElement({ information_id, date }: { information_id: string
                         body: JSON.stringify({
                             "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
                             "token": token,
-                            "id": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                            "key": "intention_admin",
                             "information": informationID,
                             "context": information_id + 'intention',
                             "preorder": 1234,
@@ -80,7 +80,7 @@ function MassIntentionElement({ information_id, date }: { information_id: string
                     body: JSON.stringify({
                         "token": token,
                         "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
-                        "permission": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                        "key": "intention_admin",
                         "id": information_id,
                     }),
                     headers: {
@@ -100,7 +100,7 @@ function MassIntentionElement({ information_id, date }: { information_id: string
                     body: JSON.stringify({
                         "token": token,
                         "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
-                        "permission": "7d5de43d-e5fc-42ba-a8cb-5e1aaa2e3d2f",
+                        "key": "intention_admin",
                         "id": id,
                     }),
                     headers: {

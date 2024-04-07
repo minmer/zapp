@@ -7,7 +7,7 @@ import {
     createHashRouter,
 } from "react-router-dom";
 import './index.css';
-import Root from "./routes/root";
+import Root from "./root";
 import IntentionPrintPage from './routes/intention-print-page';
 import HomePage from './pages/home-page';
 

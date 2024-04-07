@@ -7,7 +7,7 @@ export default function UnctionPage() {
                 <div className="baner">
                     <img alt="baner" src={baner} />
                     <div>
-                        <h1>UnctionPage</h1>
+                        <h1>Namaszczenie Chorych</h1>
                     </div>
                 </div>
                 <div className="description">
