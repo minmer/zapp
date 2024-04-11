@@ -64,7 +64,7 @@ export default function CommunionDetailElement() {
                 {{
                     display: isAdmin ? 'block' : 'none',
                 }}>{telefon.map((tel) => (
-                    <a href={"sms:+48" + tel + "?body=Szczęść Boże,%0D%0AProszę sprawdzić dane  dostępne w poniższym linku. Strona jest na razie dostosowana do szerokich ekranów (np. komputer). W razie błędów proszę o kontakt.%0D%0AZ Bogiem%0D%0Aks. Michał Mleczek%0D%0A%0D%0ALink: https://www.recreatio.eu/#/asdasdasd" + token + "/communion/detail/" + role}> Send link to {tel} </a>
+                    <a href={"sms:+48" + tel + "?body=Szczęść Boże,%0D%0AProszę sprawdzić dane dostępne pod poniższym linkiem. W razie błędów proszę o kontakt.%0D%0AZ Bogiem%0D%0Aks. Michał Mleczek%0D%0A%0D%0ALink: https://www.recreatio.eu/#/" + token + "/communion/detail/" + role}> Send link to {tel} </a>
                 ))}
             </h5>
         </>
