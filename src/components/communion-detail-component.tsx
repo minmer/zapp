@@ -64,8 +64,9 @@ export default function CommunionDetailElement() {
                 {{
                     display: isAdmin ? 'block' : 'none',
                 }}>{telefon.map((tel) => (
-                <a href={"sms:+48" + tel + "?body=Szczęść Boże, Proszę sprawdzić dane  dostępne w poniższym linku. Strona jest na razie dostosowana do szerokich ekranów (np. komputer). W razie błędów proszę o kontakt. Z Bogiem ks. Michał Mleczek Link: https://www.recreatio.eu/#" + token + "/communion/detail/" + role }> Send link to {tel} </a>
-            ))}</h5>
+                    <a href={"sms:+48" + tel + "?body=Szczęść Boże, Proszę sprawdzić dane  dostępne w poniższym linku. Strona jest na razie dostosowana do szerokich ekranów (np. komputer). W razie błędów proszę o kontakt. Z Bogiem ks. Michał Mleczek Link: "}> Send link to {tel} </a>
+                ))}</h5>
+            <a href={"sms:+48519576943?body=Michał Mleczek"}>Try</a>
         </>
     );
 }
