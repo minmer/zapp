@@ -1,19 +1,20 @@
-export async function FetchPost(type: string, token: string, id: string, context: string[], value: [string, number], preorder: number[]) {
+export async function FetchPost(type: string, token: string, key: string, context: string[], value: string | number, preorder: number[]) {
     try {
-        const res = await fetch('https://zapp.hostingasp.pl/information/' + type + '/',
+        const res = await fetch('https://zapp.hostingasp.pl/information/' + type,
             {
                 method: "POST",
                 body: JSON.stringify({
                     "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
-                    type: value,
+                    "text": value,
+                    "integer": value,
                     "token": token,
-                    "id": id,
+                    "key": key,
                 }),
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-        const informationID = (await res.json().then(resJson => resJson.id))[0];
+        const informationID = (await res.json().then(resJson => resJson.id));
         for (let i = 0; i < context.length; i++)
         {
             await fetch('https://zapp.hostingasp.pl/context/',
@@ -22,7 +23,7 @@ export async function FetchPost(type: string, token: string, id: string, context
                     body: JSON.stringify({
                         "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
                         "token": token,
-                        "id": id,
+                        "key": key,
                         "information": informationID,
                         "context": context[i],
                         "preorder": preorder[i],
