@@ -11,7 +11,7 @@ export default function UserDescendantAttributeElement({ role, attribute, isArra
             try {
 
                 if (token !== undefined) {
-                    setValue((await FetchGetAll('text', token, role + attribute) as unknown as StringOutput[]).map(data => data.output))
+                    setValue((await FetchGetAll('text', token, role + attribute, 'adminrole_' + role) as unknown as StringOutput[]).map(data => data.output))
                 }
             } catch (e) {
                 console.error(e);

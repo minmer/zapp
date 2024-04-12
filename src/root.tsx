@@ -14,6 +14,7 @@ import ObitPage from "./pages/obit-page";
 import PursuitSaintPage from "./pages/pursuit_saint-page";
 import UnctionPage from "./pages/unction-page";
 import UserPage from "./pages/user-page";
+import TripPage from "./pages/trip-page";
 export default function Root() {
     
     return (
@@ -34,6 +35,7 @@ export default function Root() {
                 <Route path="/pursuit_saint" element={<PursuitSaintPage />} />
                 <Route path="/unction" element={<UnctionPage />} />
                 <Route path="/user/*" element={<UserPage />} />
+                <Route path="/trip/*" element={<TripPage />} />
             </Routes>
         </>
     );

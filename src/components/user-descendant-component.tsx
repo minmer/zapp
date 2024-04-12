@@ -16,7 +16,7 @@ export default function UserDescendantElement({ role, attributes }: { role: stri
             try {
 
                 if (token !== undefined) {
-                    setRoleToken((await FetchGetAll('text', token, 'role_token_' + role) as unknown as StringOutput[])[0]?.output)
+                    setRoleToken((await FetchGetAll('text', token, 'role_token_' + role, 'adminrole_' + role) as unknown as StringOutput[])[0]?.output)
                 }
             } catch (e) {
                 console.error(e);

@@ -16,24 +16,26 @@ export default function CommunionDetailElement() {
     const [catechism, setCatechism] = useState("")
     const [telefon, setTelefon] = useState<string[]>([])
     const [isAdmin, setIsAdmin] = useState(false)
+    const [roleToken, setRoleToken] = useState("")
 
     useEffect(() => {
         (async function () {
             try {
 
                 if (token !== undefined) {
-                    setName((await FetchGetAll('text', token, role + 'name') as unknown as StringOutput[])[0]?.output ?? 'Zgłoś problem z imieniem dziecka')
-                    setAddress((await FetchGetAll('text', token, role + 'address') as unknown as StringOutput[])[0]?.output ?? 'Proszę o podanie adresu')
-                    setPermission((await FetchGetAll('text', token, role + 'permission') as unknown as StringOutput[])[0]?.output ?? 'Nie dotarła jeszcze  zgoda z parafii zamieszkania - jeśli to błędna informacja proszę o kontakt')
-                    setBirthday((await FetchGetAll('text', token, role + 'birthday') as unknown as StringOutput[])[0]?.output ?? 'Proszę o podanie daty urodzenia')
-                    setBirthplace((await FetchGetAll('text', token, role + 'birthplace') as unknown as StringOutput[])[0]?.output ?? 'Proszę o podanie miejsca urodzenia')
-                    setBaptismDate((await FetchGetAll('text', token, role + 'baptismdate') as unknown as StringOutput[])[0]?.output ?? 'Brakuje informacji o Chrzcie - proszę o kontakt')
-                    setBaptismPlace((await FetchGetAll('text', token, role + 'baptismplace') as unknown as StringOutput[])[0]?.output)
-                    setBaptismNote((await FetchGetAll('text', token, role + 'baptismnote') as unknown as StringOutput[])[0]?.output)
-                    setCatechism((await FetchGetAll('text', token, role + 'catechism') as unknown as StringOutput[])[0]?.output ?? 'Katechizm jeszcze nie został w pełni zaliczony - jeśli to błędna informacja proszę o kontakt')
-                    setConfession((await FetchGetAll('text', token, role + 'confession') as unknown as StringOutput[])[0]?.output ?? 'Spowiedź jeszcze nie została w pełni zaliczona - jeśli to błędna informacja proszę o kontakt')
-                    setTelefon((await FetchGetAll('text', token, role + 'telefon') as unknown as StringOutput[]).map(data => data.output))
+                    setName((await FetchGetAll('text', token, role + 'name', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? 'Zgłoś problem z imieniem dziecka')
+                    setAddress((await FetchGetAll('text', token, role + 'address', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? 'Proszę o podanie adresu')
+                    setPermission((await FetchGetAll('text', token, role + 'permission', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? 'Nie dotarła jeszcze  zgoda z parafii zamieszkania - jeśli to błędna informacja proszę o kontakt')
+                    setBirthday((await FetchGetAll('text', token, role + 'birthday', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? 'Proszę o podanie daty urodzenia')
+                    setBirthplace((await FetchGetAll('text', token, role + 'birthplace', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? 'Proszę o podanie miejsca urodzenia')
+                    setBaptismDate((await FetchGetAll('text', token, role + 'baptismdate', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? 'Brakuje informacji o Chrzcie - proszę o kontakt')
+                    setBaptismPlace((await FetchGetAll('text', token, role + 'baptismplace', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output)
+                    setBaptismNote((await FetchGetAll('text', token, role + 'baptismnote', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output)
+                    setCatechism((await FetchGetAll('text', token, role + 'catechism', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? 'Katechizm jeszcze nie został w pełni zaliczony - jeśli to błędna informacja proszę o kontakt')
+                    setConfession((await FetchGetAll('text', token, role + 'confession', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? 'Spowiedź jeszcze nie została w pełni zaliczona - jeśli to błędna informacja proszę o kontakt')
+                    setTelefon((await FetchGetAll('text', token, role + 'telefon', 'adminrole_' + role) as unknown as StringOutput[]).map(data => data.output))
                     setIsAdmin(((await FetchGetAll('text', token, 'admin') as []).length == 0 ? false : true))
+                    setRoleToken((await FetchGetAll('text', token, 'role_token_' + role, 'adminrole_' + role) as unknown as StringOutput[])[0]?.output)
                 }
             } catch (e) {
                 console.error(e);
@@ -64,7 +66,7 @@ export default function CommunionDetailElement() {
                 {{
                     display: isAdmin ? 'block' : 'none',
                 }}>{telefon.map((tel) => (
-                    <a href={"sms:+48" + tel + "?body=Szczęść Boże,%0D%0AProszę sprawdzić dane dostępne pod poniższym linkiem. Strona jest na razie dostosowana do szerokich ekranów (np. komputer). W razie błędów proszę o kontakt.%0D%0AZ Bogiem%0D%0Aks. Michał Mleczek%0D%0A%0D%0ALink: https://www.recreatio.eu/%23/" + token + "/communion/detail/" + role}> Send link to {tel} </a>
+                    <a href={"sms:+48" + tel + "?body=Szczęść Boże,%0D%0AProszę sprawdzić dane dostępne pod poniższym linkiem. Strona jest na razie dostosowana do szerokich ekranów (np. komputer). W razie błędów proszę o kontakt.%0D%0AZ Bogiem%0D%0Aks. Michał Mleczek%0D%0A%0D%0ALink: https://www.recreatio.eu/%23/" + roleToken + "/communion/detail/" + role}> Send link to {tel} </a>
                 ))}
             </h5>
         </>

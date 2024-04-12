@@ -62,11 +62,14 @@ export default function Root() {
                         </li>
                         <li>
                             <h2>
-                                Sprawozdania
+                                Ogłoszenia
                             </h2>
                             <ul>
                                 <li>
-                                    <Link to={`finance`}>Finansowe</Link>
+                                    <Link to={`finance`}>Sprawozdania</Link>
+                                </li>
+                                <li>
+                                    <Link to={`trip`}>Wycieczki</Link>
                                 </li>
                             </ul>
                         </li>

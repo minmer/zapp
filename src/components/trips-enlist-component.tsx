@@ -8,7 +8,7 @@ interface IChild {
     name: string
 }
 
-export default function CommunionsDetailElement() {
+export default function TripsEnlistElement() {
     const { token } = useParams();
     const [children, setChildren] = useState<IChild[]>([])
 
@@ -18,10 +18,10 @@ export default function CommunionsDetailElement() {
 
                 if (token !== undefined) {
                     const tempChildren = []
-                    const data = (await FetchGetAll('text', token, 'communion_child') as StringOutput[]).map(p => p.output)
+                    const data = (await FetchGetAll('text', token, 'trip_enlist') as StringOutput[]).map(p => p.output)
                     for (let i = 0; i < data.length; i++) {
                         tempChildren.push({
-                            id: data[i], name: (await FetchGetAll('text', token, data[i] + 'name', 'adminrole_' + data[i]) as StringOutput[])[0].output
+                            id: data[i], name: (await FetchGetAll('text', token, data[i] + 'name') as StringOutput[])[0].output
                     })
                     }
                     setChildren(tempChildren)

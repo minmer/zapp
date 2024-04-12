@@ -26,8 +26,8 @@ export default function UserDescendantsElement() {
             try {
 
                 if (token !== undefined) {
-                    setViewerKey((await FetchGetAll('text', token, 'key_rolegroup_' + name + '_viewer') as unknown as StringOutput[])[0]?.output)
-                    setRoles((await FetchGetAll('text', token, 'role_' + name) as unknown as StringOutput[]).map(res => res.output))
+                    setViewerKey((await FetchGetAll('text', token, 'key_rolegroup_' + name + '_viewer', 'rolegroup_' + name + '_admin') as unknown as StringOutput[])[0]?.output)
+                    setRoles((await FetchGetAll('text', token, 'role_' + name, 'rolegroup_' + name + '_admin') as unknown as StringOutput[]).map(res => res.output))
                 }
             } catch (e) {
                 console.error(e);
