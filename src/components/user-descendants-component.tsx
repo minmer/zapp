@@ -6,6 +6,7 @@ import { FetchPostOwner } from "../features/FetchPostOwner";
 import { FetchShareOwner } from "../features/FetchShareOwner";
 import { FetchToken, TokenOutput } from "../features/FetchToken";
 import UserDescendantElement from "./user-descendant-component";
+import { FetchDelete } from "../features/FetchDelete";
 
 interface IAttribute {
     name: string,
@@ -23,14 +24,15 @@ export default function UserDescendantsElement() {
     const [attributes, setAttributes] = useState<IAttribute[]>([])
     useEffect(() => {
         (async function () {
+            if (token !== undefined) {
+                for (let i = 0; i < 5; i++)
             try {
-
-                if (token !== undefined) {
-                    setViewerKey((await FetchGetAll('text', token, 'key_rolegroup_' + name + '_viewer', 'rolegroup_' + name + '_admin') as unknown as StringOutput[])[0]?.output)
-                    setRoles((await FetchGetAll('text', token, 'role_' + name, 'rolegroup_' + name + '_admin') as unknown as StringOutput[]).map(res => res.output))
+                    setViewerKey((await FetchGetAll('text', token, 'key_rolegroup_' + name + '_admin') as unknown as StringOutput[])[0]?.output)
+                    setRoles((await FetchGetAll('text', token, 'role_' + name) as unknown as StringOutput[]).map(res => res.output))
+                break;
+                } catch (e) {
+                    console.error(e)
                 }
-            } catch (e) {
-                console.error(e);
             }
         })();
     }, [token, name])
@@ -39,6 +41,7 @@ export default function UserDescendantsElement() {
         await FetchPostOwner(token ?? '', 'rolegroup_' + name + '_admin', 'main_token')
         const tokenData = await FetchGetAll('text', token ?? '', 'key_main_token') as unknown as StringOutput[]
         await FetchShareOwner(token ?? '', 'rolegroup_' + name + '_viewer', 'rolegroup_' + name + '_admin', tokenData[0]?.output ?? '', false, true)
+        setViewerKey((await FetchGetAll('text', token ?? '', 'key_rolegroup_' + name + '_admin') as unknown as StringOutput[])[0]?.output)
     }
 
     const createRole = async () => {
@@ -51,6 +54,7 @@ export default function UserDescendantsElement() {
         await FetchPostOwner(newToken.token ?? '', 'role_' + newToken.id, 'main_token')
         await FetchShareOwner(newToken.token ?? '', 'role_' + newToken.id, 'role_' + newToken.id, tokenData[0]?.output ?? '', false, true)
         await FetchPost("text", token ?? '', 'adminrole_' + newToken.id, ['role_token_' + newToken.id], newToken.token, [0])
+        setNewAttribute("")
     }
 
     const addAttribute = async () => {
@@ -64,6 +68,10 @@ export default function UserDescendantsElement() {
     }
     const addLink = async (role : string) => {
         await FetchPost("text", token ?? '', 'adminrole_' + role, [link], role, [0])
+    }
+
+    const removeRole = async (role: string) => {
+        FetchDelete(token ?? '', 'main_token',(await FetchGetAll('text', token ?? '', 'role_' + name) as unknown as StringOutput[]).filter(p => p.output == role)[0].id)
     }
 
     return (
@@ -112,6 +120,7 @@ export default function UserDescendantsElement() {
                                 display: link ? 'block' : 'none',
                             }}
                             type="button" onClick={() => { addLink(role) }} value={link} />
+                        <input type="button" onClick={() => { removeRole(role) }} value='X' />
                     </>
                 ))}
                 <div style=

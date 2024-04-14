@@ -13,14 +13,16 @@ export default function UserDescendantElement({ role, attributes }: { role: stri
     const [roleToken, setRoleToken] = useState("")
     useEffect(() => {
         (async function () {
-            try {
-
-                if (token !== undefined) {
+            if (token !== undefined) {
+            for (let i = 0; i < 5; i++) {
+                try {
                     setRoleToken((await FetchGetAll('text', token, 'role_token_' + role, 'adminrole_' + role) as unknown as StringOutput[])[0]?.output)
+                    break;
+                } catch (e) {
+                    console.error(e);
                 }
-            } catch (e) {
-                console.error(e);
             }
+        }
         })();
     }, [token, role])
 

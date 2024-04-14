@@ -8,13 +8,15 @@ export default function UserDescendantAttributeElement({ role, attribute, isArra
     const [newValue, setNewValue] = useState("")
     useEffect(() => {
         (async function () {
-            try {
-
-                if (token !== undefined) {
-                    setValue((await FetchGetAll('text', token, role + attribute, 'adminrole_' + role) as unknown as StringOutput[]).map(data => data.output))
+            if (token !== undefined) {
+                for (let i = 0; i < 5; i++) {
+                    try {
+                        setValue((await FetchGetAll('text', token, role + attribute, 'adminrole_' + role) as unknown as StringOutput[]).map(data => data.output))
+                        break;
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }
-            } catch (e) {
-                console.error(e);
             }
         })();
     }, [token, role, attribute])
