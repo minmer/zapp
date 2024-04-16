@@ -11,6 +11,7 @@ import { FetchReloadToken } from "../features/FetchReloadToken";
 export interface IList {
     name: string,
     role: string,
+    token: string,
     id: string
 }
 export interface IAttribute {
@@ -59,8 +60,8 @@ export default function TripEnlistElement() {
                             else if (attributes[j].type == "date") {
                                 role += new Date((await FetchGetAll('integer', token, rolesData[i].output + attributes[j].name) as NumberOutput[])[0]?.output).toDateString() + ', ';
                             }
-                        }
-                        tempRoles.push({ name: role, id: rolesData[i].id, role: rolesData[i].output });
+                        } 
+                        tempRoles.push({ name: role, id: rolesData[i].id, role: rolesData[i].output, token: (await FetchGetAll('text', token, 'role_trip_token_' + rolesData[i].output) as StringOutput[])[0]?.output });
                     }
                     setRoles(tempRoles);
                 }
@@ -91,7 +92,7 @@ export default function TripEnlistElement() {
                 await FetchPost("integer", newToken.token ?? '', 'role_trip_' + newToken.id, [newToken.id + attributes[i].name], attributes[i].date ?? 0, [0]);
             }
         }
-        setMessage("Zapisy udane " + newToken.token);
+        setMessage("Zapisy udane");
     };
 
     const removeRole = async (role: string, id: string) => {
@@ -105,7 +106,7 @@ export default function TripEnlistElement() {
             <ol>
                 {roles.map((role) => (
                     <li>
-                        {role.name} - | -
+                        {role.name} - {role.token}
                         <input style={{
                             display: isAdmin ? 'block' : 'none',
                         }} type="button" onClick={() => { removeRole(role.role, role.id); }} value='X' />
