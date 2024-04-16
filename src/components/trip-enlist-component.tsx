@@ -7,6 +7,7 @@ import { FetchShareOwner } from "../features/FetchShareOwner";
 import { FetchPostOwner } from "../features/FetchPostOwner";
 import { FetchDelete } from "../features/FetchDelete";
 import { FetchReloadToken } from "../features/FetchReloadToken";
+import LoadingComponent from "./loading-component";
 
 export interface IList {
     name: string,
@@ -29,6 +30,7 @@ export default function TripEnlistElement() {
     const [roles, setRoles] = useState<IList[]>([]);
     const [message, setMessage] = useState("");
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     useEffect(() => {
@@ -36,6 +38,7 @@ export default function TripEnlistElement() {
             try {
 
                 if (token !== undefined) {
+                    setIsLoading(true);
                     setIsAdmin(((await FetchGetAll('text', token, 'admin') as []).length == 0 ? false : true));
                     setName((await FetchGetAll('text', token, 'trip_enlist') as StringOutput[]).filter(p => p.id == list)[0].output);
                     setListToken((await FetchGetAll('text', token, list + 'token') as StringOutput[])[0]?.output)
@@ -64,6 +67,7 @@ export default function TripEnlistElement() {
                         tempRoles.push({ name: role, id: rolesData[i].id, role: rolesData[i].output, token: (await FetchGetAll('text', token, 'role_trip_token_' + rolesData[i].output) as StringOutput[])[0]?.output });
                     }
                     setRoles(tempRoles);
+                    setIsLoading(false);
                 }
             } catch (e) {
                 console.error(e);
@@ -72,6 +76,7 @@ export default function TripEnlistElement() {
     }, [token, list, attributes]);
 
     const enlist = async () => {
+        setIsLoading(true);
         const newToken = await FetchToken() as TokenOutput;
         const tokenData = await FetchGetAll('text', token ?? '', list + 'creator') as unknown as StringOutput[];
         console.log(listToken + tokenData)
@@ -92,6 +97,7 @@ export default function TripEnlistElement() {
                 await FetchPost("integer", newToken.token ?? '', 'role_trip_' + newToken.id, [newToken.id + attributes[i].name], attributes[i].date ?? 0, [0]);
             }
         }
+        setIsLoading(false);
         setMessage("Zapisy udane");
     };
 
@@ -102,11 +108,12 @@ export default function TripEnlistElement() {
     return (
         <>
             <h3>{name}</h3>
+            <div className="enlist-container">
             <div>
             <ol>
                 {roles.map((role) => (
                     <li>
-                        {role.name} - {role.token}
+                        {role.name} - <a href={'www.recreatio.eu/#/' + role.token + '/trip/enlist/' + list}>{role.token}</a>
                         <input style={{
                             display: isAdmin ? 'block' : 'none',
                         }} type="button" onClick={() => { removeRole(role.role, role.id); }} value='X' />
@@ -138,6 +145,13 @@ export default function TripEnlistElement() {
                 <h4>
                     {message}
                 </h4>
+                </div>
+            <div className="loadingcontainer" style=
+                {{
+                    display: isLoading ? 'block' : 'none',
+                }}>
+                <LoadingComponent />
+                </div>
             </div>
         </>
     );

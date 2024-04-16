@@ -944,7 +944,15 @@ i {
         text-align: center;
     }
 
-.inline-communion-list
-{
+.enlist-container {
+    position: relative;
+}
 
+
+.enlist-container .loadingcontainer {
+    position: absolute;
+    left: 0;
+    right: 0px;
+    top: 0;
+    bottom: 0;
 }
