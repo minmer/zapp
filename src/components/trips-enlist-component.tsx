@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes, useParams } from "react-router-dom";
 import { FetchGetAll, StringOutput } from "../features/FetchGet";
-import CommunionDetailComponent from "./communion-detail-component";
+import TripEnlistElement from "./trip-enlist-component";
 
-interface IChild {
-    id: string,
-    name: string
+interface IList {
+    name: string,
+    id: string
 }
 
 export default function TripsEnlistElement() {
     const { token } = useParams();
-    const [children, setChildren] = useState<IChild[]>([])
+    const [lists, setLists] = useState<IList[]>([])
 
     useEffect(() => {
         (async function () {
             try {
 
                 if (token !== undefined) {
-                    const tempChildren = []
-                    const data = (await FetchGetAll('text', token, 'trip_enlist') as StringOutput[]).map(p => p.output)
+                    const tempLists = []
+                    const data = await FetchGetAll('text', token, 'trip_enlist') as StringOutput[]
                     for (let i = 0; i < data.length; i++) {
-                        tempChildren.push({
-                            id: data[i], name: (await FetchGetAll('text', token, data[i] + 'name') as StringOutput[])[0].output
-                    })
+                        tempLists.push({
+                            id: data[i].id,
+                            name: data[i].output,
+                        })
+                        setLists(tempLists);
                     }
-                    setChildren(tempChildren)
                 }
             } catch (e) {
                 console.error(e);
@@ -34,16 +35,16 @@ export default function TripsEnlistElement() {
 
     return (
         <>
-            {children.map((child) => (
+            {lists.map((list) => (
                 <div>
-                    <Link to={child.id}>
-                        {child.name}
+                    <Link to={list.id}>
+                        {list.name}
                     </Link>
                 </div>
             ))
             }
             <Routes>
-                <Route path="/:role" element={<CommunionDetailComponent />} />
+                <Route path="/:list" element={<TripEnlistElement />} />
             </Routes >
         </>
     );

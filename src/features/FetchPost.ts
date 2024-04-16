@@ -34,6 +34,7 @@ export async function FetchPost(type: string, token: string, key: string, contex
                     },
                 });
         }
+        return informationID
     } catch (err) {
         console.log(err);
     }
