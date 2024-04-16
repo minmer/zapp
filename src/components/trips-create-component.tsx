@@ -93,7 +93,7 @@ export default function TripsCreateElement() {
                     {lists.map((list) => (
                         <div>
                             <div>
-                                <a href={'www.recreatio.eu/#/' + list.token + '/trip/enlist/' + list.id}>{list.name}</a>
+                                <a href={'#/' + list.token + '/trip/enlist/' + list.id}>{list.name}</a>
                             </div>
                             <input type="button" onClick={() => { removeTrip(list.id) }} value='X' />
                         </div>

@@ -79,7 +79,7 @@ export default function TripEnlistElement() {
         setIsLoading(true);
         const newToken = await FetchToken() as TokenOutput;
         const tokenData = await FetchGetAll('text', token ?? '', list + 'creator') as unknown as StringOutput[];
-        console.log(listToken + tokenData)
+        console.log(listToken + tokenData[0].output)
         await FetchPost("text", token ?? '', 'token_' + listToken, ['role_' + list], newToken.id, [roles.length]);
         console.log('data')
         await FetchShareOwner(token ?? '', 'token_' + listToken, 'token_' + listToken, newToken.id, false, true);
@@ -113,7 +113,7 @@ export default function TripEnlistElement() {
             <ol>
                 {roles.map((role) => (
                     <li>
-                        {role.name} - <a href={'www.recreatio.eu/#/' + role.token + '/trip/enlist/' + list}>{role.token}</a>
+                        {role.name} - <a href={'#/' + role.token + '/trip/enlist/' + list}>{role.token}</a>
                         <input style={{
                             display: isAdmin ? 'block' : 'none',
                         }} type="button" onClick={() => { removeRole(role.role, role.id); }} value='X' />
