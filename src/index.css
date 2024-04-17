@@ -186,6 +186,12 @@ form[action$="destroy"] button {
     z-index: 1;
 }
 
+@media (max-width: 768px) {
+    #menu {
+        display: none;
+    }
+}
+
     #menu > * {
         padding-left: 2rem;
         padding-right: 2rem;
