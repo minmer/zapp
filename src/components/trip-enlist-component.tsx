@@ -29,6 +29,7 @@ export default function TripEnlistElement() {
     const [attributes, setAttributes] = useState<IAttribute[]>([]);
     const [roles, setRoles] = useState<IList[]>([]);
     const [message, setMessage] = useState("");
+    const [newToken, setNewToken] = useState("");
     const [isAdmin, setIsAdmin] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -98,7 +99,8 @@ export default function TripEnlistElement() {
             }
         }
         setIsLoading(false);
-        setMessage("Zapisy udane");
+        setMessage("Zapisy udane\r\nMożna sprawdzić dane za pomocą dedkowanego linku:");
+        setNewToken(newToken.token);
     };
 
     const removeRole = async (role: string, id: string) => {
@@ -113,7 +115,7 @@ export default function TripEnlistElement() {
             <ol>
                 {roles.map((role) => (
                     <li>
-                        {role.name} - <a href={'#/' + role.token + '/trip/enlist/' + list}>{role.token}</a>
+                        {role.name} - <a href={isAdmin ? '#/' + role.token + '/trip/enlist/' + list : ''}>{role.token}</a>
                         <input style={{
                             display: isAdmin ? 'block' : 'none',
                         }} type="button" onClick={() => { removeRole(role.role, role.id); }} value='X' />
@@ -142,8 +144,9 @@ export default function TripEnlistElement() {
                     </>
                 ))}
                 <input type="button" onClick={enlist} value="Zapisz" />
-                <h4>
-                    {message}
+                    <h4>
+                        {message}
+                        <a href={'#/' + newToken + '/trip/enlist/' + list}>{newToken}</a>
                 </h4>
                 </div>
             <div className="loadingcontainer" style=
