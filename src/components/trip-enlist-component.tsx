@@ -103,8 +103,8 @@ export default function TripEnlistElement() {
         setNewToken(newToken.token);
     };
 
-    const removeRole = async (role: string, id: string) => {
-        FetchDelete(token ?? '', 'role_trip_' + role, id);
+    const removeRole = async (id: string) => {
+        FetchDelete(token ?? '', 'token_' + listToken, id);
     };
 
     return (
@@ -118,7 +118,7 @@ export default function TripEnlistElement() {
                         {role.name} - <a href={isAdmin ? '#/' + role.token + '/trip/enlist/' + list : ''}>{role.token}</a>
                         <input style={{
                             display: isAdmin ? 'block' : 'none',
-                        }} type="button" onClick={() => { removeRole(role.role, role.id); }} value='X' />
+                        }} type="button" onClick={() => { removeRole(role.id); }} value='X' />
                     </li>
                 ))}
                 </ol>
