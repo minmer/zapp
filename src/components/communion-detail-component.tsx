@@ -15,6 +15,9 @@ export default function CommunionDetailElement() {
     const [confession, setConfession] = useState("")
     const [catechism, setCatechism] = useState("")
     const [telefon, setTelefon] = useState<string[]>([])
+    const [communionRoleTitle, setCommunionRoleTitle] = useState("")
+    const [communionRoleText, setCommunionRoleText] = useState("")
+    const [communionRolePage, setCommunionRolePage] = useState("")
     const [isAdmin, setIsAdmin] = useState(false)
     const [roleToken, setRoleToken] = useState("")
 
@@ -34,6 +37,9 @@ export default function CommunionDetailElement() {
                     setCatechism((await FetchGetAll('text', token, role + 'catechism', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? 'Katechizm jeszcze nie został w pełni zaliczony - jeśli to błędna informacja proszę o kontakt')
                     setConfession((await FetchGetAll('text', token, role + 'confession', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? 'Spowiedź jeszcze nie została w pełni zaliczona - jeśli to błędna informacja proszę o kontakt')
                     setTelefon((await FetchGetAll('text', token, role + 'telefon', 'adminrole_' + role) as unknown as StringOutput[]).map(data => data.output))
+                    setCommunionRoleTitle((await FetchGetAll('text', token, role + 'communionroletitle', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? undefined)
+                    setCommunionRoleText((await FetchGetAll('text', token, role + 'communionroletext', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? undefined)
+                    setCommunionRolePage((await FetchGetAll('text', token, role + 'communionrolepage', 'adminrole_' + role) as unknown as StringOutput[])[0]?.output ?? undefined)
                     setIsAdmin(((await FetchGetAll('text', token, 'admin') as []).length == 0 ? false : true))
                     setRoleToken((await FetchGetAll('text', token, 'role_token_' + role, 'adminrole_' + role) as unknown as StringOutput[])[0]?.output)
                 }
@@ -68,6 +74,15 @@ export default function CommunionDetailElement() {
                 }}>{telefon.map((tel) => (
                     <a href={"sms:+48" + tel + "?body=Szczęść Boże,%0D%0AProszę sprawdzić dane dostępne pod poniższym linkiem. Strona jest na razie dostosowana do szerokich ekranów (np. komputer). W razie błędów proszę o kontakt.%0D%0AZ Bogiem%0D%0Aks. Michał Mleczek%0D%0A%0D%0ALink: https://www.recreatio.eu/%23/" + roleToken + "/communion/detail/" + role}> Send link to {tel} </a>
                 ))}
+            </h5>
+            <h5 style=
+                {{
+                    display: communionRoleTitle ? 'block' : 'none',
+                }}>
+                <div>Rola w czasie Mszy Świętej</div>
+                <h5>{communionRoleTitle}</h5>
+                <div>{communionRoleText}</div>
+                <h5>{communionRolePage}</h5>
             </h5>
         </>
     );
