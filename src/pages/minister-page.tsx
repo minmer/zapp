@@ -39,7 +39,7 @@ export default function MinisterPage() {
                     </ul>
                 </div>
                 <Routes>
-                    <Route path="chat" element={<ChatComponent />} />
+                    <Route path="chat" element={<ChatComponent name='asd' />} />
                 </Routes>
                 <div className="description">
                     <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
