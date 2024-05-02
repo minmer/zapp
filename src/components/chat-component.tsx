@@ -14,7 +14,7 @@ export default function ChatElement({ name }: { name: string }) {
     const { token } = useParams();
     const [children, setChildren] = useState<IChild[]>([])
     const [isAdmin, setIsAdmin] = useState(false)
-
+    console.log(name)
     useEffect(() => {
         (async function () {
             try {
