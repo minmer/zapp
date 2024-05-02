@@ -11,7 +11,7 @@ export default function FinancePage() {
                     </div>
                 </div>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                     <ul>
                         <li>Zobaczenie sprawozdań z konkretnych dzieł</li>
                         <li>Sprawdzenie stan finansów różnych wspólnotowych funduszy (np. LSO, pielgrzymki)</li>

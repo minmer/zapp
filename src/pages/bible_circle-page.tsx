@@ -11,7 +11,7 @@ export default function BibleCirclePage() {
                     </div>
                 </div>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                     <ul>
                         <li>Terminy najbliższych spotkań</li>
                         <li>Materiały pomocnicze do czytania Pisma Świętego</li>

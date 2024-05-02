@@ -11,7 +11,7 @@ export default function BaptismPage() {
                     </div>
                 </div>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                     <ul>
                         <li>Zgłoszenie dziecka do Chrztu</li>
                         <li>Sprawdzenie potrzebnych dokumentów do Chrztu</li>

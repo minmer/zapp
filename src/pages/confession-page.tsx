@@ -11,7 +11,7 @@ export default function ConfessionPage() {
                     </div>
                 </div>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                     <ul>
                         <li>Godziny Spowiedzi Świętej poszczególnych kapłanów</li>
                         <li>Pomoce w przygotowaniu się do Spowiedzi Świętej</li>

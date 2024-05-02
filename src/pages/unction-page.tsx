@@ -11,7 +11,7 @@ export default function UnctionPage() {
                     </div>
                 </div>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                     <ul>
                         <li>Zgłoszenie się na odwiedziny księdza z Najświętszym Sakramentem</li>
                         <li>Zgłoszenie się do Namaszczenia Chorych w czasie rekolekcji</li>

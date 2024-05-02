@@ -56,7 +56,7 @@ export default function UserPage() {
                     <Route path="descendant" element={<UserDescendantComponent />} />
                 </Routes>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                     <ul>
                         <li>Zmiana informacji swojego personalnego profilu</li>
                         <li>Zmiana hasła do swojego profilu</li>

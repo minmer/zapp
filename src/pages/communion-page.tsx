@@ -42,7 +42,7 @@ export default function CommunionPage() {
                     <Route path="detail/*" element={<CommunionsDetailComponent/>} />
                 </Routes>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                     <ul>
                         <li>Zgłoszenie dziecka do Komunii</li>
                         <li>Sprawdzenie potrzebnych dokumentów do Komunii</li>

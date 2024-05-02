@@ -47,7 +47,7 @@ export default function UserPage() {
                     <Route path="create/*" element={<TripsCreateComponent />} />
                 </Routes>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                     <ul>
                         <li>Zapisy na wyjazdy</li>
                         <li>Sprawdzenie informacji o wyjeździe</li>

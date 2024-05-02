@@ -12,7 +12,7 @@ export default function PursuitSaintPage() {
                 </div>
             </div>
             <div className="description">
-                <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                 <ul>
                     <li>Sprawdzenie najbliższych wyjazdów</li>
                     <li>Zgłoszenie się na wyjazd</li>

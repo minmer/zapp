@@ -65,7 +65,7 @@ export default function IntentionPage() {
                     <Route path="edit" element={<NewIntentionElement />} />
                 </Routes>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                     <ul>
                         <li>Sprawdzanie intencji na kolejne dni</li>
                         <li>Zgłoszenie poprawek do intencji</li>

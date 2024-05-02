@@ -99,7 +99,7 @@ export default function TripEnlistElement() {
             }
         }
         setIsLoading(false);
-        setMessage("Zapisy udane\r\nMożna sprawdzić dane za pomocą dedkowanego linku:");
+        setMessage("Zapisy udane\r\nMożna sprawdzić dane za pomocą dedykowanego linku:");
         setNewToken(newToken.token);
     };
 

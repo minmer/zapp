@@ -17,9 +17,7 @@ function MassIntentionElement({ information_id, date }: { information_id: string
     const [description, setDescription] = useState("")
     const [data, setData] = useState([] as JSON_Object[])
     useEffect(() => {
-        console.log(156)
         async function loadIntentions () {
-            console.log(178)
             const tempData = await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + information_id + 'intention')
                 .then(res => res.json() as unknown as JSON_Object[])
             setData(tempData)
@@ -32,7 +30,6 @@ function MassIntentionElement({ information_id, date }: { information_id: string
 
     const addMass = async () => {
         try {
-            console.log(112)
             const res = await fetch('https://zapp.hostingasp.pl/information/text/',
                 {
                     method: "POST",
@@ -49,7 +46,6 @@ function MassIntentionElement({ information_id, date }: { information_id: string
             const resJson = await res.json();
             const informationID = resJson.id;
             if (res.status === 200) {
-                console.log(134)
                 await fetch('https://zapp.hostingasp.pl/context/',
                     {
                         method: "POST",

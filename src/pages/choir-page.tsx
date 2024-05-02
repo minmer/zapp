@@ -11,7 +11,7 @@ export default function ChoirPage() {
                     </div>
                 </div>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące możliwości:</p>
+                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
                     <ul>
                         <li>Terminy najbliższych prób i śpiewów</li>
                         <li>Repertuar na każdy śpiew</li>
