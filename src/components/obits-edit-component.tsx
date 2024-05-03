@@ -35,7 +35,7 @@ export default function ObitsEditElement() {
     }
 
     const createObit = async () => {
-        await FetchPost("text", token ?? '', 'intention_admin', ['obit'], name, [0])
+        await FetchPost("text", token ?? '', 'intention_admin', ['obit'], name, [obits.length])
     }
 
     return (

@@ -20,7 +20,10 @@ export default function ObitIntentionsElement() {
                     setName((await FetchGetAll('text', token, 'obit') as StringOutput[]).filter(p => p.id == obit)[0].output)
                     const tempData = (await FetchGetAll('text', token, obit + 'intention') as StringOutput[]).map(p => ({ id: p.id, name: p.output, mass: undefined as unknown as Date }))
                     for (let i = 0; i < tempData.length; i++) {
-                        tempData[i].mass = new Date((await FetchGetAll('integer', token, tempData[i].id + 'mass') as NumberOutput[])[0]?.output)
+                        const data = (await FetchGetAll('integer', token, tempData[i].id + 'mass') as NumberOutput[])[0]?.output
+                        if (data) {
+                            tempData[i].mass = new Date(data)
+                        }
                     }
                     setIntentions(tempData)
                 }
@@ -38,8 +41,15 @@ export default function ObitIntentionsElement() {
             {intentions.map((intention) => (
                 <div className="inline-communion-list">
                     {intention.name}
-                    <div>{
-                        (intention.mass?.getDate() + '.').padStart(3, '0') + ((intention.mass?.getMonth() ?? 0 + 1) + '.').padStart(3, '0') + intention.mass?.getFullYear() + ' r. - ' + intention.mass?.getHours() + ':' + intention.mass?.getMinutes().toString().padStart(2, '0')}</div>
+                    <div style={{
+                        display: intention.mass ? 'block' : 'none',
+                    }}>{
+                            (intention.mass?.getDate() + '.').padStart(3, '0') + ((intention.mass?.getMonth() ?? 0 + 1) + '.').padStart(3, '0') + intention.mass?.getFullYear() + ' r. - ' + intention.mass?.getHours() + ':' + intention.mass?.getMinutes().toString().padStart(2, '0')}
+                    </div>
+                    <div style={{
+                        display: intention.mass ? 'none' : 'block',
+                    }}>Msza Święta bezterminowa (zostanie odprawiona w parafii lub poza, jednak bez konkretnej daty)
+                    </div>
                 </div>
             ))
             }

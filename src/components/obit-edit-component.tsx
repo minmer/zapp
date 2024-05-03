@@ -56,7 +56,9 @@ export default function ObitEditElement() {
                     start.setHours(0, 0, 0, 0)
                     const end = new Date(start.getTime());
                     end.setDate(end.getDate() + 1)
-                    setMasses((await FetchGet('integer', token, 'zielonki_mass', start.getTime(), end.getTime()) as NumberOutput[]).map(p => ({ id: p.id, date: new Date(p.output) })))
+                    const data = (await FetchGet('integer', token, 'zielonki_mass', start.getTime(), end.getTime()) as NumberOutput[]).map(p => ({ id: p.id, date: new Date(p.output) }))
+                    setMasses(data)
+                    setSelectedMass(data[0].id)
                 }
             } catch (e) {
                 console.error(e);
@@ -69,7 +71,7 @@ export default function ObitEditElement() {
     }
 
     const linkMass = async (intention: IIntention) => {
-        FetchContext(token ?? '', intention.id, 'intention_admin', selectedMass + 'intention', 0)
+        FetchContext(token ?? '', intention.id, 'intention_admin', selectedMass + 'intention', intentions.length)
         FetchContext(token ?? '', selectedMass, 'intention_admin', intention.id + 'mass', 0)
         setRR(!rr)
     }
