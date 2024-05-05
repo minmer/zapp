@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { FetchPost } from "../../features/FetchPost";
 
-interface JSON_Object {
-    id: string;
-    output: number;
-}
 interface JSON_StringObject {
     id: string;
     output: string;
+}
+interface IIntention {
+    id: string;
+    output: string;
+    isEdit: boolean;
 }
 
 function MassIntentionElement({ information_id, date }: { information_id: string, date: number }) {
@@ -15,11 +17,13 @@ function MassIntentionElement({ information_id, date }: { information_id: string
     const { token } = useParams();
     const [newIntention, setNewIntention] = useState("")
     const [description, setDescription] = useState("")
-    const [data, setData] = useState([] as JSON_Object[])
+    const [editedIntention, setEditedIntention] = useState("")
+    const [data, setData] = useState([] as IIntention[])
+    const [rr, setRR] = useState(false)
     useEffect(() => {
         async function loadIntentions () {
-            const tempData = await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + information_id + 'intention')
-                .then(res => res.json() as unknown as JSON_Object[])
+            const tempData = (await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + information_id + 'intention')
+                .then(res => res.json() as unknown as JSON_StringObject[])).map(item => ({ id: item.id, output: item.output, isEdit: false }))
             setData(tempData)
             const tempData2 = await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + information_id + 'description')
                 .then(res => res.json() as unknown as JSON_StringObject[])
@@ -108,6 +112,21 @@ function MassIntentionElement({ information_id, date }: { information_id: string
         }
     }
 
+    const updateIntention = (item: IIntention) => {
+        item.isEdit = false
+        setRR(!rr)
+    }
+
+    const editIntention = (item: IIntention) => {
+        item.isEdit = true
+        setEditedIntention(item.output)
+        setRR(!rr)
+    }
+
+    const setCollectiveIntentions = async () => {
+        await FetchPost("integer", token ?? '', 'intention_admin', [information_id + 'collective'], 0, [0])
+    }
+
     return (
 
         <>
@@ -124,14 +143,28 @@ function MassIntentionElement({ information_id, date }: { information_id: string
                     }} />
                 <button onClick={deleteMass}>Usuń Mszę</button>
                 <button onClick={addMass}>Dodaj Intencję</button>
+                <button onClick={setCollectiveIntentions}>Zbiorowa</button>
             </div >
             <div>
                 {
                     data.map(item => (
-                        <>
-                            <div key={item.id}>{item.output}</div>
-                            <button onClick={() => deleteIntention(item.id)}>Usuń Intencję</button>
-                        </>
+                        <div>
+                            <div style={{
+                                display: item.isEdit ? 'none' : 'inline',
+                            }} onClick={() => editIntention(item)} key={item.id}>{item.output}</div>
+                            <button style={{
+                                display: item.isEdit ? 'none' : 'inline',
+                            }} onClick={() => deleteIntention(item.id)}>Usuń Intencję</button>
+                            <input style={{
+                                display: item.isEdit ? 'inline' : 'none',
+                            }} onChange={(e) => {
+                                setEditedIntention(e.target.value)
+                                }}
+                                value={editedIntention}></input>
+                            <button style={{
+                                display: item.isEdit ? 'inline' : 'none',
+                            }} onClick={() => updateIntention(item)}>Odśwież Intencję</button>
+                        </div>
                     ))
                 }
             </div>

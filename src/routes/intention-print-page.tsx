@@ -12,6 +12,7 @@ interface IntentionDays {
 interface Mass {
     time: Date,
     color: string,
+    collective: boolean,
     intentions: Intention[]
     row: number
     rowSpan: number
@@ -41,6 +42,8 @@ export default function IntentionPage() {
     const endDate = new Date(Number(init_date))
     endDate.setHours(24 * 6 + endDate.getHours())
     const [days, setDays] = useState([] as IntentionDays[])
+    const [collective, setCollective] = useState([] as Intention[])
+    const [collectiveDate, setCollectiveDate] = useState<Date>()
     const [span, setSpan] = useState("")
     const [rows, setRows] = useState(0)
     const [loading, setLoading] = useState("block")
@@ -85,15 +88,40 @@ export default function IntentionPage() {
                 }
                 const colorData = await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + massData[j].id + 'color')
                     .then(res => res.json() as unknown as JSON_String[])
-                masses.push({
-                    row: massRow,
-                    time: new Date(massData[j].output),
-                    intentions: intentions,
-                    color: colorData[0]?.output ?? '#fff',
-                    rowSpan: intentions.length*2-1
-                });
-                massRow += intentions.length * 2
-                daySpan += intentions.length * 2
+                const collectiveData = await fetch('https://zapp.hostingasp.pl/information/integer/' + token + '/' + massData[j].id + 'collective')
+                    .then(res => res.json() as unknown as JSON_Number[])
+                if (collectiveData.length > 0) {
+                    masses.push({
+                        row: massRow,
+                        time: new Date(massData[j].output),
+                        intentions: [{
+                            title: " - Msza Święta Zbiorowa - ",
+                            row: massRow,
+                            columnspan: 2,
+                            column: 6,
+                            index: '',
+                        }],
+                        color: colorData[0]?.output ?? '#fff',
+                        rowSpan: 1,
+                        collective: true
+                    });
+                    massRow += 2
+                    daySpan += 2
+                    setCollective(intentions)
+                    setCollectiveDate(new Date(massData[j].output))
+                }
+                else {
+                    masses.push({
+                        row: massRow,
+                        time: new Date(massData[j].output),
+                        intentions: intentions,
+                        color: colorData[0]?.output ?? '#fff',
+                        rowSpan: intentions.length * 2 - 1,
+                        collective: false
+                    });
+                    massRow += intentions.length * 2
+                    daySpan += intentions.length * 2
+                }
             }
             tempDays.push({
                 row: dayRow,
@@ -231,6 +259,19 @@ export default function IntentionPage() {
                             gridRow: rows
                         }}></div>
                 </div>
+                    <div className="asd20" style=
+                        {{
+                            display: collectiveDate ? 'block': 'none'
+                        }}>
+                        <div className="asd21">
+                            {(collectiveDate?.getDate() + '.').padStart(3, '0') + ((collectiveDate?.getMonth() ?? 0 + 1) + '.').padStart(3, '0') + collectiveDate?.getFullYear() + ' r. - 18:00'}
+                        </div>
+                        {collective.map(intention => (
+                            <div className="asd22">
+                                {intention.title}
+                            </div>
+                        ))}
+                    </div>
             </div>
         </>
     );
