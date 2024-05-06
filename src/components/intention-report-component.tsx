@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingComponent from "./loading-component";
 import { FetchGet, FetchGetAll, NumberOutput, StringOutput } from "../features/FetchGet";
+import EditableElement from "./editable-component";
 
 interface IMass {
     time: Date,
@@ -10,15 +11,13 @@ interface IMass {
     celebrator: string,
 }
 interface IIntention {
+    id: string,
     name: string,
     celebrator: string,
     donation: number,
     donated: string
 }
 export default function ItentionReportElement() {
-    const monthSpelling = [
-        "Styczeń ", "Luty ", "Marzec ", "Kwiecień ", "Maj ", "Czerwiec ", "Lipiec ", "Sierpień ", "Wrzesień ", "Październik ", "Listopad ", "Grudzień "
-    ]
     const daySpelling = [
         "Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"
     ]
@@ -49,6 +48,7 @@ export default function ItentionReportElement() {
                                 
                                 tempIntentions.push({
                                     name: intentionData[j].output,
+                                    id: intentionData[j].id,
                                     celebrator: (await FetchGetAll('text', token, intentionData[j].id + 'celebrator') as unknown as StringOutput[])[0]?.output ?? '',
                                     donation: (await FetchGetAll('integer', token, intentionData[j].id + 'donation') as unknown as NumberOutput[])[0]?.output ?? 0,
                                     donated: (await FetchGetAll('text', token, intentionData[j].id + 'donated') as unknown as StringOutput[])[0]?.output ?? ''
@@ -99,15 +99,13 @@ export default function ItentionReportElement() {
                             {mass.intentions.map((intention) => (
                                 <>
                                     <div>{intention.name}
+                                        <EditableElement type="text" name={intention.id +'donation'} multiple={false} />
                                     <div style=
                                             {{
                                                 display: intention.celebrator ? 'inline' : 'none',
                                             }}>
                                             {intention.celebrator}
-                                        </div>
-                                        <input type="text"
-                                            value={}
-                                            onChange={(e) => setEnd(new Date(e.target.value))} />
+                                        Edi</div>
                                     </div>
                                 </>
                             ))}

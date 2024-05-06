@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingComponent from "./loading-component";
-import { FetchGet, FetchGetAll, NumberOutput, StringOutput } from "../features/FetchGet";
+import { FetchGetAll} from "../features/FetchGet";
 
-export default function EditableElement({ name, type }: { name: string, type: string }) {
+export interface IOutput {
+    id: string,
+    output: number | string,
+}
+export default function EditableElement({ name, type, multiple }: { name: string, type: string, multiple: boolean }) {
     const { token } = useParams();
-    const [masses, setMasses] = useState<IMass[]>([])
     const [isLoading, setIsLoading] = useState(true)
-    const [data, setData] = useState()
+    const [data, setData] = useState<IOutput[]>([])
+    const [newData, setNewData] = useState('')
+    console.log(multiple)
+
 
     useEffect(
         () => {
@@ -15,16 +21,25 @@ export default function EditableElement({ name, type }: { name: string, type: st
                 try {
                     if (token !== undefined) {
                         setIsLoading(true)
-                        setMasses([])
-                        const massData = await FetchGetAll('integer', token, name) as unknown as NumberOutput[]
+                        if (type == 'number') {
+                            setData(await FetchGetAll('integer', token, name) as unknown as IOutput[])
+                        }
+                        if (type == 'text') {
+                            setData(await FetchGetAll('text', token, name) as unknown as IOutput[])
+                        }
                         setIsLoading(false)
-                        setMasses(tempMasses)
                     }
                 } catch (e) {
                     console.error(e);
                 }
             })();
-        }, [token, start, end])
+        }, [token, type, name])
+
+    const onChangeData = (e: ChangeEvent) => {
+        if ((type == 'number') || (type == 'text'))
+            setNewData((e.target as HTMLInputElement)?.value)
+    }
+
 
     return (
 
@@ -32,13 +47,27 @@ export default function EditableElement({ name, type }: { name: string, type: st
             <div>
                 <div style=
                     {{
-                        display: intention.celebrator ? 'inline' : 'none',
+                        display: data.length > 0 ? 'block' : 'none',
                     }}>
-                    {intention.celebrator}
+                    {data.map(item => (
+                        <div>
+                            {item.output}
+                        </div>
+                    ))}
                 </div>
-                <input type="text"
-                    value={ }
-                    onChange={(e) => setEnd(new Date(e.target.value))} />
+                <input type={type}
+                    value={newData}
+                    onChange={onChangeData}
+                    style=
+                    {{
+                        display: data.length > 0 ? 'none' : 'block',
+                    }} />
+                <div className="loadingcontainer" style=
+                    {{
+                        display: isLoading ? 'block' : 'none',
+                    }}>
+                    <LoadingComponent />
+                </div>
             </div>
         </>
     );
