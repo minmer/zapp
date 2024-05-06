@@ -5,6 +5,7 @@ import IntentionWeekComponent from '../components/intention-week-component';
 import IntentionMonthComponent from '../components/intention-month-component';
 import { useEffect, useState } from 'react';
 import { FetchCheckOwner } from '../features/FetchCheckOwner';
+import IntentionReportComponent from '../components/intention-report-component';
 export default function IntentionPage() {
     const { token } = useParams();
     const [isViewer, setIsViewer] = useState(false)
@@ -47,8 +48,8 @@ export default function IntentionPage() {
                         </li>
                         <li style={{
                             display: isAdmin ? 'block' : 'none',
-                        } }>
-                            <Link to={`report`}>Podsumowania</Link>
+                        }}>
+                            <Link to={`report/` + Date.now() + '/' + (Date.now() + 86400000)}>Podsumowania</Link>
                         </li>
                         <li style={{
                             display: isAdmin ? 'block' : 'none',
@@ -61,7 +62,7 @@ export default function IntentionPage() {
                 <Routes>
                     <Route path="week/:init_date" element={<IntentionWeekComponent/>} />
                     <Route path="month/:init_date" element={<IntentionMonthComponent />} />
-                    <Route path="report" />
+                    <Route path="report/:start_date/:end_date" element={<IntentionReportComponent />} />
                     <Route path="edit" element={<NewIntentionElement />} />
                 </Routes>
                 <div className="description">

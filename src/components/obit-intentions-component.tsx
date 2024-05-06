@@ -44,7 +44,7 @@ export default function ObitIntentionsElement() {
                     <div style={{
                         display: intention.mass ? 'block' : 'none',
                     }}>{
-                            (intention.mass?.getDate() + '.').padStart(3, '0') + ((intention.mass?.getMonth() ?? 0 + 1) + '.').padStart(3, '0') + intention.mass?.getFullYear() + ' r. - ' + intention.mass?.getHours() + ':' + intention.mass?.getMinutes().toString().padStart(2, '0')}
+                            (intention.mass?.getDate() + '.').padStart(3, '0') + (((intention.mass?.getMonth() ?? 0 + 1)+1) + '.').padStart(3, '0') + intention.mass?.getFullYear() + ' r. - ' + intention.mass?.getHours() + ':' + intention.mass?.getMinutes().toString().padStart(2, '0')}
                     </div>
                     <div style={{
                         display: intention.mass ? 'none' : 'block',

@@ -12,12 +12,18 @@ export async function FetchGetAll(type: string, token: string, context: string, 
     {
         dataString = 'https://zapp.hostingasp.pl/information/' + type + '/' + token + '/' + context + '/' + key
     }
-    const data = await fetch(dataString).then(res => res.json())
-    if (type == 'text')
-        data.map((data: unknown) => data as StringOutput[])
-    else if (type == 'integer')
-        data.map((data: unknown) => data as StringOutput[])
-    return data
+    try {
+        const data = await fetch(dataString).then(res => res.json())
+        if (type == 'text')
+            data.map((data: unknown) => data as StringOutput[])
+        else if (type == 'integer')
+            data.map((data: unknown) => data as NumberOutput[])
+        return data
+    }
+    catch
+    {
+        return []
+    }
 }
 export async function FetchGet(type: string, token: string, context: string, start: number, end: number) {
     const data = await fetch('https://zapp.hostingasp.pl/information/' + type + '/' + token + '/' + context + '/' + start + '/' + end).then(res => res.json())
