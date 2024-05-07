@@ -57,6 +57,9 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
 
     const DeleteData = (id: string) => {
         FetchDelete(token ?? '', dbkey, id)
+        setData(
+            data.filter(item => item.id !== id)
+        );
     }
 
     const AddData = async () => {
