@@ -104,7 +104,10 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
     return (
 
         <>
-            <div>
+            <div style=
+                {{
+                    position: 'relative',
+                }}>
                 <div style=
                     {{
                         display: isEditing ? 'none' : 'block',
@@ -138,8 +141,13 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
                         <input type="button" value='+' onClick={AddData} />
                     </div>
                 </div>
-                <div className="loadingcontainer" style=
+                <div style=
                     {{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0, 
                         display: isLoading ? 'block' : 'none',
                     }}>
                     <LoadingComponent />
