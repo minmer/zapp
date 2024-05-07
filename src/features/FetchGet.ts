@@ -14,14 +14,11 @@ export async function FetchGetAll(type: string, token: string, context: string, 
     }
     for (let i = 0; i < 5; i++) {
         try {
-            const tempData = await fetch(dataString)
-            console.log(tempData)
-            const data = tempData.json()
-            if (type == 'text')
-                return data as unknown as StringOutput[]
-            else if (type == 'integer')
-                return data as unknown as NumberOutput[]
-            console.log(data)
+        const data = await fetch(dataString).then(res => res.json())
+        if (type == 'text')
+            data.map((data: unknown) => data as StringOutput[])
+        else if (type == 'integer')
+            data.map((data: unknown) => data as NumberOutput[])
         return data
     }
     catch(e)
