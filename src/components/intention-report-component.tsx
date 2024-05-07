@@ -5,6 +5,7 @@ import { FetchGet, FetchGetAll, NumberOutput, StringOutput } from "../features/F
 import EditableElement from "./editable-component";
 
 interface IMass {
+    id: string,
     time: Date,
     intentions: IIntention[]
     isCollective: boolean,
@@ -56,6 +57,7 @@ export default function ItentionReportElement() {
                             }
                             const isCollective = (await FetchGetAll('number', token, massData[i].id + 'collective') as unknown as StringOutput[]).length > 0
                             tempMasses.push({
+                                id: massData[i].id,
                                 time: new Date(massData[i].output),
                                 intentions: tempIntentions,
                                 isCollective: isCollective,
@@ -96,16 +98,13 @@ export default function ItentionReportElement() {
                     <h4>{'Raport: ' + daySpelling[start.getDay()] + ' ' + (start.getDate() + '.').padStart(3, '0') + ((start.getMonth() + 1) + '.').padStart(3, '0') + start.getFullYear() + ' r. - ' + daySpelling[end.getDay()] + ' ' + (end.getDate() + '.').padStart(3, '0') + ((end.getMonth() + 1) + '.').padStart(3, '0') + end.getFullYear() + ' r.'} </h4>
                     {masses.map((mass) => (
                         <>
+                            <h5>{(mass.time.getDate() + '.').padStart(3, '0') + ((mass.time.getMonth() + 1) + '.').padStart(3, '0') + mass.time.getFullYear() + ' r. - ' + mass.time.getHours() + ':' + mass.time.getMinutes().toString().padStart(2, '0')}</h5>
                             {mass.intentions.map((intention) => (
                                 <>
                                     <div>{intention.name}
-                                        <EditableElement type="text" name={intention.id +'donation'} multiple={false} />
-                                    <div style=
-                                            {{
-                                                display: intention.celebrator ? 'inline' : 'none',
-                                            }}>
-                                            {intention.celebrator}
-                                        Edi</div>
+                                        <EditableElement description="Celebrans" type="text" name={intention.id + 'celebrator'} multiple={false} dbkey="intention_raport_admin" />
+                                        <EditableElement description="Ofiara" type="number" name={intention.id + 'donation'} multiple={false} dbkey="intention_raport_admin" />
+                                        <EditableElement description="Ofiaroodbiorca" type="text" name={intention.id + 'donated'} multiple={false} dbkey="intention_raport_admin" />
                                     </div>
                                 </>
                             ))}
