@@ -1066,6 +1066,7 @@ i {
 .obit-intentions-page {
     max-width: 768px;
     margin: auto;
+    position: relative;
 }
 
 .obit-intentions-page .title-description {
@@ -1134,3 +1135,28 @@ i {
     font-size: 22px;
     text-align: justify;
 }
+.obits-list-container {
+    background: #fafafa;
+    border: solid #bfbfbf;
+    border-width: 1px 0;
+}
+
+.obits-list {
+    display: ruby;
+}
+    .obits-list .obit-list {
+        min-width: 192px;
+        height: 50px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 50px;
+        border: solid 1px #bfbfbf;
+        margin: -1px -1px 0 0;
+    }
+    .obits-list .obit-list:hover {
+        background: #f0f0f0;
+    }
+        .obits-list .obit-list a {
+            color: black;
+            display: block;
+        }

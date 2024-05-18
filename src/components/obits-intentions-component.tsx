@@ -27,15 +27,18 @@ export default function ObitsIntentionsElement() {
 
     return (
         <>
-            {obits.map((obit) => (
-                <div className="inline-communion-list">
-                    <Link to={obit.id}>
-                        {obit.name}
-                    </Link>
+            <div className="obits-list-container">
+            <div className="obits-list">
+                {obits.map((obit) => (
+                    <div className="obit-list">
+                        <Link to={obit.id}>
+                            {obit.name}
+                        </Link>
+                    </div>
+                ))
+                }
                 </div>
-            ))
-            }
-            <div className="clear" />
+            </div>
             <Routes>
                 <Route path="/:obit" element={<ObitIntentionsElement />} />
             </Routes >
