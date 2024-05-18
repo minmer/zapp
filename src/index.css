@@ -979,6 +979,7 @@ i {
     bottom: 0;
 }
 .print-obit {
+    background:white;
     font-family: Times;
     width: 776px;
     position: absolute;
@@ -1139,6 +1140,7 @@ i {
     background: #fafafa;
     border: solid #bfbfbf;
     border-width: 1px 0;
+    width: 100%;
 }
 
 .obits-list {
