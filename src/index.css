@@ -1106,7 +1106,7 @@ i {
 
 .obit-intentions-page .intention {
     margin: 6px;
-    font-size: 16px;
+    font-size: 18px;
     text-align: left;
     grid-column: 6;
     align-self: center;
@@ -1114,7 +1114,7 @@ i {
 
 .obit-intentions-page .mass {
     margin: 6px;
-    font-size: 16px;
+    font-size: 18px;
     text-align: center;
     grid-column: 4;
     align-self: center;
