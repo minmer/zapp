@@ -1144,7 +1144,9 @@ i {
 }
 
 .obits-list {
-    display: ruby;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
     .obits-list .obit-list {
         min-width: 192px;
