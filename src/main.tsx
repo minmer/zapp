@@ -10,12 +10,14 @@ import './index.css';
 import Root from "./root";
 import IntentionPrintPage from './routes/intention-print-page';
 import HomePage from './pages/home-page';
+import ObitIntentionsPrint from './components/obit-intentions-print-component';
 
 const router = createHashRouter(
     createRoutesFromElements(
         <>
             <Route path="/" element={<HomePage />} />
-            <Route path="/intentionprint/:token/:init_date" element={<IntentionPrintPage />} />,
+            <Route path="/print/:token/intentionweek/:init_date" element={<IntentionPrintPage />} />,
+            <Route path="/print/:token/obitintentions/:obit" element={<ObitIntentionsPrint />} />,
             <Route path="/:token/*" element={<Root/>} />
             </>
             ));

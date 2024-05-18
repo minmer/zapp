@@ -106,7 +106,7 @@ export default function ItentionWeekElement() {
                     <LoadingComponent/>
                 </div>
             </div >
-            <Link to={`/intentionprint/` + token + '/' + week.getTime()} style=
+            <Link to={`/print/` + token + '/intentionweek/' + week.getTime()} style=
                 {{
                     display: isLoading ? 'none' : 'block',
                     margin: "36px 72px",

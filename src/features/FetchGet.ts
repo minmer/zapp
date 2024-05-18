@@ -14,7 +14,7 @@ export async function FetchGetAll(type: string, token: string, context: string, 
     }
     for (let i = 0; i < 5; i++) {
         try {
-        const data = await fetch(dataString).then(res => res.json())
+            const data = await fetch(dataString).then(res => res ? res.json(): [])
         if (type == 'text')
             data.map((data: unknown) => data as StringOutput[])
         else if (type == 'integer')
@@ -22,8 +22,8 @@ export async function FetchGetAll(type: string, token: string, context: string, 
         return data
     }
     catch(e)
-    {
-        console.log('GetAll ' + i)
+        {
+            console.log('GetAll ' + i + ' ' + context)
         console.log(e)
         }
     }

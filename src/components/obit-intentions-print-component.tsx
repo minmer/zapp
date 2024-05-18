@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { FetchGetAll, NumberOutput, StringOutput } from "../features/FetchGet";
+import logo from '../assets/logo.png'
 import LoadingComponent from "./loading-component";
 
 interface IIntention {
@@ -9,12 +10,12 @@ interface IIntention {
     mass?: Date
     isCollective: boolean
 }
-export default function ObitIntentionsElement() {
+export default function ObitIntentionsPrint() {
     const { token, obit } = useParams();
     const [intentions, setIntentions] = useState<IIntention[]>([])
     const [name, setName] = useState('')
-    const [isLoading, setIsLoading] = useState(true)
     const [gridRow, setGridRow] = useState('')
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         (async function () {
@@ -38,7 +39,6 @@ export default function ObitIntentionsElement() {
                     setIntentions(tempData)
                     setGridRow(tempGridRow)
                     setIsLoading(false)
-                        
                 }
             } catch (e) {
                 console.error(e);
@@ -47,8 +47,13 @@ export default function ObitIntentionsElement() {
     }, [token, obit])
 
     return (
-        <>
-            <div className="obit-intentions-page">
+        <div className="print-obit">
+            <img src={logo} />
+            <div className="logo">
+                <p>Parafia pw. Narodzenia NMP</p>
+                <p>32-087 Zielonki, ul. ks. Jana Michalika 1</p>
+                <p>tel.: 12 285 03 21</p>
+            </div>
             <div className="title-description">Msze Święte za</div>
             <div className="title">{"śp. " + name}</div>
             <div className="intentions"
@@ -104,12 +109,12 @@ export default function ObitIntentionsElement() {
                         </div>
                     </>
                 ))}
-            </div>
-            <div className="footer-title">
-                2. listopada o godzinie 18:00 zostanie w kościele w Zielonkach odprawiona Msza Święta w intencji wszystkich zmarłych w ciągu roku - potem nastąpi procesja na cmentarz.
-            </div>
-            <div className="footer-description">
-                Serdecznie zachęcamy do uczestnictwa we Mszach Świętych oraz przyjmowanie Komunii Świętej o dar nieba dla zmarłych.
+        </div>
+        <div className="footer-title">
+            2. listopada o godzinie 18:00 zostanie w kościele w Zielonkach odprawiona Msza Święta w intencji wszystkich zmarłych w ciągu roku - potem nastąpi procesja na cmentarz.
+        </div>
+        <div className="footer-description">
+            Serdecznie zachęcamy do uczestnictwa we Mszach Świętych oraz przyjmowanie Komunii Świętej o dar nieba dla zmarłych.
             </div>
             <div className="loadingcontainer" style=
                 {{
@@ -122,21 +127,6 @@ export default function ObitIntentionsElement() {
                 }}>
                 <LoadingComponent />
             </div>
-
-
-
-
-                <Link to={`/print/` + token + '/obitintentions/' + obit} style=
-                    {{
-                        display: isLoading ? 'none' : 'block',
-                        margin: "36px 72px",
-                        fontSize: "1.5em",
-                    }}>
-                    <h4>
-                        Przygotuj pełną rozpiskę do wydruku
-                    </h4>
-                </Link >
-            </div>
-        </>
+        </div>
     );
 }

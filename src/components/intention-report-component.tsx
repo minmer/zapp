@@ -18,6 +18,12 @@ interface IIntention {
     donation: number,
     donated: string
 }
+interface IPriest {
+    name: string,
+    donatedCount: number,
+    donations: number,
+    celebratorCount: number,
+}
 export default function ItentionReportElement() {
     const daySpelling = [
         "Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"
@@ -55,7 +61,7 @@ export default function ItentionReportElement() {
                                     donated: (await FetchGetAll('text', token, intentionData[j].id + 'donated') as unknown as StringOutput[])[0]?.output ?? ''
                                 })
                             }
-                            const isCollective = (await FetchGetAll('number', token, massData[i].id + 'collective') as unknown as StringOutput[]).length > 0
+                            const isCollective = (await FetchGetAll('number', token, massData[i].id + 'collective') as unknown as NumberOutput[]).length > 0
                             tempMasses.push({
                                 id: massData[i].id,
                                 time: new Date(massData[i].output),
@@ -72,11 +78,41 @@ export default function ItentionReportElement() {
                 }
             })();
         }, [token, start, end])
+    const createReport = () => {
+        const tempPriests = []
+        for (let i = 0; i < masses.length; i++) {
+            for (let j = 0; j < masses[i].intentions.length; j++) {
+                tempPriests.push(masses[i].intentions[j].celebrator)
+                tempPriests.push(masses[i].intentions[j].donated)
+            }
+        }
+        const priests = tempPriests.filter((v, i, a) => a.indexOf(v) === i).map<IPriest>(i => ({ name: i, donatedCount: 0, celebratorCount: 0, donations: 0 }))
+        for (let i = 0; i < masses.length; i++) {
+            for (let j = 0; j < masses[i].intentions.length; j++) {
+                priests.map(item => {
+                    if (item.name == masses[i].intentions[j].celebrator && masses[i].intentions[j].donation != 0) {
+                        item.celebratorCount++
+                    }
+                })
+                priests.map(item => {
+                    if (item.name == masses[i].intentions[j].donated && masses[i].intentions[j].donation != 0) {
+                        item.donatedCount++
+                        item.donations += masses[i].intentions[j].donation
+                    }
+                })
+            }
+        }
+        console.log(priests)
+    }
+
 
     return (
 
         <>
-            <div>
+            <div style=
+                {{
+                    position: "relative"
+                }}>
                 Start:
                 <input id="inputDate" type="datetime-local"
                     value={start.toLocaleString('sv').replace(' GMT', '').substring(0, 16)}
@@ -85,12 +121,6 @@ export default function ItentionReportElement() {
                 <input id="inputDate" type="datetime-local"
                     value={end.toLocaleString('sv').replace(' GMT', '').substring(0, 16)}
                     onChange={(e) => setEnd(new Date(e.target.value))} />
-                <div className="loadingcontainer" style=
-                    {{
-                        display: isLoading ? 'block' : 'none',
-                    }}>
-                    <LoadingComponent />
-                </div>
                 <div style=
                     {{
                         display: isLoading ? 'none' : 'block',
@@ -110,6 +140,18 @@ export default function ItentionReportElement() {
                             ))}
                         </>
                     ))}
+                </div>
+                <input type="button" value='Create Report' onClick={createReport} />
+                <div className="loadingcontainer" style=
+                    {{
+                    position: "absolute",
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                        display: isLoading ? 'block' : 'none',
+                    }}>
+                    <LoadingComponent />
                 </div>
             </div>
         </>

@@ -978,3 +978,159 @@ i {
     top: 0;
     bottom: 0;
 }
+.print-obit {
+    font-family: Times;
+    width: 776px;
+    position: absolute;
+    line-height: 1;
+}
+
+
+    .print-obit img {
+        position: absolute;
+        top: 0;
+        height: 128px;
+        right: 48px;
+    }
+    .print-obit .logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        text-align: center;
+        line-height: 1.15;
+    }
+        .print-obit .logo p {
+            margin: 0;
+        }
+        .print-obit .logo p:nth-child(1) {
+            font-weight: bold;
+        }
+    .print-obit .title-description {
+        font-size: 22px;
+        text-align: center;
+        margin-top: 72px;
+    }
+    .print-obit .title {
+        font-size: 28px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 12px;
+        margin-bottom: 30px;
+    }
+    .print-obit .intentions {
+        display: grid;
+        grid-template-columns: 1px 96px 1px 176px 1px Auto 1px;
+    }
+        .print-obit .intentions .horizontal {
+            background: black;
+            grid-column: 1/span 7;
+        }
+        .print-obit .intentions .vertical {
+            background: black;
+            grid-row: 1/span 999;
+        }
+        .print-obit .intentions .intention-description {
+            text-align: center;
+            align-self: center;
+            grid-column: 2;
+        }
+    .print-obit .intention {
+        margin: 6px;
+        font-size: 20px;
+        text-align: left;
+        grid-column: 6;
+        align-self: center;
+    }
+    .print-obit .mass {
+        margin: 6px;
+        font-size: 20px;
+        text-align: center;
+        grid-column: 4;
+        align-self: center;
+    }
+
+    .print-obit .footer-title {
+        margin-top: 24px;
+        margin-left: 24px;
+        margin-right: 24px;
+        margin-bottom: 24px;
+        font-size: 18px;
+        text-align: justify;
+    }
+    .print-obit .footer-description {
+        margin: 12px;
+        font-size: 22px;
+        text-align: justify;
+    }
+
+.obit-intentions-page {
+    max-width: 768px;
+    margin: auto;
+}
+
+.obit-intentions-page .title-description {
+    font-size: 22px;
+    text-align: center;
+    margin-top: 72px;
+}
+
+.obit-intentions-page .title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 30px;
+}
+
+.obit-intentions-page .intentions {
+    display: grid;
+    grid-template-columns: 1px 96px 1px 176px 1px Auto 1px;
+}
+
+    .obit-intentions-page .intentions .horizontal {
+        background: black;
+        grid-column: 1/span 7;
+    }
+
+    .obit-intentions-page .intentions .vertical {
+        background: black;
+        grid-row: 1/span 999;
+    }
+
+    .obit-intentions-page .intentions .intention-description {
+        text-align: center;
+        align-self: center;
+        grid-column: 2;
+        font-size: 14px;
+    }
+
+.obit-intentions-page .intention {
+    margin: 6px;
+    font-size: 16px;
+    text-align: left;
+    grid-column: 6;
+    align-self: center;
+}
+
+.obit-intentions-page .mass {
+    margin: 6px;
+    font-size: 16px;
+    text-align: center;
+    grid-column: 4;
+    align-self: center;
+}
+
+.obit-intentions-page .footer-title {
+    margin-top: 24px;
+    margin-left: 24px;
+    margin-right: 24px;
+    margin-bottom: 24px;
+    font-size: 18px;
+    text-align: justify;
+}
+
+.obit-intentions-page .footer-description {
+    margin: 12px;
+    font-size: 22px;
+    text-align: justify;
+}
