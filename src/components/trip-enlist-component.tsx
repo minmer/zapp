@@ -34,6 +34,8 @@ export default function TripEnlistElement() {
     const [isLoading, setIsLoading] = useState(false);
 
 
+
+
     useEffect(() => {
         (async function () {
             try {
@@ -53,6 +55,18 @@ export default function TripEnlistElement() {
                         });
                     }
                     setAttributes(tempAttributes);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        })();
+    }, [token, list]);
+
+    useEffect(() => {
+        (async function () {
+            try {
+
+                if (token !== undefined) {
                     const rolesData = (await FetchGetAll('text', token, 'role_' + list) as StringOutput[]);
                     const tempRoles = [];
                     for (let i = 0; i < rolesData.length; i++) {
@@ -64,7 +78,7 @@ export default function TripEnlistElement() {
                             else if (attributes[j].type == "date") {
                                 role += new Date((await FetchGetAll('integer', token, rolesData[i].output + attributes[j].name) as NumberOutput[])[0]?.output).toDateString() + ', ';
                             }
-                        } 
+                        }
                         tempRoles.push({ name: role, id: rolesData[i].id, role: rolesData[i].output, token: (await FetchGetAll('text', token, 'role_trip_token_' + rolesData[i].output) as StringOutput[])[0]?.output });
                     }
                     setRoles(tempRoles);
