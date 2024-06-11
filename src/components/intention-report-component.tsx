@@ -22,7 +22,7 @@ interface IPriest {
     name: string,
     donatedCount: number,
     donations: number,
-    celebratorCount: number,
+    celebratorCount: number
 }
 export default function ItentionReportElement() {
     const daySpelling = [
@@ -61,7 +61,7 @@ export default function ItentionReportElement() {
                                     donated: (await FetchGetAll('text', token, intentionData[j].id + 'donated') as unknown as StringOutput[])[0]?.output ?? ''
                                 })
                             }
-                            const isCollective = (await FetchGetAll('number', token, massData[i].id + 'collective') as unknown as NumberOutput[]).length > 0
+                            const isCollective = (await FetchGetAll('integer', token, massData[i].id + 'collective') as unknown as NumberOutput[]).length > 0
                             tempMasses.push({
                                 id: massData[i].id,
                                 time: new Date(massData[i].output),
@@ -88,6 +88,7 @@ export default function ItentionReportElement() {
         }
         const priests = tempPriests.filter((v, i, a) => a.indexOf(v) === i).map<IPriest>(i => ({ name: i, donatedCount: 0, celebratorCount: 0, donations: 0 }))
         for (let i = 0; i < masses.length; i++) {
+            let intentions = 0;
             for (let j = 0; j < masses[i].intentions.length; j++) {
                 priests.map(item => {
                     if (item.name == masses[i].intentions[j].celebrator && masses[i].intentions[j].donation != 0) {
@@ -100,9 +101,17 @@ export default function ItentionReportElement() {
                         item.donations += masses[i].intentions[j].donation
                     }
                 })
+                if (masses[i].isCollective) {
+                    intentions += masses[i].intentions[j].donation
+                }
+            }
+            if (masses[i].isCollective) {
+                console.log("123")
+                console.log(intentions)
             }
         }
         console.log(priests)
+        console.log(masses)
     }
 
 

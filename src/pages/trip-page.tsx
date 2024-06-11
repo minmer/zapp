@@ -4,6 +4,7 @@ import TripsEnlistComponent from '../components/trips-enlist-component';
 import TripsCreateComponent from '../components/trips-create-component';
 import { FetchGetAll } from '../features/FetchGet';
 import { useEffect, useState } from 'react';
+import TripsDetailComponent from '../components/trips-detail-component';
 export default function UserPage() {
     const { token } = useParams();
     const [isAdmin, setIsAdmin] = useState(false)
@@ -39,12 +40,16 @@ export default function UserPage() {
                         }}>
                             <Link to={`create`}>Nowa wycieczka</Link>
                         </li>
+                        <li>
+                            <Link to={`detail`}>Szczegóły</Link>
+                        </li>
                         <div className="clear"></div>
                     </ul>
                 </div>
                 <Routes>
                     <Route path="enlist/*" element={<TripsEnlistComponent />} />
                     <Route path="create/*" element={<TripsCreateComponent />} />
+                    <Route path="detail/*" element={<TripsDetailComponent />} />
                 </Routes>
                 <div className="description">
                     <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>

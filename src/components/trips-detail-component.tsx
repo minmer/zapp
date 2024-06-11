@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes, useParams } from "react-router-dom";
 import { FetchGetAll, StringOutput } from "../features/FetchGet";
-import TripEnlistElement from "./trip-enlist-component";
 import TripDetailElement from "./trip-detail-component";
 
 interface IList {
@@ -9,7 +8,7 @@ interface IList {
     id: string
 }
 
-export default function TripsEnlistElement() {
+export default function TripsDetailElement() {
     const { token } = useParams();
     const [lists, setLists] = useState<IList[]>([])
 
@@ -45,7 +44,7 @@ export default function TripsEnlistElement() {
             ))
             }
             <Routes>
-                <Route path="/:list" element={<TripEnlistElement />} />
+                <Route path="/:list/" element={<TripDetailElement />} />
                 <Route path="/:list/:role" element={<TripDetailElement />} />
             </Routes >
         </>

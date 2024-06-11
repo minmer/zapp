@@ -1164,3 +1164,8 @@ i {
             color: black;
             display: block;
         }
+
+.input123 div div div div input:first-child {
+    width: 80%;
+    max-width: 512px;
+}

@@ -31,7 +31,7 @@ export default function IntentionPage() {
                 <div className="baner">
                     <img alt="baner" src={baner} />
                     <div>
-                        <h1>Intencja mszalne</h1>
+                        <h1>Intencje mszalne</h1>
                     </div>
                 </div>
                 <div className="tabs">
