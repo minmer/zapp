@@ -154,12 +154,12 @@ export default function TripsCreateElement() {
                             <div style={{
                                 display: isAdmin == (value.direction == 1) ? 'block' : 'none',
                             }} >
-                                <EditableElement description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={"role_trip_" + role} />
+                                <EditableElement showdescription={true} description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={"role_trip_" + role} />
                             </div>
                             <div style={{
                                 display: isAdmin !== (value.direction == 1) ? 'block' : 'none',
                             }} >
-                                <EditableElement description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={'rolegroup_trip_' + list + '_admin'} />
+                                <EditableElement showdescription={true} description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={'rolegroup_trip_' + list + '_admin'} />
                             </div>
                         </>
                     ))}

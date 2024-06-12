@@ -9,7 +9,7 @@ export interface IOutput {
     id: string,
     output: number | string,
 }
-export default function EditableElement({ name, type, multiple, dbkey, description }: { name: string, type: string, multiple: boolean, dbkey: string, description?: string }) {
+export default function EditableElement({ name, type, multiple, dbkey, description, showdescription }: { name: string, type: string, multiple: boolean, dbkey: string, description?: string, showdescription?: boolean }) {
     const { token } = useParams();
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState<IOutput[]>([])
@@ -114,7 +114,7 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
                     }}>
                     {data.map(item => (
                         <div onClick={onClickData}>
-                            {item.output}
+                            {(showdescription ? description + ': ' : '') + item.output}
                         </div>
                     ))}
                 </div>
