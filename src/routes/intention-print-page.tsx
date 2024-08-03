@@ -264,7 +264,7 @@ export default function IntentionPage() {
                             display: collectiveDate ? 'block': 'none'
                         }}>
                         <div className="asd21">
-                            {(collectiveDate?.getDate() + '.').padStart(3, '0') + ((collectiveDate?.getMonth() ?? 0 + 1) + '.').padStart(3, '0') + collectiveDate?.getFullYear() + ' r. - 18:00'}
+                        {(collectiveDate?.getDate() + '.').padStart(3, '0') + ((collectiveDate?.getMonth() ?? 0 )+1 + '.').padStart(3, '0') + collectiveDate?.getFullYear() + ' r. - 18:00'}
                         </div>
                         {collective.map(intention => (
                             <div className="asd22">

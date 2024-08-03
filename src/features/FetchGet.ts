@@ -12,18 +12,26 @@ export async function FetchGetAll(type: string, token: string, context: string, 
     {
         dataString = 'https://zapp.hostingasp.pl/information/' + type + '/' + token + '/' + context + '/' + key
     }
+    let asd = "asd"
     for (let i = 0; i < 5; i++) {
         try {
-            const data = await fetch(dataString).then(res => res ? res.json(): [])
-        if (type == 'text')
-            data.map((data: unknown) => data as StringOutput[])
-        else if (type == 'integer')
-            data.map((data: unknown) => data as NumberOutput[])
-        return data
+            const predata = await fetch(dataString)
+            if (predata.status == 204) {
+                console.log('GetAll 204')
+                asd = "qwe"
+                break;
+            }
+            if (predata.status == 200) {
+                if (type == 'text')
+                    return predata.json() as unknown as  StringOutput[]
+            else if (type == 'integer')
+                return predata.json() as unknown as NumberOutput[]
+            }
     }
     catch(e)
         {
             console.log('GetAll ' + i + ' ' + context)
+            console.log(asd)
         console.log(e)
         }
     }
