@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes, useParams } from "react-router-dom";
-import { FetchGetAll, StringOutput } from "../features/FetchGet";
-import { FetchDelete } from "../features/FetchDelete";
+import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
+import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import ObitEditElement from "./obit-edit-component";
-import { FetchPost } from "../features/FetchPost";
+import { FetchInformationPost } from "../features/FetchInformationPost";
 
 interface IObit {
     id: string,
@@ -21,8 +21,8 @@ export default function ObitsEditElement() {
             try {
 
                 if (token !== undefined) {
-                    setIsAdmin(((await FetchGetAll('text', token, 'admin') as []).length == 0 ? false : true))
-                    setObits((await FetchGetAll('text', token, 'obit') as StringOutput[]).map(p => ({ id: p.id, name: p.output })  ))
+                    setIsAdmin(((await FetchInformationGetAll('string', token, 'admin') as []).length == 0 ? false : true))
+                    setObits((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).map(p => ({ id: p.id, name: p.output })  ))
                 }
             } catch (e) {
                 console.error(e);
@@ -31,11 +31,11 @@ export default function ObitsEditElement() {
     }, [token])
 
     const removeObit = async (obit: IObit) => {
-        FetchDelete(token ?? '', 'intention_admin', obit.id)
+        FetchInformationDelete(token ?? '', 'new_intention_admin', obit.id)
     }
 
     const createObit = async () => {
-        await FetchPost("text", token ?? '', 'intention_admin', ['obit'], name, [obits.length])
+        await FetchInformationPost(token ?? '', 'new_intention_admin', ['obit'], name, [obits.length])
     }
 
     return (

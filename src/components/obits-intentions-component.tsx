@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes, useParams } from "react-router-dom";
-import { FetchGetAll, StringOutput } from "../features/FetchGet";
+import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
 import ObitIntentionsElement from "./obit-intentions-component";
 
 interface IObit {
@@ -17,7 +17,7 @@ export default function ObitsIntentionsElement() {
             try {
 
                 if (token !== undefined) {
-                    setObits((await FetchGetAll('text', token, 'obit') as StringOutput[]).map(p => ({ id: p.id, name: p.output })  ))
+                    setObits((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).map(p => ({ id: p.id, name: p.output })  ))
                 }
             } catch (e) {
                 console.error(e);

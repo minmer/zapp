@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { FetchGet, FetchGetAll, NumberOutput, StringOutput } from "../features/FetchGet";
+import { FetchInformationGet, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import LoadingComponent from "./loading-component";
 interface Day {
     day: Date,
@@ -42,10 +42,10 @@ export default function ItentionWeekElement() {
                     setDays([])
                     const tempDays = [] as Day[]
                     for (let i = 0; i < 7; i++) {
-                        const massData = await FetchGet('integer', token, 'zielonki_mass', week.getTime() + (i * 86400000), week.getTime() + ((i + 1) * 86400000)) as unknown as NumberOutput[]
+                        const massData = await FetchInformationGet('datetime', token, 'new_zielonki_mass', week.getTime() + (i * 86400000), week.getTime() + ((i + 1) * 86400000), 'new_intention_viewer') as unknown as NumberOutput[]
                         const tempMasses = [] as Mass[]
                         for (let j = 0; j < massData.length; j++) {
-                            const intentionData = await FetchGetAll('text', token, massData[j].id + 'intention') as unknown as StringOutput[]
+                            const intentionData = await FetchInformationGetAll('string', token, massData[j].id + 'intention') as unknown as StringOutput[]
                             tempMasses.push({
                                 time: new Date(massData[j].output),
                                 intentions: intentionData.map(item => item.output),

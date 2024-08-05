@@ -1,7 +1,7 @@
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import baner from '../assets/user.jpg'
 import { useEffect, useState } from 'react';
-import { FetchGetAll } from '../features/FetchGet';
+import { FetchInformationGetAll } from '../features/FetchInformationGet';
 import UsersDetailComponent from '../components/users-detail-component';
 import UserPermissionsComponent from '../components/user-permissions-component';
 import UserDescendantComponent from '../components/user-descendants-component';
@@ -13,7 +13,7 @@ export default function UserPage() {
         (async function () {
             try {
                 if (token !== undefined) {
-                    setIsAdmin(((await FetchGetAll('text', token, 'admin') as []).length == 0 ? false : true))
+                    setIsAdmin(((await FetchInformationGetAll('text', token, 'admin') as []).length == 0 ? false : true))
                 }
             } catch (e) {
                 console.error(e);

@@ -1,7 +1,7 @@
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import baner from '../assets/communion.jpg'
 import { useEffect, useState } from 'react';
-import { FetchGetAll } from '../features/FetchGet';
+import { FetchInformationGetAll } from '../features/FetchInformationGet';
 import CommunionsDetailComponent from '../components/communions-detail-component';
 export default function CommunionPage() {
     const { token } = useParams();
@@ -11,7 +11,7 @@ export default function CommunionPage() {
         (async function () {
             try {
                 if (token !== undefined) {
-                    setIsAvailable(((await FetchGetAll('text', token, 'communion_child') as []).length == 0 ? false : true))
+                    setIsAvailable(((await FetchInformationGetAll('text', token, 'communion_child') as []).length == 0 ? false : true))
                 }
             } catch (e) {
                 console.error(e);

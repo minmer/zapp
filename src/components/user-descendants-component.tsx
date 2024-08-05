@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FetchGetAll, StringOutput } from "../features/FetchGet";
-import { FetchPost } from "../features/FetchPost";
+import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
+import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchPostOwner } from "../features/FetchPostOwner";
 import { FetchShareOwner } from "../features/FetchShareOwner";
 import { FetchToken, TokenOutput } from "../features/FetchToken";
 import UserDescendantElement from "./user-descendant-component";
-import { FetchDelete } from "../features/FetchDelete";
+import { FetchInformationDelete } from "../features/FetchInformationDelete";
 
 interface IAttribute {
     name: string,
@@ -27,8 +27,8 @@ export default function UserDescendantsElement() {
             if (token !== undefined) {
                 for (let i = 0; i < 5; i++)
             try {
-                    setViewerKey((await FetchGetAll('text', token, 'key_rolegroup_' + name + '_admin') as unknown as StringOutput[])[0]?.output)
-                    setRoles((await FetchGetAll('text', token, 'role_' + name) as unknown as StringOutput[]).map(res => res.output))
+                    setViewerKey((await FetchInformationGetAll('text', token, 'key_rolegroup_' + name + '_admin') as unknown as StringOutput[])[0]?.output)
+                    setRoles((await FetchInformationGetAll('text', token, 'role_' + name) as unknown as StringOutput[]).map(res => res.output))
                 break;
                 } catch (e) {
                     console.error(e)
@@ -39,21 +39,21 @@ export default function UserDescendantsElement() {
 
     const createGroup = async () => {
         await FetchPostOwner(token ?? '', 'rolegroup_' + name + '_admin', 'main_token')
-        const tokenData = await FetchGetAll('text', token ?? '', 'key_main_token') as unknown as StringOutput[]
+        const tokenData = await FetchInformationGetAll('text', token ?? '', 'key_main_token') as unknown as StringOutput[]
         await FetchShareOwner(token ?? '', 'rolegroup_' + name + '_viewer', 'rolegroup_' + name + '_admin', tokenData[0]?.output ?? '', false, true)
-        setViewerKey((await FetchGetAll('text', token ?? '', 'key_rolegroup_' + name + '_admin') as unknown as StringOutput[])[0]?.output)
+        setViewerKey((await FetchInformationGetAll('text', token ?? '', 'key_rolegroup_' + name + '_admin') as unknown as StringOutput[])[0]?.output)
     }
 
     const createRole = async () => {
         const newToken = await FetchToken() as TokenOutput
-        const tokenData = await FetchGetAll('text', token ?? '', 'key_main_token') as unknown as StringOutput[]
-        await FetchPost("text", token ?? '', 'rolegroup_' + name + '_admin', ['role_' + name], newToken.id, [0])
+        const tokenData = await FetchInformationGetAll('text', token ?? '', 'key_main_token') as unknown as StringOutput[]
+        await FetchInformationPost(token ?? '', 'rolegroup_' + name + '_admin', ['role_' + name], newToken.id, [0])
         await FetchShareOwner(token ?? '', 'rolegroup_' + name + '_viewer', 'rolegroup_' + name + '_admin', newToken.id, false, true)
         await FetchPostOwner(token ?? '', 'adminrole_' + newToken.id, 'main_token')
         await FetchShareOwner(token ?? '', 'adminrole_' + newToken.id, 'adminrole_' + newToken.id, newToken.id, false, true)
         await FetchPostOwner(newToken.token ?? '', 'role_' + newToken.id, 'main_token')
         await FetchShareOwner(newToken.token ?? '', 'role_' + newToken.id, 'role_' + newToken.id, tokenData[0]?.output ?? '', false, true)
-        await FetchPost("text", token ?? '', 'adminrole_' + newToken.id, ['role_token_' + newToken.id], newToken.token, [0])
+        await FetchInformationPost(token ?? '', 'adminrole_' + newToken.id, ['role_token_' + newToken.id], newToken.token, [0])
         setNewAttribute("")
     }
 
@@ -67,11 +67,11 @@ export default function UserDescendantsElement() {
         setAttributes(attributes.filter(att => att.name != attribute))
     }
     const addLink = async (role : string) => {
-        await FetchPost("text", token ?? '', 'adminrole_' + role, [link], role, [0])
+        await FetchInformationPost(token ?? '', 'adminrole_' + role, [link], role, [0])
     }
 
     const removeRole = async (role: string) => {
-        FetchDelete(token ?? '', 'main_token',(await FetchGetAll('text', token ?? '', 'role_' + name) as unknown as StringOutput[]).filter(p => p.output == role)[0].id)
+        FetchInformationDelete(token ?? '', 'main_token',(await FetchInformationGetAll('text', token ?? '', 'role_' + name) as unknown as StringOutput[]).filter(p => p.output == role)[0].id)
     }
 
     return (

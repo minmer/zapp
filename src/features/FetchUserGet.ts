@@ -1,15 +1,16 @@
 export interface UserOutput {
+    creationtime: Date,
     token: string,
 }
 
 export async function FetchUserGet(user: string, password: string) {
 
-    return (await fetch('https://zapp.hostingasp.pl/user',
+    return (await fetch('https://zapp.hostingasp.pl/user/get/',
         {
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify({
                 "user": user,
-                "password": password
+                "password": password,
 
             }),
             headers: {

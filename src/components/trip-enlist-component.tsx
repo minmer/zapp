@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FetchGetAll, NumberOutput, StringOutput } from "../features/FetchGet";
+import { FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import { FetchToken, TokenOutput } from "../features/FetchToken";
-import { FetchPost } from "../features/FetchPost";
+import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchShareOwner } from "../features/FetchShareOwner";
 import { FetchPostOwner } from "../features/FetchPostOwner";
-import { FetchDelete } from "../features/FetchDelete";
+import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchReloadToken } from "../features/FetchReloadToken";
 import LoadingComponent from "./loading-component";
 
@@ -42,16 +42,16 @@ export default function TripEnlistElement() {
 
                 if (token !== undefined) {
                     setIsLoading(true);
-                    setIsAdmin(((await FetchGetAll('text', token, 'admin') as []).length == 0 ? false : true));
-                    setName((await FetchGetAll('text', token, 'trip_enlist') as StringOutput[]).filter(p => p.id == list)[0].output);
-                    setListToken((await FetchGetAll('text', token, list + 'token') as StringOutput[])[0]?.output)
+                    setIsAdmin(((await FetchInformationGetAll('string', token, 'admin') as []).length == 0 ? false : true));
+                    setName((await FetchInformationGetAll('string', token, 'trip_enlist') as StringOutput[]).filter(p => p.id == list)[0].output);
+                    setListToken((await FetchInformationGetAll('string', token, list + 'token') as StringOutput[])[0]?.output)
                     const tempAttributes = [];
-                    const attributesData = await FetchGetAll('text', token, list + 'attribute') as StringOutput[];
+                    const attributesData = await FetchInformationGetAll('string', token, list + 'attribute') as StringOutput[];
                     for (let i = 0; i < attributesData.length; i++) {
                         tempAttributes.push({
                             name: attributesData[i].output,
-                            type: (await FetchGetAll('text', token, attributesData[i].id + 'type') as StringOutput[])[0]?.output,
-                            description: (await FetchGetAll('text', token, attributesData[i].id + 'description') as StringOutput[])[0]?.output
+                            type: (await FetchInformationGetAll('string', token, attributesData[i].id + 'type') as StringOutput[])[0]?.output,
+                            description: (await FetchInformationGetAll('string', token, attributesData[i].id + 'description') as StringOutput[])[0]?.output
                         });
                     }
                     setAttributes(tempAttributes);
@@ -67,19 +67,19 @@ export default function TripEnlistElement() {
             try {
 
                 if (token !== undefined) {
-                    const rolesData = (await FetchGetAll('text', token, 'role_' + list) as StringOutput[]);
+                    const rolesData = (await FetchInformationGetAll('string', token, 'role_' + list) as StringOutput[]);
                     const tempRoles = [];
                     for (let i = 0; i < rolesData.length; i++) {
                         let role = ''
                         for (let j = 0; j < attributes.length; j++) {
                             if (attributes[j].type == "text") {
-                                role += (await FetchGetAll('text', token, rolesData[i].output + attributes[j].name) as StringOutput[])[0]?.output + ', ';
+                                role += (await FetchInformationGetAll('string', token, rolesData[i].output + attributes[j].name) as StringOutput[])[0]?.output + ', ';
                             }
                             else if (attributes[j].type == "date") {
-                                role += new Date((await FetchGetAll('integer', token, rolesData[i].output + attributes[j].name) as NumberOutput[])[0]?.output).toDateString() + ', ';
+                                role += new Date((await FetchInformationGetAll('long', token, rolesData[i].output + attributes[j].name) as NumberOutput[])[0]?.output).toDateString() + ', ';
                             }
                         }
-                        tempRoles.push({ name: role, id: rolesData[i].id, role: rolesData[i].output, token: (await FetchGetAll('text', token, 'role_trip_token_' + rolesData[i].output) as StringOutput[])[0]?.output });
+                        tempRoles.push({ name: role, id: rolesData[i].id, role: rolesData[i].output, token: (await FetchInformationGetAll('string', token, 'role_trip_token_' + rolesData[i].output) as StringOutput[])[0]?.output });
                     }
                     setRoles(tempRoles);
                     setIsLoading(false);
@@ -93,9 +93,9 @@ export default function TripEnlistElement() {
     const enlist = async () => {
         setIsLoading(true);
         const newToken = await FetchToken() as TokenOutput;
-        const tokenData = await FetchGetAll('text', token ?? '', list + 'creator') as unknown as StringOutput[];
+        const tokenData = await FetchInformationGetAll('string', token ?? '', list + 'creator') as unknown as StringOutput[];
         console.log(listToken + tokenData[0].output)
-        await FetchPost("text", token ?? '', 'token_' + listToken, ['role_' + list], newToken.id, [roles.length]);
+        await FetchInformationPost(token ?? '', 'token_' + listToken, ['role_' + list], newToken.id, [roles.length]);
         console.log('data')
         await FetchShareOwner(token ?? '', 'token_' + listToken, 'token_' + listToken, newToken.id, false, true);
         await FetchShareOwner(token ?? '', 'rolegroup_trip_' + list + '_viewer', 'rolegroup_trip_' + list + '_viewer', newToken.id, false, true);
@@ -103,13 +103,13 @@ export default function TripEnlistElement() {
         await FetchShareOwner(newToken.token ?? '', 'role_trip_' + newToken.id, 'role_trip_' + newToken.id, tokenData[0]?.output ?? '', false, true);
         console.log(FetchReloadToken(token ?? ''))
         console.log(FetchReloadToken(newToken.token))
-        await FetchPost("text", newToken.token ?? '', 'role_trip_' + newToken.id, ['role_trip_token_' + newToken.id], newToken.token, [0]);
+        await FetchInformationPost(newToken.token ?? '', 'role_trip_' + newToken.id, ['role_trip_token_' + newToken.id], newToken.token, [0]);
         for (let i = 0; i < attributes.length; i++) {
             if (attributes[i].type == "text") {
-                await FetchPost("text", newToken.token ?? '', 'role_trip_' + newToken.id, [newToken.id + attributes[i].name], attributes[i].text ?? '', [0]);
+                await FetchInformationPost(newToken.token ?? '', 'role_trip_' + newToken.id, [newToken.id + attributes[i].name], attributes[i].text ?? '', [0]);
             }
             else if (attributes[i].type == "date") {
-                await FetchPost("integer", newToken.token ?? '', 'role_trip_' + newToken.id, [newToken.id + attributes[i].name], attributes[i].date ?? 0, [0]);
+                await FetchInformationPost(newToken.token ?? '', 'role_trip_' + newToken.id, [newToken.id + attributes[i].name], attributes[i].date ?? 0, [0]);
             }
         }
         setIsLoading(false);
@@ -118,7 +118,7 @@ export default function TripEnlistElement() {
     };
 
     const removeRole = async (id: string) => {
-        FetchDelete(token ?? '', 'token_' + listToken, id);
+        FetchInformationDelete(token ?? '', 'token_' + listToken, id);
     };
 
     return (

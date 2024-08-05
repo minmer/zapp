@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FetchPost } from "../../features/FetchPost";
+import { FetchInformationPost } from "../../features/FetchInformationPost";
 
 interface JSON_StringObject {
     id: string;
@@ -124,7 +124,7 @@ function MassIntentionElement({ information_id, date }: { information_id: string
     }
 
     const setCollectiveIntentions = async () => {
-        await FetchPost("integer", token ?? '', 'intention_admin', [information_id + 'collective'], 0, [0])
+        await FetchInformationPost(token ?? '', 'intention_admin', [information_id + 'collective'], 0, [0])
     }
 
     return (

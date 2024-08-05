@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FetchGet, FetchGetAll, NumberOutput, StringOutput } from "../features/FetchGet";
-import { FetchDelete } from "../features/FetchDelete";
-import { FetchPost } from "../features/FetchPost";
+import { FetchInformationGet, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
+import { FetchInformationDelete } from "../features/FetchInformationDelete";
+import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchContext } from "../features/FetchPostContext";
 
 interface IIntention {
@@ -30,10 +30,10 @@ export default function ObitEditElement() {
             try {
 
                 if (token !== undefined) {
-                    setName((await FetchGetAll('text', token, 'obit') as StringOutput[]).filter(p => p.id == obit)[0].output)
-                    const tempData = (await FetchGetAll('text', token, obit + 'intention') as StringOutput[]).map(p => ({ id: p.id, name: p.output, mass: undefined as unknown as  Date }))
+                    setName((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).filter(p => p.id == obit)[0].output)
+                    const tempData = (await FetchInformationGetAll('string', token, obit + 'intention') as StringOutput[]).map(p => ({ id: p.id, name: p.output, mass: undefined as unknown as  Date }))
                     for (let i = 0; i < tempData.length; i++) {
-                        const data = (await FetchGetAll('integer', token, tempData[i].id + 'mass') as NumberOutput[])[0]?.output
+                        const data = (await FetchInformationGetAll('long', token, tempData[i].id + 'mass') as NumberOutput[])[0]?.output
                         if (data) {
                             tempData[i].mass = new Date(data)
                         }
@@ -56,7 +56,7 @@ export default function ObitEditElement() {
                     start.setHours(0, 0, 0, 0)
                     const end = new Date(start.getTime());
                     end.setDate(end.getDate() + 1)
-                    const data = (await FetchGet('integer', token, 'zielonki_mass', start.getTime(), end.getTime()) as NumberOutput[]).map(p => ({ id: p.id, date: new Date(p.output) }))
+                    const data = (await FetchInformationGet('datetime', token, 'zielonki_mass', start.getTime(), end.getTime(), 'new_intention_viewer') as NumberOutput[]).map(p => ({ id: p.id, date: new Date(p.output) }))
                     setMasses(data)
                     setSelectedMass(data[0].id)
                 }
@@ -67,12 +67,12 @@ export default function ObitEditElement() {
     }, [token, date])
 
     const removeIntention = async (intention: IIntention) => {
-        FetchDelete(token ?? '', 'intention_admin', intention.id)
+        FetchInformationDelete(token ?? '', 'new_intention_admin', intention.id)
     }
 
     const linkMass = async (intention: IIntention) => {
-        FetchContext(token ?? '', intention.id, 'intention_admin', selectedMass + 'intention', intentions.length)
-        FetchContext(token ?? '', selectedMass, 'intention_admin', intention.id + 'mass', 0)
+        FetchContext(token ?? '', intention.id, 'new_intention_admin', selectedMass + 'intention', intentions.length)
+        FetchContext(token ?? '', selectedMass, 'new_intention_admin', intention.id + 'mass', 0)
         setRR(!rr)
     }
 
@@ -81,8 +81,8 @@ export default function ObitEditElement() {
     }
 
     const createIntention = async () => {
-        const id = await FetchPost("text", token ?? '', 'intention_admin', [obit + 'intention'], '+ ' + name + ' / od ' + newIntention, [0])
-        await FetchPost("integer", token ?? '', 'intention_raport_admin', [id + 'donation'], newDonation, [0])
+        const id = await FetchInformationPost(token ?? '', 'new_intention_admin', [obit + 'intention'], '+ ' + name + ' / od ' + newIntention, [0])
+        await FetchInformationPost(token ?? '', 'intention_raport_admin', [id + 'donation'], newDonation, [0])
         newIntention
     }
 
@@ -99,7 +99,7 @@ export default function ObitEditElement() {
                     }} type="button" onClick={() => { linkMass(intention) }} value='+' />
                     <input style={{
                         display: intention.mass ? 'inline' : 'none',
-                    }} type="button" onClick={() => { unlinkMass(intention) }} value={intention.mass?.toISOString() ?? ''} />
+                    }} type="button" onClick={() => { unlinkMass(intention) }} value={intention.mass?.toString() ?? ''} />
                     <input type="button" onClick={() => { removeIntention(intention) }} value='X' />
                 </div>
             ))

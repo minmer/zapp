@@ -1,6 +1,6 @@
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import baner from '../assets/obit.jpg'
-import { FetchCheckOwner } from '../features/FetchCheckOwner';
+import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import { useEffect, useState } from 'react';
 import ObitsIntentionsComponent from '../components/obits-intentions-component';
 import ObitsEditComponent from '../components/obits-edit-component';
@@ -13,8 +13,8 @@ export default function ObitPage() {
         (async function () {
             try {
                 if (token !== undefined) {
-                    setIsViewer((await FetchCheckOwner(token, 'intention_viewer')) ?? false)
-                    setIsAdmin((await FetchCheckOwner(token, 'intention_admin')) ?? false)
+                    setIsViewer(await FetchOwnerGet(token, 'intention_viewer'))
+                    setIsAdmin(await FetchOwnerGet(token, 'intention_admin'))
                 }
             } catch (e) {
                 console.error(e);

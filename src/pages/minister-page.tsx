@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import baner from '../assets/minister.jpg'
-import { FetchCheckOwner } from '../features/FetchCheckOwner';
+import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import ChatComponent from '../components/chat-component';
 export default function MinisterPage() {
@@ -11,7 +11,7 @@ export default function MinisterPage() {
         (async function () {
             try {
                 if (token !== undefined) {
-                    setIsMinister((await FetchCheckOwner(token, 'minister_member')) ?? false)
+                    setIsMinister((await FetchOwnerGet(token, 'minister_member')))
                 }
             } catch (e) {
                 console.error(e);

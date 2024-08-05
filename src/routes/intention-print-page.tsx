@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingComponent from "../components/loading-component";
+import { FetchInformationGet, DateOutput, FetchInformationGetAll, StringOutput, BooleanOutput } from "../features/FetchInformationGet";
 
 interface IntentionDays {
     day: Date,
@@ -23,14 +24,6 @@ interface Intention {
     column: number,
     row: number
     index: string,
-}
-interface JSON_Number {
-    id: string;
-    output: number;
-}
-interface JSON_String {
-    id: string;
-    output: string;
 }
 
 export default function IntentionPage() {
@@ -60,20 +53,17 @@ export default function IntentionPage() {
             start.setHours(0, 0, 0, 0)
             const end = new Date(start.getTime());
             end.setDate(end.getDate() + 1)
-            const massData = await fetch('https://zapp.hostingasp.pl/information/integer/' + token + '/zielonki_mass/' + start.getTime() + '/' + end.getTime())
-                .then(res => res.json() as unknown as JSON_Number[])
+            const massData = await FetchInformationGet('datetime', token ?? '', 'new_zielonki_mass', start.getTime(), end.getTime(), 'new_intention_viewer') as unknown as DateOutput[]
             const descriptions = [] as string[]
             const masses = [] as Mass[]
             for (let j = 0; j < massData.length; j++) {
 
-                const descriptionData = await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + massData[j].id + 'description')
-                    .then(res => res.json() as unknown as JSON_String[])
+                const descriptionData = await FetchInformationGetAll('string', token ?? '', massData[j].id + 'description') as unknown as StringOutput[]
                 if (!descriptions.includes(descriptionData[0].output)) {
                     descriptions.push(descriptionData[0].output);
                 }
 
-                const intentionData = (await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + massData[j].id + 'intention')
-                    .then(res => res.json() as unknown as JSON_String[]))
+                const intentionData = await FetchInformationGetAll('string', token ?? '', massData[j].id + 'intention') as unknown as StringOutput[]
                 const intentions = [] as Intention[]
                 let intentionRow = massRow;
                 for (let k = 0; k < intentionData.length; k++) {
@@ -86,10 +76,8 @@ export default function IntentionPage() {
                     })
                     intentionRow += 2
                 }
-                const colorData = await fetch('https://zapp.hostingasp.pl/information/text/' + token + '/' + massData[j].id + 'color')
-                    .then(res => res.json() as unknown as JSON_String[])
-                const collectiveData = await fetch('https://zapp.hostingasp.pl/information/integer/' + token + '/' + massData[j].id + 'collective')
-                    .then(res => res.json() as unknown as JSON_Number[])
+                const colorData = await FetchInformationGetAll('string', token ?? '', massData[j].id + 'color') as unknown as StringOutput[]
+                const collectiveData = await FetchInformationGetAll('bool', token ?? '', massData[j].id + 'collective') as unknown as BooleanOutput[]
                 if (collectiveData.length > 0) {
                     masses.push({
                         row: massRow,

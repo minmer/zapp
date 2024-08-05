@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FetchGetAll, NumberOutput, StringOutput } from "../features/FetchGet";
+import { FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import logo from '../assets/logo.png'
 import LoadingComponent from "./loading-component";
 
@@ -22,13 +22,13 @@ export default function ObitIntentionsPrint() {
             try {
 
                 if (token !== undefined) {
-                    setName((await FetchGetAll('text', token, 'obit') as StringOutput[]).filter(p => p.id == obit)[0].output)
-                    const tempData = (await FetchGetAll('text', token, obit + 'intention') as StringOutput[]).map(p => ({ id: p.id, name: p.output, mass: undefined as unknown as Date, isCollective: false}))
+                    setName((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).filter(p => p.id == obit)[0].output)
+                    const tempData = (await FetchInformationGetAll('string', token, obit + 'intention') as StringOutput[]).map(p => ({ id: p.id, name: p.output, mass: undefined as unknown as Date, isCollective: false}))
                     for (let i = 0; i < tempData.length; i++) {
-                        const data = (await FetchGetAll('integer', token, tempData[i].id + 'mass') as NumberOutput[])[0]
+                        const data = (await FetchInformationGetAll('double', token, tempData[i].id + 'mass') as NumberOutput[])[0]
                         if (data) {
                             tempData[i].mass = new Date(data?.output)
-                            tempData[i].isCollective = (await FetchGetAll('integer', token, data.id + 'collective') as NumberOutput[]).length > 0
+                            tempData[i].isCollective = (await FetchInformationGetAll('double', token, data.id + 'collective') as NumberOutput[]).length > 0
                         }
                     }
                     tempData.sort((a, b) => a.mass ? (b.mass ? (a.isCollective ? (b.isCollective ? (a.mass.getTime() - b.mass.getTime()) : 1) : (b.isCollective ? -1 : (a.mass.getTime() - b.mass.getTime()))) : -1) : (b.mass ? 1 : 0))

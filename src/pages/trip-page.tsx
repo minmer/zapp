@@ -2,7 +2,7 @@ import { Link, Route, Routes, useParams } from 'react-router-dom';
 import baner from '../assets/trip.jpg'
 import TripsEnlistComponent from '../components/trips-enlist-component';
 import TripsCreateComponent from '../components/trips-create-component';
-import { FetchGetAll } from '../features/FetchGet';
+import { FetchInformationGetAll } from '../features/FetchInformationGet';
 import { useEffect, useState } from 'react';
 import TripsDetailComponent from '../components/trips-detail-component';
 export default function UserPage() {
@@ -13,7 +13,7 @@ export default function UserPage() {
         (async function () {
             try {
                 if (token !== undefined) {
-                    setIsAdmin(((await FetchGetAll('text', token, 'admin') as []).length == 0 ? false : true))
+                    setIsAdmin(((await FetchInformationGetAll('text', token, 'admin') as []).length == 0 ? false : true))
                 }
             } catch (e) {
                 console.error(e);

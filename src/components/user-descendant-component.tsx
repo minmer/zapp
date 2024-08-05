@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FetchGetAll, StringOutput } from "../features/FetchGet";
+import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
 import UserDescendantAttributeElement from "./user-descendant-attribute-component";
 
 
@@ -16,7 +16,7 @@ export default function UserDescendantElement({ role, attributes }: { role: stri
             if (token !== undefined) {
             for (let i = 0; i < 5; i++) {
                 try {
-                    setRoleToken((await FetchGetAll('text', token, 'role_token_' + role, 'adminrole_' + role) as unknown as StringOutput[])[0]?.output)
+                    setRoleToken((await FetchInformationGetAll('text', token, 'role_token_' + role) as unknown as StringOutput[])[0]?.output)
                     break;
                 } catch (e) {
                     console.error(e);

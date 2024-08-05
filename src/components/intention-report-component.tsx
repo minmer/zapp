@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingComponent from "./loading-component";
-import { FetchGet, FetchGetAll, NumberOutput, StringOutput } from "../features/FetchGet";
+import { FetchInformationGet, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import EditableElement from "./editable-component";
 
 interface IMass {
@@ -46,22 +46,22 @@ export default function ItentionReportElement() {
                     if (token !== undefined) {
                         setIsLoading(true)
                         setMasses([])
-                        const massData = await FetchGet('integer', token, 'zielonki_mass', start.getTime(), end.getTime()) as unknown as NumberOutput[]
+                        const massData = await FetchInformationGet('integer', token, 'zielonki_mass', start.getTime(), end.getTime(), 'intention_viewer') as unknown as NumberOutput[]
                         const tempMasses = [] as IMass[]
                         for (let i = 0; i < massData.length; i++) {
-                            const intentionData = await FetchGetAll('text', token, massData[i].id + 'intention') as unknown as StringOutput[]
+                            const intentionData = await FetchInformationGetAll('text', token, massData[i].id + 'intention') as unknown as StringOutput[]
                             const tempIntentions = [] as IIntention[]
                             for (let j = 0; j < intentionData.length; j++) {
                                 
                                 tempIntentions.push({
                                     name: intentionData[j].output,
                                     id: intentionData[j].id,
-                                    celebrator: (await FetchGetAll('text', token, intentionData[j].id + 'celebrator') as unknown as StringOutput[])[0]?.output ?? '',
-                                    donation: (await FetchGetAll('integer', token, intentionData[j].id + 'donation') as unknown as NumberOutput[])[0]?.output ?? 0,
-                                    donated: (await FetchGetAll('text', token, intentionData[j].id + 'donated') as unknown as StringOutput[])[0]?.output ?? ''
+                                    celebrator: (await FetchInformationGetAll('text', token, intentionData[j].id + 'celebrator') as unknown as StringOutput[])[0]?.output ?? '',
+                                    donation: (await FetchInformationGetAll('integer', token, intentionData[j].id + 'donation') as unknown as NumberOutput[])[0]?.output ?? 0,
+                                    donated: (await FetchInformationGetAll('text', token, intentionData[j].id + 'donated') as unknown as StringOutput[])[0]?.output ?? ''
                                 })
                             }
-                            const isCollective = (await FetchGetAll('integer', token, massData[i].id + 'collective') as unknown as NumberOutput[]).length > 0
+                            const isCollective = (await FetchInformationGetAll('integer', token, massData[i].id + 'collective') as unknown as NumberOutput[]).length > 0
                             tempMasses.push({
                                 id: massData[i].id,
                                 time: new Date(massData[i].output),

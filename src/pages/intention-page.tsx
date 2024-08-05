@@ -1,11 +1,11 @@
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import baner from '../assets/intention.jpg'
-import NewIntentionElement from '../routes/intention/new-intention-element';
 import IntentionWeekComponent from '../components/intention-week-component';
 import IntentionMonthComponent from '../components/intention-month-component';
 import { useEffect, useState } from 'react';
-import { FetchCheckOwner } from '../features/FetchCheckOwner';
+import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import IntentionReportComponent from '../components/intention-report-component';
+import IntentionEditComponent from '../components/intention-edit-component';
 export default function IntentionPage() {
     const { token } = useParams();
     const [isViewer, setIsViewer] = useState(false)
@@ -15,8 +15,8 @@ export default function IntentionPage() {
         (async function () {
             try {
                 if (token !== undefined) {
-                    setIsViewer((await FetchCheckOwner(token, 'intention_viewer'))?? false)
-                    setIsAdmin((await FetchCheckOwner(token, 'intention_admin'))?? false)
+                    setIsViewer((await FetchOwnerGet(token, 'intention_viewer')))
+                    setIsAdmin((await FetchOwnerGet(token, 'intention_admin')))
                 }
             } catch (e) {
                 console.error(e);
@@ -54,7 +54,7 @@ export default function IntentionPage() {
                         <li style={{
                             display: isAdmin ? 'block' : 'none',
                         }}>
-                            <Link to={`edit`}>Edycja intencji</Link>
+                            <Link to={`edit/-1`}>Edycja intencji</Link>
                         </li>
                         <div className="clear"></div>
                     </ul>
@@ -63,7 +63,7 @@ export default function IntentionPage() {
                     <Route path="week/:init_date" element={<IntentionWeekComponent/>} />
                     <Route path="month/:init_date" element={<IntentionMonthComponent />} />
                     <Route path="report/:start_date/:end_date" element={<IntentionReportComponent />} />
-                    <Route path="edit" element={<NewIntentionElement />} />
+                    <Route path="edit/:init_date" element={<IntentionEditComponent />} />
                 </Routes>
                 <div className="description">
                     <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>

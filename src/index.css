@@ -962,9 +962,16 @@ i {
     font-size: 1.5em;
     padding: 6px 12px;
 }
-    .content-intentionmonth .daygrid .masshour {
-        text-align: center;
-    }
+.content-intentionmonth .daygrid .masshour {
+    text-align: center;
+    grid-column: 1;
+}
+.content-intentionmonth .daygrid .intention textarea {
+    width: 100%;
+    overflow-wrap: break-word;
+    height: 2.5rem;
+    resize: vertical;
+}
 
 .enlist-container {
     position: relative;

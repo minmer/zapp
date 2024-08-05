@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FetchGetAll, StringOutput } from "../features/FetchGet";
-import { FetchPost } from "../features/FetchPost";
+import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
+import { FetchInformationPost } from "../features/FetchInformationPost";
 export default function UserDescendantAttributeElement({ role, attribute, isArray }: { role: string, attribute: string, isArray: boolean }) {
     const { token } = useParams();
     const [value, setValue] = useState<string[]>([])
@@ -11,7 +11,7 @@ export default function UserDescendantAttributeElement({ role, attribute, isArra
             if (token !== undefined) {
                 for (let i = 0; i < 5; i++) {
                     try {
-                        setValue((await FetchGetAll('text', token, role + attribute, 'adminrole_' + role) as unknown as StringOutput[]).map(data => data.output))
+                        setValue((await FetchInformationGetAll('text', token, role + attribute) as unknown as StringOutput[]).map(data => data.output))
                         break;
                     } catch (e) {
                         console.error(e);
@@ -23,7 +23,7 @@ export default function UserDescendantAttributeElement({ role, attribute, isArra
 
 
     const createAttribute = async () => {
-        await FetchPost("text", token ?? '', 'adminrole_' + role, [role + attribute], newValue, [0])
+        await FetchInformationPost(token ?? '', 'adminrole_' + role, [role + attribute], newValue, [0])
         value.push(newValue)
     }
 

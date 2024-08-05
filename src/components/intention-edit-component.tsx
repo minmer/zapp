@@ -1,18 +1,25 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingComponent from "./loading-component";
-import { FetchInformationGet, FetchInformationGetAll, DateOutput, StringOutput } from "../features/FetchInformationGet";
+import { FetchInformationGet, FetchInformationGetAll, StringOutput, DateOutput } from "../features/FetchInformationGet";
+import { FetchInformationPost } from "../features/FetchInformationPost";
+import EditableElement from "./editable-component";
+import { FetchInformationDelete } from "../features/FetchInformationDelete";
 
 interface Mass {
     time: Date,
+    id: string,
     intentions: string[]
 }
-export default function ItentionMonthElement() {
+export default function ItentionEditElement() {
     const monthSpelling = [
         "Styczeń ", "Luty ", "Marzec ", "Kwiecień ", "Maj ", "Czerwiec ", "Lipiec ", "Sierpień ", "Wrzesień ", "Październik ", "Listopad ", "Grudzień "
     ]
     const daySpelling = [
         "Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"
+    ]
+    const hourProposition = [
+        25200000, 28800000, 34200000, 36000000, 43200000, 59400000, 61200000, 64800000
     ]
     const { token, init_date } = useParams();
     const [date, setDate] = useState(new Date((Number(init_date) == -1) ? Date.now() : Number(init_date)))
@@ -50,12 +57,13 @@ export default function ItentionMonthElement() {
                 if (token !== undefined) {
                     setIsLoading(true)
                     setMasses([])
-                    date.setHours(0,0,0,0)
+                    date.setHours(0, 0, 0, 0)
                     const massData = await FetchInformationGet('datetime', token, 'new_zielonki_mass', date.getTime(), date.getTime() + 86400000, 'new_intention_viewer') as unknown as DateOutput[]
                         const tempMasses = [] as Mass[]
                         for (let j = 0; j < massData.length; j++) {
                             const intentionData = await FetchInformationGetAll('string', token, massData[j].id + 'intention') as unknown as StringOutput[]
                             tempMasses.push({
+                                id: massData[j].id,
                                 time: massData[j].output,
                                 intentions: intentionData.map(item => item.output),
                             })
@@ -76,6 +84,14 @@ export default function ItentionMonthElement() {
 
     const selectedDate = (newDate: Date) => {
         setDate(new Date(newDate.getTime()));
+    }
+
+    const addDate = async (hour: number) => {
+        console.log(await FetchInformationPost(token ?? '', 'new_intention_admin', ['new_zielonki_mass'], new Date(date.getTime() + hour), [date.getTime() + hour]))
+    }
+
+    const deleteMass = async (id: string) => {
+        console.log(await FetchInformationDelete(token ?? '', 'new_intention_admin', id))
     }
 
     return (
@@ -132,18 +148,21 @@ export default function ItentionMonthElement() {
                                 }}>
                                     {mass.time.getHours() + ':' + mass.time.getMinutes().toString().padStart(2, '0')}
                                 </div>
-                                {
-                                    mass.intentions.map(intention => (
-                                        <div className="intention">
-                                            <div>
-                                                {intention}
-                                            </div>
-                                        </div>
-                                    ))
-                                }
+                                <div className="intention">
+                                    <EditableElement showdescription={true} description="Intencje" type="text" name={mass.id + 'intention'} multiple={true} dbkey="new_intention_admin" />
+                                    <EditableElement showdescription={true} description="Kolor" type="text" name={mass.id + 'color'} multiple={false} dbkey="new_intention_admin" />
+                                    <EditableElement showdescription={true} description="Wspomnienie" type="text" name={mass.id + 'description'} multiple={false} dbkey="new_intention_admin" />
+                                    <EditableElement showdescription={true} description="Zbiorowa" type="checkbox" name={mass.id + 'collective'} multiple={false} dbkey="new_intention_admin" />
+                                    <input type="button" value='Usuń Mszę' onClick={() => deleteMass(mass.id)} />
+                                </div>
                             </>
                         ))}
                     </div>
+                    {hourProposition.map(proposition =>
+                    (
+                        <input type="button" className="proposition" value={new Date(proposition).getHours() - 1 + ':' + new Date(proposition).getMinutes().toString().padStart(2, '0')} onClick={() => addDate(proposition)} />
+                    ))
+                    }
                 </div>
             </div>
         </>

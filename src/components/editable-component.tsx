@@ -1,13 +1,13 @@
 ﻿import { ChangeEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingComponent from "./loading-component";
-import { FetchGetAll} from "../features/FetchGet";
-import { FetchDelete } from "../features/FetchDelete";
-import { FetchPost } from "../features/FetchPost";
+import { FetchInformationGetAll} from "../features/FetchInformationGet";
+import { FetchInformationDelete } from "../features/FetchInformationDelete";
+import { FetchInformationPost } from "../features/FetchInformationPost";
 
 export interface IOutput {
     id: string,
-    output: number | string,
+    output: number | string | boolean,
 }
 export default function EditableElement({ name, type, multiple, dbkey, description, showdescription }: { name: string, type: string, multiple: boolean, dbkey: string, description?: string, showdescription?: boolean }) {
     const { token } = useParams();
@@ -22,10 +22,13 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
                     if (token !== undefined) {
                         setIsLoading(true)
                         if (type == 'number') {
-                            setData(await FetchGetAll('integer', token, name) as unknown as IOutput[])
+                            setData(await FetchInformationGetAll('double', token, name) as unknown as IOutput[])
                         }
                         if (type == 'text') {
-                            setData(await FetchGetAll('text', token, name) as unknown as IOutput[])
+                            setData(await FetchInformationGetAll('string', token, name) as unknown as IOutput[])
+                        }
+                        if (type == 'checkbox') {
+                            setData(await FetchInformationGetAll('bool', token, name) as unknown as IOutput[])
                         }
                         setIsLoading(false)
                     }
@@ -49,6 +52,8 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
     const onChangeNewData = (e: ChangeEvent) => {
         if ((type == 'number') || (type == 'text'))
             setNewData((e.target as HTMLInputElement)?.value)
+        if (type == 'checkbox')
+            setNewData((e.target as HTMLInputElement)?.checked.toString())
     }
 
     const onClickData = () => {
@@ -56,7 +61,7 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
     }
 
     const DeleteData = (id: string) => {
-        FetchDelete(token ?? '', dbkey, id)
+        FetchInformationDelete(token ?? '', dbkey, id)
         setData(
             data.filter(item => item.id !== id)
         );
@@ -66,16 +71,22 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
         if (token !== undefined) {
             setIsLoading(true)
             if (type == 'number') {
-                await FetchPost('integer', token ?? '', dbkey, [name], newData, [0])
+                await FetchInformationPost(token ?? '', dbkey, [name], newData, [0])
             }
             if (type == 'text') {
-                await FetchPost('text', token ?? '', dbkey, [name], newData, [0])
+                await FetchInformationPost(token ?? '', dbkey, [name], newData, [0])
+            }
+            if (type == 'checkbox') {
+                await FetchInformationPost(token ?? '', dbkey, [name], newData, [0])
             }
             if (type == 'number') {
-                setData(await FetchGetAll('integer', token, name) as unknown as IOutput[])
+                setData(await FetchInformationGetAll('double', token, name) as unknown as IOutput[])
             }
             if (type == 'text') {
-                setData(await FetchGetAll('text', token, name) as unknown as IOutput[])
+                setData(await FetchInformationGetAll('string', token, name) as unknown as IOutput[])
+            }
+            if (type == 'checkbox') {
+                setData(await FetchInformationGetAll('bool', token, name) as unknown as IOutput[])
             }
             setIsLoading(false)
         }
@@ -124,7 +135,7 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
                     }}>
                     {data.map(item => (
                         <div>
-                            <input type={type} value={item.output} onChange={(e) => { onChangeData(e, item.id) }} />
+                            <input type={type} value={typeof item.output == 'boolean' ? '' : item.output} checked={typeof item.output == 'boolean' ? item.output : false} onChange={(e) => { onChangeData(e, item.id) }} />
                             <input type="button" value='⟳' onClick={() => { RefreshData(item.id) }} />
                             <input type="button" value='X' onClick={() => { DeleteData(item.id) }} />
                         </div>
