@@ -56,7 +56,7 @@ export default function ObitEditElement() {
                     start.setHours(0, 0, 0, 0)
                     const end = new Date(start.getTime());
                     end.setDate(end.getDate() + 1)
-                    const data = (await FetchInformationGet('datetime', token, 'zielonki_mass', start.getTime(), end.getTime(), 'new_intention_viewer') as NumberOutput[]).map(p => ({ id: p.id, date: new Date(p.output) }))
+                    const data = (await FetchInformationGet('datetime', token, 'new_zielonki_mass', start.getTime(), end.getTime(), 'new_intention_viewer') as NumberOutput[]).map(p => ({ id: p.id, date: new Date(p.output) }))
                     setMasses(data)
                     setSelectedMass(data[0].id)
                 }
