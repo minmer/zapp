@@ -69,7 +69,7 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                 <Routes>
                     <Route path="overview" element={<ConfirmationOverviewSubpage />} />
                     <Route path="register" element={<ConfirmationRegisterSubpage getParams={getParams} />} />
-                    <Route path="detail" element={<ConfirmationDetailSubpage getParams={getParams} />} />
+                    <Route path="detail" element={<ConfirmationDetailSubpage />} />
                     <Route path="admin" element={<ConfirmationAdminSubpage getParams={getParams} />} />
                 </Routes>
                 <div className="description">

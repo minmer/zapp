@@ -7,7 +7,7 @@ import { FetchInformationPut } from "../features/FetchInformationPut";
 import { FetchOwnerGet } from "../features/FetchOwnerGet";
 import EditableElement from "../generals/editable-element";
 
-export default function UsersWidget({ getParams, onSelected }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, onSelected: () => void }) {
+export default function UsersWidget({ getParams, onSelected }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, onSelected?: () => void }) {
     const [users, setUsers] = useState<User[]>([])
     const [selectedUser, setSelectedUser] = useState<User>()
 
