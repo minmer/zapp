@@ -33,27 +33,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
 
     return (
         <>
-            {selectedUser != null ?
-                role != null ?
-                    <>
-                        <div>Następująca osoba jest zgłoszona:</div>
-                        <EditableElement getParams={getParams} name={selectedUser.user + "name"} dbkey={selectedUser.id + ''} type="text" multiple={false} showdescription={false} />
-                        <EditableElement getParams={getParams} name={selectedUser.user + "surname"} dbkey={selectedUser.id + ''} type="text" multiple={false} showdescription={false} />
-                    </>
-                    :
-                    <>
-                        <div>Czy chcesz zgłosić następującą osobę do bierzmowania?</div>
-                        <EditableElement getParams={getParams} name={selectedUser.user + "name"} dbkey={selectedUser.id + ''} type="text" multiple={false} showdescription={false} />
-                        <EditableElement getParams={getParams} name={selectedUser.user + "surname"} dbkey={selectedUser.id + ''} type="text" multiple={false} showdescription={false} />
-                        <input type="button" className="button" value="Zgłoś użytkownika" onClick={register} />
-                    </>
-                :
-                <>
-                    <h3>Musisz założyć i wybrać użytkownika, aby móc go zgłosić do bierzmowania.
-                    </h3>
-                    <input type="button" className="button" value="Wybierz użytkownika" onClick={selectUser} />
-                </>
-            }
+        <h3>Twoje zgłoszenie zostało wysłane i oczekuje na przyjęcie</h3>
         </>
     );
 }
