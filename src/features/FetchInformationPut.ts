@@ -1,4 +1,4 @@
-export async function FetchUserPut(token: string, key: string, id: string, data: string | number | Date) {
+export async function FetchInformationPut(token: string, key: string, id: string, data: string | number | boolean) {
 
     return (await fetch('https://zapp.hostingasp.pl/information/',
         {

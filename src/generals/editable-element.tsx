@@ -1,42 +1,38 @@
 ﻿import { ChangeEvent, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import LoadingComponent from "./loading-component";
 import { FetchInformationGetAll} from "../features/FetchInformationGet";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchInformationPost } from "../features/FetchInformationPost";
+import { FetchInformationPut } from "../features/FetchInformationPut";
 
 export interface IOutput {
     id: string,
     output: number | string | boolean,
 }
-export default function EditableElement({ name, type, multiple, dbkey, description, showdescription }: { name: string, type: string, multiple: boolean, dbkey: string, description?: string, showdescription?: boolean }) {
-    const { token } = useParams();
+export default function EditableElement({ getParams, name, type, multiple, dbkey, description, showdescription }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, name: string, type: string, multiple: boolean, dbkey: string, description?: string, showdescription?: boolean }) {
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState<IOutput[]>([])
     const [newData, setNewData] = useState('')
     const [isEditing, setIsEditing] = useState(false)
     useEffect(
         () => {
-            (async function () {
-                try {
-                    if (token !== undefined) {
-                        setIsLoading(true)
-                        if (type == 'number') {
-                            setData(await FetchInformationGetAll('double', token, name) as unknown as IOutput[])
-                        }
-                        if (type == 'text') {
-                            setData(await FetchInformationGetAll('string', token, name) as unknown as IOutput[])
-                        }
-                        if (type == 'checkbox') {
-                            setData(await FetchInformationGetAll('bool', token, name) as unknown as IOutput[])
-                        }
-                        setIsLoading(false)
+            getParams({
+                func: async (param: unknown) => {
+                    const token = param as string
+                    setIsLoading(true)
+                    if (type == 'number') {
+                        setData(await FetchInformationGetAll('double', token, name) as unknown as IOutput[])
                     }
-                } catch (e) {
-                    console.error(e);
-                }
-            })();
-        }, [token, type, name])
+                    if (type == 'text') {
+                        setData(await FetchInformationGetAll('string', token, name) as unknown as IOutput[])
+                    }
+                    if (type == 'checkbox') {
+                        setData(await FetchInformationGetAll('bool', token, name) as unknown as IOutput[])
+                    }
+                    setIsLoading(false)
+                }, type: 'token', show: false
+            });
+        }, [getParams, type, name])
 
     useEffect(
         () => {
@@ -61,40 +57,46 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
     }
 
     const DeleteData = (id: string) => {
-        FetchInformationDelete(token ?? '', dbkey, id)
-        setData(
-            data.filter(item => item.id !== id)
-        );
+
+        getParams({
+            func: async (param: unknown) => {
+                const token = param as string
+                FetchInformationDelete(token ?? '', dbkey, id)
+                setData(data.filter(item => item.id !== id))
+            }, type: 'token', show: false
+        })
     }
 
     const AddData = async () => {
-        if (token !== undefined) {
-            setIsLoading(true)
-            if (type == 'number') {
-                await FetchInformationPost(token ?? '', dbkey, [name], newData, [0])
-            }
-            if (type == 'text') {
-                await FetchInformationPost(token ?? '', dbkey, [name], newData, [0])
-            }
-            if (type == 'checkbox') {
-                await FetchInformationPost(token ?? '', dbkey, [name], newData, [0])
-            }
-            if (type == 'number') {
-                setData(await FetchInformationGetAll('double', token, name) as unknown as IOutput[])
-            }
-            if (type == 'text') {
-                setData(await FetchInformationGetAll('string', token, name) as unknown as IOutput[])
-            }
-            if (type == 'checkbox') {
-                setData(await FetchInformationGetAll('bool', token, name) as unknown as IOutput[])
-            }
-            setIsLoading(false)
+        if (newData != '') {
+            getParams({
+                func: async (param: unknown) => {
+                    const token = param as string
+                    setIsLoading(true)
+                    await FetchInformationPost(token ?? '', dbkey, [name], newData, [0])
+                    if (type == 'number') {
+                        setData(await FetchInformationGetAll('double', token, name) as unknown as IOutput[])
+                    }
+                    if (type == 'text') {
+                        setData(await FetchInformationGetAll('string', token, name) as unknown as IOutput[])
+                    }
+                    if (type == 'checkbox') {
+                        setData(await FetchInformationGetAll('bool', token, name) as unknown as IOutput[])
+                    }
+                    setIsLoading(false)
+                }, type: 'token', show: false
+            })
         }
     }
 
     const RefreshData = (id: string) => {
+        getParams({
+            func: async (param: unknown) => {
+                const token = param as string
+                await FetchInformationPut(token, dbkey, id, data.find(item => item.id == id)?.output ?? '')
+            }, type: 'token', show: false
+        })
         setIsEditing(false)
-        console.log(id)
     }
 
     const onChangeData = (e: ChangeEvent, id: string) => {
@@ -117,14 +119,15 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
         <>
             <div style=
                 {{
-                    position: 'relative',
+                    display: 'inline',
+                    float: 'left',
                 }}>
                 <div style=
                     {{
                         display: isEditing ? 'none' : 'block',
                     }}>
                     {data.map(item => (
-                        <div onClick={onClickData}>
+                        <div onDoubleClick={onClickData}>
                             {(showdescription ? description + ': ' : '') + item.output}
                         </div>
                     ))}
@@ -146,10 +149,11 @@ export default function EditableElement({ name, type, multiple, dbkey, descripti
                         }}>
                         <input type={type}
                             placeholder={description}
-                            
+
                             value={newData}
-                            onChange={onChangeNewData} />
-                        <input type="button" value='+' onClick={AddData} />
+                            onChange={onChangeNewData}
+                            onBlur={AddData} />
+                        <input type="button" value='Zapisz' onClick={AddData} />
                     </div>
                 </div>
                 <div style=

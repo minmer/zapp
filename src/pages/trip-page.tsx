@@ -5,7 +5,7 @@ import TripsCreateComponent from '../components/trips-create-component';
 import { FetchInformationGetAll } from '../features/FetchInformationGet';
 import { useEffect, useState } from 'react';
 import TripsDetailComponent from '../components/trips-detail-component';
-export default function UserPage() {
+export default function UserPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const { token } = useParams();
     const [isAdmin, setIsAdmin] = useState(false)
 
@@ -47,9 +47,9 @@ export default function UserPage() {
                     </ul>
                 </div>
                 <Routes>
-                    <Route path="enlist/*" element={<TripsEnlistComponent />} />
+                    <Route path="enlist/*" element={<TripsEnlistComponent getParams={getParams} />} />
                     <Route path="create/*" element={<TripsCreateComponent />} />
-                    <Route path="detail/*" element={<TripsDetailComponent />} />
+                    <Route path="detail/*" element={<TripsDetailComponent getParams={getParams} />} />
                 </Routes>
                 <div className="description">
                     <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>

@@ -1,26 +1,17 @@
-import { Link, Route, Routes, useParams } from 'react-router-dom';
+import { Link, Route, Routes} from 'react-router-dom';
 import baner from '../assets/obit.jpg'
 import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import { useEffect, useState } from 'react';
 import ObitsIntentionsComponent from '../components/obits-intentions-component';
 import ObitsEditComponent from '../components/obits-edit-component';
-export default function ObitPage() {
-    const { token } = useParams();
-    const [isViewer, setIsViewer] = useState(false)
+export default function ObitPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
-        (async function () {
-            try {
-                if (token !== undefined) {
-                    setIsViewer(await FetchOwnerGet(token, 'intention_viewer'))
-                    setIsAdmin(await FetchOwnerGet(token, 'intention_admin'))
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        })();
-    }, [token])
+        getParams({
+            func: async (param: unknown) => setIsAdmin((await FetchOwnerGet(param as string, 'intention_admin'))), type: 'token', show: false
+        });
+    }, [getParams])
     return (
 
         <>
@@ -33,9 +24,7 @@ export default function ObitPage() {
                 </div>
                 <div className="tabs">
                     <ul>
-                        <li style={{
-                            display: isViewer ? 'block' : 'none',
-                        }}>
+                        <li>
                             <Link to={`intentions`}>Intencje</Link>
                         </li>
                         <li style={{

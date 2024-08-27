@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
-import { FetchPostOwner } from "../features/FetchPostOwner";
+import { FetchOwnerPost } from "../features/FetchOwnerPost";
 import { FetchShareOwner } from "../features/FetchShareOwner";
 import { FetchToken, TokenOutput } from "../features/FetchToken";
 import { FetchInformationPost } from "../features/FetchInformationPost";
@@ -52,10 +52,10 @@ export default function TripsCreateElement() {
 
     const createTrip = async () => {
         const newToken = await FetchToken() as TokenOutput
-        await FetchPostOwner(token ?? '', 'token_' + newToken.token, 'main_token')
+        await FetchOwnerPost(token ?? '', 'token_' + newToken.token, 'main_token')
         const id = await FetchInformationPost(token ?? '', 'token_' + newToken.token, ['trip_enlist'], name, [Date.now()])
         await FetchShareOwner(token ?? '', 'token_' + newToken.token, 'token_' + newToken.token, newToken.id, false, true)
-        await FetchPostOwner(token ?? '', 'rolegroup_trip_' + id + '_admin', 'main_token')
+        await FetchOwnerPost(token ?? '', 'rolegroup_trip_' + id + '_admin', 'main_token')
         const tokenData = await FetchInformationGetAll('text', token ?? '', 'key_token_' + newToken.token) as unknown as StringOutput[]
         const mainTokenData = await FetchInformationGetAll('text', token ?? '', 'key_main_token') as unknown as StringOutput[]
         await FetchShareOwner(token ?? '', 'rolegroup_trip_' + id + '_viewer', 'rolegroup_trip_' + id + '_admin', tokenData[0]?.output ?? '', false, true)

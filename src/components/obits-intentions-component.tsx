@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Route, Routes, useParams } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
 import ObitIntentionsElement from "./obit-intentions-component";
 
@@ -9,7 +9,7 @@ interface IObit {
 }
 
 export default function ObitsIntentionsElement() {
-    const { token } = useParams();
+    const token = "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U"
     const [obits, setObits] = useState<IObit[]>([])
 
     useEffect(() => {

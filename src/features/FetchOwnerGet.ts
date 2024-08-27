@@ -11,7 +11,10 @@ export async function FetchOwnerGet(token: string, key: string) {
                 'Content-Type': 'application/json',
             },
         })
-    if (predata.status == 200)
-        return true;
-    return false;
+    if (predata.status == 204) {
+        return
+    }
+    if (predata.status == 200) {
+        return (await predata.json().then(resJson => resJson.id))
+    }
 }

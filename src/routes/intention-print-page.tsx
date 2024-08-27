@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import LoadingComponent from "../components/loading-component";
+import LoadingComponent from "../generals/loading-component";
 import { FetchInformationGet, DateOutput, FetchInformationGetAll, StringOutput, BooleanOutput } from "../features/FetchInformationGet";
 
 interface IntentionDays {

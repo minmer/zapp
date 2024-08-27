@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import LoadingComponent from "./loading-component";
+import LoadingComponent from "../generals/loading-component";
 import { FetchInformationGet, FetchInformationGetAll, DateOutput, StringOutput } from "../features/FetchInformationGet";
 
 interface Mass {
@@ -14,7 +14,8 @@ export default function ItentionMonthElement() {
     const daySpelling = [
         "Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"
     ]
-    const { token, init_date } = useParams();
+    const { init_date } = useParams();
+    const token = "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U"
     const [date, setDate] = useState(new Date((Number(init_date) == -1) ? Date.now() : Number(init_date)))
     const [preMonth, setPreMonth] = useState([] as string[])
     const [month, setMonth] = useState([] as Date[])

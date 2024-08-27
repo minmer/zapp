@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
 import { useEffect, useState } from "react";
-import LoadingComponent from "./loading-component";
-import { FetchPostOwner } from "../features/FetchPostOwner";
+import LoadingComponent from "../generals/loading-component";
+import { FetchOwnerPost } from "../features/FetchOwnerPost";
 import { FetchShareOwner } from "../features/FetchShareOwner";
 export default function UserPermissionElement({ permission }: { permission: string })  {
     const { token } = useParams();
@@ -28,7 +28,7 @@ export default function UserPermissionElement({ permission }: { permission: stri
     }, [token, permission])
 
     const createPermission = async () => {
-        await FetchPostOwner(token ?? '', permission + '_admin', 'main_token')
+        await FetchOwnerPost(token ?? '', permission + '_admin', 'main_token')
         const tokenData = await FetchInformationGetAll('text', token ?? '', 'key_main_token') as unknown as StringOutput[]
         await FetchShareOwner(token ?? '', permission + '_viewer', permission + '_admin', tokenData[0]?.output ?? '', false, true)
     }

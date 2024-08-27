@@ -8,7 +8,7 @@ interface IList {
     id: string
 }
 
-export default function TripsDetailElement() {
+export default function TripsDetailElement({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const { token } = useParams();
     const [lists, setLists] = useState<IList[]>([])
 
@@ -44,8 +44,8 @@ export default function TripsDetailElement() {
             ))
             }
             <Routes>
-                <Route path="/:list/" element={<TripDetailElement />} />
-                <Route path="/:list/:role" element={<TripDetailElement />} />
+                <Route path="/:list/" element={<TripDetailElement getParams={getParams } />} />
+                <Route path="/:list/:role" element={<TripDetailElement getParams={getParams} />} />
             </Routes >
         </>
     );

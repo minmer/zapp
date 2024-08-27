@@ -4,10 +4,10 @@ import { FetchInformationGetAll, NumberOutput, StringOutput } from "../features/
 import { FetchToken, TokenOutput } from "../features/FetchToken";
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchShareOwner } from "../features/FetchShareOwner";
-import { FetchPostOwner } from "../features/FetchPostOwner";
+import { FetchOwnerPost } from "../features/FetchOwnerPost";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchReloadToken } from "../features/FetchReloadToken";
-import LoadingComponent from "./loading-component";
+import LoadingComponent from "../generals/loading-component";
 
 export interface IList {
     name: string,
@@ -99,7 +99,7 @@ export default function TripEnlistElement() {
         console.log('data')
         await FetchShareOwner(token ?? '', 'token_' + listToken, 'token_' + listToken, newToken.id, false, true);
         await FetchShareOwner(token ?? '', 'rolegroup_trip_' + list + '_viewer', 'rolegroup_trip_' + list + '_viewer', newToken.id, false, true);
-        await FetchPostOwner(newToken.token ?? '', 'role_trip_' + newToken.id, 'main_token');
+        await FetchOwnerPost(newToken.token ?? '', 'role_trip_' + newToken.id, 'main_token');
         await FetchShareOwner(newToken.token ?? '', 'role_trip_' + newToken.id, 'role_trip_' + newToken.id, tokenData[0]?.output ?? '', false, true);
         console.log(FetchReloadToken(token ?? ''))
         console.log(FetchReloadToken(newToken.token))

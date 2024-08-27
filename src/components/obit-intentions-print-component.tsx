@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import logo from '../assets/logo.png'
-import LoadingComponent from "./loading-component";
+import LoadingComponent from "../generals/loading-component";
 
 interface IIntention {
     id: string,
@@ -11,7 +11,8 @@ interface IIntention {
     isCollective: boolean
 }
 export default function ObitIntentionsPrint() {
-    const { token, obit } = useParams();
+    const { obit } = useParams();
+    const token = "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U"
     const [intentions, setIntentions] = useState<IIntention[]>([])
     const [name, setName] = useState('')
     const [gridRow, setGridRow] = useState('')

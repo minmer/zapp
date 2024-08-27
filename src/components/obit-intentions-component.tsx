@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BooleanOutput, DateOutput, FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
-import LoadingComponent from "./loading-component";
+import LoadingComponent from "../generals/loading-component";
 
 interface IIntention {
     id: string,
@@ -10,7 +10,8 @@ interface IIntention {
     isCollective: boolean
 }
 export default function ObitIntentionsElement() {
-    const { token, obit } = useParams();
+    const { obit } = useParams();
+    const token = "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U"
     const [intentions, setIntentions] = useState<IIntention[]>([])
     const [name, setName] = useState('')
     const [isLoading, setIsLoading] = useState(true)

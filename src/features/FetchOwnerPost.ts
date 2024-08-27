@@ -1,4 +1,4 @@
-export async function FetchPostOwner(token: string, key: string, parent: string) {
+export async function FetchOwnerPost(token: string, key: string, parent: string) {
     try {
         await fetch('https://zapp.hostingasp.pl/owner/',
             {

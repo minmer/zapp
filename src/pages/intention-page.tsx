@@ -1,4 +1,4 @@
-import { Link, Route, Routes, useParams } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import baner from '../assets/intention.jpg'
 import IntentionWeekComponent from '../components/intention-week-component';
 import IntentionMonthComponent from '../components/intention-month-component';
@@ -6,23 +6,14 @@ import { useEffect, useState } from 'react';
 import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import IntentionReportComponent from '../components/intention-report-component';
 import IntentionEditComponent from '../components/intention-edit-component';
-export default function IntentionPage() {
-    const { token } = useParams();
-    const [isViewer, setIsViewer] = useState(false)
+export default function IntentionPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
-        (async function () {
-            try {
-                if (token !== undefined) {
-                    setIsViewer((await FetchOwnerGet(token, 'intention_viewer')))
-                    setIsAdmin((await FetchOwnerGet(token, 'intention_admin')))
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        })();
-    }, [token])
+        getParams({
+            func: async (param: unknown) => setIsAdmin((await FetchOwnerGet(param as string, 'intention_admin'))), type: 'token', show: false
+        });
+    }, [getParams])
 
     return (
 
@@ -36,14 +27,10 @@ export default function IntentionPage() {
                 </div>
                 <div className="tabs">
                     <ul>
-                        <li style={{
-                            display: isViewer ? 'block' : 'none',
-                        }}>
+                        <li>
                             <Link to={`week/-1`}>Tydzień</Link>
                         </li>
-                        <li style={{
-                            display: isViewer ? 'block' : 'none',
-                        }}>
+                        <li>
                             <Link to={`month/-1`}>Miesiąc</Link>
                         </li>
                         <li style={{
@@ -62,8 +49,8 @@ export default function IntentionPage() {
                 <Routes>
                     <Route path="week/:init_date" element={<IntentionWeekComponent/>} />
                     <Route path="month/:init_date" element={<IntentionMonthComponent />} />
-                    <Route path="report/:start_date/:end_date" element={<IntentionReportComponent />} />
-                    <Route path="edit/:init_date" element={<IntentionEditComponent />} />
+                    <Route path="report/:start_date/:end_date" element={<IntentionReportComponent getParams={getParams} />} />
+                    <Route path="edit/:init_date" element={<IntentionEditComponent getParams={getParams} />} />
                 </Routes>
                 <div className="description">
                     <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>

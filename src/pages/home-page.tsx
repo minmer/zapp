@@ -1,5 +1,5 @@
+import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg'
-import LoginComponent from '../components/login-component';
 export default function HomePage() {
     return (
 
@@ -12,7 +12,7 @@ export default function HomePage() {
                         <p>Strona reCreatio.eu jest częścią szerszego projektu, który ma dać parafiom oraz wspólnotom narzędzia do pracy przez internet. Aby móc skorzystać z niego należy korzystać z dedykowanego linku lub zalogować się.</p>
                     </div>
                 </div>
-                <LoginComponent />
+                <Link to="/zielonki">Parafia Narodzenie NMP w Zielonkach</Link>
             </div>
         </>
     );

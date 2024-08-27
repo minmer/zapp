@@ -1,8 +1,12 @@
-export default function RootPage() {
+import UsersWidget from "../widgets/users-widget";
+
+export default function RootPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     return (
 
         <>
-            <h1>RootPage</h1>
+            <div className="mosaic">
+                <UsersWidget getParams={getParams} />
+            </div>
         </>
     );
 }

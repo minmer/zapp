@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import LoadingComponent from "./loading-component";
+import LoadingComponent from "../generals/loading-component";
 import { FetchInformationGet, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
-import EditableElement from "./editable-component";
+import EditableElement from "../generals/editable-element";
 
 interface IMass {
     id: string,
@@ -24,11 +24,11 @@ interface IPriest {
     donations: number,
     celebratorCount: number
 }
-export default function ItentionReportElement() {
+export default function ItentionReportElement({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const daySpelling = [
         "Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"
     ]
-    const { token, start_date, end_date } = useParams();
+    const { start_date, end_date } = useParams();
     const tempStart = new Date((Number(start_date) == -1) ? Date.now() : Number(start_date))
     tempStart.setHours(0, 0, 0, 0)
     const tempEnd = new Date((Number(end_date) == -1) ? Date.now() : Number(end_date))
@@ -38,46 +38,41 @@ export default function ItentionReportElement() {
     const [masses, setMasses] = useState<IMass[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
-    useEffect(
-        () => {
-            (async function () {
-                try {
+    useEffect(() => {
+        getParams({
+            func: async (param: unknown) => {
+                const token = param as string
+                setIsLoading(true)
+                setMasses([])
+                const massData = await FetchInformationGet('integer', token, 'zielonki_mass', start.getTime(), end.getTime(), 'intention_viewer') as unknown as NumberOutput[]
+                const tempMasses = [] as IMass[]
+                for (let i = 0; i < massData.length; i++) {
+                    const intentionData = await FetchInformationGetAll('text', token, massData[i].id + 'intention') as unknown as StringOutput[]
+                    const tempIntentions = [] as IIntention[]
+                    for (let j = 0; j < intentionData.length; j++) {
 
-                    if (token !== undefined) {
-                        setIsLoading(true)
-                        setMasses([])
-                        const massData = await FetchInformationGet('integer', token, 'zielonki_mass', start.getTime(), end.getTime(), 'intention_viewer') as unknown as NumberOutput[]
-                        const tempMasses = [] as IMass[]
-                        for (let i = 0; i < massData.length; i++) {
-                            const intentionData = await FetchInformationGetAll('text', token, massData[i].id + 'intention') as unknown as StringOutput[]
-                            const tempIntentions = [] as IIntention[]
-                            for (let j = 0; j < intentionData.length; j++) {
-                                
-                                tempIntentions.push({
-                                    name: intentionData[j].output,
-                                    id: intentionData[j].id,
-                                    celebrator: (await FetchInformationGetAll('text', token, intentionData[j].id + 'celebrator') as unknown as StringOutput[])[0]?.output ?? '',
-                                    donation: (await FetchInformationGetAll('integer', token, intentionData[j].id + 'donation') as unknown as NumberOutput[])[0]?.output ?? 0,
-                                    donated: (await FetchInformationGetAll('text', token, intentionData[j].id + 'donated') as unknown as StringOutput[])[0]?.output ?? ''
-                                })
-                            }
-                            const isCollective = (await FetchInformationGetAll('integer', token, massData[i].id + 'collective') as unknown as NumberOutput[]).length > 0
-                            tempMasses.push({
-                                id: massData[i].id,
-                                time: new Date(massData[i].output),
-                                intentions: tempIntentions,
-                                isCollective: isCollective,
-                                celebrator: tempIntentions.filter(p => p.celebrator != undefined)[0].celebrator
-                            })
-                        }
-                        setIsLoading(false)
-                        setMasses(tempMasses)
+                        tempIntentions.push({
+                            name: intentionData[j].output,
+                            id: intentionData[j].id,
+                            celebrator: (await FetchInformationGetAll('text', token, intentionData[j].id + 'celebrator') as unknown as StringOutput[])[0]?.output ?? '',
+                            donation: (await FetchInformationGetAll('integer', token, intentionData[j].id + 'donation') as unknown as NumberOutput[])[0]?.output ?? 0,
+                            donated: (await FetchInformationGetAll('text', token, intentionData[j].id + 'donated') as unknown as StringOutput[])[0]?.output ?? ''
+                        })
                     }
-                } catch (e) {
-                    console.error(e);
+                    const isCollective = (await FetchInformationGetAll('integer', token, massData[i].id + 'collective') as unknown as NumberOutput[]).length > 0
+                    tempMasses.push({
+                        id: massData[i].id,
+                        time: new Date(massData[i].output),
+                        intentions: tempIntentions,
+                        isCollective: isCollective,
+                        celebrator: tempIntentions.filter(p => p.celebrator != undefined)[0].celebrator
+                    })
                 }
-            })();
-        }, [token, start, end])
+                setIsLoading(false)
+                setMasses(tempMasses)
+            }, type: 'token', show: false
+        })
+    }, [getParams, start, end])
     const createReport = () => {
         const tempPriests = []
         for (let i = 0; i < masses.length; i++) {
@@ -141,9 +136,9 @@ export default function ItentionReportElement() {
                             {mass.intentions.map((intention) => (
                                 <>
                                     <div>{intention.name}
-                                        <EditableElement description="Celebrans" type="text" name={intention.id + 'celebrator'} multiple={false} dbkey="intention_raport_admin" />
-                                        <EditableElement description="Ofiara" type="number" name={intention.id + 'donation'} multiple={false} dbkey="intention_raport_admin" />
-                                        <EditableElement description="Ofiaroodbiorca" type="text" name={intention.id + 'donated'} multiple={false} dbkey="intention_raport_admin" />
+                                        <EditableElement getParams={getParams} description="Celebrans" type="text" name={intention.id + 'celebrator'} multiple={false} dbkey="intention_raport_admin" />
+                                        <EditableElement getParams={getParams} description="Ofiara" type="number" name={intention.id + 'donation'} multiple={false} dbkey="intention_raport_admin" />
+                                        <EditableElement getParams={getParams} description="Ofiaroodbiorca" type="text" name={intention.id + 'donated'} multiple={false} dbkey="intention_raport_admin" />
                                     </div>
                                 </>
                             ))}

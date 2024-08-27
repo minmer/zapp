@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FetchInformationGet, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
-import LoadingComponent from "./loading-component";
+import LoadingComponent from "../generals/loading-component";
 interface Day {
     day: Date,
     masses: Mass[]
@@ -14,7 +14,8 @@ export default function ItentionWeekElement() {
     const daySpelling = [
         "Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"
     ]
-    const { token, init_date } = useParams();
+    const { init_date } = useParams();
+    const token = "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U"
     const [selectedDate, setSelectedDate] = useState(new Date((Number(init_date) == -1) ? Date.now() : Number(init_date)))
     const [week, setWeek] = useState(new Date(0))
     const [endWeek, setEndWeek] = useState(new Date(0))

@@ -3,8 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
-import EditableElement from "./editable-component";
-import LoadingComponent from "./loading-component";
+import EditableElement from "../generals/editable-element";
+import LoadingComponent from "../generals/loading-component";
 
 interface IValue {
     name: string,
@@ -20,7 +20,7 @@ interface IRole {
     id: string,
 }
 
-export default function TripsCreateElement() {
+export default function TripsCreateElement({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const { token, list, role } = useParams();
     const [newValue, setValue] = useState("")
     const [description, setDescription] = useState("")
@@ -154,12 +154,12 @@ export default function TripsCreateElement() {
                             <div style={{
                                 display: isAdmin == (value.direction == 1) ? 'block' : 'none',
                             }} >
-                                <EditableElement showdescription={true} description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={"role_trip_" + role} />
+                                <EditableElement getParams={getParams} showdescription={true} description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={"role_trip_" + role} />
                             </div>
                             <div style={{
                                 display: isAdmin !== (value.direction == 1) ? 'block' : 'none',
                             }} >
-                                <EditableElement showdescription={true} description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={'rolegroup_trip_' + list + '_admin'} />
+                                <EditableElement getParams={getParams} showdescription={true} description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={'rolegroup_trip_' + list + '_admin'} />
                             </div>
                         </>
                     ))}
