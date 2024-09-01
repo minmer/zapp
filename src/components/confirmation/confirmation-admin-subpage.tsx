@@ -71,8 +71,8 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
                     <EditableElement getParams={getParams} name={attendee.output + 'permission'} dbkey={attendee.output + 'channel'} description='Zgoda' type="text" multiple={false} showdescription={true} />
                     <EditableElement getParams={getParams} name={attendee.output + 'birthday'} dbkey={''} description='Data urodzenia' type="text" multiple={false} showdescription={true} />
                     <EditableElement getParams={getParams} name={attendee.output + 'address'} dbkey={''} description='Adres zamieszkania' type="text" multiple={false} showdescription={true} />
-                    <EditableElement getParams={getParams} name={attendee.output + 'confirmationname'} dbkey={''} description='Patron bierzmowanie (tzw. 3. imiê)' type="text" multiple={false} showdescription={true} />
-                    <EditableElement getParams={getParams} name={attendee.output + 'sponsor'} dbkey={''} description='Œwiadek bierzmowania' type="text" multiple={false} showdescription={true} />
+                    <EditableElement getParams={getParams} name={attendee.output + 'confirmationname'} dbkey={''} description='Patron bierzmowanie (tzw. 3. imiÄ™)' type="text" multiple={false} showdescription={true} />
+                    <EditableElement getParams={getParams} name={attendee.output + 'sponsor'} dbkey={''} description='Åšwiadek bierzmowania' type="text" multiple={false} showdescription={true} />
                         {attendee.id != '' ?
                         <input type='button' value='+' onClick={() => acceptAttendee(attendee)} />
                         : null
