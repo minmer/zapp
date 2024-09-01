@@ -21,8 +21,8 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                             const user = param1 as User
                             const tempRole = await GetRole({ getParams: getParams, type: "confirmation", user: user }) as unknown as Role
                             setRole(tempRole)
-                            const owner = FetchInformationGetAll('string', token, tempRole.id + 'owner') as unknown as StringOutput[]
-                            if (owner.length == 0) {
+                            const owner = await FetchInformationGetAll('string', token, tempRole.id + 'owner') as unknown as StringOutput[]
+                            if (owner.length == 0 || owner == null) {
                                 await FetchInformationPost(token, tempRole.id, [tempRole.id + 'owner'], tempRole.role, [1])
                             }
                             const levels = FetchInformationGetAll('string', token, tempRole.id + 'level') as unknown as StringOutput[]
