@@ -39,21 +39,29 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
     return (
         <>
             {
-                level0 ?? <>
-                    <h2>1. rok formacji</h2>
-                </>
-            }
-            {
-                level1 ?? <>
-                    <h2>2. rok formacji</h2>
-                </>
-            }
-            {
-                level2 ?? <>
-                    <h2>3. rok formacji</h2>
-                    <EditableElement getParams={getParams} name={role?.id + 'baptism'} dbkey={''} description='Chrzest' type="text" multiple={false} showdescription={true} />
-                    <EditableElement getParams={getParams} name={role?.id + 'permission'} dbkey={''} description='Zgoda' type="text" multiple={false} showdescription={true} />
-                </>
+                !(level0 || level1 || level2) ? <>
+                    <h3>Zgłoszenie czeka na zatwierdzenie</h3>
+                </> :
+                    <>
+                        {
+                            level0 ?? <>
+                                <h2>1. rok formacji</h2>
+                            </>
+                        }
+                        {
+                            level1 ?? <>
+                                <h2>2. rok formacji</h2>
+                            </>
+                        }
+                        {
+                            level2 ?? <>
+                                <h2>3. rok formacji</h2>
+                                <EditableElement getParams={getParams} name={role?.id + 'baptism'} dbkey={''} description='Chrzest' type="text" multiple={false} showdescription={true} />
+                                <EditableElement getParams={getParams} name={role?.id + 'permission'} dbkey={''} description='Zgoda' type="text" multiple={false} showdescription={true} />
+                            </>
+                        }
+
+                    </>
             }
         </>
     );
