@@ -16,7 +16,17 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
             getParams({
                 func: async (param0: unknown) => {
                     const token = param0 as string
-                    setAttendees((await FetchInformationGetAll('string', token, 'confirmation_attendee')) as unknown as StringOutput[])
+                    const tempAttendees = (await FetchInformationGetAll('string', token, 'confirmation_attendee')) as unknown as StringOutput[]
+                    setAttendees(tempAttendees)
+                    for (let i = 0; i < tempAttendees.length; i++) {
+                        const tempOwnerID = (await FetchInformationGetAll('string', token, tempAttendees[0].output + 'owner')) as unknown as StringOutput[]
+                        if (tempOwnerID.length > 0) {
+                            tempAttendees[i].id = tempOwnerID[0].output
+                        }
+                        else {
+                            tempAttendees[i].id = ''
+                        }
+                    }
                     getParams({
                         func: async (param1: unknown) => {
                             const user = param1 as User
@@ -41,9 +51,9 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
         getParams({
             func: async (param: unknown) => {
                 const token = param as string
-                await FetchOwnerPut(token, 'confirmation_group_viewer', 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a', output.output, false, false, false)
-                await FetchOwnerPost(token, output.output + 'channel', 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a')
-                await FetchOwnerPut(token, 'confirmation_channel_viewer', 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a', output.output, false, false, false)
+                await FetchOwnerPut(token, 'confirmation_group_viewer', role?.id ?? '', output.output, false, false, false)
+                await FetchOwnerPost(token, output.output + 'channel', role?.id ?? '')
+                await FetchOwnerPut(token, 'confirmation_channel_viewer', output.output + 'channel', output.output, false, false, false)
             }, type: 'token', show: false
         });
     }
@@ -59,7 +69,10 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
                     <EditableElement getParams={getParams} name={attendee.output + 'level'} dbkey={attendee.output + 'channel'} description='Formacja' type="text" multiple={true} showdescription={false} />
                     <EditableElement getParams={getParams} name={attendee.output + 'baptism'} dbkey={attendee.output + 'channel'} description='Chrzest' type="text" multiple={false} showdescription={false} />
                     <EditableElement getParams={getParams} name={attendee.output + 'permission'} dbkey={attendee.output + 'channel'} description='Zgoda' type="text" multiple={false} showdescription={false} />
-                    <input type='button' value='+' onClick={() => acceptAttendee(attendee)} />
+                    {attendee.id != '' ?
+                        <input type='button' value='+' onClick={() => acceptAttendee(attendee)} />
+                        : null
+                        }
                 </div>
             ))}
         </>
