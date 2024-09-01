@@ -4,7 +4,8 @@ import { User } from "../../structs/user";
 import { FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
 import EditableElement from "../../generals/editable-element";
-import { FetchInformationDelete } from "../../features/FetchInformationDelete";
+import { FetchOwnerPut } from "../../features/FetchOwnerPut";
+import { FetchOwnerPost } from "../../features/FetchOwnerPost";
 
 export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
@@ -35,12 +36,14 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
         });
     }
 
-    const removeAttendee = async (output: StringOutput) =>
+    const acceptAttendee = async (output: StringOutput) =>
     {
         getParams({
             func: async (param: unknown) => {
                 const token = param as string
-                FetchInformationDelete(token, output.id, output.output)
+                await FetchOwnerPut(token, 'confirmation_group_viewer', 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a', output.output, false, false, false)
+                await FetchOwnerPost(token, output.output + 'channel', 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a')
+                await FetchOwnerPut(token, 'confirmation_channel_viewer', 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a', output.output, false, false, false)
             }, type: 'token', show: false
         });
     }
@@ -51,9 +54,12 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
             <input type="button" value="Reload" onClick={reload} />
             {attendees?.map(attendee => (
                 <div>
-                    <EditableElement getParams={getParams} name={attendee.output  + "name"} dbkey={''} type="text" multiple={false} showdescription={false} />
-                    <EditableElement getParams={getParams} name={attendee.output + "surname"} dbkey={''} type="text" multiple={false} showdescription={false} />
-                    <input type='button' value='X' onClick={() => removeAttendee(attendee)} />
+                    <EditableElement getParams={getParams} name={attendee.output + 'name'} dbkey={''} type="text" multiple={false} showdescription={false} />
+                    <EditableElement getParams={getParams} name={attendee.output + 'surname'} dbkey={''} type="text" multiple={false} showdescription={false} />
+                    <EditableElement getParams={getParams} name={attendee.output + 'level'} dbkey={attendee.output + 'channel'} description='Formacja' type="text" multiple={true} showdescription={false} />
+                    <EditableElement getParams={getParams} name={attendee.output + 'baptism'} dbkey={attendee.output + 'channel'} description='Chrzest' type="text" multiple={false} showdescription={false} />
+                    <EditableElement getParams={getParams} name={attendee.output + 'permission'} dbkey={attendee.output + 'channel'} description='Zgoda' type="text" multiple={false} showdescription={false} />
+                    <input type='button' value='+' onClick={() => acceptAttendee(attendee)} />
                 </div>
             ))}
         </>
