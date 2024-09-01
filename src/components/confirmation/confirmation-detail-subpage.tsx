@@ -49,17 +49,17 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                 </> :
                     <>
                         {
-                            level0 ?? <>
+                            level0 ? <>
                                 <h2>1. rok formacji</h2>
-                            </>
+                            </> : null
                         }
                         {
-                            level1 ?? <>
+                            level1 ? <>
                                 <h2>2. rok formacji</h2>
-                            </>
+                            </> : null
                         }
                         {
-                            level2 ?? <>
+                            level2 ? <>
                                 <h2>3. rok formacji</h2>
                                 <div>Prosze o uzupełnienie poniższych informacji:</div>
                                 <div>
@@ -71,7 +71,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                     <EditableElement getParams={getParams} name={role?.id + 'confirmationname'} dbkey={role?.id ?? ''} description='Patron bierzmowanie (tzw. 3. imię)' type="text" multiple={false} showdescription={true} /></div>
                                 <div>
                                     <EditableElement getParams={getParams} name={role?.id + 'sponsor'} dbkey={role?.id ?? ''} description='Świadek bierzmowania' type="text" multiple={false} showdescription={true} /></div>
-                            </>
+                            </> : null
                         }
 
                     </>

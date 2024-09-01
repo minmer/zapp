@@ -117,11 +117,7 @@ export default function EditableElement({ getParams, name, type, multiple, dbkey
     return (
 
         <>
-            <div style=
-                {{
-                    display: 'inline',
-                    float: 'left',
-                }}>
+            <div>
                 <div style=
                     {{
                         display: isEditing ? 'none' : 'block',
