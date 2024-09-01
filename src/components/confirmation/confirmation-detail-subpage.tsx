@@ -62,15 +62,10 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                             level2 ? <>
                                 <h2>3. rok formacji</h2>
                                 <div>Prosze o uzupełnienie poniższych informacji:</div>
-                                <div>
-                                    <EditableElement getParams={getParams} name={role?.id + 'birthday'} dbkey={role?.id ?? ''} description='Data urodzenia' type="text" multiple={false} showdescription={true} />
-                                </div>
-                                <div>
-                                    <EditableElement getParams={getParams} name={role?.id + 'address'} dbkey={role?.id ?? ''} description='Adres zamieszkania' type="text" multiple={false} showdescription={true} /></div>
-                                <div>
-                                    <EditableElement getParams={getParams} name={role?.id + 'confirmationname'} dbkey={role?.id ?? ''} description='Patron bierzmowanie (tzw. 3. imię)' type="text" multiple={false} showdescription={true} /></div>
-                                <div>
-                                    <EditableElement getParams={getParams} name={role?.id + 'sponsor'} dbkey={role?.id ?? ''} description='Świadek bierzmowania' type="text" multiple={false} showdescription={true} /></div>
+                                <EditableElement getParams={getParams} name={role?.id + 'birthday'} dbkey={role?.id ?? ''} description='Data urodzenia' type="text" multiple={false} showdescription={true} />
+                                <EditableElement getParams={getParams} name={role?.id + 'address'} dbkey={role?.id ?? ''} description='Adres zamieszkania' type="text" multiple={false} showdescription={true} />
+                                <EditableElement getParams={getParams} name={role?.id + 'confirmationname'} dbkey={role?.id ?? ''} description='Patron bierzmowanie (tzw. 3. imię)' type="text" multiple={false} showdescription={true} />
+                                <EditableElement getParams={getParams} name={role?.id + 'sponsor'} dbkey={role?.id ?? ''} description='Świadek bierzmowania' type="text" multiple={false} showdescription={true} />
                             </> : null
                         }
 
