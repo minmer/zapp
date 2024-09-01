@@ -19,8 +19,9 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
                     const tempAttendees = (await FetchInformationGetAll('string', token, 'confirmation_attendee')) as unknown as StringOutput[]
                     setAttendees(tempAttendees)
                     for (let i = 0; i < tempAttendees.length; i++) {
-                        const tempOwnerID = (await FetchInformationGetAll('string', token, tempAttendees[0].output + 'owner')) as unknown as StringOutput[]
+                        const tempOwnerID = (await FetchInformationGetAll('string', token, tempAttendees[i].output + 'owner')) as unknown as StringOutput[]
                         if (tempOwnerID.length > 0) {
+                            console.log(tempOwnerID[0].output)
                             tempAttendees[i].id = tempOwnerID[0].output
                         }
                         else {
@@ -51,9 +52,9 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
         getParams({
             func: async (param: unknown) => {
                 const token = param as string
-                await FetchOwnerPut(token, 'confirmation_group_viewer', role?.id ?? '', output.output, false, false, false)
+                await FetchOwnerPut(token, 'confirmation_group_viewer', role?.id ?? '', output.id, false, false, false)
                 await FetchOwnerPost(token, output.output + 'channel', role?.id ?? '')
-                await FetchOwnerPut(token, 'confirmation_channel_viewer', output.output + 'channel', output.output, false, false, false)
+                await FetchOwnerPut(token, 'confirmation_channel_viewer', output.output + 'channel', output.id, false, false, false)
             }, type: 'token', show: false
         });
     }

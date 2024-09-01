@@ -9,7 +9,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
     const [role, setRole] = useState<Role | undefined>()
     const [level0, setLevel0] = useState(false)
     const [level1, setLevel1] = useState(false)
-    const [level2, setLevel2] = useState(true)
+    const [level2, setLevel2] = useState(false)
 
     useEffect(() => {
         (async function () {
@@ -25,7 +25,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                             if (owner.length == 0 || owner == null) {
                                 await FetchInformationPost(token, tempRole.id, [tempRole.id + 'owner'], tempRole.role, [1])
                             }
-                            const levels = FetchInformationGetAll('string', token, tempRole.id + 'level') as unknown as StringOutput[]
+                            const levels = await FetchInformationGetAll('string', token, tempRole.id + 'level') as unknown as StringOutput[]
                             for (let i = 0; i < levels.length; i++) {
                                 if (levels[i].output == '1')
                                     setLevel0(true)
@@ -44,7 +44,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
     return (
         <>
             {
-                !(level0 || level1 || level2) ? <>
+                !(level0 || level1 || level2 || !level2) ? <>
                     <h3>Zgłoszenie czeka na zatwierdzenie</h3>
                 </> :
                     <>
@@ -59,8 +59,13 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                             </> : null
                         }
                         {
-                            level2 ? <>
+                            level2 || !level2 ? <>
                                 <h2>3. rok formacji</h2>
+                                {level2 ? <>
+                                    <div>Prosze o zapoznanie się poniższymi informacjami:</div>
+                                    <EditableElement getParams={getParams} name={role?.id + 'baptism'} dbkey={role?.id + 'channel'} description='Chrzest' type="text" multiple={false} showdescription={true} />
+                                    <EditableElement getParams={getParams} name={role?.id + 'permission'} dbkey={role?.id + 'channel'} description='Zgoda' type="text" multiple={false} showdescription={true} />
+                                </> : null}
                                 <div>Prosze o uzupełnienie poniższych informacji:</div>
                                 <EditableElement getParams={getParams} name={role?.id + 'birthday'} dbkey={role?.id ?? ''} description='Data urodzenia' type="text" multiple={false} showdescription={true} />
                                 <EditableElement getParams={getParams} name={role?.id + 'address'} dbkey={role?.id ?? ''} description='Adres zamieszkania' type="text" multiple={false} showdescription={true} />
