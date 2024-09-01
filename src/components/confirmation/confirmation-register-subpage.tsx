@@ -46,6 +46,7 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
                         const surname = ((await FetchInformationGetAll('string', token, selectedUser.user + 'surname')) as unknown as StringOutput[])[0].output
                         await FetchInformationPost(token, newRole.id, [newRole.id + 'name'], name, [1])
                         await FetchInformationPost(token, newRole.id, [newRole.id + 'surname'], surname, [1])
+                        await FetchInformationPost(token, newRole.id, [newRole.id + 'owner'], newRole.role, [1])
                     }, type: 'token', show: true
                 })
             }
