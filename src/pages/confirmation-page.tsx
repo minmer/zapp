@@ -34,7 +34,6 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                 func: async (param: unknown) => {
                     const user = param as User
                     console.log(user)
-                    console.log(await CreateRole({ getParams: getParams, type: "confirmation_admin", user: user }))
                 }, type: 'user', show: false
             });
         })();

@@ -35,18 +35,17 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
     const register = () => {
         (async function () {
             if (selectedUser != null) {
-                const newRole = await CreateRole({ getParams: getParams, type: "confirmation", user: selectedUser }) as unknown as Role
+                const newRole = await CreateRole({ getParams: getParams, type: "confirmation", user: selectedUser, admin: 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a' }) as unknown as Role
                 setRole(newRole)
                 await getParams({
                     func: async (param: unknown) => {
                         const token = param as string
-                        await FetchOwnerPut(token, 'confirmation_viewer', newRole.id, 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a', false, false, false)
-                        await FetchInformationPost(token, newRole.id, ['confirmation_attendee'], newRole.id, [1])
+                        await FetchOwnerPut(token, 'confirmation_viewer', newRole.roleID, 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a', false, false, false)
+                        await FetchInformationPost(token, newRole.roleID, ['confirmation_attendee'], newRole.roleID, [1])
                         const name = ((await FetchInformationGetAll('string', token, selectedUser.user + 'name')) as unknown as StringOutput[])[0].output
                         const surname = ((await FetchInformationGetAll('string', token, selectedUser.user + 'surname')) as unknown as StringOutput[])[0].output
-                        await FetchInformationPost(token, newRole.id, [newRole.id + 'name'], name, [1])
-                        await FetchInformationPost(token, newRole.id, [newRole.id + 'surname'], surname, [1])
-                        await FetchInformationPost(token, newRole.id, [newRole.id + 'owner'], newRole.role, [1])
+                        await FetchInformationPost(token, newRole.roleID, [newRole.roleID + 'name'], name, [1])
+                        await FetchInformationPost(token, newRole.roleID, [newRole.roleID + 'surname'], surname, [1])
                     }, type: 'token', show: true
                 })
             }
@@ -59,8 +58,8 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
                 const token = param as string
                 const temp = (await FetchInformationGetAll('string', token, 'confirmation_attendee')) as unknown as StringOutput[]
                 for (let i = 0; i < temp.length; i++) {
-                    if (temp[i].output == role?.id)
-                        FetchInformationDelete(token, role.id, temp[i].id)
+                    if (temp[i].output == role?.roleID)
+                        FetchInformationDelete(token, role.roleID, temp[i].id)
                 }
             }, type: 'token', show: false
         });

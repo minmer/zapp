@@ -117,53 +117,47 @@ export default function EditableElement({ getParams, name, type, multiple, dbkey
     return (
 
         <>
-            <div>
-                <div style=
-                    {{
-                        display: isEditing ? 'none' : 'block',
-                    }}>
-                    {data.map(item => (
-                        <div onDoubleClick={onClickData}>
-                            {(showdescription ? description + ': ' : '') + item.output}
-                        </div>
-                    ))}
-                </div>
-                <div style=
-                    {{
-                        display: isEditing ? 'block' : 'none',
-                    }}>
+            {isEditing ?
+                <div>
                     {data.map(item => (
                         <div>
                             <input type={type} value={typeof item.output == 'boolean' ? '' : item.output} checked={typeof item.output == 'boolean' ? item.output : false} onChange={(e) => { onChangeData(e, item.id) }} />
-                            <input type="button" value='⟳' onClick={() => { RefreshData(item.id) }} />
-                            <input type="button" value='X' onClick={() => { DeleteData(item.id) }} />
+                            <input type="button" value='Zapisz' onClick={() => { RefreshData(item.id) }} />
+                            <input type="button" value='Usuń' onClick={() => { DeleteData(item.id) }} />
                         </div>
                     ))}
-                    <div style=
-                        {{
-                            display: multiple || data.length == 0 ? 'block' : 'none',
-                        }}>
+                    {multiple || data.length == 0 ? 
+                    <div>
                         <input type={type}
                             placeholder={description}
-
                             value={newData}
                             onChange={onChangeNewData}
                             onBlur={AddData} />
                         <input type="button" value='Zapisz' onClick={AddData} />
-                    </div>
-                </div>
-                <div style=
-                    {{
-                    position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0, 
-                        display: isLoading ? 'block' : 'none',
-                    }}>
-                    <LoadingComponent />
-                </div>
+                        </div>
+                        : null
+                    }
+                </div> :
+                <>
+                    {data.map(item => (
+                        <span onDoubleClick={onClickData}>
+                            {(showdescription ? description + ': ' : '') + item.output}
+                        </span>
+                    ))}
+                </>
+            }
+            {isLoading ? <div style=
+                {{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0, 
+                }}>
+                <LoadingComponent />
             </div>
+                : null
+            }
         </>
     );
 }

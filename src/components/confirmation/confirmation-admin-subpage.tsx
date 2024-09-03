@@ -52,8 +52,8 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
         getParams({
             func: async (param: unknown) => {
                 const token = param as string
-                await FetchOwnerPut(token, 'confirmation_group_viewer', role?.id ?? '', output.id, false, false, false)
-                await FetchOwnerPost(token, output.output + 'channel', role?.id ?? '')
+                await FetchOwnerPut(token, 'confirmation_group_viewer', role?.roleID ?? '', output.id, false, false, false)
+                await FetchOwnerPost(token, output.output + 'channel', role?.roleID ?? '')
                 await FetchOwnerPut(token, 'confirmation_channel_viewer', output.output + 'channel', output.id, false, false, false)
             }, type: 'token', show: false
         });
@@ -61,19 +61,35 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
 
     return (
         <>
-            {role?.id + ' -|- ' + role?.role + ' -|- ' + role?.type + ' -|- ' + role?.user}
+            {role?.roleID + ' -|- ' + role?.ownerID + ' -|- ' + role?.type + ' -|- ' + role?.user}
             <input type="button" value="Reload" onClick={reload} />
             {attendees?.map(attendee => (
                 <div>
+                    <div>
                     <EditableElement getParams={getParams} name={attendee.output + 'name'} dbkey={''} type="text" multiple={false} showdescription={false} />
                     <EditableElement getParams={getParams} name={attendee.output + 'surname'} dbkey={''} type="text" multiple={false} showdescription={false} />
+                                </div>
+                                <div>
                     <EditableElement getParams={getParams} name={attendee.output + 'level'} dbkey={attendee.output + 'channel'} description='Formacja' type="text" multiple={true} showdescription={true} />
+                                </div>
+                                <div>
                     <EditableElement getParams={getParams} name={attendee.output + 'baptism'} dbkey={attendee.output + 'channel'} description='Chrzest' type="text" multiple={false} showdescription={true} />
+                                </div>
+                                <div>
                     <EditableElement getParams={getParams} name={attendee.output + 'permission'} dbkey={attendee.output + 'channel'} description='Zgoda' type="text" multiple={false} showdescription={true} />
+                                </div>
+                                <div>
                     <EditableElement getParams={getParams} name={attendee.output + 'birthday'} dbkey={''} description='Data urodzenia' type="text" multiple={false} showdescription={true} />
+                                </div>
+                                <div>
                     <EditableElement getParams={getParams} name={attendee.output + 'address'} dbkey={''} description='Adres zamieszkania' type="text" multiple={false} showdescription={true} />
+                                </div>
+                                <div>
                     <EditableElement getParams={getParams} name={attendee.output + 'confirmationname'} dbkey={''} description='Patron bierzmowanie (tzw. 3. imię)' type="text" multiple={false} showdescription={true} />
+                                </div>
+                                <div>
                     <EditableElement getParams={getParams} name={attendee.output + 'sponsor'} dbkey={''} description='Świadek bierzmowania' type="text" multiple={false} showdescription={true} />
+                                </div>
                         {attendee.id != '' ?
                         <input type='button' value='+' onClick={() => acceptAttendee(attendee)} />
                         : null
