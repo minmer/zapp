@@ -116,14 +116,32 @@ h3 {
         left: 50%;
         top: 50%;
         width: fit-content;
-        padding: 1em;
+        padding: .5em;
         box-shadow: 3px 3px 12px #000b;
         border-radius: .5em;
     }
+.editable {
+    border-radius: 1em;
+    padding: 1em;
+    box-shadow: 3px 3px 12px #0003;
+    margin: 1em;
+    background-color: transparent;
+}
 
-    .user-widget input{
-        width: 100%;
-    }
+.editable-input {
+    padding: .5em;
+}
+.editable-input input {
+    margin:  0 .5em;
+}
+
+.editable-children {
+    margin: 0 0 0 1em;
+}
+
+.user-widget input {
+    width: 100%;
+}
 
 @media (min-width:768px) {
     .main-grid {

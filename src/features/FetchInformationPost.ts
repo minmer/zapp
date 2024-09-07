@@ -1,10 +1,10 @@
-export async function FetchInformationPost(token: string, key: string, context: string[], value: string | number | Date | boolean, preorder: number[]) {
+export async function FetchInformationPost(token: string, key: string, context: string[], data: string | number | Date | boolean, preorder: number[]) {
     const res = await fetch('https://zapp.hostingasp.pl/information/',
         {
             method: "POST",
             body: JSON.stringify({
                 "databasekey": "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
-                "data": value instanceof Date ? value.getTime() : value,
+                "data": data instanceof Date ? data.getTime() : data,
                 "token": token,
                 "key": key,
             }),

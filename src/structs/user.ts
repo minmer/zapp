@@ -1,3 +1,4 @@
+import { FetchInformationDelete } from "../features/FetchInformationDelete"
 import { FetchInformationPost } from "../features/FetchInformationPost"
 import { FetchInformationPut } from "../features/FetchInformationPut"
 import { FetchOwnerGet } from "../features/FetchOwnerGet"
@@ -10,7 +11,7 @@ export interface User {
 
 export async function CreateNewUser({ getParams, }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     let user = null
-    getParams({
+    await getParams({
         func: async (param: unknown) => {
             const token = param as string
             const informationID = await FetchInformationPost(token, "token_key_" + token, ["user"], "Temp", [1])
@@ -23,17 +24,21 @@ export async function CreateNewUser({ getParams, }: { getParams: ({ func, type, 
     return user as unknown as User
 }
 
-export async function CreateNewUserInformation({ getParams, name }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, name: string }) {
-    getParams({
-        func: async (param0: unknown) => {
-            getParams({
-                func: async (param1: unknown) => {
-                    const token = param0 as string
-                    const user = param1 as User
-                    if (await FetchOwnerGet(token, user.id + name) == null)
-                        await FetchOwnerPost(token, user.id + name, user.id)
-                }, type: 'user', show: false
-            })
+export async function CreateNewUserInformation({ getParams, user, name }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, user: User, name: string}) {
+    await getParams({
+        func: async (param: unknown) => {
+            const token = param as string
+            if (await FetchOwnerGet(token, user.id + name) == null)
+                await FetchOwnerPost(token, user.id + name, user.id)
+        }, type: 'token', show: false
+    })
+}
+
+export async function DeleteUser({ getParams, user}: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, user: User }) {
+    await getParams({
+        func: async (param: unknown) => {
+            const token = param as string
+            FetchInformationDelete(token, "token_key_" + token, user.id)
         }, type: 'token', show: false
     })
 }

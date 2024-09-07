@@ -56,7 +56,7 @@ export default function Root() {
                 <Route path="/confirmation/*" element={<ConfirmationPage getParams={getParams} />} />
                 <Route path="/finance" element={<FinancePage />} />
                 <Route path="/intention/*" element={<IntentionPage getParams={getParams} />} />
-                <Route path="/minister/*" element={<MinisterPage />} />
+                <Route path="/minister/*" element={<MinisterPage getParams={getParams} />} />
                 <Route path="/obit/*" element={<ObitPage getParams={getParams} />} />
                 <Route path="/pursuit_saint" element={<PursuitSaintPage />} />
                 <Route path="/unction" element={<UnctionPage />} />

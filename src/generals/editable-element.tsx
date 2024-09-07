@@ -1,59 +1,114 @@
-﻿import { ChangeEvent, useEffect, useState } from "react";
+﻿import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import LoadingComponent from "./loading-component";
 import { FetchInformationGetAll} from "../features/FetchInformationGet";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchInformationPut } from "../features/FetchInformationPut";
+import { Editable } from "../structs/editable";
+import { FetchOwnerGet } from "../features/FetchOwnerGet";
 
 export interface IOutput {
     id: string,
-    output: number | string | boolean,
+    output: number | string | boolean | Date,
 }
-export default function EditableElement({ getParams, name, type, multiple, dbkey, description, showdescription }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, name: string, type: string, multiple: boolean, dbkey: string, description?: string, showdescription?: boolean }) {
+export default function EditableElement({ getParams, editable }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, editable: Editable, viewertoken?: string, showchildren?: boolean }) {
     const [isLoading, setIsLoading] = useState(true)
+    const [expanded, setExpanded] = useState(-1)
     const [data, setData] = useState<IOutput[]>([])
-    const [newData, setNewData] = useState('')
+    const [newData, setNewData] = useState<number | string | boolean | Date>()
     const [isEditing, setIsEditing] = useState(false)
+    const [isEditable, setIsEditable] = useState(false)
+
+    const LoadData = useCallback(async (token: string) => {
+        setIsLoading(true)
+        switch (editable.type) {
+            case 'number': {
+                setData(await FetchInformationGetAll('double', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'text': {
+                setData(await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'checkbox': {
+                setData(await FetchInformationGetAll('bool', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'radio': {
+                setData(await FetchInformationGetAll('', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'select': {
+                setData(await FetchInformationGetAll('', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'color': {
+                setData(await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'date': {
+                setData(await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'tel': {
+                setData(await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'email': {
+                setData(await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        setIsLoading(false)
+    }, [editable])
+
+    const backgroundClicked = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (e.currentTarget == e.target)
+            setIsEditing(false);
+    }
+
+
+    useEffect(
+        () => {
+            if (editable.viewertoken != undefined)
+                LoadData(editable.viewertoken)
+            else
+                getParams({
+                    func: async (token: unknown) => {
+                        LoadData(token as string)
+                    }, type: 'token', show: true
+                });
+        }, [getParams, LoadData, editable])
+
+
+    const ReloadData = () => {
+        if (editable.viewertoken != undefined)
+            LoadData(editable.viewertoken)
+            else
+                getParams({
+                    func: async (token: unknown) => {
+                        LoadData(token as string)
+                    }, type: 'token', show: true
+                });
+        }
+
+
     useEffect(
         () => {
             getParams({
-                func: async (param: unknown) => {
-                    const token = param as string
-                    setIsLoading(true)
-                    if (type == 'number') {
-                        setData(await FetchInformationGetAll('double', token, name) as unknown as IOutput[])
-                    }
-                    if (type == 'text') {
-                        setData(await FetchInformationGetAll('string', token, name) as unknown as IOutput[])
-                    }
-                    if (type == 'checkbox') {
-                        setData(await FetchInformationGetAll('bool', token, name) as unknown as IOutput[])
-                    }
-                    setIsLoading(false)
+                func: async (token: unknown) => {
+                    if (await FetchOwnerGet(token as string, editable.dbkey ?? ''))
+                        setIsEditable(true)
                 }, type: 'token', show: false
             });
-        }, [getParams, type, name])
+        }, [getParams, editable])
 
-    useEffect(
-        () => {
-            if (data.length == 0) {
-                setIsEditing(true)
-            }else {
-                setIsEditing(false)
-            }
-        }, [data.length])
-
-
-
-    const onChangeNewData = (e: ChangeEvent) => {
-        if ((type == 'number') || (type == 'text'))
-            setNewData((e.target as HTMLInputElement)?.value)
-        if (type == 'checkbox')
-            setNewData((e.target as HTMLInputElement)?.checked.toString())
-    }
-
-    const onClickData = () => {
-        setIsEditing(true)
+    const onClickData = async () => {
+        if (isEditable)
+            setIsEditing(true)
     }
 
     const DeleteData = (id: string) => {
@@ -61,29 +116,21 @@ export default function EditableElement({ getParams, name, type, multiple, dbkey
         getParams({
             func: async (param: unknown) => {
                 const token = param as string
-                FetchInformationDelete(token ?? '', dbkey, id)
-                setData(data.filter(item => item.id !== id))
+                await FetchInformationDelete(token, editable.dbkey ?? '', id)
+                LoadData(token)
             }, type: 'token', show: false
         })
     }
 
     const AddData = async () => {
-        if (newData != '') {
+        if (newData != undefined) {
             getParams({
                 func: async (param: unknown) => {
                     const token = param as string
                     setIsLoading(true)
-                    await FetchInformationPost(token ?? '', dbkey, [name], newData, [0])
-                    if (type == 'number') {
-                        setData(await FetchInformationGetAll('double', token, name) as unknown as IOutput[])
-                    }
-                    if (type == 'text') {
-                        setData(await FetchInformationGetAll('string', token, name) as unknown as IOutput[])
-                    }
-                    if (type == 'checkbox') {
-                        setData(await FetchInformationGetAll('bool', token, name) as unknown as IOutput[])
-                    }
-                    setIsLoading(false)
+                    await FetchInformationPost(token, editable.dbkey ?? '', [editable.name], newData, [1])
+                    setNewData('')
+                    LoadData(token)
                 }, type: 'token', show: false
             })
         }
@@ -93,58 +140,166 @@ export default function EditableElement({ getParams, name, type, multiple, dbkey
         getParams({
             func: async (param: unknown) => {
                 const token = param as string
-                await FetchInformationPut(token, dbkey, id, data.find(item => item.id == id)?.output ?? '')
+                await FetchInformationPut(token, editable.dbkey ?? '', id, data.find(item => item.id == id)?.output ?? '')
+                LoadData(token)
             }, type: 'token', show: false
         })
         setIsEditing(false)
     }
 
-    const onChangeData = (e: ChangeEvent, id: string) => {
-        const refreshedData = data.map(item => {
-            if (item.id == id) {
-                return {
-                    id: id,
-                    output: (e.target as HTMLInputElement).value
-                }
-            } else {
-                return item
-            }
-        })
-        setData(refreshedData);
+    const transformToData = (e: ChangeEvent) => {
+        switch (editable.type) {
+            case 'number':
+                return Number((e.target as HTMLInputElement).value)
+            case 'text':
+                return (e.target as HTMLInputElement).value
+            case 'checkbox':
+                return (e.target as HTMLInputElement).checked
+            case 'radio':
+                return ''
+            case 'select':
+                return ''
+            case 'color':
+                return (e.target as HTMLInputElement).value
+            case 'date':
+                return new Date((e.target as HTMLInputElement).value)
+            case 'tel':
+                return (e.target as HTMLInputElement).value
+            case 'email':
+                return (e.target as HTMLInputElement).value
+            default:
+                return ''
+        }
     }
 
+    const onChangeData = (e: ChangeEvent, id?: string) => {
+        if (id) {
+
+            const refreshedData = data.map(item => {
+                if (item.id == id)
+                    return {
+                        id: item.id,
+                        output: transformToData(e)
+                    }
+                else
+                    return item
+            })
+            setData(refreshedData);
+        }
+        else
+            setNewData(transformToData(e))
+    }
+
+
+    const renderInput = (item?: IOutput) => {
+        switch (editable.type) {
+            case 'number': {
+                return <input type='number' value={(item ? item.output : newData) as number} onChange={(e) => { onChangeData(e, item?.id) } } placeholder={editable.description} />
+            }
+            case 'text': {
+                return <input type='text' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+            }
+            case 'checkbox': {
+                return <input type='checkbox' checked={(item ? item.output : newData) as boolean} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+            }
+            case 'radio': {
+                return
+            }
+            case 'select': {
+                return
+            }
+            case 'color': {
+                return <input type='color' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+            }
+            case 'date': {
+                return <input type="datetime-local" value={((item ? item.output : newData) as Date).toLocaleString('sv').replace(' GMT', '').substring(0, 16)} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+            }
+            case 'tel': {
+                return <input type='tel' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} pattern='[+][0-9]{11}' />
+            }
+            case 'email': {
+                return <input type='email' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+            }
+            default: {
+                break;
+            }
+        }
+    }
 
     return (
 
         <>
+            {isEditable && data.length == 0 ?
+                <input type="button" value={editable.description} onClick={onClickData} />
+                :
+                editable.showchildren ?
+                    <>
+                        {data.map((item, index) => (
+                            <div className='editable'>
+                                {expanded == index ?
+                                    <>
+                                        <div onDoubleClick={onClickData} onClick={() => { setExpanded(-1) }}>
+                                            {'△ ' + (editable.showdescription ? editable.description + ': ' : '') + item.output}
+                                        </div>
+                                        {editable.children?.map(child => (
+                                            <div className='editable-children'>
+                                                <EditableElement getParams={getParams} editable=
+                                                    {
+                                                    {
+                                                        name: item.id + child.name,
+                                                        type: child.type,
+                                                        multiple: child.multiple,
+                                                        dbkey: child.dbkey ?? editable.dbkey,
+                                                        description: child.description,
+                                                        showdescription: child.showdescription ?? editable.showdescription,
+                                                        showchildren: child.showchildren ?? editable.showchildren,
+                                                        viewertoken: child.viewertoken ?? editable.viewertoken,
+                                                        children: child.children
+                                                    }
+                                                    } />
+                                            </div>
+                                        ))}
+                                    </>
+                                    :
+                                    <>
+                                        <div onDoubleClick={onClickData} onClick={() => { setExpanded(index) }} >
+                                            {'▽ ' + (editable.showdescription ? editable.description + ': ' : '') + item.output}
+                                        </div>
+                                    </>
+                                }
+                            </div>
+                        ))}
+                    </>
+                    :
+                    <>
+                        {data.map((item, index) => (
+                            <span onDoubleClick={onClickData}>
+                                {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : ' ')) + item.output}
+                            </span>
+                        ))}
+                    </>
+            }
             {isEditing ?
-                <div>
-                    {data.map(item => (
-                        <div>
-                            <input type={type} value={typeof item.output == 'boolean' ? '' : item.output} checked={typeof item.output == 'boolean' ? item.output : false} onChange={(e) => { onChangeData(e, item.id) }} />
-                            <input type="button" value='Zapisz' onClick={() => { RefreshData(item.id) }} />
-                            <input type="button" value='Usuń' onClick={() => { DeleteData(item.id) }} />
-                        </div>
-                    ))}
-                    {multiple || data.length == 0 ? 
+                <div className='popup' onClick={(e) => { backgroundClicked(e) }}>
                     <div>
-                        <input type={type}
-                            placeholder={description}
-                            value={newData}
-                            onChange={onChangeNewData}
-                            onBlur={AddData} />
-                        <input type="button" value='Zapisz' onClick={AddData} />
-                        </div>
-                        : null
-                    }
+                        {data.map(item => (
+                            <div className='editable-input'>
+                                {renderInput(item)}
+                                <input type="button" value='Zapisz' onClick={() => { RefreshData(item.id) }} />
+                                <input type="button" value='Przywróć' onClick={ReloadData} />
+                                <input type="button" value='Usuń' onClick={() => { DeleteData(item.id) }} />
+                            </div>
+                        ))}
+                        {editable.multiple || data.length == 0 ?
+                            <div className='editable-input'>
+                                {renderInput()}
+                                <input type="button" value='Zapisz' onClick={AddData} />
+                            </div>
+                            : null
+                        }
+                    </div>
                 </div> :
-                <>
-                    {data.map(item => (
-                        <span onDoubleClick={onClickData}>
-                            {(showdescription ? description + ': ' : '') + item.output}
-                        </span>
-                    ))}
-                </>
+                null
             }
             {isLoading ? <div style=
                 {{

@@ -1,4 +1,4 @@
-export async function FetchInformationPut(token: string, key: string, id: string, data: string | number | boolean) {
+export async function FetchInformationPut(token: string, key: string, id: string, data: string | number | boolean | Date) {
 
     return (await fetch('https://zapp.hostingasp.pl/information/',
         {
@@ -7,7 +7,7 @@ export async function FetchInformationPut(token: string, key: string, id: string
                 "token": token,
                 "key": key,
                 "id": id,
-                "data": data,
+                "data": data instanceof Date ? data.getTime() : data,
                 "databasekey": 'c5jY&V8;kXo!5HFy?)Z8g%qzgC',
 
             }),

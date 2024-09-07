@@ -7,7 +7,7 @@ import { FetchInformationPost } from "../../features/FetchInformationPost";
 import { FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
 import { FetchInformationDelete } from "../../features/FetchInformationDelete";
 
-export default function ConfirmationRegisterSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
     const [selectedUser, setSelectedUser] = useState<User>()
     const [role, setRole] = useState<Role | null>()

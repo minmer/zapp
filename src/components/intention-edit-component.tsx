@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import LoadingComponent from "../generals/loading-component";
 import { FetchInformationGet, FetchInformationGetAll, StringOutput, DateOutput } from "../features/FetchInformationGet";
 import { FetchInformationPost } from "../features/FetchInformationPost";
-import EditableElement from "../generals/editable-element";
+import OldEditableElement from "../temp/old-editable-element";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 
 interface Mass {
@@ -164,10 +164,10 @@ export default function ItentionEditElement({ getParams }: { getParams: ({ func,
                                     {mass.time.getHours() + ':' + mass.time.getMinutes().toString().padStart(2, '0')}
                                 </div>
                                 <div className="intention">
-                                    <EditableElement getParams={getParams} showdescription={true} description="Intencje" type="text" name={mass.id + 'intention'} multiple={true} dbkey="new_intention_admin" />
-                                    <EditableElement getParams={getParams} showdescription={true} description="Kolor" type="text" name={mass.id + 'color'} multiple={false} dbkey="new_intention_admin" />
-                                    <EditableElement getParams={getParams} showdescription={true} description="Wspomnienie" type="text" name={mass.id + 'description'} multiple={false} dbkey="new_intention_admin" />
-                                    <EditableElement getParams={getParams} showdescription={true} description="Zbiorowa" type="checkbox" name={mass.id + 'collective'} multiple={false} dbkey="new_intention_admin" />
+                                    <OldEditableElement getParams={getParams} showdescription={true} description="Intencje" type="text" name={mass.id + 'intention'} multiple={true} dbkey="new_intention_admin" />
+                                    <OldEditableElement getParams={getParams} showdescription={true} description="Kolor" type="text" name={mass.id + 'color'} multiple={false} dbkey="new_intention_admin" />
+                                    <OldEditableElement getParams={getParams} showdescription={true} description="Wspomnienie" type="text" name={mass.id + 'description'} multiple={false} dbkey="new_intention_admin" />
+                                    <OldEditableElement getParams={getParams} showdescription={true} description="Zbiorowa" type="checkbox" name={mass.id + 'collective'} multiple={false} dbkey="new_intention_admin" />
                                     <input type="button" value='Usuń Mszę' onClick={() => deleteMass(mass.id)} />
                                 </div>
                             </>

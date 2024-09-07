@@ -5,7 +5,7 @@ import { FetchInformationGetAll, StringOutput } from "../../features/FetchInform
 import OldEditableElement from "../../temp/old-editable-element";
 import { FetchInformationPost } from "../../features/FetchInformationPost";
 
-export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function MinisterDetailSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [role, setRole] = useState<Role | undefined>()
     const [level0, setLevel0] = useState(false)
     const [level1, setLevel1] = useState(false)

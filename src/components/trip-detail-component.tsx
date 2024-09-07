@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
-import EditableElement from "../generals/editable-element";
+import OldEditableElement from "../temp/old-editable-element";
 import LoadingComponent from "../generals/loading-component";
 
 interface IValue {
@@ -154,12 +154,12 @@ export default function TripsCreateElement({ getParams }: { getParams: ({ func, 
                             <div style={{
                                 display: isAdmin == (value.direction == 1) ? 'block' : 'none',
                             }} >
-                                <EditableElement getParams={getParams} showdescription={true} description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={"role_trip_" + role} />
+                                <OldEditableElement getParams={getParams} showdescription={true} description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={"role_trip_" + role} />
                             </div>
                             <div style={{
                                 display: isAdmin !== (value.direction == 1) ? 'block' : 'none',
                             }} >
-                                <EditableElement getParams={getParams} showdescription={true} description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={'rolegroup_trip_' + list + '_admin'} />
+                                <OldEditableElement getParams={getParams} showdescription={true} description={value.description} type={value.type} name={role + value.name} multiple={false} dbkey={'rolegroup_trip_' + list + '_admin'} />
                             </div>
                         </>
                     ))}

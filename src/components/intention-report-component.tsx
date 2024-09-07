@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingComponent from "../generals/loading-component";
 import { FetchInformationGet, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
-import EditableElement from "../generals/editable-element";
+import OldEditableElement from "../temp/old-editable-element";
 
 interface IMass {
     id: string,
@@ -136,9 +136,9 @@ export default function ItentionReportElement({ getParams }: { getParams: ({ fun
                             {mass.intentions.map((intention) => (
                                 <>
                                     <div>{intention.name}
-                                        <EditableElement getParams={getParams} description="Celebrans" type="text" name={intention.id + 'celebrator'} multiple={false} dbkey="intention_raport_admin" />
-                                        <EditableElement getParams={getParams} description="Ofiara" type="number" name={intention.id + 'donation'} multiple={false} dbkey="intention_raport_admin" />
-                                        <EditableElement getParams={getParams} description="Ofiaroodbiorca" type="text" name={intention.id + 'donated'} multiple={false} dbkey="intention_raport_admin" />
+                                        <OldEditableElement getParams={getParams} description="Celebrans" type="text" name={intention.id + 'celebrator'} multiple={false} dbkey="intention_raport_admin" />
+                                        <OldEditableElement getParams={getParams} description="Ofiara" type="number" name={intention.id + 'donation'} multiple={false} dbkey="intention_raport_admin" />
+                                        <OldEditableElement getParams={getParams} description="Ofiaroodbiorca" type="text" name={intention.id + 'donated'} multiple={false} dbkey="intention_raport_admin" />
                                     </div>
                                 </>
                             ))}

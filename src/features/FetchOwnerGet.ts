@@ -12,7 +12,7 @@ export async function FetchOwnerGet(token: string, key: string) {
             },
         })
     if (predata.status == 204) {
-        return
+        return null
     }
     if (predata.status == 200) {
         return (await predata.json().then(resJson => resJson.id))

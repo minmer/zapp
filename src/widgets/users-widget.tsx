@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
-import { User } from "../structs/user";
-import { FetchOwnerPost } from "../features/FetchOwnerPost";
-import { FetchInformationPost } from "../features/FetchInformationPost";
-import { FetchInformationPut } from "../features/FetchInformationPut";
-import { FetchOwnerGet } from "../features/FetchOwnerGet";
-import EditableElement from "../generals/editable-element";
+import { CreateNewUser, CreateNewUserInformation, DeleteUser, User } from "../structs/user";
+import OldEditableElement from "../temp/old-editable-element";
 
 export default function UsersWidget({ getParams, onSelected }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, onSelected?: () => void }) {
     const [users, setUsers] = useState<User[]>([])
@@ -25,21 +21,10 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
             })
         }, [getParams])
 
-    const createNewUser = () => {
-        getParams({
-            func: async (param: unknown) => {
-                const token = param as string
-                const informationID = await FetchInformationPost(token, "token_key_" + token, ["user"], "Temp", [1])
-                await FetchOwnerPost(token, informationID, "token_key_" + token)
-                const ownerID = await FetchOwnerGet(token, informationID)
-                await FetchInformationPut(token, "token_key_" + token, informationID, ownerID)
-                setSelectedUser({ id: informationID, user: ownerID })
-                setUsers([
-                    ...users,
-                    { id: informationID, user: ownerID }
-                ]);
-            }, type: 'token', show: false
-        })
+    const createNewUser = async () => {
+        const user = await CreateNewUser({ getParams })
+        CreateNewUserInformation({ getParams: getParams, user: user, name: 'name'})
+        CreateNewUserInformation({ getParams: getParams, user: user, name: 'surname'})
     }
 
     const selectUser = (user: User) => {
@@ -48,6 +33,14 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
         localStorage.setItem("userid", user.id)
         if (onSelected != null)
             onSelected()
+    }
+
+    let deleteCount = 0;
+
+    const deleteUser = (user: User) => {
+        if (deleteCount > 2)
+            DeleteUser({ getParams: getParams, user: user })
+        deleteCount++;
     }
 
     return (
@@ -63,15 +56,15 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
                             border: '1px solid',
                         }}>{
                             <div style={{ display: 'inline-block' }}>
-                                <EditableElement getParams={getParams} name={user.user + "name"} dbkey={user.id} type="text" multiple={false} showdescription={false} description="Imię" />
-                                <EditableElement getParams={getParams} name={user.user + "surname"} dbkey={user.id} type="text" multiple={false} showdescription={false} description="Nazwisko" />
+                                <OldEditableElement getParams={getParams} name={user.user + "name"} dbkey={user.id + 'name'} type="text" multiple={false} showdescription={false} description="Imię" />
+                                <OldEditableElement getParams={getParams} name={user.user + "surname"} dbkey={user.id + 'surname'} type="text" multiple={false} showdescription={false} description="Nazwisko" />
 
-                                <input type='button' value='wybierz' onClick={() => selectUser(user)} />
+                                <input type='button' value='wybierz' onClick={() => selectUser(user)} onDoubleClick={() => deleteUser(user) } />
                         </div>
                     }
                     </div>
-                ) }
-            <input type="button" value="Stwórz nową osobę" onClick={createNewUser} />
+                )}
+            <input type="button" value="Stwórz nową osobę" onClick={createNewUser}  />
         </div>
     );
 }

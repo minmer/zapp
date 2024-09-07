@@ -10,6 +10,5 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\routes\intention\" />
-    <Folder Include="src\temp\" />
   </ItemGroup>
 </Project>

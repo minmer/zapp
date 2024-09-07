@@ -7,7 +7,7 @@ import OldEditableElement from "../../temp/old-editable-element";
 import { FetchOwnerPut } from "../../features/FetchOwnerPut";
 import { FetchOwnerPost } from "../../features/FetchOwnerPost";
 
-export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
     const [role, setRole] = useState<Role | null>()
     const [attendees, setAttendees] = useState<StringOutput[]>()
