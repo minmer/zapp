@@ -19,7 +19,7 @@ export default function ItentionEditElement({ getParams }: { getParams: ({ func,
         "Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"
     ]
     const hourProposition = [
-        25200000, 28800000, 34200000, 36000000, 43200000, 59400000, 61200000, 64800000
+        25200000, 28800000, 34200000, 36000000, 43200000, 59400000, 61200000, 64800000, 68400000
     ]
     const { init_date } = useParams();
     const [date, setDate] = useState(new Date((Number(init_date) == -1) ? Date.now() : Number(init_date)))
