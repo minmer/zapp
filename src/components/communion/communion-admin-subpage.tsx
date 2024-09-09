@@ -4,7 +4,7 @@ import { User } from "../../structs/user";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
 import EditableElement from "../../generals/editable-element";
 
-export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function CommunionAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
     const [role, setRole] = useState<Role | null>()
     const [ministers, setMinisters] = useState<Role[]>()
@@ -13,8 +13,8 @@ export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func
             getParams({
                 func: async (param: unknown) => {
                     const user = param as User
-                    setRole(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }))
-                    setMinisters(await GetMembers({ getParams: getParams, type: 'minister'}))
+                    setRole(await GetAdminRole({ getParams: getParams, type: 'communion', user: user }))
+                    setMinisters(await GetMembers({ getParams: getParams, type: 'communion'}))
                 }, type: 'user', show: false
             });
         }());

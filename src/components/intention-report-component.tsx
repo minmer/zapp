@@ -44,28 +44,28 @@ export default function ItentionReportElement({ getParams }: { getParams: ({ fun
                 const token = param as string
                 setIsLoading(true)
                 setMasses([])
-                const massData = await FetchInformationGet('integer', token, 'zielonki_mass', start.getTime(), end.getTime(), 'intention_viewer') as unknown as NumberOutput[]
+                const massData = await FetchInformationGet('datetime', token, 'new_zielonki_mass', start.getTime(), end.getTime(), 'new_intention_viewer') as unknown as NumberOutput[]
                 const tempMasses = [] as IMass[]
                 for (let i = 0; i < massData.length; i++) {
-                    const intentionData = await FetchInformationGetAll('text', token, massData[i].id + 'intention') as unknown as StringOutput[]
+                    const intentionData = await FetchInformationGetAll('string', token, massData[i].id + 'intention') as unknown as StringOutput[]
                     const tempIntentions = [] as IIntention[]
                     for (let j = 0; j < intentionData.length; j++) {
 
                         tempIntentions.push({
                             name: intentionData[j].output,
                             id: intentionData[j].id,
-                            celebrator: (await FetchInformationGetAll('text', token, intentionData[j].id + 'celebrator') as unknown as StringOutput[])[0]?.output ?? '',
-                            donation: (await FetchInformationGetAll('integer', token, intentionData[j].id + 'donation') as unknown as NumberOutput[])[0]?.output ?? 0,
-                            donated: (await FetchInformationGetAll('text', token, intentionData[j].id + 'donated') as unknown as StringOutput[])[0]?.output ?? ''
+                            celebrator: (await FetchInformationGetAll('string', token, intentionData[j].id + 'celebrator') as unknown as StringOutput[])[0]?.output ?? '',
+                            donation: (await FetchInformationGetAll('double', token, intentionData[j].id + 'donation') as unknown as NumberOutput[])[0]?.output ?? 0,
+                            donated: (await FetchInformationGetAll('string', token, intentionData[j].id + 'donated') as unknown as StringOutput[])[0]?.output ?? ''
                         })
                     }
-                    const isCollective = (await FetchInformationGetAll('integer', token, massData[i].id + 'collective') as unknown as NumberOutput[]).length > 0
+                    const isCollective = (await FetchInformationGetAll('double', token, massData[i].id + 'collective') as unknown as NumberOutput[]).length > 0
                     tempMasses.push({
                         id: massData[i].id,
                         time: new Date(massData[i].output),
                         intentions: tempIntentions,
                         isCollective: isCollective,
-                        celebrator: tempIntentions.filter(p => p.celebrator != undefined)[0].celebrator
+                        celebrator: tempIntentions.filter(p => p.celebrator != undefined)[0]?.celebrator
                     })
                 }
                 setIsLoading(false)

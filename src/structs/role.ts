@@ -11,6 +11,7 @@ export interface Role {
     user: User,
     ownerID: string,
     type: string,
+    isRegistered?: boolean,
 }
 
 export async function CreateNewRole({ getParams, type, user, admin }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User, admin: string }) {
@@ -25,6 +26,7 @@ export async function CreateNewRole({ getParams, type, user, admin }: { getParam
             await FetchOwnerPut(token, roleID + 'viewer', roleID, admin, false, false, true)
             await FetchInformationPost(token, roleID, [type + 'member'], roleID, [1])
             await FetchInformationPost(token, roleID, [roleID + 'user'], user.id, [1])
+            await FetchInformationPost(token, roleID, [roleID + 'userowner'], user.user, [1])
             await FetchInformationPost(token, roleID, [roleID + 'owner'], ownerID, [1])
             role = { roleID: roleID, user: user, ownerID: ownerID, type: type } as Role
         }, type: 'token', show: false
@@ -99,12 +101,14 @@ export async function GetMembers({ getParams, type }: { getParams: ({ func, type
             const token = param as string
             const memberOutput = (await FetchInformationGetAll('string', token, type + 'member')) as unknown as StringOutput[]
             for (let i = 0; i < memberOutput.length; i++) {
+                console.log(await FetchOwnerGet(token, memberOutput[i].output + 'group'))
                 members.push(
                     {
                         roleID: memberOutput[i].output,
                         ownerID: ((await FetchInformationGetAll('string', token, memberOutput[i].output + 'owner')) as unknown as StringOutput[])[0].output,
-                        user: { id: '', user: ((await FetchInformationGetAll('string', token, memberOutput[i].output + 'user')) as unknown as StringOutput[])[0].output },
-                        type: type
+                        user: { id: ((await FetchInformationGetAll('string', token, memberOutput[i].output + 'user')) as unknown as StringOutput[])[0].output, user: ((await FetchInformationGetAll('string', token, memberOutput[i].output + 'userowner')) as unknown as StringOutput[])[0].output },
+                        type: type,
+                        isRegistered: await FetchOwnerGet(token, memberOutput[i].output + 'common') != null,
                 })
             }
         }, type: 'token', show: false

@@ -1,23 +1,43 @@
-import { Link, Route, Routes, useParams } from 'react-router-dom';
-import baner from '../assets/communion.jpg'
+import { Link, Route, Routes } from 'react-router-dom';
+import baner from '../assets/communion.jpg';
 import { useEffect, useState } from 'react';
-import { FetchInformationGetAll } from '../features/FetchInformationGet';
-import CommunionsDetailComponent from '../components/communions-detail-component';
-export default function CommunionPage() {
-    const { token } = useParams();
-    const [isAvailable, setIsAvailable] = useState(false)
+import { CreateAdminRole, GetAdminRole, GetRole } from '../structs/role';
+import { User } from '../structs/user';
+import CommunionOverviewSubpage from '../components/communion/communion-overview-subpage';
+import CommunionRegisterSubpage from '../components/communion/communion-register-subpage';
+import CommunionDetailSubpage from '../components/communion/communion-detail-subpage';
+import CommunionAdminSubpage from '../components/communion/communion-admin-subpage';
 
+export default function CommunionPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>; type: string; show: boolean; }) => Promise<unknown>; }) {
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isToken, setIsToken] = useState(false);
+    const [isRole, setIsRole] = useState(false);
     useEffect(() => {
         (async function () {
-            try {
-                if (token !== undefined) {
-                    setIsAvailable(((await FetchInformationGetAll('text', token, 'communion_child') as []).length == 0 ? false : true))
-                }
-            } catch (e) {
-                console.error(e);
-            }
+            getParams({
+                func: async () => {
+                    setIsToken(true);
+                    getParams({
+                        func: async (param: unknown) => {
+                            const user = param as User;
+                            setIsRole(await GetRole({ getParams: getParams, type: 'communion', user: user }) != null);
+                            setIsAdmin(await GetAdminRole({ getParams: getParams, type: 'communion', user: user }) != null);
+                        }, type: 'user', show: false
+                    });
+                }, type: 'token', show: false
+            });
+        }());
+    }, [getParams]);
+    const register = () => {
+        (async function () {
+            await getParams({
+                func: async (param: unknown) => {
+                    const user = param as User;
+                    console.log(await CreateAdminRole({ getParams: getParams, type: 'communion', user: user }));
+                }, type: 'user', show: true
+            });
         })();
-    }, [token])
+    };
     return (
 
         <>
@@ -30,16 +50,26 @@ export default function CommunionPage() {
                 </div>
                 <div className="tabs">
                     <ul>
-                        <li style={{
-                            display: isAvailable ? 'block' : 'none',
-                        }}>
-                            <Link to={`detail`}>Pogląd</Link>
+                        <li>
+                            <Link to={`overview`}>Ogólne informacje</Link>
                         </li>
+                        {isToken ? <li>
+                            <Link to={`register`}>Zapisy</Link>
+                        </li> : null}
+                        {isRole ? <li>
+                            <Link to={`detail`}>Szczegóły</Link>
+                        </li> : null}
+                        {isAdmin ? <li>
+                            <Link to={`admin`}>Admin</Link>
+                        </li> : null}
                         <div className="clear"></div>
                     </ul>
                 </div>
                 <Routes>
-                    <Route path="detail/*" element={<CommunionsDetailComponent/>} />
+                    <Route path="overview" element={<CommunionOverviewSubpage getParams={getParams} />} />
+                    <Route path="register" element={<CommunionRegisterSubpage getParams={getParams} />} />
+                    <Route path="detail" element={<CommunionDetailSubpage getParams={getParams} />} />
+                    <Route path="admin" element={<CommunionAdminSubpage getParams={getParams} />} />
                 </Routes>
                 <div className="description">
                     <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
@@ -49,10 +79,11 @@ export default function CommunionPage() {
                         <li>Sprawdzenie postępu dziecka w zdawaniu</li>
                         <li>Zgłoszenie się na wyjazd w białym tygodniu</li>
                         <li>Sprawdzenie wszystkich terminów spotkań</li>
-                        <li>Możliwość dodatkowych terminów do zdawania</li>
+                        <li onDoubleClick={register}>Możliwość dodatkowych terminów do zdawania</li>
                     </ul>
                 </div>
             </div>
         </>
     );
 }
+

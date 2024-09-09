@@ -73,7 +73,7 @@ export default function OldEditableElement({ getParams, name, type, multiple, db
                 func: async (param: unknown) => {
                     const token = param as string
                     setIsLoading(true)
-                    await FetchInformationPost(token ?? '', dbkey, [name], newData, [0])
+                    await FetchInformationPost(token ?? '', dbkey, [name], newData, [1])
                     if (type == 'number') {
                         setData(await FetchInformationGetAll('double', token, name) as unknown as IOutput[])
                     }

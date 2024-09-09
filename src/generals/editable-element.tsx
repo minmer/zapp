@@ -235,7 +235,7 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                 editable.showchildren ?
                     <>
                         {data.map((item, index) => (
-                            <div className='editable'>
+                            <div className='editable' key={item.id}>
                                 {expanded == index ?
                                     <>
                                         <div onDoubleClick={onClickData} onClick={() => { setExpanded(-1) }}>
@@ -273,7 +273,7 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                     :
                     <>
                         {data.map((item, index) => (
-                            <span onDoubleClick={onClickData}>
+                            <span key={item.id} onDoubleClick={onClickData}>
                                 {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : ' ')) + item.output}
                             </span>
                         ))}
@@ -283,7 +283,7 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                 <div className='popup' onClick={(e) => { backgroundClicked(e) }}>
                     <div>
                         {data.map(item => (
-                            <div className='editable-input'>
+                            <div key={item.id} className='editable-input'>
                                 {renderInput(item)}
                                 <input type="button" value='Zapisz' onClick={() => { RefreshData(item.id) }} />
                                 <input type="button" value='Przywróć' onClick={ReloadData} />
