@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
 import { CreateNewUser, CreateNewUserInformation, DeleteUser, User } from "../structs/user";
-import OldEditableElement from "../temp/old-editable-element";
+import EditableElement from "../generals/editable-element";
 
 export default function UsersWidget({ getParams, onSelected }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, onSelected?: () => void }) {
     const [users, setUsers] = useState<User[]>([])
@@ -24,7 +24,8 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
     const createNewUser = async () => {
         const user = await CreateNewUser({ getParams })
         CreateNewUserInformation({ getParams: getParams, user: user, name: 'name'})
-        CreateNewUserInformation({ getParams: getParams, user: user, name: 'surname'})
+        CreateNewUserInformation({ getParams: getParams, user: user, name: 'surname' })
+        setUsers([...users, user])
     }
 
     const selectUser = (user: User) => {
@@ -56,8 +57,27 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
                             border: '1px solid',
                         }}>{
                             <div style={{ display: 'inline-block' }}>
-                                <OldEditableElement getParams={getParams} name={user.user + "name"} dbkey={user.id + 'name'} type="text" multiple={false} showdescription={false} description="Imię" />
-                                <OldEditableElement getParams={getParams} name={user.user + "surname"} dbkey={user.id + 'surname'} type="text" multiple={false} showdescription={false} description="Nazwisko" />
+                                <EditableElement getParams={getParams} editable={
+                                    {
+                                        name: user.user + 'name',
+                                        type: 'text',
+                                        multiple: false,
+                                        description: 'Imię',
+                                        dbkey: user.id,
+                                        showdescription: false,
+                                        showchildren: false,
+                                    }} />
+                                <span> </span>
+                                <EditableElement getParams={getParams} editable={
+                                    {
+                                        name: user.user + 'surname',
+                                        type: 'text',
+                                        multiple: false,
+                                        dbkey: user.id,
+                                        description: 'Nazwisko',
+                                        showdescription: false,
+                                        showchildren: false,
+                                    }} />
 
                                 <input type='button' value='wybierz' onClick={() => selectUser(user)} onDoubleClick={() => deleteUser(user) } />
                         </div>

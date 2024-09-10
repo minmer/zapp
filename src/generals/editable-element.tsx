@@ -131,6 +131,8 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                     await FetchInformationPost(token, editable.dbkey ?? '', [editable.name], newData, [1])
                     setNewData('')
                     LoadData(token)
+                    if (!editable.multiple)
+                        setIsEditing(false);
                 }, type: 'token', show: false
             })
         }
