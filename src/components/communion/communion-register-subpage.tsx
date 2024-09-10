@@ -37,9 +37,9 @@ export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ 
     const register = () => {
         (async function () {
             if (selectedUser != null) {
-                CreateRole({ getParams: getParams, type: 'communion', user: selectedUser, admin: 'ed3d4741-b900-4bee-afa0-a7bc08e8be52' })
-                ShareUserInformation({ getParams: getParams, name: 'name', user: selectedUser, sharingID: 'ed3d4741-b900-4bee-afa0-a7bc08e8be52' })
-                ShareUserInformation({ getParams: getParams, name: 'surname', user: selectedUser, sharingID: 'ed3d4741-b900-4bee-afa0-a7bc08e8be52' })
+                CreateRole({ getParams: getParams, type: 'communion', user: selectedUser, admin: '4344984e-0583-4148-82f0-76a29651f47d' })
+                ShareUserInformation({ getParams: getParams, name: 'name', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
+                ShareUserInformation({ getParams: getParams, name: 'surname', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
             }
         })();
     }
