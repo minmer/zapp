@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { CreateRole, GetRole, Role } from "../../structs/role";
 import { ShareUserInformation, User } from "../../structs/user";
-import { FetchInformationDelete } from "../../features/FetchInformationDelete";
 import EditableElement from "../../generals/editable-element";
 
 export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
