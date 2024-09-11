@@ -142,6 +142,7 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
         getParams({
             func: async (param: unknown) => {
                 const token = param as string
+                console.log(editable.dbkey)
                 await FetchInformationPut(token, editable.dbkey ?? '', id, data.find(item => item.id == id)?.output ?? '')
                 LoadData(token)
             }, type: 'token', show: false

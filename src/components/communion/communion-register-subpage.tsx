@@ -28,6 +28,7 @@ export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ 
     useEffect(() => {
         (async function () {
             if (selectedUser != null) {
+                console.log(await GetRole({ getParams: getParams, type: "communion", user: selectedUser }))
                 setRole(await GetRole({ getParams: getParams, type: "communion", user: selectedUser }))
             }
         }());
@@ -68,7 +69,7 @@ export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ 
                                 type: 'text',
                                 multiple: false,
                                 description: 'Imię',
-                                dbkey: selectedUser.id,
+                                dbkey: selectedUser.id + 'name',
                                 showdescription: false,
                                 showchildren: false,
                             }} />
@@ -78,7 +79,7 @@ export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ 
                                 name: selectedUser.user + 'surname',
                                 type: 'text',
                                 multiple: false,
-                                dbkey: selectedUser.id,
+                                dbkey: selectedUser.id + 'surname',
                                 description: 'Nazwisko',
                                 showdescription: false,
                                 showchildren: false,

@@ -23,8 +23,8 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
 
     const createNewUser = async () => {
         const user = await CreateNewUser({ getParams })
-        CreateNewUserInformation({ getParams: getParams, user: user, name: 'name'})
-        CreateNewUserInformation({ getParams: getParams, user: user, name: 'surname' })
+        await CreateNewUserInformation({ getParams: getParams, user: user, name: 'name'})
+        await CreateNewUserInformation({ getParams: getParams, user: user, name: 'surname' })
         setUsers([...users, user])
     }
 
@@ -63,7 +63,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
                                         type: 'text',
                                         multiple: false,
                                         description: 'Imię',
-                                        dbkey: user.id,
+                                        dbkey: user.id + 'name',
                                         showdescription: false,
                                         showchildren: false,
                                     }} />
@@ -73,7 +73,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
                                         name: user.user + 'surname',
                                         type: 'text',
                                         multiple: false,
-                                        dbkey: user.id,
+                                        dbkey: user.id + 'surname',
                                         description: 'Nazwisko',
                                         showdescription: false,
                                         showchildren: false,
