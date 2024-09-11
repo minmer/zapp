@@ -19,6 +19,14 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
     const [isEditing, setIsEditing] = useState(false)
     const [isEditable, setIsEditable] = useState(false)
 
+
+    useEffect(
+        () => {
+            if (editable.type == 'checkbox') {
+                setNewData(false)
+            }
+        },[editable])
+
     const LoadData = useCallback(async (token: string) => {
         setIsLoading(true)
         switch (editable.type) {
@@ -47,6 +55,14 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                 break;
             }
             case 'date': {
+                setData(await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'datetime': {
+                setData(await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'time': {
                 setData(await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[])
                 break;
             }
@@ -129,7 +145,7 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                     const token = param as string
                     setIsLoading(true)
                     await FetchInformationPost(token, editable.dbkey ?? '', [editable.name], newData, [1])
-                    setNewData('')
+                    setNewData(editable.type == 'checkbox' ? false :'')
                     LoadData(token)
                     if (!editable.multiple)
                         setIsEditing(false);
@@ -157,7 +173,7 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
             case 'text':
                 return (e.target as HTMLInputElement).value
             case 'checkbox':
-                return (e.target as HTMLInputElement).checked
+                return (e.target as HTMLInputElement).checked == true
             case 'radio':
                 return ''
             case 'select':
@@ -166,6 +182,10 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                 return (e.target as HTMLInputElement).value
             case 'date':
                 return new Date((e.target as HTMLInputElement).value)
+            case 'datetime':
+                return new Date((e.target as HTMLInputElement).value)
+            case 'time':
+                return new Date('0001-01-01T' + (e.target as HTMLInputElement).value)
             case 'tel':
                 return (e.target as HTMLInputElement).value
             case 'email':
@@ -203,7 +223,7 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                 return <input type='text' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'checkbox': {
-                return <input type='checkbox' checked={(item ? item.output : newData) as boolean} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <input type='checkbox' checked={(item ? item.output : newData) as boolean == true} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'radio': {
                 return
@@ -215,13 +235,61 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                 return <input type='color' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'date': {
-                return <input type="datetime-local" value={((item ? item.output : newData) as Date).toLocaleString('sv').replace(' GMT', '').substring(0, 16)} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <input type="date" value={((item ? item.output : newData) as Date)?.getFullYear().toString().padStart(4, '0') + '-' + (((item ? item.output : newData) as Date)?.getMonth() + 1).toString().padStart(2, '0') + '-' + ((item ? item.output : newData) as Date)?.getDate().toString().padStart(2, '0')} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+            }
+            case 'datetime': {
+                return <input type="datetime-local" value={((item ? item.output : newData) as Date)?.toLocaleString('sv')?.replace(' GMT', '')?.substring(0, 16)} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+            }
+            case 'time': {
+                return <input type="time" value={((item ? item.output : newData) as Date)?.getHours().toString().padStart(2, '0') + ':' + ((item ? item.output : newData) as Date)?.getMinutes().toString().padStart(2, '0')} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'tel': {
                 return <input type='tel' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} pattern='[+][0-9]{11}' />
             }
             case 'email': {
                 return <input type='email' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+
+    const convertToString = (item: IOutput) => {
+        switch (editable.type) {
+            case 'number': {
+                return (item.output as number).toString()
+            }
+            case 'text': {
+                return item.output as string
+            }
+            case 'checkbox': {
+                return (item.output as boolean) ? 'Wybrane': 'Nie wybrane'
+            }
+            case 'radio': {
+                return
+            }
+            case 'select': {
+                return
+            }
+            case 'color': {
+                return item.output as string
+            }
+            case 'date': {
+                return (item.output as Date).getDate().toString().padStart(2, '0') + '.' + ((item.output as Date).getMonth() + 1).toString().padStart(2, '0') + '.' + (item.output as Date).getFullYear()
+            }
+            case 'datetime': {
+                return (item.output as Date).getDate().toString().padStart(2, '0') + '.' + ((item.output as Date).getMonth() + 1).toString().padStart(2, '0') + '.' + (item.output as Date).getFullYear() + ' ' + (item.output as Date).getHours().toString().padStart(2, '0') + ':' + (item.output as Date).getMinutes().toString().padStart(2, '0')
+            }
+            case 'time': {
+                return (item.output as Date).getHours().toString().padStart(2, '0') + ':' + (item.output as Date).getMinutes().toString().padStart(2, '0')
+            }
+            case 'tel': {
+                return item.output as string
+            }
+            case 'email': {
+                return item.output as string
             }
             default: {
                 break;
@@ -277,7 +345,7 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                     <>
                         {data.map((item, index) => (
                             <span key={item.id} onDoubleClick={onClickData}>
-                                {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : ' ')) + item.output}
+                                {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : ' ')) + convertToString(item)}
                             </span>
                         ))}
                     </>

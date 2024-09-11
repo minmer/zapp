@@ -31,22 +31,82 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                 })
             })();
     }, [getParams, role])
-
     return (
         <>
             {
                 role?.isRegistered ? 
                     <>
-                        <EditableElement getParams={getParams} editable={
-                            {
-                                name: role?.roleID + 'alias',
-                                type: 'text',
-                                multiple: false,
-                                description: 'Alias',
-                                dbkey: role?.roleID,
-                                showdescription: false,
-                                showchildren: false,
-                            }} />
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'birthday',
+                                    type: 'date',
+                                    multiple: false,
+                                    description: 'Data urodzenia',
+                                    dbkey: role?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                            <span> </span>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'birthplace',
+                                    type: 'text',
+                                    multiple: false,
+                                    description: 'Miejsce urodzenia',
+                                    dbkey: role?.roleID,
+                                    showdescription: false,
+                                    showchildren: false,
+                                }} />
+                        </div>
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'address',
+                                    type: 'text',
+                                    multiple: false,
+                                    description: 'Adres zamieszkania',
+                                    dbkey: role?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                        </div>
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'telefon',
+                                    type: 'tel',
+                                    multiple: true,
+                                    description: 'Telefon',
+                                    dbkey: role?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                        </div>
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'set0',
+                                    type: 'checkbox',
+                                    multiple: false,
+                                    description: 'Zestaw podstawowy (Katechizm + Naklejki + Teczka + Książeczka I Piątek + Rachunek Sumienia + Wydruki) - 30 zł',
+                                    dbkey: role?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                        </div>
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'set1',
+                                    type: 'checkbox',
+                                    multiple: false,
+                                    description: 'Zestaw dodatkowy (Modlitewnik + Medalik + Łańcuch + Pamiątka I Komunii) - 100 zł',
+                                    dbkey: role?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                        </div>
                     </> :
                     <>
                     <h3>Zgłoszenie czeka na zatwierdzenie</h3>
