@@ -23,9 +23,9 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                 await getParams({
                     func: async (param: unknown) => {
                         const token = param as string
-                        if (await FetchOwnerGet(token, role.roleID) == null) {
+                        if ((await FetchOwnerGet(token, role.roleID) == null) || !role.isRegistered) {
                             await FetchTokenGet(token)
-                            await FetchOwnerGet(token, role.roleID)
+                            console.log(await FetchOwnerGet(token, role.roleID))
                         }
                     }, type: 'token', show: true
                 })
