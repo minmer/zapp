@@ -60,6 +60,9 @@ export default function CommunionPage({ getParams }: { getParams: ({ func, type,
                             <Link to={`detail`}>Szczegóły</Link>
                         </li> : null}
                         {isAdmin ? <li>
+                            <Link to={`checking`}>Sprawdzanie</Link>
+                        </li> : null}
+                        {isAdmin ? <li>
                             <Link to={`admin`}>Admin</Link>
                         </li> : null}
                         <div className="clear"></div>
