@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Alias, ConnectAliasRole, GetAdminRole, GetAliases, RegisterAliasRole, Role } from "../../structs/role";
+import { Alias, GetAdminRole, GetAliases, Role } from "../../structs/role";
 import { User } from "../../structs/user";
-import { FetchTokenGet } from "../../features/FetchTokenGet";
 import EditableElement from "../../generals/editable-element";
 
 export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
