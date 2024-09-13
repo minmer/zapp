@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GetRole, Role } from "../../structs/role";
+import { Alias, GetAdminRole, GetAliases, GetRole, Role } from "../../structs/role";
 import { User } from "../../structs/user";
 import EditableElement from "../../generals/editable-element";
 import { FetchOwnerGet } from "../../features/FetchOwnerGet";
@@ -7,6 +7,25 @@ import { FetchTokenGet } from "../../features/FetchTokenGet";
 
 export default function CommunionDetailSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [role, setRole] = useState<Role | null>()
+
+    const [adminRole, setAdminRole] = useState<Role | null>()
+    const [aliases, setAliases] = useState<Alias[]>([])
+    useEffect(() => {
+        (async function () {
+            getParams({
+                func: async (param: unknown) => {
+                    const user = param as User
+                    setAdminRole(await GetAdminRole({ getParams: getParams, type: 'communion', user: user }))
+                }, type: 'user', show: false
+            });
+        }());
+    }, [getParams])
+
+    useEffect(() => {
+        (async function () {
+            setAliases(await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' }))
+        }());
+    }, [getParams, adminRole])
     useEffect(() => {
         (async function () {
             await getParams({
@@ -33,6 +52,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
     }, [getParams, role])
     return (
         <>
+            {aliases.map((alias) => (<> {alias.id}</>))}
             {
                 role?.isRegistered ? 
                     <>

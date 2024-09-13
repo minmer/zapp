@@ -7,6 +7,7 @@ import CommunionOverviewSubpage from '../components/communion/communion-overview
 import CommunionRegisterSubpage from '../components/communion/communion-register-subpage';
 import CommunionDetailSubpage from '../components/communion/communion-detail-subpage';
 import CommunionAdminSubpage from '../components/communion/communion-admin-subpage';
+import CommunionCheckingSubpage from '../components/communion/communion-checking-subpage';
 
 export default function CommunionPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>; type: string; show: boolean; }) => Promise<unknown>; }) {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -72,6 +73,7 @@ export default function CommunionPage({ getParams }: { getParams: ({ func, type,
                     <Route path="overview" element={<CommunionOverviewSubpage getParams={getParams} />} />
                     <Route path="register" element={<CommunionRegisterSubpage getParams={getParams} />} />
                     <Route path="detail" element={<CommunionDetailSubpage getParams={getParams} />} />
+                    <Route path="checking" element={<CommunionCheckingSubpage getParams={getParams} />} />
                     <Route path="admin" element={<CommunionAdminSubpage getParams={getParams} />} />
                 </Routes>
                 <div className="description">

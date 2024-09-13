@@ -25,6 +25,9 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
             if (editable.type == 'checkbox') {
                 setNewData(false)
             }
+            if (editable.type == 'binary') {
+                setNewData(''.padEnd(editable.options?.length ?? 0, 'O'))
+            }
         },[editable])
 
     const LoadData = useCallback(async (token: string) => {
@@ -40,6 +43,10 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
             }
             case 'checkbox': {
                 setData(await FetchInformationGetAll('bool', token, editable.name) as unknown as IOutput[])
+                break;
+            }
+            case 'binary': {
+                setData((await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]).map((output) => ({ id: output.id, output: (output.output as string).padEnd(editable.options?.length ?? 0, 'O') })))
                 break;
             }
             case 'radio': {
@@ -174,6 +181,12 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                 return (e.target as HTMLInputElement).value
             case 'checkbox':
                 return (e.target as HTMLInputElement).checked == true
+            case 'binary':
+                {
+                    const index = Number((e.target as HTMLInputElement).id.substring(36))
+                    const prev = data[0].output as string
+                    return prev.substring(0, index) + ((e.target as HTMLInputElement).checked == true ? 'X' : 'O') + prev.substring(index+1)
+                }
             case 'radio':
                 return ''
             case 'select':
@@ -225,6 +238,11 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
             case 'checkbox': {
                 return <input type='checkbox' checked={(item ? item.output : newData) as boolean == true} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
+            case 'binary': {
+                if (item != null)
+                    return <>{editable.options?.map((option, index) => (<>{option.label + ': '}<input key={index} id={item.id + index} type='checkbox' checked={(item.output as string)[index] == 'X'} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} /></>))}</>
+                return null
+            }
             case 'radio': {
                 return
             }
@@ -265,7 +283,10 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                 return item.output as string
             }
             case 'checkbox': {
-                return (item.output as boolean) ? 'Wybrane': 'Nie wybrane'
+                return (item.output as boolean) ? 'Wybrane' : 'Nie wybrane'
+            }
+            case 'binary': {
+                return item.output
             }
             case 'radio': {
                 return
