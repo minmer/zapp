@@ -1,5 +1,5 @@
 export async function FetchInformationDelete(token: string, key: string, id: string) {
-
+    console.log(token, key, id)
     return await fetch('https://zapp.hostingasp.pl/information/',
         {
             method: 'DELETE',

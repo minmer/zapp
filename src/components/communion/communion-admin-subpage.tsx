@@ -3,6 +3,7 @@ import { Alias, ConnectAliasRole, GetAdminRole, GetAliases, GetMembers, Register
 import { User } from "../../structs/user";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
 import EditableElement from "../../generals/editable-element";
+import { FetchInformationDelete } from "../../features/FetchInformationDelete";
 
 export default function CommunionAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
@@ -52,6 +53,15 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
             ConnectAliasRole({ getParams: getParams, role: selectedRole, alias: alias })
     }
 
+    const deleteAlias = async (alias: Alias) => {
+        if (role != null)
+            getParams({
+                func: async (token: unknown) => {
+                    FetchInformationDelete(token as string, role.roleID, alias.id)
+                }, type: 'token', show: false
+            });
+    }
+
     return (
         <>
             {role?.roleID + ' -|- ' + role?.ownerID + ' -|- ' + role?.type + ' -|- ' + role?.user}
@@ -97,7 +107,8 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
                             showdescription: false,
                             showchildren: false,
                         }} />
-                    {selectedRole ? <input type="button" value="Connect to alias" onClick={() => {connectAlias(alias) }} />: null}
+                    {selectedRole ? <input type="button" value="Connect to alias" onClick={() => { connectAlias(alias) }} /> : null}
+                    <input type="button" value="Delete" onClick={() => { deleteAlias(alias) }} />
                 </div>
             ))}
             <input type="button" value="Add alias" onClick={addAlias} />

@@ -148,6 +148,11 @@ h3 {
     width: 100%;
 }
 
+.communion-checking div{
+    padding: .25em 1em;
+    font-size: 1.25em;
+}
+
 @media (min-width:768px) {
     .main-grid {
         grid-template-columns: 1fr 1fr;

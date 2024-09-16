@@ -27,7 +27,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
     }, [getParams, role])
 
     return (
-        <>
+        <div className="communion-checking">
             {aliases?.map(alias => (
                 <div key={alias.id}>
                     <EditableElement getParams={getParams} editable={
@@ -61,6 +61,6 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                         }} />
                 </div>
             ))}
-        </>
+        </div>
     );
 }
