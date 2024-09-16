@@ -148,8 +148,11 @@ h3 {
     width: 100%;
 }
 
-.communion-checking div{
+.communion-checking > div{
     padding: .25em 1em;
+}
+
+.communion-checking > div > span {
     font-size: 1.25em;
 }
 
