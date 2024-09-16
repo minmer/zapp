@@ -6,7 +6,7 @@ import ConfirmationAdminSubpage from '../components/confirmation/confirmation-ad
 import ConfirmationDetailSubpage from '../components/confirmation/confirmation-detail-subpage';
 import { useEffect, useState } from 'react';
 import { User } from '../structs/user';
-import { GetRole } from '../structs/role';
+import { CreateAdminRole, GetRole } from '../structs/role';
 export default function ConfirmationPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isToken, setIsToken] = useState(false)
@@ -27,17 +27,16 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
             });
         }());
     }, [getParams])
-
     const register = () => {
         (async function () {
-            getParams({
+            await getParams({
                 func: async (param: unknown) => {
-                    const user = param as User
-                    console.log(user)
-                }, type: 'user', show: false
+                    const user = param as User;
+                    console.log(await CreateAdminRole({ getParams: getParams, type: 'confirmation', user: user }));
+                }, type: 'user', show: true
             });
         })();
-    }
+    };
 
     return (
         <>
@@ -66,7 +65,7 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                     </ul>
                 </div>
                 <Routes>
-                    <Route path="overview" element={<ConfirmationOverviewSubpage />} />
+                    <Route path="overview" element={<ConfirmationOverviewSubpage getParams={getParams} />} />
                     <Route path="register" element={<ConfirmationRegisterSubpage getParams={getParams} />} />
                     <Route path="detail" element={<ConfirmationDetailSubpage getParams={getParams} />} />
                     <Route path="admin" element={<ConfirmationAdminSubpage getParams={getParams} />} />

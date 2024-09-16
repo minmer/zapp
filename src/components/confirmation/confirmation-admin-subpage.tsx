@@ -1,101 +1,118 @@
 import { useEffect, useState } from "react";
-import { GetRole, Role } from "../../structs/role";
+import { Alias, ConnectAliasRole, GetAdminRole, GetAliases, GetMembers, RegisterAliasRole, Role } from "../../structs/role";
 import { User } from "../../structs/user";
-import { FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
-import OldEditableElement from "../../temp/old-editable-element";
-import { FetchOwnerPut } from "../../features/FetchOwnerPut";
-import { FetchOwnerPost } from "../../features/FetchOwnerPost";
+import { FetchInformationDelete } from "../../features/FetchInformationDelete";
+import EditableElement from "../../generals/editable-element";
 
 export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
     const [role, setRole] = useState<Role | null>()
-    const [attendees, setAttendees] = useState<StringOutput[]>()
+    const [selectedRole, setSelectedRole] = useState<Role | null>()
+    const [members, setMembers] = useState<Role[]>()
+    const [aliases, setAliases] = useState<Alias[]>([])
     useEffect(() => {
         (async function () {
             getParams({
-                func: async (param0: unknown) => {
-                    const token = param0 as string
-                    const tempAttendees = (await FetchInformationGetAll('string', token, 'confirmation_attendee')) as unknown as StringOutput[]
-                    setAttendees(tempAttendees)
-                    for (let i = 0; i < tempAttendees.length; i++) {
-                        const tempOwnerID = (await FetchInformationGetAll('string', token, tempAttendees[i].output + 'owner')) as unknown as StringOutput[]
-                        if (tempOwnerID.length > 0) {
-                            console.log(tempOwnerID[0].output)
-                            tempAttendees[i].id = tempOwnerID[0].output
-                        }
-                        else {
-                            tempAttendees[i].id = ''
-                        }
-                    }
-                    getParams({
-                        func: async (param1: unknown) => {
-                            const user = param1 as User
-                            setRole(await GetRole({ getParams: getParams, type: 'confirmation_admin', user: user }))
-                        }, type: 'user', show: false
-                    });
-                }, type: 'token', show: false
+                func: async (param: unknown) => {
+                    const user = param as User
+                    setRole(await GetAdminRole({ getParams: getParams, type: 'confirmation', user: user }))
+                    setMembers(await GetMembers({ getParams: getParams, type: 'confirmation' }))
+                }, type: 'user', show: false
             });
         }());
     }, [getParams])
+    useEffect(() => {
+        (async function () {
+            setAliases((await GetAliases({ getParams: getParams, adminID: role?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
+        }());
+    }, [getParams, role])
 
     const reload = async () => {
         getParams({
             func: async (param: unknown) => {
-                    FetchTokenGet(param as string)
+                FetchTokenGet(param as string)
             }, type: 'token', show: false
         });
     }
 
-    const acceptAttendee = async (output: StringOutput) =>
-    {
-        getParams({
-            func: async (param: unknown) => {
-                const token = param as string
-                await FetchOwnerPut(token, 'confirmation_group_viewer', role?.roleID ?? '', output.id, false, false, false)
-                await FetchOwnerPost(token, output.output + 'channel', role?.roleID ?? '')
-                await FetchOwnerPut(token, 'confirmation_channel_viewer', output.output + 'channel', output.id, false, false, false)
-            }, type: 'token', show: false
-        });
+    const addAlias = async () => {
+        if (role != null) {
+            const alias = await RegisterAliasRole({ getParams: getParams, admin: role })
+            if (alias != null)
+                setAliases([...aliases, alias])
+        }
+    }
+
+    const acceptMember = async (member: Role) => {
+        setSelectedRole(member)
+    }
+
+    const connectAlias = async (alias: Alias) => {
+        if (selectedRole != null)
+            ConnectAliasRole({ getParams: getParams, role: selectedRole, alias: alias })
+    }
+
+    const deleteAlias = async (alias: Alias) => {
+        if (role != null)
+            getParams({
+                func: async (token: unknown) => {
+                    FetchInformationDelete(token as string, role.roleID, alias.id)
+                }, type: 'token', show: false
+            });
     }
 
     return (
         <>
             {role?.roleID + ' -|- ' + role?.ownerID + ' -|- ' + role?.type + ' -|- ' + role?.user}
             <input type="button" value="Reload" onClick={reload} />
-            {attendees?.map(attendee => (
-                <div>
-                    <div>
-                    <OldEditableElement getParams={getParams} name={attendee.output + 'name'} dbkey={''} type="text" multiple={false} showdescription={false} />
-                    <OldEditableElement getParams={getParams} name={attendee.output + 'surname'} dbkey={''} type="text" multiple={false} showdescription={false} />
-                                </div>
-                                <div>
-                    <OldEditableElement getParams={getParams} name={attendee.output + 'level'} dbkey={attendee.output + 'channel'} description='Formacja' type="text" multiple={true} showdescription={true} />
-                                </div>
-                                <div>
-                    <OldEditableElement getParams={getParams} name={attendee.output + 'baptism'} dbkey={attendee.output + 'channel'} description='Chrzest' type="text" multiple={false} showdescription={true} />
-                                </div>
-                                <div>
-                    <OldEditableElement getParams={getParams} name={attendee.output + 'permission'} dbkey={attendee.output + 'channel'} description='Zgoda' type="text" multiple={false} showdescription={true} />
-                                </div>
-                                <div>
-                    <OldEditableElement getParams={getParams} name={attendee.output + 'birthday'} dbkey={''} description='Data urodzenia' type="text" multiple={false} showdescription={true} />
-                                </div>
-                                <div>
-                    <OldEditableElement getParams={getParams} name={attendee.output + 'address'} dbkey={''} description='Adres zamieszkania' type="text" multiple={false} showdescription={true} />
-                                </div>
-                                <div>
-                    <OldEditableElement getParams={getParams} name={attendee.output + 'confirmationname'} dbkey={''} description='Patron bierzmowanie (tzw. 3. imię)' type="text" multiple={false} showdescription={true} />
-                                </div>
-                                <div>
-                    <OldEditableElement getParams={getParams} name={attendee.output + 'sponsor'} dbkey={''} description='Świadek bierzmowania' type="text" multiple={false} showdescription={true} />
-                                </div>
-                        {attendee.id != '' ?
-                        <input type='button' value='+' onClick={() => acceptAttendee(attendee)} />
-                        : null
-                        }
+            {members?.map(member => (
+                <div style={{
+                    backgroundColor: member.roleID == selectedRole?.roleID ? 'orange' : undefined,
+                    opacity: member.alias != null ? '.2' : '1',
+                }}
+                    key={member.roleID}>
+                    <EditableElement getParams={getParams} editable={
+                        {
+                            name: member.user.user + 'name',
+                            type: 'text',
+                            multiple: false,
+                            description: 'Imię',
+                            dbkey: member.user.id,
+                            showdescription: false,
+                            showchildren: false,
+                        }} />
+                    <span> </span>
+                    <EditableElement getParams={getParams} editable={
+                        {
+                            name: member.user.user + 'surname',
+                            type: 'text',
+                            multiple: false,
+                            dbkey: member.user.id,
+                            description: 'Nazwisko',
+                            showdescription: false,
+                            showchildren: false,
+                        }} />
+                    {member.isRegistered ? null : < input type="button" value="Wybierz" onClick={() => { acceptMember(member) }} />}
                 </div>
             ))}
+            {aliases?.map(alias => (
+                <div key={alias.id}>
+                    <EditableElement getParams={getParams} editable={
+                        {
+                            name: alias.id + 'alias',
+                            type: 'text',
+                            multiple: false,
+                            description: 'Alias',
+                            dbkey: alias.id,
+                            showdescription: false,
+                            showchildren: false,
+                        }} />
+                    {selectedRole ? <input type="button" value="Connect to alias" onClick={() => { connectAlias(alias) }} /> : null}
+                    <input type="button" value="Delete" onClick={() => { deleteAlias(alias) }} />
+                </div>
+            ))}
+            <input type="button" value="Add alias" onClick={addAlias} />
         </>
     );
 }

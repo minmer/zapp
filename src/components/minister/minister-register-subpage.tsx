@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import OldEditableElement from "../../temp/old-editable-element";
 import { CreateRole, GetRole, Role } from "../../structs/role";
 import { ShareUserInformation, User } from "../../structs/user";
-import { FetchInformationDelete } from "../../features/FetchInformationDelete";
+import EditableElement from "../../generals/editable-element";
 
 export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
@@ -20,12 +19,16 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
     }, [getParams])
 
     const selectUser = async () => {
-        await getParams({ func: async (param: unknown) => setSelectedUser(param as User), type: 'user', show: true })
+        if (selectedUser == null)
+            await getParams({ func: async (param: unknown) => setSelectedUser(param as User), type: 'user', show: true })
+        else
+            await getParams({ func: async () => { }, type: 'newuser', show: true })
     }
 
     useEffect(() => {
         (async function () {
             if (selectedUser != null) {
+                console.log(await GetRole({ getParams: getParams, type: "minister", user: selectedUser }))
                 setRole(await GetRole({ getParams: getParams, type: "minister", user: selectedUser }))
             }
         }());
@@ -34,7 +37,7 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
     const register = () => {
         (async function () {
             if (selectedUser != null) {
-                CreateRole({ getParams: getParams, type: 'minister', user: selectedUser, admin: 'd3632117-be3a-41af-9b14-72865e62628a' })
+                setRole(await CreateRole({ getParams: getParams, type: 'minister', user: selectedUser, admin: 'd3632117-be3a-41af-9b14-72865e62628a' }))
                 ShareUserInformation({ getParams: getParams, name: 'name', user: selectedUser, sharingID: 'd3632117-be3a-41af-9b14-72865e62628a' })
                 ShareUserInformation({ getParams: getParams, name: 'surname', user: selectedUser, sharingID: 'd3632117-be3a-41af-9b14-72865e62628a' })
             }
@@ -42,13 +45,16 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
     }
 
     const removeAttendee = async () => {
-        if (role != null) {
-            getParams({
-                func: async (token: unknown) => {
-                    await FetchInformationDelete(token as string, role.roleID, role.user.id )
-                }, type: 'token', show: false
-            });
-        }
+        //if (role != null) {
+        getParams({
+            func: async (token: unknown) => {
+                console.log(token)
+                console.log(selectedUser)
+                console.log(role)
+                //await FetchInformationDelete(token as string, role.roleID, role.user.id )
+            }, type: 'token', show: false
+        });
+        //}
     }
 
     return (
@@ -57,17 +63,54 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
                 role != null ?
                     <>
                         <div onDoubleClick={removeAttendee}>Następująca osoba jest zgłoszona:</div>
-                        <OldEditableElement getParams={getParams} name={selectedUser.user + "name"} dbkey={selectedUser.id + 'name'} type="text" multiple={false} showdescription={false} />
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: selectedUser.user + 'name',
+                                type: 'text',
+                                multiple: false,
+                                description: 'Imię',
+                                dbkey: selectedUser.id + 'name',
+                                showdescription: false,
+                                showchildren: false,
+                            }} />
                         <span> </span>
-                        <OldEditableElement getParams={getParams} name={selectedUser.user + "surname"} dbkey={selectedUser.id + 'surname'} type="text" multiple={false} showdescription={false} />
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: selectedUser.user + 'surname',
+                                type: 'text',
+                                multiple: false,
+                                dbkey: selectedUser.id + 'surname',
+                                description: 'Nazwisko',
+                                showdescription: false,
+                                showchildren: false,
+                            }} />
                     </>
                     :
                     <>
-                        <div>Czy chcesz zgłosić następującą osobę do bierzmowania?</div>
-                        <OldEditableElement getParams={getParams} name={selectedUser.user + "name"} dbkey={selectedUser.id + 'name'} type="text" multiple={false} showdescription={false} />
+                        <div onDoubleClick={removeAttendee}>Czy chcesz zgłosić następujące dziecko do I Komunii Świętej?</div>
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: selectedUser.user + 'name',
+                                type: 'text',
+                                multiple: false,
+                                description: 'Imię',
+                                dbkey: selectedUser.id,
+                                showdescription: false,
+                                showchildren: false,
+                            }} />
                         <span> </span>
-                        <OldEditableElement getParams={getParams} name={selectedUser.user + "surname"} dbkey={selectedUser.id + 'surname'} type="text" multiple={false} showdescription={false} />
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: selectedUser.user + 'surname',
+                                type: 'text',
+                                multiple: false,
+                                dbkey: selectedUser.id,
+                                description: 'Nazwisko',
+                                showdescription: false,
+                                showchildren: false,
+                            }} />
                         <input type="button" className="button" value="Zgłoś użytkownika" onClick={register} />
+                        <input type="button" className="button" value="Wybierz innego użytkownika" onClick={selectUser} />
                     </>
                 :
                 <>

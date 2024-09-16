@@ -1,89 +1,153 @@
 import { useEffect, useState } from "react";
-import { GetRole, Role } from "../../structs/role";
+import { Alias, GetAdminRole, GetAliases, GetRole, Role } from "../../structs/role";
 import { User } from "../../structs/user";
-import { FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
-import OldEditableElement from "../../temp/old-editable-element";
-import { FetchInformationPost } from "../../features/FetchInformationPost";
+import { FetchOwnerGet } from "../../features/FetchOwnerGet";
+import { FetchTokenGet } from "../../features/FetchTokenGet";
+import EditableElement from "../../generals/editable-element";
 
 export default function MinisterDetailSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
-    const [role, setRole] = useState<Role | undefined>()
-    const [level0, setLevel0] = useState(false)
-    const [level1, setLevel1] = useState(false)
-    const [level2, setLevel2] = useState(false)
+    const [role, setRole] = useState<Role | null>()
 
+    const [adminRole, setAdminRole] = useState<Role | null>()
+    const [aliases, setAliases] = useState<Alias[]>([])
     useEffect(() => {
         (async function () {
             getParams({
-                func: async (param0: unknown) => {
-                    getParams({
-                        func: async (param1: unknown) => {
-                            const token = param0 as string
-                            const user = param1 as User
-                            const tempRole = await GetRole({ getParams: getParams, type: "confirmation", user: user }) as unknown as Role
-                            setRole(tempRole)
-                            const owner = await FetchInformationGetAll('string', token, tempRole.roleID + 'owner') as unknown as StringOutput[]
-                            if (owner.length == 0 || owner == null) {
-                                await FetchInformationPost(token, tempRole.roleID, [tempRole.roleID + 'owner'], tempRole.ownerID, [1])
-                            }
-                            const levels = await FetchInformationGetAll('string', token, tempRole.roleID + 'level') as unknown as StringOutput[]
-                            for (let i = 0; i < levels.length; i++) {
-                                if (levels[i].output == '1')
-                                    setLevel0(true)
-                                if (levels[i].output == '2')
-                                    setLevel1(true)
-                                if (levels[i].output == '3')
-                                    setLevel2(true)
-                            }
-                        }, type: 'user', show: true
-                    });
-                }, type: 'token', show: true
+                func: async (param: unknown) => {
+                    const user = param as User
+                    setAdminRole(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }))
+                }, type: 'user', show: false
             });
         }());
     }, [getParams])
 
-    return (
-        <>
-            {
-                !(level0 || level1 || level2 || !level2) ? <>
-                    <h3>Zgłoszenie czeka na zatwierdzenie</h3>
-                </> :
-                    <>
-                        {
-                            level0 ? <>
-                                <h2>1. rok formacji</h2>
-                            </> : null
-                        }
-                        {
-                            level1 ? <>
-                                <h2>2. rok formacji</h2>
-                            </> : null
-                        }
-                        {
-                            level2 || !level2 ? <>
-                                <h2>3. rok formacji</h2>
-                                {level2 ? <>
-                                    <div>Prosze o zapoznanie się poniższymi informacjami:</div>
-                                    <OldEditableElement getParams={getParams} name={role?.roleID + 'baptism'} dbkey={role?.roleID + 'channel'} description='Chrzest' type="text" multiple={false} showdescription={true} />
-                                    <OldEditableElement getParams={getParams} name={role?.roleID + 'permission'} dbkey={role?.roleID + 'channel'} description='Zgoda' type="text" multiple={false} showdescription={true} />
-                                </> : null}
-                                <div>Prosze o uzupełnienie poniższych informacji:</div>
-                                <div>
-                                    <OldEditableElement getParams={getParams} name={role?.roleID + 'birthday'} dbkey={role?.roleID ?? ''} description='Data urodzenia' type="text" multiple={false} showdescription={true} />
-                                </div>
-                                <div>
-                                <OldEditableElement getParams={getParams} name={role?.roleID + 'address'} dbkey={role?.roleID ?? ''} description='Adres zamieszkania' type="text" multiple={false} showdescription={true} />
-                                </div>
-                                <div>
-                                <OldEditableElement getParams={getParams} name={role?.roleID + 'confirmationname'} dbkey={role?.roleID ?? ''} description='Patron bierzmowanie (tzw. 3. imię)' type="text" multiple={false} showdescription={true} />
-                                </div>
-                                <div>
-                                <OldEditableElement getParams={getParams} name={role?.roleID + 'sponsor'} dbkey={role?.roleID ?? ''} description='Świadek bierzmowania' type="text" multiple={false} showdescription={true} />
-                                </div>
-                            </> : null
-                        }
+    useEffect(() => {
+        (async function () {
+            setAliases((await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
+        }());
+    }, [getParams, adminRole])
+    useEffect(() => {
+        (async function () {
+            await getParams({
+                func: async (user: unknown) => {
+                    setRole(await GetRole({ getParams: getParams, type: "minister", user: user as User }))
+                }, type: 'user', show: true
+            })
+        })();
+    }, [getParams])
 
+    useEffect(() => {
+        if (role != null)
+            (async function () {
+                await getParams({
+                    func: async (param: unknown) => {
+                        const token = param as string
+                        if ((await FetchOwnerGet(token, role.roleID) == null) || !role.isRegistered)
+                            await FetchTokenGet(token)
+                    }, type: 'token', show: true
+                })
+            })();
+    }, [getParams, role])
+    const selectAlias = (alias: Alias) => {
+        if (adminRole != null)
+            setRole({ roleID: alias.id, ownerID: alias.ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: alias.alias })
+    }
+    return (
+        <div className="minister-detail">
+            {aliases ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
+                {aliases.map((alias) => (<option>
+                    {alias.alias}            </option>))}
+            </select> : null}
+            {
+                role?.isRegistered ?
+                    <>
+                        <div><EditableElement getParams={getParams} editable={
+                            {
+                                name: role.roleID + 'alias',
+                                type: 'text',
+                                multiple: false,
+                                description: 'Alias',
+                                dbkey: role.roleID,
+                                showdescription: false,
+                                showchildren: false,
+                            }} />
+                        </div>
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'birthday',
+                                    type: 'date',
+                                    multiple: false,
+                                    description: 'Data urodzenia',
+                                    dbkey: role?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                            <span> </span>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'birthplace',
+                                    type: 'text',
+                                    multiple: false,
+                                    description: 'Miejsce urodzenia',
+                                    dbkey: role?.roleID,
+                                    showdescription: false,
+                                    showchildren: false,
+                                }} />
+                        </div>
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'address',
+                                    type: 'text',
+                                    multiple: false,
+                                    description: 'Adres zamieszkania',
+                                    dbkey: role?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                        </div>
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'telefon',
+                                    type: 'tel',
+                                    multiple: true,
+                                    description: 'Telefon',
+                                    dbkey: role?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                        </div>
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'set0',
+                                    type: 'checkbox',
+                                    multiple: false,
+                                    description: 'Zestaw podstawowy (Katechizm + Naklejki + Teczka + Książeczka I Piątek + Rachunek Sumienia + Wydruki) - 30 zł',
+                                    dbkey: role?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                        </div>
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'set1',
+                                    type: 'checkbox',
+                                    multiple: false,
+                                    description: 'Zestaw dodatkowy (Modlitewnik + Medalik + Łańcuch + Pamiątka I Komunii) - 100 zł',
+                                    dbkey: role?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                        </div>
+                    </> :
+                    <>
+                        <h3>Zgłoszenie czeka na zatwierdzenie</h3>
                     </>
             }
-        </>
+        </div>
     );
 }

@@ -70,7 +70,7 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
                     </ul>
                 </div>
                 <Routes>
-                    <Route path="overview" element={<MinisterOverviewSubpage />} />
+                    <Route path="overview" element={<MinisterOverviewSubpage getParams={getParams} />} />
                     <Route path="encyclopaedia" element={<MinisterEncyclopaediaSubpage getParams={getParams} />} />
                     <Route path="register" element={<MinisterRegisterSubpage getParams={getParams} />} />
                     <Route path="detail" element={<MinisterDetailSubpage getParams={getParams} />} />

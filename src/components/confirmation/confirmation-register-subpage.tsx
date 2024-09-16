@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
-import OldEditableElement from "../../temp/old-editable-element";
 import { CreateRole, GetRole, Role } from "../../structs/role";
-import { User } from "../../structs/user";
-import { FetchOwnerPut } from "../../features/FetchOwnerPut";
-import { FetchInformationPost } from "../../features/FetchInformationPost";
-import { FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
-import { FetchInformationDelete } from "../../features/FetchInformationDelete";
+import { ShareUserInformation, User } from "../../structs/user";
+import EditableElement from "../../generals/editable-element";
 
 export default function ConfirmationRegisterSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
@@ -15,18 +11,24 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
         (async function () {
             await getParams({
                 func: async (param: unknown) => {
-                     setSelectedUser(param as User)
+                    setSelectedUser(param as User)
+                    console.log((param as User).id)
                 }, type: 'user', show: true
             })
         })();
     }, [getParams])
 
     const selectUser = async () => {
-        await getParams({ func: async (param: unknown) => setSelectedUser(param as User), type: 'user', show: true })
+        if (selectedUser == null)
+            await getParams({ func: async (param: unknown) => setSelectedUser(param as User), type: 'user', show: true })
+        else
+            await getParams({ func: async () => { }, type: 'newuser', show: true })
     }
+
     useEffect(() => {
         (async function () {
             if (selectedUser != null) {
+                console.log(await GetRole({ getParams: getParams, type: "confirmation", user: selectedUser }))
                 setRole(await GetRole({ getParams: getParams, type: "confirmation", user: selectedUser }))
             }
         }());
@@ -35,34 +37,24 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
     const register = () => {
         (async function () {
             if (selectedUser != null) {
-                const newRole = await CreateRole({ getParams: getParams, type: "confirmation", user: selectedUser, admin: 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a' }) as unknown as Role
-                setRole(newRole)
-                await getParams({
-                    func: async (param: unknown) => {
-                        const token = param as string
-                        await FetchOwnerPut(token, 'confirmation_viewer', newRole.roleID, 'a9920c2d-fca7-45a1-9742-2d8c0fe4c65a', false, false, false)
-                        await FetchInformationPost(token, newRole.roleID, ['confirmation_attendee'], newRole.roleID, [1])
-                        const name = ((await FetchInformationGetAll('string', token, selectedUser.user + 'name')) as unknown as StringOutput[])[0].output
-                        const surname = ((await FetchInformationGetAll('string', token, selectedUser.user + 'surname')) as unknown as StringOutput[])[0].output
-                        await FetchInformationPost(token, newRole.roleID, [newRole.roleID + 'name'], name, [1])
-                        await FetchInformationPost(token, newRole.roleID, [newRole.roleID + 'surname'], surname, [1])
-                    }, type: 'token', show: true
-                })
+                setRole(await CreateRole({ getParams: getParams, type: 'confirmation', user: selectedUser, admin: 'dc31033d-ffea-469c-9d2e-9091280ece69' }))
+                ShareUserInformation({ getParams: getParams, name: 'name', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
+                ShareUserInformation({ getParams: getParams, name: 'surname', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
             }
         })();
     }
 
     const removeAttendee = async () => {
+        //if (role != null) {
         getParams({
-            func: async (param: unknown) => {
-                const token = param as string
-                const temp = (await FetchInformationGetAll('string', token, 'confirmation_attendee')) as unknown as StringOutput[]
-                for (let i = 0; i < temp.length; i++) {
-                    if (temp[i].output == role?.roleID)
-                        FetchInformationDelete(token, role.roleID, temp[i].id)
-                }
+            func: async (token: unknown) => {
+                console.log(token)
+                console.log(selectedUser)
+                console.log(role)
+                //await FetchInformationDelete(token as string, role.roleID, role.user.id )
             }, type: 'token', show: false
         });
+        //}
     }
 
     return (
@@ -71,15 +63,54 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
                 role != null ?
                     <>
                         <div onDoubleClick={removeAttendee}>Następująca osoba jest zgłoszona:</div>
-                        <OldEditableElement getParams={getParams} name={selectedUser.user + "name"} dbkey={selectedUser.id + ''} type="text" multiple={false} showdescription={false} />
-                        <OldEditableElement getParams={getParams} name={selectedUser.user + "surname"} dbkey={selectedUser.id + ''} type="text" multiple={false} showdescription={false} />
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: selectedUser.user + 'name',
+                                type: 'text',
+                                multiple: false,
+                                description: 'Imię',
+                                dbkey: selectedUser.id + 'name',
+                                showdescription: false,
+                                showchildren: false,
+                            }} />
+                        <span> </span>
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: selectedUser.user + 'surname',
+                                type: 'text',
+                                multiple: false,
+                                dbkey: selectedUser.id + 'surname',
+                                description: 'Nazwisko',
+                                showdescription: false,
+                                showchildren: false,
+                            }} />
                     </>
                     :
                     <>
-                        <div>Czy chcesz zgłosić następującą osobę do bierzmowania?</div>
-                        <OldEditableElement getParams={getParams} name={selectedUser.user + "name"} dbkey={selectedUser.id + ''} type="text" multiple={false} showdescription={false} />
-                        <OldEditableElement getParams={getParams} name={selectedUser.user + "surname"} dbkey={selectedUser.id + ''} type="text" multiple={false} showdescription={false} />
+                        <div onDoubleClick={removeAttendee}>Czy chcesz zgłosić następujące dziecko do I Komunii Świętej?</div>
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: selectedUser.user + 'name',
+                                type: 'text',
+                                multiple: false,
+                                description: 'Imię',
+                                dbkey: selectedUser.id,
+                                showdescription: false,
+                                showchildren: false,
+                            }} />
+                        <span> </span>
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: selectedUser.user + 'surname',
+                                type: 'text',
+                                multiple: false,
+                                dbkey: selectedUser.id,
+                                description: 'Nazwisko',
+                                showdescription: false,
+                                showchildren: false,
+                            }} />
                         <input type="button" className="button" value="Zgłoś użytkownika" onClick={register} />
+                        <input type="button" className="button" value="Wybierz innego użytkownika" onClick={selectUser} />
                     </>
                 :
                 <>
