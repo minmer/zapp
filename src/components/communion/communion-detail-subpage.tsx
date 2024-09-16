@@ -23,7 +23,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
 
     useEffect(() => {
         (async function () {
-            setAliases(await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' }))
+            setAliases((await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
         }());
     }, [getParams, adminRole])
     useEffect(() => {
@@ -50,12 +50,37 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                 })
             })();
     }, [getParams, role])
+    const selectAlias = (alias: Alias) => {
+        if (adminRole != null)
+            setRole({ roleID: alias.id, ownerID: alias.ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: alias.alias })
+    }
     return (
         <>
-            {aliases.map((alias) => (<> {alias.id}</>))}
+            {aliases.map((alias) => (<span onClick={() => { selectAlias(alias) }}>
+                <EditableElement getParams={getParams} editable={
+                    {
+                        name: alias.id + 'alias',
+                        type: 'text',
+                        multiple: false,
+                        description: 'Alias',
+                        dbkey: alias.id,
+                        showdescription: false,
+                        showchildren: false,
+                    }} /></span>))}
             {
                 role?.isRegistered ? 
                     <>
+                        <div><EditableElement getParams={getParams} editable={
+                            {
+                                name: role.roleID + 'alias',
+                                type: 'text',
+                                multiple: false,
+                                description: 'Alias',
+                                dbkey: role.roleID,
+                                showdescription: false,
+                                showchildren: false,
+                            }} />
+                        </div>
                         <div>
                             <EditableElement getParams={getParams} editable={
                                 {

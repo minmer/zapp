@@ -57,7 +57,7 @@ export default function CommunionPage({ getParams }: { getParams: ({ func, type,
                         {isToken ? <li>
                             <Link to={`register`}>Zapisy</Link>
                         </li> : null}
-                        {isRole ? <li>
+                        {isRole || isAdmin ? <li>
                             <Link to={`detail`}>Szczegóły</Link>
                         </li> : null}
                         {isAdmin ? <li>
