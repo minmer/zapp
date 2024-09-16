@@ -24,7 +24,7 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
     }, [getParams])
     useEffect(() => {
         (async function () {
-            setAliases(await GetAliases({ getParams: getParams, adminID: role?.roleID ?? '' }))
+            setAliases((await GetAliases({ getParams: getParams, adminID: role?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
         }());
     }, [getParams, role])
 
@@ -69,6 +69,7 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
             {members?.map(member => (
                 <div style={{
                     backgroundColor: member.roleID == selectedRole?.roleID ? 'orange' : undefined,
+                    opacity: member.alias != null ? '.2': '1',
                 } }
                     key={member.roleID}>
                     <EditableElement getParams={getParams} editable={

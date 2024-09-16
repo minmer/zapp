@@ -152,7 +152,15 @@ h3 {
     padding: .25em 1em;
 }
 
-.communion-checking > div > span {
+    .communion-checking > div > span {
+        font-size: 1.25em;
+    }
+
+.communion-detail > div {
+    padding: .25em 1em;
+}
+
+.communion-detail > div > span {
     font-size: 1.25em;
 }
 

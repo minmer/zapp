@@ -13,7 +13,6 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                 func: async (param: unknown) => {
                     const user = param as User
                     setRole(await GetAdminRole({ getParams: getParams, type: 'communion', user: user }))
-                    console.log('asd1')
                 }, type: 'user', show: false
             });
         }());
@@ -21,7 +20,6 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
 
     useEffect(() => {
         (async function () {
-            console.log('asd2')
             setAliases((await GetAliases({ getParams: getParams, adminID: role?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
         }());
     }, [getParams, role])

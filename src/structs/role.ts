@@ -103,47 +103,34 @@ export async function CreateAdminRole({ getParams, type, user }: { getParams: ({
 
 export async function GetMembers({ getParams, type }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string }) {
 
-    const members = [] as Role[]
-    await getParams({
+    return await getParams({
         func: async (param: unknown) => {
             const token = param as string
-            const memberOutput = (await FetchInformationGetAll('string', token, type + 'member')) as unknown as StringOutput[]
-            for (let i = 0; i < memberOutput.length; i++) {
-                const alias = (await FetchInformationGetAll('string', token, memberOutput[i].output + 'alias')) as unknown as StringOutput[]
-                members.push(
-                    {
-                        roleID: memberOutput[i].output,
-                        ownerID: ((await FetchInformationGetAll('string', token, memberOutput[i].output + 'owner')) as unknown as StringOutput[])[0].output,
-                        user: { id: ((await FetchInformationGetAll('string', token, memberOutput[i].output + 'user')) as unknown as StringOutput[])[0].output, user: ((await FetchInformationGetAll('string', token, memberOutput[i].output + 'userowner')) as unknown as StringOutput[])[0].output },
-                        type: type,
-                        isRegistered: await FetchOwnerGet(token, memberOutput[i].output + 'common') != null,
-                        alias: alias.length != 0 ? alias[0]?.output : undefined,
-                    })
-            }
+            return await Promise.all(((await FetchInformationGetAll('string', token, type + 'member')) as unknown as StringOutput[]).map(async (member) => ({
+                roleID: member.output,
+                ownerID: ((await FetchInformationGetAll('string', token, member.output + 'owner')) as unknown as StringOutput[])[0]?.output,
+                user: { id: ((await FetchInformationGetAll('string', token, member.output + 'user')) as unknown as StringOutput[])[0]?.output, user: ((await FetchInformationGetAll('string', token, member.output + 'userowner')) as unknown as StringOutput[])[0]?.output },
+                type: type,
+                isRegistered: FetchOwnerGet(token, member.output + 'common') != null,
+                alias: ((await FetchInformationGetAll('string', token, member.output + 'alias')) as unknown as StringOutput[])[0]?.output,
+            } as Role)))
         }, type: 'token', show: false
-    })
-    return members
+    }) as Role[]
 }
 
 export async function GetAliases({ getParams, adminID }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, adminID: string }) {
 
-    const aliases = [] as Alias[]
-    await getParams({
+    return await getParams({
         func: async (param: unknown) => {
             const token = param as string
-            const aliasOutput = (await FetchInformationGetAll('string', token, adminID + 'alias')) as unknown as StringOutput[]
-            for (let i = 0; i < aliasOutput.length; i++) {
-                const alias = (await FetchInformationGetAll('string', token, aliasOutput[i].id + 'alias')) as unknown as StringOutput[]
-                aliases.push(
-                    {
-                        id: aliasOutput[i].id,
-                        ownerID: aliasOutput[i].output,
-                        alias: alias.length != 0 ? alias[0]?.output : undefined,
-                    })
-            }
+            return await Promise.all(((await FetchInformationGetAll('string', token, adminID + 'alias')) as unknown as StringOutput[]).map(async (alias) => (
+                {
+                    id: alias.id,
+                    ownerID: alias.output,
+                    alias: ((await FetchInformationGetAll('string', token, alias.id + 'alias')) as unknown as StringOutput[])[0]?.output
+                } as Alias)))
         }, type: 'token', show: false
-    })
-    return aliases
+    }) as Alias[]
 }
 
 export async function RegisterRole({ getParams, admin, role }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, admin: Role, role: Role }) {

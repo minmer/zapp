@@ -55,18 +55,11 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
             setRole({ roleID: alias.id, ownerID: alias.ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: alias.alias })
     }
     return (
-        <>
-            {aliases.map((alias) => (<span onClick={() => { selectAlias(alias) }}>
-                <EditableElement getParams={getParams} editable={
-                    {
-                        name: alias.id + 'alias',
-                        type: 'text',
-                        multiple: false,
-                        description: 'Alias',
-                        dbkey: alias.id,
-                        showdescription: false,
-                        showchildren: false,
-                    }} /></span>))}
+        <div className="communion-detail">
+            {aliases ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
+                {aliases.map((alias) => (<option>
+                    {alias.alias}            </option>))}
+            </select> : null}
             {
                 role?.isRegistered ? 
                     <>
@@ -157,6 +150,6 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                     <h3>Zgłoszenie czeka na zatwierdzenie</h3>
                 </> 
             }
-        </>
+        </div>
     );
 }
