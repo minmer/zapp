@@ -160,8 +160,18 @@ h3 {
     padding: .25em 1em;
 }
 
-.communion-detail > div > span {
+    .communion-detail > div > span {
+        font-size: 1.25em;
+    }
+
+.minister-presence > div h4 {
     font-size: 1.25em;
+    text-align: center;
+}
+
+.minister-presence > div span, input{
+    font-size: 1.25em;
+    margin: .5em;
 }
 
 @media (min-width:768px) {

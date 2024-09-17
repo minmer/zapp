@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { CreateRole, GetRole, Role } from "../../structs/role";
 import { ShareUserInformation, User } from "../../structs/user";
 import EditableElement from "../../generals/editable-element";
+import { FetchInformationDelete } from "../../features/FetchInformationDelete";
 
 export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
@@ -45,16 +46,16 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
     }
 
     const removeAttendee = async () => {
-        //if (role != null) {
+        if (role != null) {
         getParams({
             func: async (token: unknown) => {
                 console.log(token)
                 console.log(selectedUser)
                 console.log(role)
-                //await FetchInformationDelete(token as string, role.roleID, role.user.id )
+                await FetchInformationDelete(token as string, role.user.id, role.roleID )
             }, type: 'token', show: false
         });
-        //}
+        }
     }
 
     return (

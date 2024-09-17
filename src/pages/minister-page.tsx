@@ -8,14 +8,17 @@ import MinisterDetailSubpage from '../components/minister/minister-detail-subpag
 import MinisterAdminSubpage from '../components/minister/minister-admin-subpage';
 import { useEffect, useState } from 'react';
 import MinisterEncyclopaediaSubpage from '../components/minister/minister-encyclopaedia-subpage';
+import { FetchOwnerGet } from '../features/FetchOwnerGet';
+import MinisterPresenceSubpage from '../components/minister/minister-presence-subpage';
 export default function MinisterPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isToken, setIsToken] = useState(false)
     const [isRole, setIsRole] = useState(false)
+    const [isPresence, setIsPresence] = useState(false)
     useEffect(() => {
         (async function () {
             getParams({
-                func: async () => {
+                func: async (token: unknown) => {
                     setIsToken(true)
                     getParams({
                         func: async (param: unknown) => {
@@ -24,6 +27,7 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
                             setIsAdmin(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }) != null)
                         }, type: 'user', show: false
                     });
+                    setIsPresence(await FetchOwnerGet(token as string, "minister_presence") != null)
                 }, type: 'token', show: false
             });
         }());
@@ -60,8 +64,11 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
                         {isToken ? <li>
                             <Link to={`register`}>Zapisy</Link>
                         </li> : null}
-                        {isRole ? <li>
+                        {isRole || isAdmin ? <li>
                             <Link to={`detail`}>Szczegóły</Link>
+                        </li> : null}
+                        {isPresence ? <li>
+                            <Link to={`presence`}>Obecności</Link>
                         </li> : null}
                         {isAdmin ? <li>
                             <Link to={`admin`}>Admin</Link>
@@ -74,6 +81,7 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
                     <Route path="encyclopaedia" element={<MinisterEncyclopaediaSubpage getParams={getParams} />} />
                     <Route path="register" element={<MinisterRegisterSubpage getParams={getParams} />} />
                     <Route path="detail" element={<MinisterDetailSubpage getParams={getParams} />} />
+                    <Route path="presence" element={<MinisterPresenceSubpage getParams={getParams} />} />
                     <Route path="admin" element={<MinisterAdminSubpage getParams={getParams} />} />
                 </Routes>
                 <div className="description">

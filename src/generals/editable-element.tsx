@@ -331,7 +331,7 @@ export default function EditableElement({ getParams, editable }: { getParams: ({
                                 {expanded == index ?
                                     <>
                                         <div onDoubleClick={onClickData} onClick={() => { setExpanded(-1) }}>
-                                            {'△ ' + (editable.showdescription ? editable.description + ': ' : '') + item.output}
+                                            {'△ ' + (editable.showdescription ? editable.description + ': ' : '') + item.output}
                                         </div>
                                         {editable.children?.map(child => (
                                             <div className='editable-children'>

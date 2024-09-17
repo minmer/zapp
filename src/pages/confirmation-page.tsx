@@ -6,7 +6,7 @@ import ConfirmationAdminSubpage from '../components/confirmation/confirmation-ad
 import ConfirmationDetailSubpage from '../components/confirmation/confirmation-detail-subpage';
 import { useEffect, useState } from 'react';
 import { User } from '../structs/user';
-import { CreateAdminRole, GetRole } from '../structs/role';
+import { CreateAdminRole, GetAdminRole, GetRole } from '../structs/role';
 export default function ConfirmationPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isToken, setIsToken] = useState(false)
@@ -20,7 +20,7 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                         func: async (param: unknown) => {
                             const user = param as User
                             setIsRole(await GetRole({ getParams: getParams, type: 'confirmation', user: user }) != null)
-                            setIsAdmin(await GetRole({ getParams: getParams, type: 'confirmation_admin', user: user }) != null)
+                            setIsAdmin(await GetAdminRole({ getParams: getParams, type: 'confirmation', user: user }) != null)
                         }, type: 'user', show: false
                     });
                 }, type: 'token', show: false
@@ -55,7 +55,7 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                         {isToken ? <li>
                             <Link to={`register`}>Zapisy</Link>
                         </li> : null}
-                        {isRole ? <li>
+                        {isRole || isAdmin ? <li>
                             <Link to={`detail`}>Szczegóły</Link>
                         </li> : null}
                         {isAdmin ? <li>
