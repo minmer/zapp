@@ -17,7 +17,6 @@ export default function ChatElement({ getParams, name, viewer, writer }: { getPa
     const root = useRef(null);
     const [message, setMessage] = useState('')
     const [endDate, setEndDate] = useState(new Date())
-    const [loadingCount, setLoadingCount] = useState(25)
     const [startDate, setStartDate] = useState(new Date())
 
     useEffect(

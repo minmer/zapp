@@ -4,7 +4,6 @@ import MonthDateSelectionElement from "../../generals/month-date-selection-eleme
 import EditableElement from "../../generals/editable-element";
 export default function ItentionReportBookSubpage    ({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [masses, setMasses] = useState([] as Mass[])
-    const [propMasses, setPropMasses] = useState([] as Mass[])
     const [date, setDate] = useState<Date>()
 
 
