@@ -74,6 +74,9 @@ export async function CreateNewAdminRole({ getParams, type, user }: { getParams:
             await FetchInformationPut(token, user.id, roleID, ownerID)
             await FetchOwnerPost(token, roleID + 'channel', user.id)
             await FetchOwnerPost(token, roleID + 'group', user.id)
+            await FetchOwnerPost(token, roleID + 'groupchannel', user.id)
+            const groupID = await FetchOwnerGet(token, roleID + 'group')
+            await FetchOwnerPut(token, roleID + 'groupchannel_viewer', roleID + 'groupchannel', groupID, false, false, true)
             role = { roleID: roleID, user: user, ownerID: ownerID, type: type } as Role
         }, type: 'token', show: false
     })
@@ -87,8 +90,14 @@ export async function GetAdminRole({ getParams, type, user }: { getParams: ({ fu
         func: async (param: unknown) => {
             const token = param as string
             const output = await FetchInformationGetAll("string", token, user.id + '_adminrole_' + type) as unknown as StringOutput[]
-            if (output.length > 0)
+            if (output.length > 0) {
                 role = { roleID: output[0].id, user: user, ownerID: output[0].output, type: type } as Role
+                if (await FetchOwnerGet(token, role.roleID + 'groupchannel') == null) {
+                    await FetchOwnerPost(token, role.roleID + 'groupchannel', user.id)
+                    const groupID = await FetchOwnerGet(token, role.roleID + 'group')
+                    await FetchOwnerPut(token, role.roleID + 'groupchannel_viewer', role.roleID + 'groupchannel', groupID, false, false, true)
+                }
+            }
         }, type: 'token', show: false
     })
     return role
@@ -111,7 +120,7 @@ export async function GetMembers({ getParams, type }: { getParams: ({ func, type
                 ownerID: ((await FetchInformationGetAll('string', token, member.output + 'owner')) as unknown as StringOutput[])[0]?.output,
                 user: { id: ((await FetchInformationGetAll('string', token, member.output + 'user')) as unknown as StringOutput[])[0]?.output, user: ((await FetchInformationGetAll('string', token, member.output + 'userowner')) as unknown as StringOutput[])[0]?.output },
                 type: type,
-                isRegistered: FetchOwnerGet(token, member.output + 'common') != null,
+                isRegistered: await FetchOwnerGet(token, member.output + 'common') != null,
                 alias: ((await FetchInformationGetAll('string', token, member.output + 'alias')) as unknown as StringOutput[])[0]?.output,
             } as Role)))
         }, type: 'token', show: false
@@ -123,12 +132,20 @@ export async function GetAliases({ getParams, adminID }: { getParams: ({ func, t
     return await getParams({
         func: async (param: unknown) => {
             const token = param as string
-            return await Promise.all(((await FetchInformationGetAll('string', token, adminID + 'alias')) as unknown as StringOutput[]).map(async (alias) => (
+            const asd = await Promise.all(((await FetchInformationGetAll('string', token, adminID + 'alias')) as unknown as StringOutput[]).map(async (alias) => (
                 {
                     id: alias.id,
                     ownerID: alias.output,
                     alias: ((await FetchInformationGetAll('string', token, alias.id + 'alias')) as unknown as StringOutput[])[0]?.output
                 } as Alias)))
+            for (let i = 0; i < asd.length; i++) {
+                if (await FetchOwnerGet(token, asd[i].id + 'groupchannel') == null) {
+                    await FetchOwnerPost(token, asd[i].id + 'groupchannel', asd[i].id)
+                    const groupID = await FetchOwnerGet(token, asd[i].id + 'group')
+                    await FetchOwnerPut(token, asd[i].id + 'groupchannel_viewer', asd[i].id + 'groupchannel', groupID, false, false, true)
+                }
+            }
+            return asd
         }, type: 'token', show: false
     }) as Alias[]
 }
@@ -158,6 +175,9 @@ export async function RegisterAliasRole({ getParams, admin }: { getParams: ({ fu
             await FetchOwnerPut(token, roleID + 'viewer', admin.roleID, ownerID, false, false, true)
             await FetchOwnerPut(token, roleID + 'channel', admin.roleID + 'channel', ownerID, false, false, true)
             await FetchOwnerPut(token, roleID + 'group', admin.roleID + 'group', ownerID, true, true, true)
+            await FetchOwnerPost(token, roleID + 'groupchannel', roleID)
+            const groupID = await FetchOwnerGet(token, roleID + 'group')
+            await FetchOwnerPut(token, roleID + 'groupchannel_viewer', roleID + 'groupchannel', groupID, false, false, true)
             await FetchOwnerPost(token, roleID + 'common', admin.roleID)
             await FetchOwnerPut(token, roleID + 'common', roleID + 'common', ownerID, true, true, true)
             return { id: roleID, ownerID: ownerID } as Alias

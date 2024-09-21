@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import IntentionReportComponent from '../components/intention-report-component';
 import IntentionEditComponent from '../components/intention-edit-component';
+import IntentionReportBookSubpage from '../components/intention/intention-report-book-subpage';
 export default function IntentionPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
 
@@ -33,10 +34,13 @@ export default function IntentionPage({ getParams }: { getParams: ({ func, type,
                         <li>
                             <Link to={`month/-1`}>Miesiąc</Link>
                         </li>
+                        {isAdmin ? <li>
+                            <Link to={`report/book`}>Książka</Link>
+                        </li> : null}
                         <li style={{
                             display: isAdmin ? 'block' : 'none',
                         }}>
-                            <Link to={`report/` + Date.now() + '/' + (Date.now() + 86400000)}>Podsumowania</Link>
+                            <Link to={`oldreport/` + Date.now() + '/' + (Date.now() + 86400000)}>Podsumowania</Link>
                         </li>
                         <li style={{
                             display: isAdmin ? 'block' : 'none',
@@ -49,7 +53,8 @@ export default function IntentionPage({ getParams }: { getParams: ({ func, type,
                 <Routes>
                     <Route path="week/:init_date" element={<IntentionWeekComponent/>} />
                     <Route path="month/:init_date" element={<IntentionMonthComponent />} />
-                    <Route path="report/:start_date/:end_date" element={<IntentionReportComponent getParams={getParams} />} />
+                    <Route path="oldreport/:start_date/:end_date" element={<IntentionReportComponent getParams={getParams} />} />
+                    <Route path="report/book" element={<IntentionReportBookSubpage getParams={getParams} />} />
                     <Route path="edit/:init_date" element={<IntentionEditComponent getParams={getParams} />} />
                 </Routes>
                 <div className="description">

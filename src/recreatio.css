@@ -105,7 +105,7 @@ h3 {
     left: 0;
     right: 0;
     background: #0004;
-    z-index: 2;
+    z-index: 50;
     padding: 5%;
 }
 
@@ -127,10 +127,15 @@ h3 {
     margin: 1em;
     background-color: transparent;
 }
-
-    .editable > div:first-child {
-        cursor: pointer;
+    .editable textarea {
+        min-width: 20em;
     }
+
+
+
+.editable > div:first-child {
+    cursor: pointer;
+}
 
 
 .editable-input {
@@ -169,10 +174,79 @@ h3 {
     text-align: center;
 }
 
-.minister-presence > div span, input{
+.minister-presence > div span,
+.minister-presence > div input {
     font-size: 1.25em;
     margin: .5em;
 }
+.chat-element{
+    max-height:64em;
+    overflow-y: scroll;
+    margin: 2em;
+}
+.chat-element textarea {
+    width: 80%;
+    min-height: 5em;
+}
+.chat-element input {
+    width: 20%
+}
+.chat-element .message {
+    background-color: #ededed;
+    border-radius: 2em 1em 2em 0;
+    margin: 1em;
+    padding: 1em;
+    width: fit-content;
+}
+.chat-element .own-message {
+    background-color: #b4edc3;
+    border-radius: 1em 2em 0 2em;
+    margin: 1em;
+    padding: 1em;
+    width: fit-content;
+    float: right;
+}
+.chat-element div {
+    clear: both;
+}
+
+.month-date-selection .navigation input {
+    width: 20%;
+    float: left;
+    height: 4em;
+}
+
+    .month-date-selection .navigation h4 {
+        width: 60%;
+        float: left;
+        text-align: center;
+        font-size: 2em;
+        margin: .25em 0;
+    }
+
+    .month-date-selection .calendar {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto auto auto;
+    }
+
+        .month-date-selection .calendar div {
+            background: #ddd;
+        }
+
+        .month-date-selection .calendar input {
+            border-radius: 0;
+            cursor: pointer;
+        }
+
+        .month-date-selection .calendar div.spelling {
+            background: #bbb;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .month-date-selection .calendar input:hover {
+            background: #eee;
+        }
 
 @media (min-width:768px) {
     .main-grid {

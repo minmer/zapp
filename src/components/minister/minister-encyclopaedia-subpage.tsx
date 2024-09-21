@@ -6,17 +6,18 @@ export default function MinisterEncyclopaediaSubpage({ getParams }: { getParams:
             <EditableElement getParams={getParams} editable={
                 {
                     name: 'minister_encyclopeadia_section',
-                    type: 'text',
+                    type: 'string',
                     multiple: true,
                     dbkey: 'website_admin',
                     description: 'Rozdziały',
                     viewertoken: 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc',
+                    isOrdered: true,
                     showdescription: false,
                     showchildren: true,
                     children: [
                         {
                             name: 'question',
-                            type: 'text',
+                            type: 'string',
                             multiple: true,
                             description: 'Pytanie',
                             children: [

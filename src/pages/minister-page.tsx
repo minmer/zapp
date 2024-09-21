@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import MinisterEncyclopaediaSubpage from '../components/minister/minister-encyclopaedia-subpage';
 import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import MinisterPresenceSubpage from '../components/minister/minister-presence-subpage';
+import MinisterChatSubpage from '../components/minister/minister-chat-subpage';
 export default function MinisterPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isToken, setIsToken] = useState(false)
@@ -67,6 +68,9 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
                         {isRole || isAdmin ? <li>
                             <Link to={`detail`}>Szczegóły</Link>
                         </li> : null}
+                        {isRole || isAdmin ? <li>
+                            <Link to={`chat`}>Chat</Link>
+                        </li> : null}
                         {isPresence ? <li>
                             <Link to={`presence`}>Obecności</Link>
                         </li> : null}
@@ -81,6 +85,7 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
                     <Route path="encyclopaedia" element={<MinisterEncyclopaediaSubpage getParams={getParams} />} />
                     <Route path="register" element={<MinisterRegisterSubpage getParams={getParams} />} />
                     <Route path="detail" element={<MinisterDetailSubpage getParams={getParams} />} />
+                    <Route path="chat/*" element={<MinisterChatSubpage getParams={getParams} />} />
                     <Route path="presence" element={<MinisterPresenceSubpage getParams={getParams} />} />
                     <Route path="admin" element={<MinisterAdminSubpage getParams={getParams} />} />
                 </Routes>

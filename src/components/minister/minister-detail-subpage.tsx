@@ -61,37 +61,80 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
             {
                 role?.isRegistered ?
                     <>
-                        <div><EditableElement getParams={getParams} editable={
+                        <h4><EditableElement getParams={getParams} editable={
                             {
                                 name: role.roleID + 'alias',
                                 type: 'text',
                                 multiple: false,
                                 description: 'Alias',
-                                dbkey: role.roleID,
+                                dbkey: adminRole?.roleID,
                                 showdescription: false,
                                 showchildren: false,
+                            }} />
+                        </h4>
+                        <div><EditableElement getParams={getParams} editable={
+                            {
+                                name: role.roleID + 'function',
+                                type: 'radio',
+                                multiple: false,
+                                description: 'Funkcja',
+                                dbkey: adminRole?.roleID,
+                                showdescription: false,
+                                showchildren: false,
+                                options: [
+                                    { label: 'Zainteresowany', value: '0' },
+                                    { label: 'Kandydat', value: '1' },
+                                    { label: 'Choralista', value: '2' },
+                                    { label: 'Ministrant Ołtarza', value: '3' },
+                                    { label: 'Ministrant Światła', value: '4' },
+                                    { label: 'Ministrant Księgi', value: '5' },
+                                    { label: 'Ministrant Słowa Bożego', value: '6' },
+                                    { label: 'Ceremoniarz', value: '7' },
+                                ],
                             }} />
                         </div>
                         <div>
                             <EditableElement getParams={getParams} editable={
                                 {
-                                    name: role?.roleID + 'birthday',
-                                    type: 'date',
+                                    name: role?.roleID + 'suit0',
+                                    type: 'string',
                                     multiple: false,
-                                    description: 'Data urodzenia',
-                                    dbkey: role?.roleID,
+                                    description: 'Kaptur',
+                                    dbkey: adminRole?.roleID,
                                     showdescription: true,
                                     showchildren: false,
                                 }} />
                             <span> </span>
                             <EditableElement getParams={getParams} editable={
                                 {
-                                    name: role?.roleID + 'birthplace',
-                                    type: 'text',
+                                    name: role?.roleID + 'suit1',
+                                    type: 'string',
                                     multiple: false,
-                                    description: 'Miejsce urodzenia',
-                                    dbkey: role?.roleID,
-                                    showdescription: false,
+                                    description: 'Komża',
+                                    dbkey: adminRole?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                            <span> </span>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'suit2',
+                                    type: 'string',
+                                    multiple: false,
+                                    description: 'Sutanka',
+                                    dbkey: adminRole?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                }} />
+                            <span> </span>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.roleID + 'suit3',
+                                    type: 'string',
+                                    multiple: false,
+                                    description: 'Alba',
+                                    dbkey: adminRole?.roleID,
+                                    showdescription: true,
                                     showchildren: false,
                                 }} />
                         </div>
@@ -114,30 +157,6 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                     type: 'tel',
                                     multiple: true,
                                     description: 'Telefon',
-                                    dbkey: role?.roleID,
-                                    showdescription: true,
-                                    showchildren: false,
-                                }} />
-                        </div>
-                        <div>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.roleID + 'set0',
-                                    type: 'checkbox',
-                                    multiple: false,
-                                    description: 'Zestaw podstawowy (Katechizm + Naklejki + Teczka + Książeczka I Piątek + Rachunek Sumienia + Wydruki) - 30 zł',
-                                    dbkey: role?.roleID,
-                                    showdescription: true,
-                                    showchildren: false,
-                                }} />
-                        </div>
-                        <div>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.roleID + 'set1',
-                                    type: 'checkbox',
-                                    multiple: false,
-                                    description: 'Zestaw dodatkowy (Modlitewnik + Medalik + Łańcuch + Pamiątka I Komunii) - 100 zł',
                                     dbkey: role?.roleID,
                                     showdescription: true,
                                     showchildren: false,

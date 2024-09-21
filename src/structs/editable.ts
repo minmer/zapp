@@ -8,6 +8,7 @@ export interface Editable {
     multiple: boolean,
     dbkey?: string,
     description?: string,
+    isOrdered?: boolean,
     showdescription?: boolean,
     showchildren?: boolean,
     viewertoken?: string,
