@@ -14,14 +14,23 @@ export default function ChoirScoresSubpage({ getParams }: { getParams: ({ func, 
                         showdescription: false,
                     showchildren: true,
                     isOrdered: true,
-                        children: [
-                            {
-                                name: 'detail',
-                                type: 'text',
-                                multiple: false,
-                                description: 'Informacja',
-                                showchildren: false,
-                            }],
+                    children: [
+                        {
+                            name: 'score',
+                            type: 'link',
+                            multiple: false,
+                            description: 'Nuty',
+                            showchildren: false,
+                            showdescription: true,
+                        },
+                        {
+                            name: 'music',
+                            type: 'link',
+                            multiple: false,
+                            description: 'Wykonanie',
+                            showchildren: false,
+                            showdescription: true,
+                        }],
                 }
             } />
         </>

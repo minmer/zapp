@@ -83,6 +83,10 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
                 break;
             }
+            case 'link': {
+                tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                break;
+            }
             case 'email': {
                 tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
                 break;
@@ -227,6 +231,8 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 return new Date('0001-01-01T' + (e.target as HTMLInputElement).value)
             case 'tel':
                 return (e.target as HTMLInputElement).value
+            case 'link':
+                return (e.target as HTMLInputElement).value
             case 'email':
                 return (e.target as HTMLInputElement).value
             default:
@@ -297,6 +303,9 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             case 'tel': {
                 return <input type='tel' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} pattern='[+][0-9]{11}' />
             }
+            case 'link': {
+                return <input type='text' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+            }
             case 'email': {
                 return <input type='email' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
@@ -322,7 +331,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 return (item.output as boolean) ? 'Wybrane' : 'Nie wybrane'
             }
             case 'binary': {
-                return item.output
+                return item.output as string
             }
             case 'radio': {
                 return editable.options?.find((opt) => opt.value == (item.output as string))?.label
@@ -345,11 +354,14 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             case 'tel': {
                 return item.output as string
             }
+            case 'link': {
+                return item.output as string
+            }
             case 'email': {
                 return item.output as string
             }
             default: {
-                break;
+                return ''
             }
         }
     }
@@ -403,9 +415,16 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     :
                     <>
                         {data.map((item, index) => (
-                            <span key={item.id} onDoubleClick={onClickData}>
-                                {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : ' ')) + convertToString(item)}
-                            </span>
+                            editable.type == 'link' ?
+                                <span key={item.id} onDoubleClick={onClickData}>
+                                    {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : ' '))} <a href={convertToString(item) ?? ''}>
+                                        {convertToString(item)}</a>
+                                </span>
+                                
+                            :
+                                <span key={item.id} onDoubleClick={onClickData}>
+                                    {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : ' ')) + convertToString(item)}
+                                </span>
                         ))}
                     </>
             }
