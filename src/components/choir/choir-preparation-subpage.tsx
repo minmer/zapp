@@ -36,6 +36,7 @@ export default function ChoirPreparationSubpage({ getParams }: { getParams: ({ f
                             description: 'Temat',
                             showchildren: false,
                             isOrdered: true,
+                            break: '\n',
                         }],
                 }
             } />

@@ -379,7 +379,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                                 {expanded == index ?
                                     <>
                                         <div onDoubleClick={onClickData} onClick={() => { setExpanded(-1) }}>
-                                            {'△ ' + (editable.showdescription ? editable.description + ': ' : '') + convertToString(item)}
+                                            {'△ ' + (editable.showdescription ? editable.description + ': ' : editable.break ?? '') + convertToString(item)}
                                         </div>
                                         {editable.children?.map(child => (
                                             <div className='editable-children' key={child.name}>
@@ -396,6 +396,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                                                         viewertoken: child.viewertoken ?? editable.viewertoken,
                                                         children: child.children,
                                                         options: child.options,
+                                                        break: child.break ?? editable.break,
                                                         isOrdered: child.isOrdered ?? editable.isOrdered,
                                                     }
                                                     } />
@@ -405,7 +406,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                                     :
                                     <>
                                         <div onDoubleClick={onClickData} onClick={() => { setExpanded(index) }} >
-                                            {'▽ ' + (editable.showdescription ? editable.description + ': ' : '') + convertToString(item)}
+                                            {'▽ ' + (editable.showdescription ? editable.description + ': ' : editable.break ?? '') + convertToString(item)}
                                         </div>
                                     </>
                                 }
@@ -417,13 +418,13 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                         {data.map((item, index) => (
                             editable.type == 'link' ?
                                 <span key={item.id} onDoubleClick={onClickData}>
-                                    {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : ' '))} <a href={convertToString(item) ?? ''}>
+                                    {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? ''))} <a href={convertToString(item) ?? ''}>
                                         {convertToString(item)}</a>
                                 </span>
                                 
                             :
                                 <span key={item.id} onDoubleClick={onClickData}>
-                                    {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : ' ')) + convertToString(item)}
+                                    {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? '')) + convertToString(item)}
                                 </span>
                         ))}
                     </>

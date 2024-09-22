@@ -126,6 +126,7 @@ h3 {
     box-shadow: 3px 3px 12px #0003;
     margin: 1em;
     background-color: transparent;
+    white-space: pre-line;
 }
     .editable textarea {
         min-width: 20em;
@@ -133,8 +134,11 @@ h3 {
 
 
 
-.editable > div:first-child {
-    cursor: pointer;
+    .editable > div:first-child {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1.1em;
+    }
 }
 
 
@@ -146,7 +150,7 @@ h3 {
 }
 
 .editable-children {
-    margin: 0 0 0 1em;
+    margin: 0.5em 0 0 1em;
 }
 
 .user-widget input {

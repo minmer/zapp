@@ -12,6 +12,7 @@ export interface Editable {
     showdescription?: boolean,
     showchildren?: boolean,
     viewertoken?: string,
+    break?: string,
     options?: LabeledValue[],
     children?: Editable[],
 }
