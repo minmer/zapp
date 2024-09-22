@@ -10,6 +10,7 @@ export interface Message {
     date: Date,
     text: string,
     writer: string,
+    preorder: number,
 }
 export default function ChatElement({ getParams, name, viewer, writer }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, name: string, viewer: string, writer?: string }) {
     const [messages, setMessages] = useState([] as Message[])
@@ -30,12 +31,11 @@ export default function ChatElement({ getParams, name, viewer, writer }: { getPa
             func: async (token: unknown) => {
                 let newMessages = (await Promise.all((await FetchInformationGet('datetime', token as string, name, date.getTime(), date.getTime() + 86400000, viewer) as unknown as DateOutput[]).map(async (item) => {
                     const textData = await FetchInformationGetAll('string', token as string, item.id + 'text') as unknown as StringOutput[]
-                    return { id: item.id, date: item.output, textID: textData[0].id, text: textData[0].output, writer: (await FetchInformationGetAll('string', token as string, item.id + 'writer') as unknown as StringOutput[])[0]?.output } as Message
+                    return { preorder: item.preorder, id: item.id, date: item.output, textID: textData[0].id, text: textData[0].output, writer: (await FetchInformationGetAll('string', token as string, item.id + 'writer') as unknown as StringOutput[])[0]?.output } as Message
                 })) as Message[])
-                console.log(newMessages)
                 newMessages = newMessages.filter((item) => messages.find((opt) => opt.id == item.id) == null)
-                console.log(newMessages)
                 if (newMessages.length > 0) {
+                    console.log(newMessages)
                     setMessages([...messages, ...newMessages].sort((a, b) => a.date.getTime() - b.date.getTime()))
                 }
             }, type: 'token', show: true

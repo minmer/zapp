@@ -2,22 +2,22 @@
 export interface StringOutput {
     id: string,
     output: string,
-    creationTime: string,
+    preorder: number,
 }
 export interface NumberOutput {
     id: string,
     output: number,
-    creationTime: string,
+    preorder: number,
 }
 export interface DateOutput {
     id: string,
     output: Date,
-    creationTime: string,
+    preorder: number,
 }
 export interface BooleanOutput {
     id: string,
     output: boolean,
-    creationTime: string,
+    preorder: number,
 }
 export async function FetchInformationGetAll(type: string, token: string, context: string) {
     for (let i = 0; i < 5; i++) {
@@ -49,7 +49,7 @@ export async function FetchInformationGetAll(type: string, token: string, contex
                     return predata.json().then((data) => data as BooleanOutput[])
                 if (type == 'datetime') {
                     const postdata = await predata.json().then((data) => data as StringOutput[])
-                    return postdata.map<DateOutput>((p) => ({ id: p.id, output: new Date(Number(p.output)), creationTime: p.creationTime }))
+                    return postdata.map<DateOutput>((p) => ({ id: p.id, output: new Date(Number(p.output)), preorder: p.preorder }))
                 }
             }
         }
@@ -92,7 +92,7 @@ export async function FetchInformationGet(type: string, token: string, context: 
                     return predata.json().then((data) => data as BooleanOutput[])
                 if (type == 'datetime') {
                     const postdata = await predata.json().then((data) => data as StringOutput[])
-                    return postdata.map<DateOutput>((p) => ({ id: p.id, output: new Date(Number(p.output)), creationTime: p.creationTime }))
+                    return postdata.map<DateOutput>((p) => ({ id: p.id, output: new Date(Number(p.output)), preorder: p.preorder }))
                 }
             }
         }
