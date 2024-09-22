@@ -54,7 +54,7 @@ export default function Root() {
                 <Route path="/" element={<RootPage getParams={getParams} />} />
                 <Route path="/baptism" element={<BaptismPage />} />
                 <Route path="/bible_circle" element={<BibleCirclePage />} />
-                <Route path="/choir" element={<ChoirPage getParams={getParams} />} />
+                <Route path="/choir/*" element={<ChoirPage getParams={getParams} />} />
                 <Route path="/communion/*" element={<CommunionPage getParams={getParams} />} />
                 <Route path="/confession" element={<ConfessionPage />} />
                 <Route path="/confirmation/*" element={<ConfirmationPage getParams={getParams} />} />
