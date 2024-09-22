@@ -4,6 +4,7 @@ import MonthDateSelectionElement from "../../generals/month-date-selection-eleme
 import EditableElement from "../../generals/editable-element";
 export default function ItentionReportBookSubpage    ({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [masses, setMasses] = useState([] as Mass[])
+    const [propMasses, setPropMasses] = useState([] as Mass[])
     const [date, setDate] = useState<Date>()
 
 
@@ -12,6 +13,20 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
             if (date != null)
                 (async function () {
                     setMasses(await LoadMasses(getParams, date, new Date(date.getTime() + 86400000)))
+                    if (date.getDay() == 0) {
+                        setPropMasses([
+                            { time: new Date(date.getTime() + 28800000), id: 'prop' },
+                            { time: new Date(date.getTime() + 36000000), id: 'prop' },
+                            { time: new Date(date.getTime() + 43200000), id: 'prop' },
+                            { time: new Date(date.getTime() + 61200000), id: 'prop' },
+                        ])
+                    }
+                    else {
+                        setPropMasses([
+                            { time: new Date(date.getTime() + 25200000), id: 'prop' },
+                            { time: new Date(date.getTime() + 64800000), id: 'prop' },
+                        ])
+                    }
                 })();
         }, [date, getParams])
     useEffect(
@@ -52,6 +67,9 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                                 { label: 'Święto', value: '1' },
                                 { label: 'Wspomnienie obowiązkowe', value: '2' },
                                 { label: 'Wspomnienie dowolne', value: '3' },
+                                { label: 'Układ niedzielny', value: '4' },
+                                { label: 'Układ świąteczny z 16:30', value: '5' },
+                                { label: 'Układ świąteczny bez 16:30', value: '6' },
                             ],
                         },
                         {
@@ -87,6 +105,16 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                 }
             } />
             <MonthDateSelectionElement onSelectionChange={(date) => setDate(date)} />
+            {masses.map((mass) => (<>
+                <div>
+                    {mass.time.toTimeString()}
+                </div>
+            </>))}
+            {propMasses.map((mass) => (<>
+                <div>
+                    {mass.time.toTimeString()}
+                </div>
+            </>))}
         </>
     );
 }
