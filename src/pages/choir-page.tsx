@@ -21,7 +21,7 @@ export default function ChoirPage({ getParams }: { getParams: ({ func, type, sho
                             <Link to={`overview`}>Ogólne informacje</Link>
                         </li>
                         <li>
-                            <Link to={`prearation`}>Próby</Link>
+                            <Link to={`preparation`}>Próby</Link>
                         </li>
                         <li>
                             <Link to={`mass`}>Msze Śpiewane</Link>
