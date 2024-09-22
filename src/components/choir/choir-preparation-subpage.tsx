@@ -23,7 +23,7 @@ export default function ChoirPreparationSubpage({ getParams }: { getParams: ({ f
                             showchildren: false,
                         },
                         {
-                            name: 'length',
+                            name: 'length-',
                             type: 'time',
                             multiple: false,
                             description: 'Długość próby',
@@ -35,6 +35,7 @@ export default function ChoirPreparationSubpage({ getParams }: { getParams: ({ f
                             multiple: true,
                             description: 'Temat',
                             showchildren: false,
+                            isOrdered: true,
                         }],
                 }
             } />
