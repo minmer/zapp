@@ -21,8 +21,9 @@ export interface Issue {
 }
 export default function ItentionReportBookSubpage    ({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [masses, setMasses] = useState([] as Mass[])
-    const [propEastern, setPropEastern] = useState<Eastern>()
-    const [propIssues, setPropIssues] = useState([] as Issue[])
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [propEastern] = useState<Eastern>()
+//    const [propIssues, setPropIssues] = useState([] as Issue[])
     const [propMasses, setPropMasses] = useState([] as Mass[])
     const [propFeastes, setPropFeastes] = useState([] as Feast[])
     const [date, setDate] = useState<Date>()
