@@ -115,7 +115,7 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
                     </>
                 :
                 <>
-                    <h3>Musisz założyć i wybrać użytkownika, aby móc go zgłosić do bierzmowania.
+                    <h3>Musisz założyć i wybrać użytkownika, aby móc go zgłosić do służby liturgicznej.
                     </h3>
                     <input type="button" className="button" value="Wybierz użytkownika" onClick={selectUser} />
                 </>
