@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { LoadMasses, Mass } from "../../structs/mass";
 import MonthDateSelectionElement from "../../generals/month-date-selection-element";
 import EditableElement from "../../generals/editable-element";
-import { DateOutput, FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
+import { DateOutput, FetchInformationGetAll, NumberOutput, StringOutput } from "../../features/FetchInformationGet";
 export interface Feast {
     id: string,
     date: Date,
@@ -11,9 +11,15 @@ export interface Feast {
     color: string,
 }
 export interface Eastern {
+    ashWednesday: Date,
+    palmSunday: Date,
+    holyThursday: Date,
+    holyFriday: Date,
+    holySaturday: Date,
     eastern: Date,
-    eastern1: Date,
-    eastern2: Date,
+    ascension: Date,
+    pentecoste: Date,
+    start: number,
 }
 export interface Issue {
     date: Date,
@@ -21,9 +27,8 @@ export interface Issue {
 }
 export default function ItentionReportBookSubpage    ({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [masses, setMasses] = useState([] as Mass[])
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [propEastern] = useState<Eastern>()
-//    const [propIssues, setPropIssues] = useState([] as Issue[])
+    const [propEastern, setPropEastern] = useState<Eastern>()
+    const [propIssues, setPropIssues] = useState([] as Issue[])
     const [propMasses, setPropMasses] = useState([] as Mass[])
     const [propFeastes, setPropFeastes] = useState([] as Feast[])
     const [date, setDate] = useState<Date>()
@@ -50,22 +55,31 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
     useEffect(
         () => {
             if (date == null)
-                return
-            if (propEastern?.eastern?.getFullYear() != date.getFullYear())
-                return
-            (async function () {
-                getParams({
-                    func: async (param: unknown) => {
-                        const token = param as string
-                        setPropFeastes(await Promise.all(((await FetchInformationGetAll('string', token, 'feast_prop')) as unknown as DateOutput[]).map(async (feast) => ({
-                            id: feast.id,
-                            date: feast.output,
-                            description: ((await FetchInformationGetAll('string', token, feast.output + 'description')) as unknown as StringOutput[])[0]?.output,
-                            feast: ((await FetchInformationGetAll('string', token, feast.output + 'feast')) as unknown as StringOutput[])[0]?.output,
-                            color: ((await FetchInformationGetAll('string', token, feast.output + 'color')) as unknown as StringOutput[])[0]?.output,
-                        } as Feast))))
-                    }, type: 'token', show: false
-                })
+                return;
+            if (propEastern?.eastern?.getFullYear() == date.getFullYear())
+                return;
+                    (async function () {
+                        getParams({
+                            func: async (param: unknown) => {
+                                const token = param as string
+                                const start = new Date(date.getTime())
+                                start.setHours(0, 0, 0, 0)
+                                start.setDate(1)
+                                start.setMonth(0)
+                                setPropEastern((await Promise.all(((await FetchInformationGetAll('datetime', token, 'eastern_prop')) as unknown as DateOutput[]).filter((eastern) => eastern.output.getFullYear() == date.getFullYear()).map(async (eastern) => ({
+
+                                    ashWednesday: new Date(eastern.output.getTime() - 86400000 * 46),
+                                    palmSunday: new Date(eastern.output.getTime() - 86400000 * 7),
+                                    holyThursday: new Date(eastern.output.getTime() - 86400000 * 3),
+                                    holyFriday: new Date(eastern.output.getTime() - 86400000 * 2),
+                                    holySaturday: new Date(eastern.output.getTime() - 86400000),
+                                    eastern: eastern.output,
+                                    ascension: new Date(eastern.output.getTime() + 86400000 * 42),
+                                    pentecoste: new Date(eastern.output.getTime() + 86400000 * 49),
+                                    start: ((await FetchInformationGetAll('double', token, eastern.id + 'start_week')) as unknown as NumberOutput[])[0]?.output,
+                                } as Eastern))))[0])
+                            }, type: 'token', show: false
+                    })
             })();
         }, [propEastern, date, getParams])
 
@@ -107,8 +121,8 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
         }, [date, getParams, propFeastes])
     useEffect(
         () => {
-            console.log(masses)
-        }, [masses, date])
+            console.log(propEastern)
+        }, [propEastern, date])
 
     return (
 

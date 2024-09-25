@@ -88,7 +88,7 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
                     </>
                     :
                     <>
-                        <div onDoubleClick={removeAttendee}>Czy chcesz zgłosić następujące dziecko do I Komunii Świętej?</div>
+                        <div onDoubleClick={removeAttendee}>Czy chcesz zgłosić następującą osobę do służby liturgicznej?</div>
                         <EditableElement getParams={getParams} editable={
                             {
                                 name: selectedUser.user + 'name',
