@@ -38,7 +38,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                             showdescription: false,
                             showchildren: false,
                         }} />
-                        <span>: </span>
+                    <span>: </span>
                     <EditableElement getParams={getParams} editable={
                         {
                             name: alias.id + 'checking',
@@ -55,6 +55,31 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                                 { label: 'Chwała na wysokości Bogu', value: 'Chwała na wysokości Bogu' },
                                 { label: 'Czytania i Ewangelia', value: 'Czytania i Ewangelia' },
                                 { label: 'Wyznanie wiary', value: 'Wyznanie wiary' },
+                            ],
+                        }} />
+                    <EditableElement getParams={getParams} editable={
+                        {
+                            name: alias.id + 'praiers',
+                            type: 'binary',
+                            multiple: false,
+                            description: 'Modlitwy',
+                            dbkey: alias.id,
+                            showdescription: false,
+                            showchildren: false,
+                            options: [
+                                { label: 'Znak krzyża', value: 'Znak krzyża' },
+                                { label: 'Ojcze nasz', value: 'Ojcze nasz' },
+                                { label: 'Zdrowaś Maryjo', value: 'Zdrowaś Maryjo' },
+                                { label: 'Modlitwa przed nauką', value: 'Modlitwa przed nauką' },
+                                { label: 'Uwielbienie Trójcy', value: 'Uwielbienie Trójcy' },
+                                { label: 'Uwielbienie Najświętszego Sakramentu', value: 'Uwielbienie Najświętszego Sakramentu' },
+                                { label: 'Anioł Pański', value: 'Anioł Pański' },
+                                { label: 'Akt wiary', value: 'Akt wiary' },
+                                { label: 'Akt nadziei', value: 'Akt nadziei' },
+                                { label: 'Akt miłości', value: 'Akt miłości' },
+                                { label: 'Akt żalu', value: 'Akt żalu' },
+                                { label: 'Pod twoją obronę', value: 'Pod twoją obronę' },
+                                { label: 'Skład apostolski', value: 'Skład apostolski' },
                             ],
                         }} />
                 </div>

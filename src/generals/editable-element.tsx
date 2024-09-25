@@ -276,7 +276,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             }
             case 'binary': {
                 if (item != null)
-                    return <>{editable.options?.map((option, index) => (<>{option.label + ': '}<input key={index} id={item.id + index} type='checkbox' checked={(item.output as string)[index] == 'X'} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} /></>))}</>
+                    return <>{editable.options?.map((option, index) => (<div>{option.label + ': '}<input key={index} id={item.id + index} type='checkbox' checked={(item.output as string)[index] == 'X'} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} /></div>))}</>
                 return null
             }
             case 'radio': {
