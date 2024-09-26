@@ -1,6 +1,6 @@
 export async function FetchUserPost(user: string, password: string) {
 
-    return(await fetch('https://zapp.hostingasp.pl/user/',
+    const preData = await fetch('https://zapp.hostingasp.pl/user/',
         {
             method: 'POST',
             body: JSON.stringify({
@@ -12,5 +12,8 @@ export async function FetchUserPost(user: string, password: string) {
             headers: {
                 'Content-Type': 'application/json',
             },
-        }))
+        })
+    if (preData.status == 200)
+        return true
+    return false
 }

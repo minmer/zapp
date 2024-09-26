@@ -5,18 +5,23 @@ import { FetchUserGet, UserOutput } from "../features/FetchUserGet";
 export default function LoginWidget({onLogin }: {onLogin?: () => void }) {
     const [loading, setLoading] = useState("none")
     const [user, setUser] = useState("")
+    const [message, setMessage] = useState("")
     const [password, setPassword] = useState("")
 
     const login = async () => {
         setLoading("")
         const output = await FetchUserGet(user, password)
         console.log(output)
-        if (output !== undefined) {
+        if (output != null) {
             localStorage.setItem("token", (output as unknown as UserOutput).token)
             localStorage.removeItem("user")
+            localStorage.removeItem("userid")
+            onLogin ? onLogin() : null
+        }
+        else {
+            setMessage('Użytkownik lub hasło są niepoprawne')
         }
         setLoading("none")
-        onLogin ? onLogin() : null
     }
 
     return (
@@ -27,9 +32,10 @@ export default function LoginWidget({onLogin }: {onLogin?: () => void }) {
                 } }>
                     <LoadingComponent />
                 </div>
-                <h2 style={{
+                <div style={{
                     gridColumn: "1 / span 2"
-                }}>Logowanie</h2>
+                }}><h2>Logowanie</h2>
+                    <h3>{message}</h3></div>
                 <div>Użytkownik</div>
                 <input type="text" value={user} onChange={(e) => setUser(e.target.value)} />
                 <div>Hasło</div>

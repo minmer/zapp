@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { DaySpelling, MonthSpelling } from "../structs/consts";
+import { CompareDate } from "../components/helpers/DateComparer";
 
 export default function MonthDateSelectionElement({ onSelectionChange }: { onSelectionChange?: (t: Date) => void }) {
     const [date, setDate] = useState(new Date(Date.now()))
     const [preMonth, setPreMonth] = useState([] as string[])
     const [month, setMonth] = useState([] as Date[])
     const [nextMonth, setNextMonth] = useState([] as string[])
+    const [viewDate, setViewDate] = useState(new Date(Date.now()))
 
     useEffect(
         () => {
@@ -15,9 +17,9 @@ export default function MonthDateSelectionElement({ onSelectionChange }: { onSel
 
     useEffect(
         () => {
-            if (month[0]?.getMonth() == date.getMonth())
+            if (month[0]?.getMonth() == viewDate.getMonth())
                 return
-            const start = new Date(date.getTime())
+            const start = new Date(viewDate.getTime())
             start.setHours(0, 0, 0, 0)
             start.setDate(1)
             const pre = []
@@ -25,7 +27,7 @@ export default function MonthDateSelectionElement({ onSelectionChange }: { onSel
                 pre.push('')
             }
             const days = []
-            for (let i = 2; start.getMonth() == date.getMonth(); i++) {
+            for (let i = 2; start.getMonth() == viewDate.getMonth(); i++) {
                 days.push(new Date(start.getTime()))
                 start.setDate(i)
             }
@@ -36,22 +38,23 @@ export default function MonthDateSelectionElement({ onSelectionChange }: { onSel
             setPreMonth(pre)
             setMonth(days)
             setNextMonth(next)
-        }, [date, month])
+        }, [viewDate, month])
 
     const changeMonth = (change: number) => {
-        date.setMonth(date.getMonth() + change)
-        setDate(new Date(date.getTime()));
+        viewDate.setMonth(viewDate.getMonth() + change)
+        setViewDate(new Date(viewDate.getTime()));
     }
 
     const selectedDate = (newDate: Date) => {
         setDate(newDate);
     }
+
     return (
 
         <div className="month-date-selection">
             <div className="navigation">
                 <input type="button" value="<" onClick={() => changeMonth(-1)} />
-                <h4>{MonthSpelling[date.getMonth()] + ' ' + date.getFullYear()}</h4>
+                <h4>{MonthSpelling[viewDate.getMonth()] + ' ' + viewDate.getFullYear()}</h4>
                 <input type="button" value=">" onClick={() => changeMonth(1)} />
                 <div className="clear" />
             </div >
@@ -70,7 +73,9 @@ export default function MonthDateSelectionElement({ onSelectionChange }: { onSel
                     {
                         month.map((day, index) =>
                         (
-                            <input key={index} type="button" value={day.getDate()} onClick={() => selectedDate(day)} />
+                            <input style={{
+                                backgroundColor: CompareDate(day, date) ? 'orange' : CompareDate(day, new Date(Date.now())) ? 'gray' : undefined,
+                            }} key={index} type="button" value={day.getDate()} onClick={() => selectedDate(day)} />
                         ))
                     }
                     {nextMonth.map((_item, index) =>

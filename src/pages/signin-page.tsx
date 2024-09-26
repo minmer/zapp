@@ -12,15 +12,18 @@ export default function SignInPage() {
     const [verified, setVerified] = useState(false)
     const [user, setUser] = useState("")
     const [password, setPassword] = useState("")
+    const [message, setMessage] = useState("")
     const navigate = useNavigate();
 
     const login = async () => {
         setLoading("")
-        await FetchUserPost(user, password)
-        const output = await FetchUserGet(user, password)
-        if (output !== undefined) {
+        if (await FetchUserPost(user, password)) {
+            const output = await FetchUserGet(user, password)
             localStorage.setItem("token", (output as unknown as UserOutput).token)
             navigate('/zielonki/' + entry);
+        }
+        else {
+            setMessage('Wybierz inną nazwę użytkownika, bo obecny już jest wybrany')
         }
         setLoading("none")
     }
@@ -48,9 +51,12 @@ export default function SignInPage() {
                                 }}>
                                     <LoadingComponent />
                                 </div>
-                                <h2 style={{
+                                <div style={{
                                     gridColumn: "1 / span 2"
-                                }}>Utworzenie konta</h2>
+                                }}>
+                                    <h2>Utworzenie konta</h2>
+                                    <h3>{ message}</h3>
+                                </div>
                                 <div>Użytkownik</div>
                                 <input type="text" value={user} onChange={(e) => setUser(e.target.value)} />
                                 <div>Hasło</div>

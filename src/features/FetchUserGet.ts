@@ -5,7 +5,7 @@ export interface UserOutput {
 
 export async function FetchUserGet(user: string, password: string) {
 
-    return (await fetch('https://zapp.hostingasp.pl/user/get/',
+    const preData = await fetch('https://zapp.hostingasp.pl/user/get/',
         {
             method: 'POST',
             body: JSON.stringify({
@@ -16,5 +16,8 @@ export async function FetchUserGet(user: string, password: string) {
             headers: {
                 'Content-Type': 'application/json',
             },
-        }).then(res => res.json())) as unknown as UserOutput[]
+        })
+    if (preData.status == 200)
+        return preData.json() as unknown as UserOutput[]
+    return null
 }
