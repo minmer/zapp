@@ -4,6 +4,7 @@ import { FetchInformationGetAll} from "../features/FetchInformationGet";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchInformationPut } from "../features/FetchInformationPut";
+import { User } from "../structs/user";
 
 export interface IOutput {
     id: string,
