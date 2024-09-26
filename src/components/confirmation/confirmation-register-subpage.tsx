@@ -3,7 +3,7 @@ import { CreateRole, GetRole, Role } from "../../structs/role";
 import { ShareUserInformation, User } from "../../structs/user";
 import EditableElement from "../../generals/editable-element";
 
-export default function ConfirmationRegisterSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function ConfirmationRegisterSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
     const [selectedUser, setSelectedUser] = useState<User>()
     const [role, setRole] = useState<Role | null>()

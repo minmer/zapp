@@ -60,7 +60,7 @@ export default function SignInPage() {
                                 }} type="button" onClick={login} value="Załóż konto" />
                             </div>
                         </> : null}
-                    {(token != null) ? <OldEditableElement getParams={async ({ func }: { func: (t: string) => Promise<unknown> }) => { return await func(token ?? '') }} dbkey="signin_admin" multiple={true} showdescription={false} description="Entries" type="text" name="entries" /> : null}
+                    {(token != null) ? <OldEditableElement getParams={async ({ func }: { func: (p: string) => Promise<unknown> }) => { return await func(token ?? '') }} dbkey="signin_admin" multiple={true} showdescription={false} description="Entries" type="text" name="entries" /> : null}
                 </div>
             </div>
         </>

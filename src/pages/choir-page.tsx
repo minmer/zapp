@@ -4,7 +4,8 @@ import ChoirOverviewSubpage from '../components/choir/choir-overview-subpage';
 import ChoirPreparationSubpage from '../components/choir/choir-preparation-subpage';
 import ChoirMassSubpage from '../components/choir/choir-mass-subpage';
 import ChoirScoresSubpage from '../components/choir/choir-scores-subpage';
-export default function ChoirPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>; type: string; show: boolean; }) => Promise<unknown>; }) {
+import { User } from '../structs/user';
+export default function ChoirPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>; type: string; show: boolean; }) => Promise<unknown>; }) {
     return (
 
         <>

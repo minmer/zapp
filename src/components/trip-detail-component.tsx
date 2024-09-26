@@ -20,7 +20,7 @@ interface IRole {
     id: string,
 }
 
-export default function TripsCreateElement({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function TripsCreateElement({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const { token, list, role } = useParams();
     const [newValue, setValue] = useState("")
     const [description, setDescription] = useState("")

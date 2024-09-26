@@ -1,4 +1,5 @@
 import { DateOutput, FetchInformationGet } from "../features/FetchInformationGet"
+import { User } from "./user"
 
 export interface Mass {
     id: string,
@@ -20,7 +21,7 @@ export interface Priest{
     celebrations?: Intention[]
 }
 
-export async function LoadMasses(getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, start: Date, end: Date) {
+export async function LoadMasses(getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, start: Date, end: Date) {
     {
         return await getParams({
             func: async (token: unknown) => {

@@ -8,7 +8,7 @@ interface IList {
     id: string
 }
 
-export default function TripsDetailElement({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function TripsDetailElement({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const { token } = useParams();
     const [lists, setLists] = useState<IList[]>([])
 

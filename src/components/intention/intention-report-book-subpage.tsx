@@ -3,6 +3,7 @@ import { LoadMasses, Mass } from "../../structs/mass";
 import MonthDateSelectionElement from "../../generals/month-date-selection-element";
 import EditableElement from "../../generals/editable-element";
 import { DateOutput, FetchInformationGetAll, NumberOutput, StringOutput } from "../../features/FetchInformationGet";
+import { User } from "../../structs/user";
 export interface Feast {
     id: string,
     date: Date,
@@ -25,7 +26,7 @@ export interface Issue {
     date: Date,
     type: string,
 }
-export default function ItentionReportBookSubpage    ({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function ItentionReportBookSubpage    ({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [masses, setMasses] = useState([] as Mass[])
     const [propEastern, setPropEastern] = useState<Eastern>()
     // const [propIssues, setPropIssues] = useState([] as Issue[])

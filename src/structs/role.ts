@@ -20,7 +20,7 @@ export interface Alias {
     alias?: string,
 }
 
-export async function CreateNewRole({ getParams, type, user, admin }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User, admin: string }) {
+export async function CreateNewRole({ getParams, type, user, admin }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User, admin: string }) {
     let role = null
     await getParams({
         func: async (param: unknown) => {
@@ -40,7 +40,7 @@ export async function CreateNewRole({ getParams, type, user, admin }: { getParam
     return role as unknown as Role
 }
 
-export async function GetRole({ getParams, type, user }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User }) {
+export async function GetRole({ getParams, type, user }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User }) {
 
     return await getParams({
         func: async (param: unknown) => {
@@ -56,14 +56,14 @@ export async function GetRole({ getParams, type, user }: { getParams: ({ func, t
     }) as Role
 }
 
-export async function CreateRole({ getParams, type, user, admin }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User, admin: string }) {
+export async function CreateRole({ getParams, type, user, admin }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User, admin: string }) {
     const role = await GetRole({ getParams, type, user })
     if (role != null)
         return role
     return await CreateNewRole({ getParams, type, user, admin })
 }
 
-export async function CreateNewAdminRole({ getParams, type, user }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User }) {
+export async function CreateNewAdminRole({ getParams, type, user }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User }) {
     let role = null
     await getParams({
         func: async (param: unknown) => {
@@ -83,7 +83,7 @@ export async function CreateNewAdminRole({ getParams, type, user }: { getParams:
     return role as unknown as Role
 }
 
-export async function GetAdminRole({ getParams, type, user }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User }) {
+export async function GetAdminRole({ getParams, type, user }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User }) {
 
     let role = null
     await getParams({
@@ -103,14 +103,14 @@ export async function GetAdminRole({ getParams, type, user }: { getParams: ({ fu
     return role
 }
 
-export async function CreateAdminRole({ getParams, type, user }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User }) {
+export async function CreateAdminRole({ getParams, type, user }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User }) {
     const role = await GetAdminRole({ getParams, type, user })
     if (role != null)
         return role
     return await CreateNewAdminRole({ getParams, type, user })
 }
 
-export async function GetMembers({ getParams, type }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string }) {
+export async function GetMembers({ getParams, type }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string }) {
 
     return await getParams({
         func: async (param: unknown) => {
@@ -127,7 +127,7 @@ export async function GetMembers({ getParams, type }: { getParams: ({ func, type
     }) as Role[]
 }
 
-export async function GetAliases({ getParams, adminID }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, adminID: string }) {
+export async function GetAliases({ getParams, adminID }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, adminID: string }) {
 
     return await getParams({
         func: async (param: unknown) => {
@@ -155,7 +155,7 @@ export async function GetAliases({ getParams, adminID }: { getParams: ({ func, t
     }) as Alias[]
 }
 
-export async function RegisterRole({ getParams, admin, role }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, admin: Role, role: Role }) {
+export async function RegisterRole({ getParams, admin, role }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, admin: Role, role: Role }) {
     await getParams({
         func: async (param: unknown) => {
             const token = param as string
@@ -169,7 +169,7 @@ export async function RegisterRole({ getParams, admin, role }: { getParams: ({ f
     })
 }
 
-export async function RegisterAliasRole({ getParams, admin }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, admin: Role }) {
+export async function RegisterAliasRole({ getParams, admin }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, admin: Role }) {
     return await getParams({
         func: async (param: unknown) => {
             const token = param as string
@@ -190,7 +190,7 @@ export async function RegisterAliasRole({ getParams, admin }: { getParams: ({ fu
     }) as Alias
 }
 
-export async function ConnectAliasRole({ getParams, role, alias }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, role: Role, alias: Alias }) {
+export async function ConnectAliasRole({ getParams, role, alias }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, role: Role, alias: Alias }) {
     return await getParams({
         func: async (param: unknown) => {
             const token = param as string

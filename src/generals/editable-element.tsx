@@ -6,13 +6,14 @@ import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchInformationPut } from "../features/FetchInformationPut";
 import { Editable } from "../structs/editable";
 import { FetchOwnerGet } from "../features/FetchOwnerGet";
+import { User } from "../structs/user";
 
 export interface IOutput {
     id: string,
     output: number | string | boolean | Date,
     order?: number
 }
-export default function EditableElement({ getParams, editable, onChange }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, editable: Editable, viewertoken?: string, showchildren?: boolean, onChange?: (data: IOutput | undefined) => void }) {
+export default function EditableElement({ getParams, editable, onChange }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, editable: Editable, viewertoken?: string, showchildren?: boolean, onChange?: (data: IOutput | undefined) => void }) {
     const [isLoading, setIsLoading] = useState(true)
     const [expanded, setExpanded] = useState(-1)
     const [data, setData] = useState<IOutput[]>([])

@@ -9,7 +9,7 @@ export interface IOutput {
     id: string,
     output: number | string | boolean,
 }
-export default function OldEditableElement({ getParams, name, type, multiple, dbkey, description, showdescription }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, name: string, type: string, multiple: boolean, dbkey: string, description?: string, showdescription?: boolean }) {
+export default function OldEditableElement({ getParams, name, type, multiple, dbkey, description, showdescription }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, name: string, type: string, multiple: boolean, dbkey: string, description?: string, showdescription?: boolean }) {
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState<IOutput[]>([])
     const [newData, setNewData] = useState('')

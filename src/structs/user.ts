@@ -10,7 +10,7 @@ export interface User {
     user: string,
 }
 
-export async function CreateNewUser({ getParams, }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export async function CreateNewUser({ getParams, }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     let user = null
     await getParams({
         func: async (param: unknown) => {
@@ -25,7 +25,7 @@ export async function CreateNewUser({ getParams, }: { getParams: ({ func, type, 
     return user as unknown as User
 }
 
-export async function CreateNewUserInformation({ getParams, user, name }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, user: User, name: string }) {
+export async function CreateNewUserInformation({ getParams, user, name }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, user: User, name: string }) {
     await getParams({
         func: async (param: unknown) => {
             const token = param as string
@@ -35,7 +35,7 @@ export async function CreateNewUserInformation({ getParams, user, name }: { getP
     })
 }
 
-export async function ShareUserInformation({ getParams, user, name, sharingID }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, user: User, name: string, sharingID: string }) {
+export async function ShareUserInformation({ getParams, user, name, sharingID }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, user: User, name: string, sharingID: string }) {
     await getParams({
         func: async (token: unknown) => {
             await FetchOwnerPut(token as string, sharingID + 'viewer' + user.id + name, user.id + name, sharingID, false, false, false)
@@ -43,7 +43,7 @@ export async function ShareUserInformation({ getParams, user, name, sharingID }:
     })
 }
 
-export async function DeleteUser({ getParams, user}: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, user: User }) {
+export async function DeleteUser({ getParams, user}: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, user: User }) {
     await getParams({
         func: async (param: unknown) => {
             const token = param as string

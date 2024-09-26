@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Editable } from "../structs/editable";
 import OldEditableElement from "../temp/old-editable-element";
 
-export default function EditablePopup({ getParams, elementid, editables, onClosing }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, elementid: string, editables: Editable[], onClosing: () => void }) {
+export default function EditablePopup({ getParams, elementid, editables, onClosing }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, elementid: string, editables: Editable[], onClosing: () => void }) {
     const [popup, setPopup] = useState<string | undefined>()
 
     const backgroundClicked = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

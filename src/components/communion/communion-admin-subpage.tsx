@@ -5,7 +5,7 @@ import { FetchTokenGet } from "../../features/FetchTokenGet";
 import EditableElement from "../../generals/editable-element";
 import { FetchInformationDelete } from "../../features/FetchInformationDelete";
 
-export default function CommunionAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function CommunionAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
     const [role, setRole] = useState<Role | null>()
     const [selectedRole, setSelectedRole] = useState<Role | null>()

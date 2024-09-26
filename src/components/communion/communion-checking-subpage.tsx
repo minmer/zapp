@@ -3,7 +3,7 @@ import { Alias, GetAdminRole, GetAliases, Role } from "../../structs/role";
 import { User } from "../../structs/user";
 import EditableElement from "../../generals/editable-element";
 
-export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
     const [role, setRole] = useState<Role | null>()
     const [aliases, setAliases] = useState<Alias[]>([])

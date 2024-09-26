@@ -9,7 +9,7 @@ import CommunionDetailSubpage from '../components/communion/communion-detail-sub
 import CommunionAdminSubpage from '../components/communion/communion-admin-subpage';
 import CommunionCheckingSubpage from '../components/communion/communion-checking-subpage';
 
-export default function CommunionPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>; type: string; show: boolean; }) => Promise<unknown>; }) {
+export default function CommunionPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>; type: string; show: boolean; }) => Promise<unknown>; }) {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isToken, setIsToken] = useState(false);
     const [isRole, setIsRole] = useState(false);

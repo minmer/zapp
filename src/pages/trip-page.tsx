@@ -5,7 +5,7 @@ import TripsCreateComponent from '../components/trips-create-component';
 import { FetchInformationGetAll } from '../features/FetchInformationGet';
 import { useEffect, useState } from 'react';
 import TripsDetailComponent from '../components/trips-detail-component';
-export default function UserPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function UserPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const { token } = useParams();
     const [isAdmin, setIsAdmin] = useState(false)
 

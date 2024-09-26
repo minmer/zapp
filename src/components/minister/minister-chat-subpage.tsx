@@ -2,8 +2,9 @@ import { Link, Route, Routes } from "react-router-dom";
 import MinisterChatGroupSubpage from "./chat/minister-chat-group-subpage";
 import MinisterChatChannelSubpage from "./chat/minister-chat-channel-subpage";
 import MinisterChatAdminSubpage from "./chat/minister-chat-admin-subpage";
+import { User } from "../../structs/user";
 
-export default function MinisterChatSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function MinisterChatSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     return (
         <div className="minister-chat">
             <div className="tabs sub-tab">

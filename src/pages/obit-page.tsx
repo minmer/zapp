@@ -4,7 +4,7 @@ import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import { useEffect, useState } from 'react';
 import ObitsIntentionsComponent from '../components/obits-intentions-component';
 import ObitsEditComponent from '../components/obits-edit-component';
-export default function ObitPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function ObitPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {

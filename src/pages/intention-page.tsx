@@ -7,7 +7,7 @@ import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import IntentionReportComponent from '../components/intention-report-component';
 import IntentionEditComponent from '../components/intention-edit-component';
 import IntentionReportBookSubpage from '../components/intention/intention-report-book-subpage';
-export default function IntentionPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function IntentionPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {

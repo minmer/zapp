@@ -11,7 +11,7 @@ import MinisterEncyclopaediaSubpage from '../components/minister/minister-encycl
 import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import MinisterPresenceSubpage from '../components/minister/minister-presence-subpage';
 import MinisterChatSubpage from '../components/minister/minister-chat-subpage';
-export default function MinisterPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function MinisterPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isToken, setIsToken] = useState(false)
     const [isRole, setIsRole] = useState(false)

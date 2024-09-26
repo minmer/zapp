@@ -3,7 +3,7 @@ import { FetchInformationGetAll, StringOutput } from "../features/FetchInformati
 import { CreateNewUser, CreateNewUserInformation, DeleteUser, User } from "../structs/user";
 import EditableElement from "../generals/editable-element";
 
-export default function UsersWidget({ getParams, onSelected }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, onSelected?: () => void }) {
+export default function UsersWidget({ getParams, onSelected }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, onSelected?: () => void }) {
     const [users, setUsers] = useState<User[]>([])
     const [selectedUser, setSelectedUser] = useState<User>()
 

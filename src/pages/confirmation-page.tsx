@@ -7,7 +7,7 @@ import ConfirmationDetailSubpage from '../components/confirmation/confirmation-d
 import { useEffect, useState } from 'react';
 import { User } from '../structs/user';
 import { CreateAdminRole, GetAdminRole, GetRole } from '../structs/role';
-export default function ConfirmationPage({ getParams }: { getParams: ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function ConfirmationPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isToken, setIsToken] = useState(false)
     const [isRole, setIsRole] = useState(false)
