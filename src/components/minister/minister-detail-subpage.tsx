@@ -13,7 +13,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
     useEffect(() => {
         (async function () {
             getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const user = param as User
                     setAdminRole(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }))
                 }, type: 'user', show: false
@@ -40,7 +40,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
         if (role != null)
             (async function () {
                 await getParams({
-                    func: async (param: unknown) => {
+                    func: async (param: string | User) => {
                         const token = param as string
                         if ((await FetchOwnerGet(token, role.roleID) == null) || !role.isRegistered)
                             await FetchTokenGet(token)

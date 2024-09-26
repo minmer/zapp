@@ -3,6 +3,7 @@ import { Link, Route, Routes, useParams } from "react-router-dom";
 import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
 import TripEnlistElement from "./trip-enlist-component";
 import TripDetailElement from "./trip-detail-component";
+import { User } from "../structs/user";
 
 interface IList {
     name: string,

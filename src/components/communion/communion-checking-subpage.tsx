@@ -10,7 +10,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
     useEffect(() => {
         (async function () {
             getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const user = param as User
                     setRole(await GetAdminRole({ getParams: getParams, type: 'communion', user: user }))
                 }, type: 'user', show: false

@@ -39,7 +39,7 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
         () => {
             (async function () {
                 getParams({
-                    func: async (param: unknown) => {
+                    func: async (param: string | User) => {
                         const token = param as string
                         setPropFeastes(await Promise.all(((await FetchInformationGetAll('string', token, 'feast_prop')) as unknown as DateOutput[]).map(async (feast) => ({
                             id: feast.id,
@@ -61,7 +61,7 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                 return;
                     (async function () {
                         getParams({
-                            func: async (param: unknown) => {
+                            func: async (param: string | User) => {
                                 const token = param as string
                                 const start = new Date(date.getTime())
                                 start.setHours(0, 0, 0, 0)

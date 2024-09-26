@@ -5,6 +5,7 @@ import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import OldEditableElement from "../temp/old-editable-element";
 import LoadingComponent from "../generals/loading-component";
+import { User } from "../structs/user";
 
 interface IValue {
     name: string,

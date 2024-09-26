@@ -14,7 +14,7 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
     useEffect(() => {
         (async function () {
             getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const user = param as User
                     setRole(await GetAdminRole({ getParams: getParams, type: 'confirmation', user: user }))
                     setMembers(await GetMembers({ getParams: getParams, type: 'confirmation' }))
@@ -30,7 +30,7 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
 
     const reload = async () => {
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 FetchTokenGet(param as string)
             }, type: 'token', show: false
         });
@@ -56,7 +56,7 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
     const deleteAlias = async (alias: Alias) => {
         if (role != null)
             getParams({
-                func: async (token: unknown) => {
+                func: async (token: string | User) => {
                     FetchInformationDelete(token as string, role.roleID, alias.id)
                 }, type: 'token', show: false
             });

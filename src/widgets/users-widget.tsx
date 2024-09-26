@@ -13,7 +13,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
     useEffect(
         () => {
             getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const token = param as string
                     setUsers((await FetchInformationGetAll('string', token, 'user') as StringOutput[]).map<User>((output) => ({ id: output.id, user: output.output })))
 

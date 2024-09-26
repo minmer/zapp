@@ -1,4 +1,5 @@
 import EditableElement from "../../generals/editable-element";
+import { User } from "../../structs/user";
 
 export default function ConfirmationOverviewSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     return (

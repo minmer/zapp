@@ -17,7 +17,7 @@ export default function OldEditableElement({ getParams, name, type, multiple, db
     useEffect(
         () => {
             getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const token = param as string
                     setIsLoading(true)
                     if (type == 'number') {
@@ -59,7 +59,7 @@ export default function OldEditableElement({ getParams, name, type, multiple, db
     const DeleteData = (id: string) => {
 
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 const token = param as string
                 FetchInformationDelete(token ?? '', dbkey, id)
                 setData(data.filter(item => item.id !== id))
@@ -70,7 +70,7 @@ export default function OldEditableElement({ getParams, name, type, multiple, db
     const AddData = async () => {
         if (newData != '') {
             getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const token = param as string
                     setIsLoading(true)
                     await FetchInformationPost(token ?? '', dbkey, [name], newData, [1])
@@ -91,7 +91,7 @@ export default function OldEditableElement({ getParams, name, type, multiple, db
 
     const RefreshData = (id: string) => {
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 const token = param as string
                 await FetchInformationPut(token, dbkey, id, data.find(item => item.id == id)?.output ?? '')
             }, type: 'token', show: false

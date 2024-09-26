@@ -19,10 +19,10 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
     useEffect(() => {
         (async function () {
             getParams({
-                func: async (token: unknown) => {
+                func: async (token: string | User) => {
                     setIsToken(true)
                     getParams({
-                        func: async (param: unknown) => {
+                        func: async (param: string | User) => {
                             const user = param as User
                             setIsRole(await GetRole({ getParams: getParams, type: 'minister', user: user }) != null)
                             setIsAdmin(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }) != null)
@@ -36,7 +36,7 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
     const register = () => {
         (async function () {
             await getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const user = param as User
                     console.log(await CreateAdminRole({ getParams: getParams, type: 'minister', user: user }))
                 }, type: 'user', show: true

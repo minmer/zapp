@@ -14,7 +14,7 @@ export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func
     useEffect(() => {
         (async function () {
             getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const user = param as User
                     setRole(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }))
                     setMembers(await GetMembers({ getParams: getParams, type: 'minister' }))
@@ -30,7 +30,7 @@ export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func
 
     const reload = async () => {
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 await FetchTokenGet(param as string)
                 setMembers(await GetMembers({ getParams: getParams, type: 'minister' }))
             }, type: 'token', show: false
@@ -57,7 +57,7 @@ export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func
     const deleteAlias = async (alias: Alias) => {
         if (role != null)
             getParams({
-                func: async (token: unknown) => {
+                func: async (token: string | User) => {
                     FetchInformationDelete(token as string, role.roleID, alias.id)
                 }, type: 'token', show: false
             });

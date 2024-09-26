@@ -13,7 +13,7 @@ export default function MinisterChatAdminSubpage({ getParams }: { getParams: ({ 
     useEffect(() => {
         (async function () {
             getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const user = param as User
                     setAdminRole(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }))
                     setRole(await GetRole({ getParams: getParams, type: "minister", user: user as User }))

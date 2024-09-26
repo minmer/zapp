@@ -27,7 +27,7 @@ export default function MinisterPresenceSubpage({ getParams }: { getParams: ({ f
         if (role != null)
             (async function () {
                 await getParams({
-                    func: async (param: unknown) => {
+                    func: async (param: string | User) => {
                         const token = param as string
                         if ((await FetchOwnerGet(token, role.roleID) == null) || !role.isRegistered)
                             await FetchTokenGet(token)

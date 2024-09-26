@@ -23,7 +23,7 @@ export interface Alias {
 export async function CreateNewRole({ getParams, type, user, admin }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User, admin: string }) {
     let role = null
     await getParams({
-        func: async (param: unknown) => {
+        func: async (param: string | User) => {
             const token = param as string
             const roleID = await FetchInformationPost(token, user.id, [user.id + '_role_' + type], "Temp", [1])
             await FetchOwnerPost(token, roleID, user.id)
@@ -43,7 +43,7 @@ export async function CreateNewRole({ getParams, type, user, admin }: { getParam
 export async function GetRole({ getParams, type, user }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User }) {
 
     return await getParams({
-        func: async (param: unknown) => {
+        func: async (param: string | User) => {
             const token = param as string
             const output1 = await FetchInformationGetAll("string", token, user.id + '_role_' + type) as unknown as StringOutput[]
             if (output1.length > 0) {
@@ -66,7 +66,7 @@ export async function CreateRole({ getParams, type, user, admin }: { getParams: 
 export async function CreateNewAdminRole({ getParams, type, user }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string, user: User }) {
     let role = null
     await getParams({
-        func: async (param: unknown) => {
+        func: async (param: string | User) => {
             const token = param as string
             const roleID = await FetchInformationPost(token, user.id, [user.id + '_adminrole_' + type], "Temp", [1])
             await FetchOwnerPost(token, roleID, user.id)
@@ -87,7 +87,7 @@ export async function GetAdminRole({ getParams, type, user }: { getParams: ({ fu
 
     let role = null
     await getParams({
-        func: async (param: unknown) => {
+        func: async (param: string | User) => {
             const token = param as string
             const output = await FetchInformationGetAll("string", token, user.id + '_adminrole_' + type) as unknown as StringOutput[]
             if (output.length > 0) {
@@ -113,7 +113,7 @@ export async function CreateAdminRole({ getParams, type, user }: { getParams: ({
 export async function GetMembers({ getParams, type }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, type: string }) {
 
     return await getParams({
-        func: async (param: unknown) => {
+        func: async (param: string | User) => {
             const token = param as string
             return await Promise.all(((await FetchInformationGetAll('string', token, type + 'member')) as unknown as StringOutput[]).map(async (member) => ({
                 roleID: member.output,
@@ -130,7 +130,7 @@ export async function GetMembers({ getParams, type }: { getParams: ({ func, type
 export async function GetAliases({ getParams, adminID }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, adminID: string }) {
 
     return await getParams({
-        func: async (param: unknown) => {
+        func: async (param: string | User) => {
             const token = param as string
             const asd = await Promise.all(((await FetchInformationGetAll('string', token, adminID + 'alias')) as unknown as StringOutput[]).map(async (alias) => (
                 {
@@ -157,7 +157,7 @@ export async function GetAliases({ getParams, adminID }: { getParams: ({ func, t
 
 export async function RegisterRole({ getParams, admin, role }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, admin: Role, role: Role }) {
     await getParams({
-        func: async (param: unknown) => {
+        func: async (param: string | User) => {
             const token = param as string
             await FetchOwnerPut(token, role.roleID + 'channel', admin.roleID + 'channel', role.ownerID, false, false, true)
             await FetchOwnerPut(token, role.roleID + 'group', admin.roleID + 'group', role.ownerID, true, true, true)
@@ -171,7 +171,7 @@ export async function RegisterRole({ getParams, admin, role }: { getParams: ({ f
 
 export async function RegisterAliasRole({ getParams, admin }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, admin: Role }) {
     return await getParams({
-        func: async (param: unknown) => {
+        func: async (param: string | User) => {
             const token = param as string
             const roleID = await FetchInformationPost(token, admin.roleID, [admin.roleID + 'alias'], "Temp", [1])
             await FetchOwnerPost(token, roleID, admin.roleID)
@@ -192,7 +192,7 @@ export async function RegisterAliasRole({ getParams, admin }: { getParams: ({ fu
 
 export async function ConnectAliasRole({ getParams, role, alias }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, role: Role, alias: Alias }) {
     return await getParams({
-        func: async (param: unknown) => {
+        func: async (param: string | User) => {
             const token = param as string
             await FetchInformationPost(token, alias.id, [role.roleID + 'alias'], alias.id, [1])
             await FetchOwnerPut(token, alias.id, alias.id, role.ownerID, true, true, true)

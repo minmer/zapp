@@ -44,7 +44,7 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
 
     const LoadData = useCallback(async (start: Date, end: Date) => {
         await getParams({
-            func: async (token: unknown) => {
+            func: async (token: string | User) => {
                 let newMessages = (await Promise.all((await FetchInformationGet('datetime', token as string, name, start.getTime(), end.getTime(), viewer) as unknown as DateOutput[]).map(async (item) => {
                     const textData = await FetchInformationGetAll('string', token as string, item.id + 'text') as unknown as StringOutput[]
                     return { preorder: item.preorder, id: item.id, date: item.output, textID: textData[0].id, text: textData[0].output, writer: (await FetchInformationGetAll('string', token as string, item.id + 'writer') as unknown as StringOutput[])[0]?.output, alias: (await FetchInformationGetAll('string', token as string, item.id + 'alias') as unknown as StringOutput[])[0]?.output } as Message
@@ -94,7 +94,7 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
     const sendMessage = async () => {
         console.log(writer)
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 if (message != '' && writer != null) {
                     const token = param as string
                     const creationTime = Date.now()
@@ -119,7 +119,7 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
         del++
         if (del > 3)
             getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const token = param as string
                     await FetchInformationDelete(token, writer ?? '', id)
                 }, type: 'token', show: true

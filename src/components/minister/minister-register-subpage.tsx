@@ -11,7 +11,7 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
     useEffect(() => {
         (async function () {
             await getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     console.log('asd2')
                     setSelectedUser(param as User)
                 }, type: 'user', show: true
@@ -47,7 +47,7 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
     const removeAttendee = async () => {
         if (role != null) {
         getParams({
-            func: async (token: unknown) => {
+            func: async (token: string | User) => {
                 await FetchInformationDelete(token as string, role.user.id, role.roleID )
             }, type: 'token', show: false
         });

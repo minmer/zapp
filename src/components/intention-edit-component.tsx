@@ -5,6 +5,7 @@ import { FetchInformationGet, FetchInformationGetAll, StringOutput, DateOutput }
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import OldEditableElement from "../temp/old-editable-element";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
+import { User } from "../structs/user";
 
 interface Mass {
     time: Date,
@@ -52,7 +53,7 @@ export default function ItentionEditElement({ getParams }: { getParams: ({ func,
         }, [date])
     useEffect(() => {
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 const token = param as string
                 {
                     {
@@ -88,7 +89,7 @@ export default function ItentionEditElement({ getParams }: { getParams: ({ func,
 
     const addDate = async (hour: number) => {
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 const token = param as string
                 {
                     console.log(await FetchInformationPost(token ?? '', 'new_intention_admin', ['new_zielonki_mass'], new Date(date.getTime() + hour), [date.getTime() + hour]))
@@ -100,7 +101,7 @@ export default function ItentionEditElement({ getParams }: { getParams: ({ func,
     const deleteMass = async (id: string) => {
 
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 const token = param as string
                 {
                     console.log(await FetchInformationDelete(token ?? '', 'new_intention_admin', id))

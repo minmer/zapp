@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import LoadingComponent from "../generals/loading-component";
 import { FetchInformationGet, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import OldEditableElement from "../temp/old-editable-element";
+import { User } from "../structs/user";
 
 interface IMass {
     id: string,
@@ -40,7 +41,7 @@ export default function ItentionReportElement({ getParams }: { getParams: ({ fun
 
     useEffect(() => {
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 const token = param as string
                 setIsLoading(true)
                 setMasses([])

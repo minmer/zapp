@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Editable } from "../structs/editable";
 import OldEditableElement from "../temp/old-editable-element";
+import { User } from "../structs/user";
 
 export default function EditablePopup({ getParams, elementid, editables, onClosing }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, elementid: string, editables: Editable[], onClosing: () => void }) {
     const [popup, setPopup] = useState<string | undefined>()

@@ -10,7 +10,7 @@ export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ 
     useEffect(() => {
         (async function () {
             await getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     setSelectedUser(param as User)
                     console.log((param as User).id)
                 }, type: 'user', show: true
@@ -47,7 +47,7 @@ export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ 
     const removeAttendee = async () => {
         //if (role != null) {
             getParams({
-                func: async (token: unknown) => {
+                func: async (token: string | User) => {
                     console.log(token)
                     console.log(selectedUser)
                     console.log(role)

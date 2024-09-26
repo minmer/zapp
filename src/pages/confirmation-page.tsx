@@ -17,7 +17,7 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                 func: async () => {
                     setIsToken(true)
                     getParams({
-                        func: async (param: unknown) => {
+                        func: async (param: string | User) => {
                             const user = param as User
                             setIsRole(await GetRole({ getParams: getParams, type: 'confirmation', user: user }) != null)
                             setIsAdmin(await GetAdminRole({ getParams: getParams, type: 'confirmation', user: user }) != null)
@@ -30,7 +30,7 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
     const register = () => {
         (async function () {
             await getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const user = param as User;
                     console.log(await CreateAdminRole({ getParams: getParams, type: 'confirmation', user: user }));
                 }, type: 'user', show: true

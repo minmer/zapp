@@ -117,7 +117,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 LoadData(editable.viewertoken)
             else
                 getParams({
-                    func: async (token: unknown) => {
+                    func: async (token: string | User) => {
                         LoadData(token as string)
                     }, type: 'token', show: true
                 });
@@ -129,7 +129,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             LoadData(editable.viewertoken)
             else
                 getParams({
-                    func: async (token: unknown) => {
+                    func: async (token: string | User) => {
                         LoadData(token as string)
                     }, type: 'token', show: true
                 });
@@ -138,7 +138,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
     useEffect(
         () => {
             getParams({
-                func: async (token: unknown) => {
+                func: async (token: string | User) => {
                     if (await FetchOwnerGet(token as string, editable.dbkey ?? ''))
                         setIsEditable(true)
                 }, type: 'token', show: false
@@ -152,7 +152,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
 
     const orderChanged = async () => {
         getParams({
-            func: async (token: unknown) => {
+            func: async (token: string | User) => {
                 LoadData(token as string)
             }, type: 'token', show: false
         })
@@ -161,7 +161,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
     const DeleteData = (id: string) => {
 
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 const token = param as string
                 await FetchInformationDelete(token, editable.dbkey ?? '', id)
                 LoadData(token)
@@ -172,7 +172,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
     const AddData = async () => {
         if (newData != undefined) {
             getParams({
-                func: async (param: unknown) => {
+                func: async (param: string | User) => {
                     const token = param as string
                     setIsLoading(true)
                     const id = await FetchInformationPost(token, editable.dbkey ?? '', [editable.name], newData, [data.length + 1])
@@ -191,7 +191,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
 
     const RefreshData = (id: string) => {
         getParams({
-            func: async (param: unknown) => {
+            func: async (param: string | User) => {
                 const token = param as string
                 await FetchInformationPut(token, editable.dbkey ?? '', id, data.find(item => item.id == id)?.output ?? '')
                 if (onChange != null)
