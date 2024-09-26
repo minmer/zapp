@@ -12,8 +12,8 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
         (async function () {
             await getParams({
                 func: async (param: unknown) => {
+                    console.log('asd2')
                     setSelectedUser(param as User)
-                    console.log((param as User).id)
                 }, type: 'user', show: true
             })
         })();
@@ -29,7 +29,6 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
     useEffect(() => {
         (async function () {
             if (selectedUser != null) {
-                console.log(await GetRole({ getParams: getParams, type: "minister", user: selectedUser }))
                 setRole(await GetRole({ getParams: getParams, type: "minister", user: selectedUser }))
             }
         }());
@@ -49,9 +48,6 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
         if (role != null) {
         getParams({
             func: async (token: unknown) => {
-                console.log(token)
-                console.log(selectedUser)
-                console.log(role)
                 await FetchInformationDelete(token as string, role.user.id, role.roleID )
             }, type: 'token', show: false
         });

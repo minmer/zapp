@@ -8,7 +8,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
     const [selectedUser, setSelectedUser] = useState<User>()
 
     useEffect(() => {
-            setSelectedUser({ user: localStorage.getItem("user") + '', id: localStorage.getItem("userid") + '' })
+        setSelectedUser({ user: localStorage.getItem("user") + '', id: localStorage.getItem("userid") + '' })
         },[])
     useEffect(
         () => {
@@ -17,7 +17,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
                     const token = param as string
                     setUsers((await FetchInformationGetAll('string', token, 'user') as StringOutput[]).map<User>((output) => ({ id: output.id, user: output.output })))
 
-                }, type: 'token', show: false
+                }, type: 'token', show: true
             })
         }, [getParams])
 
@@ -51,7 +51,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
 
                     <div style={
                         {
-                            background: user == selectedUser ? "#ff4f004f" : "transparent",
+                            background: user.id == selectedUser?.id ? "#ff4f004f" : "transparent",
                             padding: '12px',
                             borderRadius: '12px',
                             border: '1px solid',

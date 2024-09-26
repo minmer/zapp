@@ -23,15 +23,14 @@ import { User } from "./structs/user";
 export default function Root() {
     const [login, setLogin] = useState(false);
     const [selectUser, setSelectUser] = useState(false);
-    const getParams = async ({ func, type, show }: { func: (t: unknown) => Promise<unknown>, type: string, show: boolean }) => {
-        if (type == "token")
-        {
-            const token = localStorage.getItem("token")
-            if (token != null)
-                return await func(token)
+    const getParams = async ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => {
+        const token = localStorage.getItem("token")
+        if (token == null) {
             setLogin(login || show)
             return null
         }
+        if (type == "token")
+            return await func(token)
         if (type == "user") {
             const user = localStorage.getItem("user")
             const userID = localStorage.getItem("userid")
@@ -72,8 +71,7 @@ export default function Root() {
             <div style={{ right: "3em" }} className="login-button" onClick={() => { localStorage.removeItem("user") }} />
             {(selectUser || login) ? (<div className="popup" onClick={(e) => { if (e.currentTarget == e.target) { setLogin(false); setSelectUser(false) } }} >
                 <div>
-                    {login ? <LoginWidget onLogin={() => setLogin(false)} /> : null}
-                    {selectUser ? <UsersWidget getParams={getParams} onSelected={() => setSelectUser(false)} /> : null}
+                    {login ? <LoginWidget onLogin={() => setLogin(false)} /> : selectUser ? <UsersWidget getParams={getParams} onSelected={() => setSelectUser(false)} /> : null}
                 </div>
             </div>): null}
         </>

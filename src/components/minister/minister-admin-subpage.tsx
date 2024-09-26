@@ -31,7 +31,8 @@ export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func
     const reload = async () => {
         getParams({
             func: async (param: unknown) => {
-                FetchTokenGet(param as string)
+                await FetchTokenGet(param as string)
+                setMembers(await GetMembers({ getParams: getParams, type: 'minister' }))
             }, type: 'token', show: false
         });
     }
@@ -104,7 +105,7 @@ export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func
                             type: 'text',
                             multiple: false,
                             description: 'Alias',
-                            dbkey: alias.id,
+                            dbkey: alias.id + 'groupchannel',
                             showdescription: false,
                             showchildren: false,
                         }} />

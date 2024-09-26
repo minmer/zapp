@@ -192,9 +192,13 @@ h3 {
     width: 80%;
     min-height: 5em;
 }
-.chat-element input {
-    width: 20%
-}
+    .chat-element input {
+        width: 20%
+    }
+    .chat-element .loadbutton {
+        width: 80%;
+        margin: 1em 10%;
+    }
 .chat-element .message {
     background-color: #ededed;
     border-radius: 2em 1em 2em 0;
