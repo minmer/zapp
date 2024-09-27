@@ -166,7 +166,7 @@ h3 {
 
 .communion-checking > div {
     padding: 0 1em;
-    width: 100em;
+    width: 88em;
 }
 
 .communion-checking .alias {
@@ -181,8 +181,14 @@ h3 {
 
         .communion-checking > div > span.static-font {
             font-family: monospace;
-            font-size: 1.5em;
+            font-size: 2em;
             line-height: 1.15;
+        }
+
+        .communion-checking > div > span.static-font div{
+            font-family:'Times New Roman', Times, serif;
+            font-size: 1em;
+            line-height: 1.5;
         }
 
 .communion-detail > div {
