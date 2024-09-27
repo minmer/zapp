@@ -21,6 +21,7 @@ export interface PropMass {
     date: Date,
     intention: string[],
     description: string[],
+    collective?: boolean,
 }
 export interface PropAppointment {
     date: Date,
@@ -164,6 +165,27 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                             { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: [], },
                             { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
                         ]
+                    else if (CompareMonthDay(date, new Date(2001, 11, 26)))
+                        tempMasses = [
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 12, 0), intention: [], description: ['Msza Chrzcielna'], },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                        ]
+                    else if (CompareMonthDay(date, new Date(2001, 0, 1)))
+                        tempMasses = [
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: [], },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                        ]
+                    else if (CompareMonthDay(date, new Date(2001, 0, 6)))
+                        tempMasses = [
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Orszak Trzech Króli'], },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                        ]
                     else if (date.getDay() == 0) 
                         tempMasses = [
                             { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
@@ -223,7 +245,7 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                     else if (BetweenDates(new Date(date.getFullYear(), 2, 25), AddDaysToDate(propEastern, -7), AddDaysToDate(propEastern, 7)) ? date.getTime() == AddDaysToDate(propEastern, +8).getTime() : CompareMonthDay(date, new Date(2001, 2, 25))) {
                         tempIssues = [...tempIssues, 'Uroczystość Zwiastowania Pańskiego']
                         tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Adopcja dziecka poczętego']
-                        }
+                    }
                     else if (BetweenDates(date, AddDaysToDate(propEastern, 8), AddDaysToDate(propEastern, 49))) {
                         if (date.getTime() == AddDaysToDate(propEastern, 42).getTime())
                             tempIssues = [...tempIssues, 'Wniebowstąpienie Pańskie']
@@ -234,7 +256,7 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         if (date.getTime() == AddDaysToDate(propEastern, 41).getTime())
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia Wniebowstąpienia Pańskiego']
                         else if (date.getTime() == AddDaysToDate(propEastern, 48).getTime())
-                                tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia Zesłania Ducha Świętego']
+                            tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia Zesłania Ducha Świętego']
                         else if (BetweenDates(date, AddDaysToDate(propEastern, 8), AddDaysToDate(propEastern, 47)) && date.getDay() == 6)
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia ' + Math.floor((date.getTime() - AddDaysToDate(propEastern, -8).getTime()) / 604800000) + '. ' + ' Niedzieli Wielkanocnej']
                     }
@@ -250,13 +272,39 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         tempIssues = [...tempIssues, 'Wspomnienie Niepokalanego Serca Najświętszej Maryi Panny']
                     else if (date.getTime() == AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 7 - new Date(date.getFullYear(), 11, 3).getDay()).getTime())
                         tempIssues = [...tempIssues, 'Uroczystość Jezusa Chrystusa, Króla Wszechświata']
-                    else if (BetweenDates(date, AddDaysToDate(new Date(date.getFullYear(), 11, 3), - new Date(date.getFullYear(), 11, 3).getDay()), new Date(date.getFullYear(), 11, 24))) {
-                        if (BetweenDates(date, AddDaysToDate(new Date(date.getFullYear(), 11, 3), - new Date(date.getFullYear(), 11, 3).getDay()), new Date(date.getFullYear(), 11, 24)) && dateFeast == null || date.getDay() == 0)
+                    else if (BetweenDates(date, AddDaysToDate(new Date(date.getFullYear(), 11, 3), - new Date(date.getFullYear(), 11, 3).getDay()), new Date(date.getFullYear(), 11, 31))) {
+                        if (BetweenDates(date, AddDaysToDate(new Date(date.getFullYear(), 11, 3), - new Date(date.getFullYear(), 11, 3).getDay()), new Date(date.getFullYear(), 11, 24)) && dateFeast == null || date.getDay() == 0 && date.getDate() < 25)
                             tempIssues = [...tempIssues, date.getDay() == 0 ? (Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 8 - new Date(date.getFullYear(), 11, 3).getDay()).getTime()) / 604800000)) + '. Niedziela Adwentu' : DaySpelling[date.getDay()] + ' ' + (Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 7 - new Date(date.getFullYear(), 11, 3).getDay()).getTime()) / 604800000)) + '. Tygodnia Adwentu']
                         if (date.getTime() == new Date(date.getFullYear(), 11, 24).getTime())
                             tempIssues = [...tempIssues, 'Wiglia Bożego Narodzenia']
                         else if (date.getDay() == 6)
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia ' + (Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 9 - new Date(date.getFullYear(), 11, 3).getDay()).getTime()) / 604800000)) + '. ' + ' Niedzieli Adwentu']
+                        if (date.getTime() == new Date(date.getFullYear(), 11, 25).getTime())
+                            tempIssues = [...tempIssues, 'Uroczystość Narodzenia Pańskiego']
+                        if (BetweenDates(date, new Date(date.getFullYear(), 11, 26), new Date(date.getFullYear(), 11, 31)))
+                            tempIssues = [...tempIssues, date.getDay() == 0 || date.getDate() == 31 && date.getDay() == 1 ? 'Uroczystość Świętej Rodziny' : ' Oktawa Bożego Narodzenia']
+                    }
+                    else if (date.getTime() == new Date(date.getFullYear(), 0, 6).getTime())
+                        tempIssues = [...tempIssues, 'Uroczystość Objawienia Paskiego']
+                    else if (BetweenDates(date, new Date(date.getFullYear(), 0, 2), AddDaysToDate(new Date(date.getFullYear(), 0, 12), - new Date(date.getFullYear(), 0, 12).getDay()))) {
+                        if (dateFeast == null && date.getDay() != 0)
+                            tempIssues = [...tempIssues, 'Okres Bożego Narodzenia']
+                        if (BetweenDates(date, new Date(date.getFullYear(), 0, 2), new Date(date.getFullYear(), 0, 5)) && date.getDay() == 0)
+                            tempIssues = [...tempIssues, '2. Niedziela Okresu Bożego Narodzenia']
+                        else if (BetweenDates(date, new Date(date.getFullYear(), 0, 2), new Date(date.getFullYear(), 0, 4)) && date.getDay() == 6)
+                            tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia 2. Niedzieli Okresu Bożego Narodzenia']
+                        if (BetweenDates(date, new Date(date.getFullYear(), 0, 7), new Date(date.getFullYear(), 0, 12)) && date.getDay() == 0)
+                            tempIssues = [...tempIssues, 'Niedziela Chrztu Pańskiego']
+                        else if (BetweenDates(date, new Date(date.getFullYear(), 0, 7), new Date(date.getFullYear(), 0, 12)) && date.getDay() == 6)
+                            tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia Niedzieli Chrztu Pańskiego']
+                    }
+                    else if (date.getTime() == new Date(date.getFullYear(), 0, 7).getTime() && date.getDay() == 1)
+                        tempIssues = [...tempIssues, 'Święto Chrztu Pańskiego']
+                    else if (BetweenDates(date, AddDaysToDate(new Date(date.getFullYear(), 0, 12), - new Date(date.getFullYear(), 0, 12).getDay()), AddDaysToDate(propEastern, -47))) {
+                        if (dateFeast == null || date.getDay() == 0)
+                            tempIssues = [...tempIssues, date.getDay() == 0 ? Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 0, 5), -new Date(date.getFullYear(), 0, 5).getDay()).getTime()) / 604800000) + '. Niedziela Okresu Zwykłego' : DaySpelling[date.getDay()] + ' ' + Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 0, 6), -new Date(date.getFullYear(), 0, 6).getDay()).getTime()) / 604800000) + '. Tygodnia Okresu Zwykłego']
+                        if (date.getDay() == 6)
+                            tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia ' + Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 0, 4), -new Date(date.getFullYear(), 0, 4).getDay()).getTime()) / 604800000) + '. Niedzieli Okresu Zwykłego']
                     }
                     else if (BetweenDates(date, AddDaysToDate(propEastern, 51), AddDaysToDate(new Date(date.getFullYear(), 11, 3), - new Date(date.getFullYear(), 11, 3).getDay()))) {
                         if (dateFeast == null || date.getDay() == 0)
@@ -276,6 +324,16 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         tempIssues = [...tempIssues, dateFeast.description]
                     if (CompareDayMonthDate(date, 4, -1))
                         tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Msza wotywna o św. Józefie']
+                    if (CompareDayMonthDate(date, 6, 2)) {
+                        tempMasses[tempMasses.length - 1].collective = true
+                        tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Msza o Matce Bożej Zwycięskiej']
+                    }
+                    if (CompareDayMonthDate(date, 5, 3)) {
+                        tempMasses[tempMasses.length - 1].collective = true
+                        tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Msza wotywna o Miłosierdziu Bożym']
+                    }
+                    if (CompareMonthDay(date, new Date(2001, 11, 31)))
+                        tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Zakończenie Roku']
 
 
                     setPropIssues(tempIssues)

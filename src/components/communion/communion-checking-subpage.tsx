@@ -28,6 +28,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
         <div className="communion-checking">
             {aliases?.map(alias => (
                 <div key={alias.id}>
+                    <span className='alias'>
                     <EditableElement getParams={getParams} editable={
                         {
                             name: alias.id + 'alias',
@@ -37,7 +38,8 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                             dbkey: alias.id,
                             showdescription: false,
                             showchildren: false,
-                        }} />
+                            }} />
+                    </span>
                     <span>: </span>
                     <EditableElement getParams={getParams} editable={
                         {
@@ -57,6 +59,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                                 { label: 'Wyznanie wiary', value: 'Wyznanie wiary' },
                             ],
                         }} />
+                    <span> - </span>
                     <EditableElement getParams={getParams} editable={
                         {
                             name: alias.id + 'praiers',
@@ -71,8 +74,8 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                                 { label: 'Ojcze nasz', value: 'Ojcze nasz' },
                                 { label: 'Zdrowaś Maryjo', value: 'Zdrowaś Maryjo' },
                                 { label: 'Modlitwa przed nauką', value: 'Modlitwa przed nauką' },
-                                { label: 'Uwielbienie Trójcy', value: 'Uwielbienie Trójcy' },
                                 { label: 'Uwielbienie Najświętszego Sakramentu', value: 'Uwielbienie Najświętszego Sakramentu' },
+                                { label: 'Uwielbienie Trójcy', value: 'Uwielbienie Trójcy' },
                                 { label: 'Anioł Pański', value: 'Anioł Pański' },
                                 { label: 'Akt wiary', value: 'Akt wiary' },
                                 { label: 'Akt nadziei', value: 'Akt nadziei' },
@@ -80,6 +83,55 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                                 { label: 'Akt żalu', value: 'Akt żalu' },
                                 { label: 'Pod twoją obronę', value: 'Pod twoją obronę' },
                                 { label: 'Skład apostolski', value: 'Skład apostolski' },
+                            ],
+                        }} />
+                    <span> - </span>
+                    <EditableElement getParams={getParams} editable={
+                        {
+                            name: alias.id + 'lists',
+                            type: 'binary',
+                            multiple: false,
+                            description: 'Zestawienia',
+                            dbkey: role?.roleID,
+                            showdescription: false,
+                            showchildren: false,
+                            options: [
+                                { label: 'Sakramenty Święte', value: 'Sakramenty Święte' },
+                                { label: 'Główne Prawdy Wiary', value: 'Główne Prawdy Wiary' },
+                                { label: 'Trzy cnoty Boskie', value: 'Trzy cnoty Boskie' },
+                                { label: '10 Przykazań Bożych', value: '10 Przykazań Bożych' },
+                                { label: 'Przykazanie Miłości', value: 'Przykazanie Miłości' },
+                                { label: '5 Warunkach Dobrej Spowiedzi', value: '5 Warunkach Dobrej Spowiedzi' },
+                                { label: 'Przykazania kościelne', value: 'Przykazania kościelne' },
+                                { label: 'Grzechy główne', value: 'Grzechy główne' },
+                                { label: 'Rzeczy ostateczne człowieka', value: 'Rzeczy ostateczne człowieka' },
+                            ],
+                        }} />
+
+                    <span> - </span>
+                    <EditableElement getParams={getParams} editable={
+                        {
+                            name: alias.id + 'questions',
+                            type: 'binary',
+                            multiple: false,
+                            description: 'Pytania',
+                            dbkey: role?.roleID,
+                            showdescription: false,
+                            showchildren: false,
+                            options: [
+                                { label: 'O Panu Bogu', value: 'O Panu Bogu' },
+                                { label: 'O Panu Jezusie', value: 'O Panu Jezusie' },
+                                { label: 'O Duchu Świętym', value: 'O Duchu Świętym' },
+                                { label: 'O aniołach', value: 'O aniołach' },
+                                { label: 'O czowieku', value: 'O czowieku' },
+                                { label: 'O rzeczach ostatecznych', value: 'O rzeczach ostatecznych' },
+                                { label: 'O łasce', value: 'O łasce' },
+                                { label: 'O grzechu', value: 'O grzechu' },
+                                { label: 'O grzechu pierworodnym', value: 'O grzechu pierworodnym' },
+                                { label: 'O Kościele', value: 'O Kościele' },
+                                { label: 'O Sakramentach', value: 'O Sakramentach' },
+                                { label: 'O Sakramencie Eucharystii', value: 'O Sakramencie Eucharystii' },
+                                { label: 'O Sakramencie Pokuty', value: 'O Sakramencie Pokuty' },
                             ],
                         }} />
                 </div>

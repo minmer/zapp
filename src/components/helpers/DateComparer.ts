@@ -13,8 +13,7 @@ export function CompareDayMonthDate(date: Date | undefined, day: number | undefi
         return false
     if (index > 0)
         return date.getDate() - index * 7 > -7 && date.getDate() - index * 7 <= 0
-    return (AddDaysToDate(date, -index * 7).getMonth() == date.getMonth()) || (AddDaysToDate(date, -index * 7 + 7).getMonth() != date.getMonth())
-
+    return !(AddDaysToDate(date, - index * 7).getMonth() == date.getMonth()) && !(AddDaysToDate(date, -index * 7 - 7).getMonth() != date.getMonth())
 }
 export function BetweenDates(date: Date | undefined, start: Date | undefined, end: Date | undefined) {
     if (date == null || start == null || end == null)

@@ -84,7 +84,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
                     }
                     </div>
                 )}
-            <input type="button" value="Stwórz nową osobę" onClick={createNewUser}  />
+                <input type="button" value="Stwórz nową osobę" onClick={createNewUser} />
         </div>
     );
 }

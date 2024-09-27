@@ -156,8 +156,26 @@ h3 {
     width: 100%;
 }
 
-.communion-checking > div{
+.user-widget {
+        overflow: auto;
+    }
+
+.flow-down {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    background-image: linear-gradient(#ffffff00, #ffffffff);
+}
+
+.communion-checking > div {
     padding: .25em 1em;
+    overscroll-behavior-x: contain;
+}
+
+.communion-checking .alias {
+    width: 16em;
 }
 
     .communion-checking > div > span {
