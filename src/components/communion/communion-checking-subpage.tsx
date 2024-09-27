@@ -18,14 +18,19 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
         }());
     }, [getParams])
 
-    useEffect(() => {
-        (async function () {
-            setAliases((await GetAliases({ getParams: getParams, adminID: role?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
-        }());
-    }, [getParams, role])
+    const loadAliases = async (filter: string) =>
+    {
+        setAliases((await GetAliases({ getParams: getParams, adminID: role?.roleID ?? '' })).filter((alias) => alias.alias?.startsWith(filter)).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
+    }
 
     return (
         <div className="communion-checking">
+            <input type='button' value='3A' onClick={() => loadAliases('3A')} />
+            <input type='button' value='3B' onClick={() => loadAliases('3B')} />
+            <input type='button' value='3C' onClick={() => loadAliases('3C')} />
+            <input type='button' value='3D' onClick={() => loadAliases('3D')} />
+            <input type='button' value='3E' onClick={() => loadAliases('3E')} />
+            <input type='button' value='3F' onClick={() => loadAliases('3F')} />
             {aliases?.map(alias => (
                 <div key={alias.id}>
                     <span className='alias'>
