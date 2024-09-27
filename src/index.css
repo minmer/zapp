@@ -182,15 +182,10 @@ form[action$="destroy"] button {
     width: 22rem;
     background-color: #f7f7f7;
     border-right: solid 1px #e3e3e3;
-    display: flex;
+    display: none;
     flex-direction: column;
     z-index: 1;
-}
-
-@media (max-width: 768px) {
-    #menu {
-        display: none;
-    }
+    padding:2em 0 0 0;
 }
 
     #menu > * {

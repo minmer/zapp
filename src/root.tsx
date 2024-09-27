@@ -25,7 +25,7 @@ export default function Root() {
     const [selectUser, setSelectUser] = useState(false);
     const getParams = async ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => {
         const token = localStorage.getItem("token")
-        if (token == null) {
+        if (token == null || type == "newtoken") {
             setLogin(login || show)
             return null
         }
@@ -48,7 +48,7 @@ export default function Root() {
 
     return (
         <>
-            <MenuComponent />
+            <MenuComponent getParams={getParams} />
             <Routes>
                 <Route path="/" element={<RootPage getParams={getParams} />} />
                 <Route path="/baptism" element={<BaptismPage />} />
@@ -66,9 +66,6 @@ export default function Root() {
                 <Route path="/user/*" element={<UserPage />} />
                 <Route path="/trip/*" element={<TripPage getParams={getParams} />} />
             </Routes>
-
-            <div className="login-button" onClick={() => setLogin(true)} />
-            <div style={{ right: "3em" }} className="login-button" onClick={() => { localStorage.removeItem("user") }} />
             {(selectUser || login) ? (<div className="popup" onClick={(e) => { if (e.currentTarget == e.target) { setLogin(false); setSelectUser(false) } }} >
                 <div>
                     {login ? <LoginWidget onLogin={() => setLogin(false)} /> : selectUser ? <UsersWidget getParams={getParams} onSelected={() => setSelectUser(false)} /> : null}

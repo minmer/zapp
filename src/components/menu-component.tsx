@@ -1,9 +1,43 @@
 import { Link } from "react-router-dom";
-export default function Root() {
+import { User } from "../structs/user";
+import { useEffect, useState } from "react";
+export default function Root({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isShown, setIsShown] = useState(false)
+
+
+    useEffect(
+        () => {
+            getParams({
+                func: async () => {
+                    setIsLoggedIn(true)
+                }, type: 'token', show: false
+            })
+        }, [getParams])
+
+    const showLogin = () => {
+        getParams({
+            func: async () => {
+                setIsLoggedIn(true)
+            }, type: 'newtoken', show: true
+        })
+    }
+
+    const logout = () => {
+        setIsLoggedIn(false)
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+        localStorage.removeItem("userid")
+    }
 
     return (
         <>
-            <div id="menu">
+            <div id="menu"
+                style=
+                {{
+                    display: isShown ? 'flex' : undefined,
+                }}>
                 <nav>
                     <ul>
                         <li>
@@ -83,8 +117,32 @@ export default function Root() {
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            <h2>
+                                Logowanie
+                            </h2>
+                            <ul>
+                                {isLoggedIn ?
+                                    <>
+                                        <li>
+                                            <a onClick={showLogin} href='javascript:void(0)'>Zmień użytkownika</a>
+                                        </li>
+                                        <li>
+                                            <a onClick={logout} href='javascript:void(0)'>Wyloguj się</a>
+                                        </li>
+                                    </>
+                                    :
+                                    <li>
+                                        <a onClick={showLogin} href='javascript:void(0)'>Zaloguj się</a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
+            </div>
+            <div className={isShown ? 'menu-button menu-button-close' : 'menu-button'} onClick={() => { setIsShown(!isShown) }}>
+                <div><div/></div>
             </div>
         </>
     );
