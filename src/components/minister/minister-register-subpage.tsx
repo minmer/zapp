@@ -91,7 +91,7 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
                                 type: 'text',
                                 multiple: false,
                                 description: 'Imię',
-                                dbkey: selectedUser.id,
+                                dbkey: selectedUser.id + 'name',
                                 showdescription: false,
                                 showchildren: false,
                             }} />
@@ -101,13 +101,13 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
                                 name: selectedUser.user + 'surname',
                                 type: 'text',
                                 multiple: false,
-                                dbkey: selectedUser.id,
+                                dbkey: selectedUser.id + 'surname',
                                 description: 'Nazwisko',
                                 showdescription: false,
                                 showchildren: false,
                             }} />
-                        <input type="button" className="button" value="Zgłoś użytkownika" onClick={register} />
-                        <input type="button" className="button" value="Wybierz innego użytkownika" onClick={selectUser} />
+                        <span><input type="button" className="button" value="Zgłoś użytkownika" onClick={register} /></span>
+                        <span><input type="button" className="button" value="Wybierz innego użytkownika" onClick={selectUser} /></span>
                     </>
                 :
                 <>

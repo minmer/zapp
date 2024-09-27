@@ -79,12 +79,12 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
                                         showchildren: false,
                                     }} />
 
-                                <input type='button' value='wybierz' onClick={() => selectUser(user)} onDoubleClick={() => deleteUser(user) } />
+                                <span><input type='button' value='wybierz' onClick={() => selectUser(user)} onDoubleClick={() => deleteUser(user)} /></span>
                         </div>
                     }
                     </div>
                 )}
-                <input type="button" value="Stwórz nową osobę" onClick={createNewUser} />
+            <span><input type="button" value="Stwórz nową osobę" onClick={createNewUser} /></span>
         </div>
     );
 }

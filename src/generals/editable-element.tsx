@@ -386,20 +386,20 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                                             <div className='editable-children' key={child.name}>
                                                 <EditableElement getParams={getParams} editable=
                                                     {
-                                                    {
-                                                        name: item.id + child.name,
-                                                        type: child.type,
-                                                        multiple: child.multiple,
-                                                        dbkey: child.dbkey ?? editable.dbkey,
-                                                        description: child.description,
-                                                        showdescription: child.showdescription ?? editable.showdescription,
-                                                        showchildren: child.showchildren ?? editable.showchildren,
-                                                        viewertoken: child.viewertoken ?? editable.viewertoken,
-                                                        children: child.children,
-                                                        options: child.options,
-                                                        break: child.break ?? editable.break,
-                                                        isOrdered: child.isOrdered ?? editable.isOrdered,
-                                                    }
+                                                        {
+                                                            name: item.id + child.name,
+                                                            type: child.type,
+                                                            multiple: child.multiple,
+                                                            dbkey: child.dbkey ?? editable.dbkey,
+                                                            description: child.description,
+                                                            showdescription: child.showdescription ?? editable.showdescription,
+                                                            showchildren: child.showchildren ?? editable.showchildren,
+                                                            viewertoken: child.viewertoken ?? editable.viewertoken,
+                                                            children: child.children,
+                                                            options: child.options,
+                                                            break: child.break ?? editable.break,
+                                                            isOrdered: child.isOrdered ?? editable.isOrdered,
+                                                        }
                                                     } />
                                             </div>
                                         ))}
@@ -419,13 +419,13 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                         {data.map((item, index) => (
                             editable.type == 'link' ?
                                 <span key={item.id} onDoubleClick={onClickData}>
-                                    {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? ''))} <a href={convertToString(item) ?? ''}>
+                                    <span>{((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? ''))}</span> <a href={convertToString(item) ?? ''}>
                                         {convertToString(item)}</a>
                                 </span>
-                                
-                            :
+
+                                :
                                 <span key={item.id} onDoubleClick={onClickData}>
-                                    {((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? '')) + convertToString(item)}
+                                    <span>{((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? '')) + convertToString(item)}</span>
                                 </span>
                         ))}
                     </>
@@ -466,11 +466,11 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             }
             {isLoading ? <div style=
                 {{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0, 
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
                 }}>
                 <LoadingComponent />
             </div>
