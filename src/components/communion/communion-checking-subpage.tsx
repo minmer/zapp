@@ -40,7 +40,8 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                             showchildren: false,
                             }} />
                     </span>
-                    <span>: </span>
+                    <span className='static-font'>
+                    <span>:</span>
                     <EditableElement getParams={getParams} editable={
                         {
                             name: alias.id + 'checking',
@@ -57,9 +58,19 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                                 { label: 'Chwała na wysokości Bogu', value: 'Chwała na wysokości Bogu' },
                                 { label: 'Czytania i Ewangelia', value: 'Czytania i Ewangelia' },
                                 { label: 'Wyznanie wiary', value: 'Wyznanie wiary' },
+                                { label: 'Modlitwa Wiernych', value: 'Modlitwa Wiernych' },
+                                { label: 'Modlitwa za kapłana', value: 'Modlitwa za kapłana' },
+                                { label: 'Prefacja', value: 'Prefacja' },
+                                { label: 'Święty', value: 'Święty' },
+                                { label: 'Aklamacja', value: 'Aklamacja' },
+                                { label: 'Ojcze nasz', value: 'Ojcze nasz' },
+                                { label: 'Znak pokoju', value: 'Znak pokoju' },
+                                { label: 'Baranku Boży', value: 'Baranku Boży' },
+                                { label: 'Komunia', value: 'Komunia' },
+                                { label: 'Błogosławieństwo', value: 'Błogosławieństwo' },
                             ],
                         }} />
-                    <span> - </span>
+                    <span>-</span>
                     <EditableElement getParams={getParams} editable={
                         {
                             name: alias.id + 'praiers',
@@ -85,7 +96,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                                 { label: 'Skład apostolski', value: 'Skład apostolski' },
                             ],
                         }} />
-                    <span> - </span>
+                    <span>-</span>
                     <EditableElement getParams={getParams} editable={
                         {
                             name: alias.id + 'lists',
@@ -108,7 +119,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                             ],
                         }} />
 
-                    <span> - </span>
+                    <span>-</span>
                     <EditableElement getParams={getParams} editable={
                         {
                             name: alias.id + 'questions',
@@ -133,7 +144,8 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                                 { label: 'O Sakramencie Eucharystii', value: 'O Sakramencie Eucharystii' },
                                 { label: 'O Sakramencie Pokuty', value: 'O Sakramencie Pokuty' },
                             ],
-                        }} />
+                            }} />
+                    </span>
                 </div>
             ))}
         </div>

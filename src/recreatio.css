@@ -160,18 +160,30 @@ h3 {
     background-image: linear-gradient(#ffffff00, #ffffffff);
 }
 
+.communion-checking {
+    overflow-x: scroll;
+}
+
 .communion-checking > div {
-    padding: .25em 1em;
-    overscroll-behavior-x: contain;
+    padding: 0 1em;
+    width: 72em;
 }
 
 .communion-checking .alias {
     width: 16em;
+    display: inline-block;
+    text-align: end;
 }
 
     .communion-checking > div > span {
         font-size: 1.25em;
     }
+
+        .communion-checking > div > span.static-font {
+            font-family: 'Noto Mono';
+            font-size: 1.5em;
+            line-height: 1.15;
+        }
 
 .communion-detail > div {
     padding: .25em 1em;

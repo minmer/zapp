@@ -132,25 +132,12 @@ export async function GetAliases({ getParams, adminID }: { getParams: ({ func, t
     return await getParams({
         func: async (param: string | User) => {
             const token = param as string
-            const asd = await Promise.all(((await FetchInformationGetAll('string', token, adminID + 'alias')) as unknown as StringOutput[]).map(async (alias) => (
+            return await Promise.all(((await FetchInformationGetAll('string', token, adminID + 'alias')) as unknown as StringOutput[]).map(async (alias) => (
                 {
                     id: alias.id,
                     ownerID: alias.output,
                     alias: ((await FetchInformationGetAll('string', token, alias.id + 'alias')) as unknown as StringOutput[])[0]?.output
                 } as Alias)))
-            for (let i = 0; i < asd.length; i++) {
-                console.log(asd[i].alias)
-                if (await FetchOwnerGet(token, asd[i].id + 'groupchannel') == null) {
-                    console.log(asd[i].alias + 'added channel')
-                    await FetchOwnerPost(token, asd[i].id + 'groupchannel', asd[i].id)
-                }
-                if (await FetchOwnerGet(token, asd[i].id + 'groupchannel_viewer') == null) {
-                    console.log(asd[i].alias + 'added viewer')
-                    const groupID = await FetchOwnerGet(token, asd[i].id + 'group')
-                    await FetchOwnerPut(token, asd[i].id + 'groupchannel_viewer', asd[i].id + 'groupchannel', groupID, false, false, true)
-                }
-            }
-            return asd
         }, type: 'token', show: false
     }) as Alias[]
 }

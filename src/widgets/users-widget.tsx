@@ -78,7 +78,6 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
                                         showdescription: false,
                                         showchildren: false,
                                     }} />
-
                                 <span><input type='button' value='wybierz' onClick={() => selectUser(user)} onDoubleClick={() => deleteUser(user)} /></span>
                         </div>
                     }
