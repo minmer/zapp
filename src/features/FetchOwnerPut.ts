@@ -1,6 +1,11 @@
+export interface PutOwnerOutput {
+    id: string,
+    isExisting: boolean,
+}
+
 export async function FetchOwnerPut(token: string, key: string, donator: string, donated: string, sharePermission: boolean, shareParent: boolean, sharePreorder: boolean) {
     try {
-        await fetch('https://zapp.hostingasp.pl/owner/',
+        const predata = await fetch('https://zapp.hostingasp.pl/owner/',
             {
                 method: "PUT",
                 body: JSON.stringify({
@@ -17,6 +22,7 @@ export async function FetchOwnerPut(token: string, key: string, donator: string,
                     'Content-Type': 'application/json',
                 },
             });
+        return await predata.json().then((data) => data as PutOwnerOutput)
     } catch (err) {
         console.log(err);
     }

@@ -69,7 +69,7 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
                             <Link to={`detail`}>Szczegóły</Link>
                         </li> : null}
                         {isRole || isAdmin ? <li>
-                            <Link to={`chat`}>Chat</Link>
+                            <Link to={`chat`}>Messenger</Link>
                         </li> : null}
                         {isPresence ? <li>
                             <Link to={`presence`}>Obecności</Link>

@@ -3,7 +3,7 @@ import { FetchInformationPost } from "../features/FetchInformationPost"
 import { FetchInformationPut } from "../features/FetchInformationPut"
 import { FetchOwnerGet } from "../features/FetchOwnerGet"
 import { FetchOwnerPost } from "../features/FetchOwnerPost"
-import { FetchOwnerPut } from "../features/FetchOwnerPut"
+import { FetchOwnerPut, PutOwnerOutput } from "../features/FetchOwnerPut"
 import { User } from "./user"
 
 export interface Role {
@@ -164,15 +164,21 @@ export async function RegisterAliasRole({ getParams, admin }: { getParams: ({ fu
             await FetchOwnerPost(token, roleID, admin.roleID)
             const ownerID = await FetchOwnerGet(token, roleID)
             await FetchInformationPut(token, admin.roleID, roleID, ownerID)
+            console.log("asd0")
             await FetchOwnerPut(token, roleID + 'viewer', admin.roleID, ownerID, false, false, true)
+            console.log("asd1")
             await FetchOwnerPut(token, roleID + 'channel', admin.roleID + 'channel', ownerID, false, false, true)
-            await FetchOwnerPut(token, roleID + 'group', admin.roleID + 'group', ownerID, true, true, true)
+            console.log("asd2")
+            const group = (await FetchOwnerPut(token, roleID + 'group', admin.roleID + 'group', ownerID, true, true, true)) as PutOwnerOutput
+            console.log("asd3")
             await FetchOwnerPost(token, roleID + 'groupchannel', roleID)
-
-            const groupID = await FetchOwnerGet(token, roleID + 'group')
-            await FetchOwnerPut(token, roleID + 'groupchannel_viewer', roleID + 'groupchannel', groupID, false, false, true)
+            console.log("asd4")
+            await FetchOwnerPut(token, roleID + 'groupchannel_viewer', roleID + 'groupchannel', group.id, false, false, true)
+            console.log("asd5")
             await FetchOwnerPost(token, roleID + 'common', admin.roleID)
+            console.log("asd6")
             await FetchOwnerPut(token, roleID + 'common', roleID + 'common', ownerID, true, true, true)
+            console.log("asd7")
             return { id: roleID, ownerID: ownerID } as Alias
         }, type: 'token', show: false
     }) as Alias
