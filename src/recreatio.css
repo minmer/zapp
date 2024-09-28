@@ -111,6 +111,10 @@ h3 {
         box-shadow: 3px 3px 12px #000b;
         border-radius: .5em;
     }
+.editable-span {
+    user-select: none;
+    cursor:pointer;
+}
 .editable {
     border-radius: 1em;
     padding: 1em;

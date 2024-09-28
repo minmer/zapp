@@ -379,7 +379,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                             <div className='editable' key={item.id}>
                                 {expanded == index ?
                                     <>
-                                        <div onDoubleClick={onClickData} onClick={() => { setExpanded(-1) }}>
+                                        <div className='editable-span' onDoubleClick={onClickData} onClick={() => { setExpanded(-1) }}>
                                             {'△ ' + (editable.showdescription ? editable.description + ': ' : editable.break ?? '') + convertToString(item)}
                                         </div>
                                         {editable.children?.map(child => (
@@ -406,7 +406,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                                     </>
                                     :
                                     <>
-                                        <div onDoubleClick={onClickData} onClick={() => { setExpanded(index) }} >
+                                        <div className='editable-span' onDoubleClick={onClickData} onClick={() => { setExpanded(index) }} >
                                             {'▽ ' + (editable.showdescription ? editable.description + ': ' : editable.break ?? '') + convertToString(item)}
                                         </div>
                                     </>
@@ -418,13 +418,13 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     <>
                         {data.map((item, index) => (
                             editable.type == 'link' ?
-                                <span key={item.id} onDoubleClick={onClickData}>
+                                <span className='editable-span' key={item.id} onDoubleClick={onClickData}>
                                     <span>{((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? ''))}</span> <a href={convertToString(item) ?? ''}>
                                         {convertToString(item)}</a>
                                 </span>
 
                                 :
-                                <span key={item.id} onDoubleClick={onClickData}>
+                                <span className='editable-span' key={item.id} onDoubleClick={onClickData}>
                                     <span>{((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? '')) + convertToString(item)}</span>
                                 </span>
                         ))}
