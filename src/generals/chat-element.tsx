@@ -28,7 +28,6 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
 
     useEffect(() => {
         const interval = setInterval(() => {
-            console.log(new Date(Date.now()))
             setNewEndDate(new Date(Date.now()))
             setIntervalLength(intervalLength*.95 + 3000)
         }, intervalLength);
@@ -108,7 +107,7 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
                     setNewEndDate(new Date(Date.now()))
                     setMessage('')
                     setStartDate(new Date(Date.now()))
-                    setScroll(10000)
+                    setIntervalLength(1000)
                 }
             }, type: 'token', show: true
         });

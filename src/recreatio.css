@@ -119,6 +119,10 @@ h3 {
     background-color: transparent;
     white-space: pre-line;
 }
+    .editable span {
+        user-select: none;
+    }
+
     .editable textarea {
         min-width: 20em;
     }
@@ -209,10 +213,11 @@ h3 {
     font-size: 1.25em;
     margin: .5em;
 }
-.chat-element{
-    max-height:64em;
+.chat-element {
+    max-height: 64em;
     overflow-y: scroll;
-    margin: 2em;
+    padding: 2em;
+    background-color: ghostwhite;
 }
 .chat-element textarea {
     width: 80%;

@@ -23,6 +23,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
 
     useEffect(() => {
         (async function () {
+            console.log((await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
             setAliases((await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
         }());
     }, [getParams, adminRole])
@@ -54,7 +55,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
     }
     return (
         <div className="minister-detail">
-            {aliases ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
+            {aliases && adminRole ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
                 {aliases.map((alias) => (<option>
                     {alias.alias}            </option>))}
             </select> : null}

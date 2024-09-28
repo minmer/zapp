@@ -168,6 +168,7 @@ export async function RegisterAliasRole({ getParams, admin }: { getParams: ({ fu
             await FetchOwnerPut(token, roleID + 'channel', admin.roleID + 'channel', ownerID, false, false, true)
             await FetchOwnerPut(token, roleID + 'group', admin.roleID + 'group', ownerID, true, true, true)
             await FetchOwnerPost(token, roleID + 'groupchannel', roleID)
+
             const groupID = await FetchOwnerGet(token, roleID + 'group')
             await FetchOwnerPut(token, roleID + 'groupchannel_viewer', roleID + 'groupchannel', groupID, false, false, true)
             await FetchOwnerPost(token, roleID + 'common', admin.roleID)

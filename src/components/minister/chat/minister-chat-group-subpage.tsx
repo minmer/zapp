@@ -33,9 +33,6 @@ export default function MinisterChatGroupSubpage({ getParams }: { getParams: ({ 
 
     return (
         <div className="minister-group-chat">
-            <h2>
-                {alias}
-            </h2>
             <ChatElement getParams={getParams} name={'minister_group'} viewer={adminRole ? (adminRole?.roleID + 'group') : (role?.roleID + 'group')} writer={adminRole ? (adminRole?.roleID + 'groupchannel') : (role?.roleID + 'groupchannel')} alias={alias} />
         </div>
     );
