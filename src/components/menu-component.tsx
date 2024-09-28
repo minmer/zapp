@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { User } from "../structs/user";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 export default function Root({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -11,6 +12,7 @@ export default function Root({ getParams }: { getParams: ({ func, type, show }: 
         () => {
             getParams({
                 func: async () => {
+                    toast.success('Użytkownik jest zalogowany')
                     setIsLoggedIn(true)
                 }, type: 'token', show: false
             })
@@ -19,12 +21,12 @@ export default function Root({ getParams }: { getParams: ({ func, type, show }: 
     const showLogin = () => {
         getParams({
             func: async () => {
-                setIsLoggedIn(true)
             }, type: 'newtoken', show: true
         })
     }
 
     const logout = () => {
+        toast.success('Użytkownik został wylogowany')
         setIsLoggedIn(false)
         localStorage.removeItem("token")
         localStorage.removeItem("user")

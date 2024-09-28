@@ -19,7 +19,8 @@ import { useState } from "react";
 import LoginWidget from "./widgets/login-widget";
 import UsersWidget from "./widgets/users-widget";
 import { User } from "./structs/user";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Root() {
     const [login, setLogin] = useState(false);
     const [selectUser, setSelectUser] = useState(false);
@@ -46,6 +47,7 @@ export default function Root() {
         return null
     }
 
+
     return (
         <>
             <MenuComponent getParams={getParams} />
@@ -66,6 +68,7 @@ export default function Root() {
                 <Route path="/user/*" element={<UserPage />} />
                 <Route path="/trip/*" element={<TripPage getParams={getParams} />} />
             </Routes>
+            <ToastContainer position='top-center' autoClose={2500} />
             {(selectUser || login) ? (<div className="popup" onClick={(e) => { if (e.currentTarget == e.target) { setLogin(false); setSelectUser(false) } }} >
                 <div>
                     {login ? <LoginWidget onLogin={() => setLogin(false)} /> : selectUser ? <UsersWidget getParams={getParams} onSelected={() => setSelectUser(false)} /> : null}

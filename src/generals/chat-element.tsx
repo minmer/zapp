@@ -26,6 +26,8 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
     const [automaticNumber, setAutomaticNumber] = useState(0)
     const [intervalLength, setIntervalLength] = useState(1000)
 
+
+
     useEffect(() => {
         const interval = setInterval(() => {
             setNewEndDate(new Date(Date.now()))
