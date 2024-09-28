@@ -125,15 +125,15 @@ export default function Root({ getParams }: { getParams: ({ func, type, show }: 
                                 {isLoggedIn ?
                                     <>
                                         <li>
-                                            <a onClick={showLogin} href='javascript:void(0)'>Zmień użytkownika</a>
+                                            <span onClick={showLogin}>Zmień użytkownika</span>
                                         </li>
                                         <li>
-                                            <a onClick={logout} href='javascript:void(0)'>Wyloguj się</a>
+                                            <span onClick={logout}>Wyloguj się</span>
                                         </li>
                                     </>
                                     :
                                     <li>
-                                        <a onClick={showLogin} href='javascript:void(0)'>Zaloguj się</a>
+                                        <span onClick={showLogin}>Zaloguj się</span>
                                     </li>
                                 }
                             </ul>
