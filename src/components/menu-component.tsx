@@ -2,21 +2,34 @@ import { Link } from "react-router-dom";
 import { User } from "../structs/user";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
 export default function Root({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [token, setToken] = useState<string | undefined>()
     const [isShown, setIsShown] = useState(false)
 
 
     useEffect(
         () => {
             getParams({
-                func: async () => {
-                    toast.success('Użytkownik jest zalogowany')
-                    setIsLoggedIn(true)
+                func: async (param: string | User) => {
+                    const newToken = param as string
+                    if (newToken != token) {
+                        setToken(newToken)
+                        toast.success('Użytkownik jest zalogowany')
+                        let user = { id: localStorage.getItem("userid"), user: localStorage.getItem("user") } as User
+                        if (user.id)
+                            return toast.success('Użytkownik jest wybrany')
+                        user = (await FetchInformationGetAll('string', newToken, 'user') as StringOutput[]).map<User>((output) => ({ id: output.id, user: output.output }))[0]
+                        if (!user.id)
+                            return toast.dismiss('Żadna osoba nie jest wybrana')
+                        localStorage.setItem("userid", user.id)
+                        localStorage.setItem("user", user.user)
+                        toast.success('Użytkownik jest wybrany')
+                    }
                 }, type: 'token', show: false
             })
-        }, [getParams])
+        }, [getParams, token])
 
     const showLogin = () => {
         getParams({
@@ -27,7 +40,7 @@ export default function Root({ getParams }: { getParams: ({ func, type, show }: 
 
     const logout = () => {
         toast.success('Użytkownik został wylogowany')
-        setIsLoggedIn(false)
+        setToken(undefined)
         localStorage.removeItem("token")
         localStorage.removeItem("user")
         localStorage.removeItem("userid")
@@ -124,7 +137,7 @@ export default function Root({ getParams }: { getParams: ({ func, type, show }: 
                                 Logowanie
                             </h2>
                             <ul>
-                                {isLoggedIn ?
+                                {token != undefined ?
                                     <>
                                         <li>
                                             <span onClick={showLogin}>Zmień użytkownika</span>
