@@ -16,7 +16,7 @@ export interface Message {
 }
 export default function ChatElement({ getParams, name, viewer, writer, alias }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, name: string, viewer: string, writer?: string, alias?: string}) {
     const [messages, setMessages] = useState([] as Message[])
-    const [scroll, setScroll] = useState(0)
+    const [scroll] = useState(0)
     const root = useRef(null);
     const [message, setMessage] = useState('')
     const [endDate, setEndDate] = useState(new Date())
