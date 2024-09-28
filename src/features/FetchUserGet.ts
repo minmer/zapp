@@ -1,5 +1,5 @@
 export interface UserOutput {
-    creationtime: Date,
+    info: string,
     token: string,
 }
 
