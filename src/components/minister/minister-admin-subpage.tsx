@@ -31,7 +31,7 @@ export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func
     const reload = async () => {
         getParams({
             func: async (param: string | User) => {
-                await FetchTokenGet(param as string)
+                console.log(await FetchTokenGet(param as string))
                 setMembers(await GetMembers({ getParams: getParams, type: 'minister' }))
             }, type: 'token', show: false
         });

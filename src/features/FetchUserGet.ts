@@ -1,5 +1,4 @@
 export interface UserOutput {
-    info: string,
     token: string,
 }
 
