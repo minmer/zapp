@@ -25,8 +25,25 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
     const [newStartDate, setNewStartDate] = useState(new Date())
     const [automaticNumber, setAutomaticNumber] = useState(0)
     const [intervalLength, setIntervalLength] = useState(1000)
+    const [widget, setWidget] = useState<{ name: string, viewer: string, } | undefined>()
 
 
+    useEffect(
+        () => {
+            getParams({
+                func: async (param: string | User) => {
+                    const token = param as string
+                    console.log('asd')
+                    setWidget((await Promise.all((await FetchInformationGetAll('string', token, 'chat_widget') as StringOutput[]).map(async (item) => (
+                        {
+                            alias: item.output,
+                            name: item.id,
+                            viewer: (await FetchInformationGetAll('string', token, item.id + 'viewer') as unknown as StringOutput[])[0]?.id ?? ''
+                        })))).find((item) => item.alias == name))
+                    
+                }, type: 'token', show: true
+            })
+        }, [getParams, name])
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -130,10 +147,36 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
     const loadPreviousMessage = async () => {
         setAutomaticNumber(messages.length + 25)
     }
+
+    const addWidgetMessage = async () => {
+        getParams({
+            func: async (param: string | User) => {
+                const token = param as string
+                const id = await FetchInformationPost(token, "token_key_" + token, ['chat_widget'], name, [1])
+                setWidget({ name: id, viewer: await FetchInformationPost(token, "token_key_" + token, [id + 'viewer'], viewer, [1]) })
+            }, type: 'token', show: true
+        });
+    }
+
+    const deleteWidgetMessage = async () => {
+        if (widget)
+        getParams({
+            func: async (param: string | User) => {
+                const token = param as string
+                await FetchInformationDelete(token, "token_key_" + token, widget.name)
+                await FetchInformationDelete(token, "token_key_" + token, widget.viewer)
+                setWidget(undefined)
+            }, type: 'token', show: true
+        });
+    }
     
     return (
 
         <div ref={root} className='chat-element'>
+            {widget ? 
+                <input className='loadbutton' type='button' value='Skasuj ten chat na stronie głównej' onClick={deleteWidgetMessage} />
+                : <input className='loadbutton' type='button' value='Wyświetl ten chat na stronie głównej' onClick={addWidgetMessage} />}
+
             <input className='loadbutton' type='button' value='Załaduj wcześniejsze wiadomości' onClick={loadPreviousMessage} />
             {messages.map((message) => (
                 <div className=
@@ -143,7 +186,7 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
                     {message.text + ' (' + message.date.getHours().toString().padStart(2, '0') + ':' + message.date?.getMinutes().toString().padStart(2, '0') + ') - ' + (message.alias ? message.alias: 'ks. Michał')}
                 </div>
             ))}
-            {writer? writer != '' ? < div >
+            {writer? writer != '' ? <div>
                 <textarea value={message} onChange={(e) => { setMessage(e.target.value) }} />
                 <input type='button' value='Wyślij' onClick={sendMessage} />
             </div> : null : null}

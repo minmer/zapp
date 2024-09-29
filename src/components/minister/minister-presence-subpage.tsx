@@ -20,7 +20,7 @@ export default function MinisterPresenceSubpage({ getParams }: { getParams: ({ f
                     setRole(await GetRole({ getParams: getParams, type: "minister", user: user as User }))
                 }, type: 'user', show: false
             })
-            setMasses(await FetchInformationGet('datetime', 'bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U', 'new_zielonki_mass', Date.now()-5400000, Date.now() + 5400000, 'new_intention_viewer') as unknown as DateOutput[])
+            setMasses(await FetchInformationGet('datetime', 'bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U', 'new_zielonki_mass', Date.now()-5400000*3, Date.now() + 5400000*3, 'new_intention_viewer') as unknown as DateOutput[])
         }());
     }, [getParams])
     useEffect(() => {

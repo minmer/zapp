@@ -18,11 +18,11 @@ h3 {
         display: block;
         text-align: center;
         border: 1px black solid;
-        border-radius: 1em;
-        padding: 1em;
-        font-size: 1.5em;
+        border-radius: 1rem;
+        padding: 1rem;
+        font-size: 1.5rem;
         color: black;
-        margin-top: 1em;
+        margin-top: 1rem;
     }
 
 .main-grid {
@@ -67,7 +67,7 @@ h3 {
 .mosaic {
     column-count: 1;
     width: 100%;
-    padding: 1em;
+    padding: 1rem;
 }
 
     .mosaic > * {
@@ -79,14 +79,14 @@ h3 {
         box-sizing: border-box;
         display: inline-block;
         max-height: 256px;
-        border-radius: .5em;
+        border-radius: .5rem;
     }
 
 .button {
-    padding: .8em;
+    padding: .8rem;
     box-shadow: 3px 3px 12px #0004;
-    border-radius: .5em;
-    margin: 1em;
+    border-radius: .5rem;
+    margin: 1rem;
 }
 
 .popup {
@@ -107,19 +107,19 @@ h3 {
         left: 50%;
         top: 50%;
         width: fit-content;
-        padding: .5em;
+        padding: .5rem;
         box-shadow: 3px 3px 12px #000b;
-        border-radius: .5em;
+        border-radius: .5rem;
     }
 .editable-span {
     user-select: none;
     cursor:pointer;
 }
 .editable {
-    border-radius: 1em;
-    padding: 1em;
+    border-radius: 1rem;
+    padding: 1rem;
     box-shadow: 3px 3px 12px #0003;
-    margin: 1em;
+    margin: 1rem;
     background-color: transparent;
     white-space: pre-line;
 }
@@ -128,7 +128,7 @@ h3 {
     }
 
     .editable textarea {
-        min-width: 20em;
+        min-width: 20rem;
     }
 
 
@@ -136,19 +136,19 @@ h3 {
     .editable > div:first-child {
         cursor: pointer;
         font-weight: 600;
-        font-size: 1.1em;
+        font-size: 1.1rem;
     }
 
 
 .editable-input {
-    padding: .5em;
+    padding: .5rem;
 }
 .editable-input input {
-    margin:  0 .5em;
+    margin:  0 .5rem;
 }
 
 .editable-children {
-    margin: 0.5em 0 0 1em;
+    margin: 0.5em 0 0 1rem;
 }
 
 .user-widget input {
@@ -164,7 +164,7 @@ h3 {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 2em;
+    height: 2rem;
     background-image: linear-gradient(#ffffff00, #ffffffff);
 }
 
@@ -173,18 +173,18 @@ h3 {
 }
 
 .communion-checking > div {
-    padding: 0 1em;
-    width: 88em;
+    padding: 0 1rem;
+    width: 88rem;
 }
 
 .communion-checking .alias {
-    width: 16em;
+    width: 16rem;
     display: inline-block;
     text-align: end;
 }
 
     .communion-checking > div > span {
-        font-size: 1.25em;
+        font-size: 1.25rem;
     }
 
         .communion-checking > div > span.static-font {
@@ -200,32 +200,32 @@ h3 {
             }
 
 .communion-detail > div {
-    padding: .25em 1em;
+    padding: .25em 1rem;
 }
 
     .communion-detail > div > span {
-        font-size: 1.25em;
+        font-size: 1.25rem;
     }
 
 .minister-presence > div h4 {
-    font-size: 1.25em;
+    font-size: 1.25rem;
     text-align: center;
 }
 
 .minister-presence > div span,
 .minister-presence > div input {
-    font-size: 1.25em;
-    margin: .5em;
+    font-size: 1.25rem;
+    margin: .5rem;
 }
 .chat-element {
-    max-height: 64em;
+    max-height: 64rem;
     overflow-y: scroll;
-    padding: 2em;
+    padding: 2rem;
     background-color: ghostwhite;
 }
 .chat-element textarea {
     width: 80%;
-    min-height: 5em;
+    min-height: 5rem;
 }
     .chat-element input {
         width: 20%
@@ -237,33 +237,43 @@ h3 {
 .chat-element .message {
     background-color: #ededed;
     border-radius: 2em 1em 2em 0;
-    margin: 1em;
-    padding: 1em;
+    margin: 1rem;
+    padding: 1rem;
     width: fit-content;
 }
 .chat-element .own-message {
     background-color: #b4edc3;
-    border-radius: 1em 2em 0 2em;
-    margin: 1em;
-    padding: 1em;
+    border-radius: 1em 2em 0 2rem;
+    margin: 1rem;
+    padding: 1rem;
     width: fit-content;
     float: right;
 }
 .chat-element div {
     clear: both;
 }
+.chat-widget {
+    overflow: auto;
+}
+.chat-widget .message {
+    background-color: #ededed;
+    border-radius: 2em 1em 2em 0;
+    margin: 1rem;
+    padding: 1rem;
+    width: fit-content;
+}
 
 .month-date-selection .navigation input {
     width: 20%;
     float: left;
-    height: 4em;
+    height: 4rem;
 }
 
     .month-date-selection .navigation h4 {
         width: 60%;
         float: left;
         text-align: center;
-        font-size: 2em;
+        font-size: 2rem;
         margin: .25em 0;
     }
 
@@ -292,14 +302,14 @@ h3 {
         }
 .menu-button {
     background-color: #dddc;
-    width: 3em;
-    height: 3em;
-    border-radius: 1em;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1rem;
     position: absolute;
-    top: 1em;
-    left: 1em;
+    top: 1rem;
+    left: 1rem;
     box-shadow: 3px 3px 8px #999c;
-    padding: .5em;
+    padding: .5rem;
     z-index: 1;
     cursor: pointer;
 }
@@ -311,7 +321,7 @@ h3 {
         border-radius: 3px;
         content: '';
         display: block;
-        height: .25em;
+        height: .25rem;
         margin: .325em 0;
         transition: all .3s ease-in-out;
     }

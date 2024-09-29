@@ -1,3 +1,4 @@
+import icon from '../assets/logo.svg'
 import { Link } from "react-router-dom";
 import { User } from "../structs/user";
 import { useEffect, useState } from "react";
@@ -54,6 +55,10 @@ export default function Root({ getParams }: { getParams: ({ func, type, show }: 
                     display: isShown ? 'flex' : undefined,
                 }}>
                 <nav>
+                    <div>
+                        <Link to={``}><img alt="icon" src={icon} /></Link>
+                        
+                    </div>
                     <ul>
                         <li>
                             <h2>
