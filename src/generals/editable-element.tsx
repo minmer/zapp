@@ -33,7 +33,6 @@ export default function EditableElement({ getParams, editable, onChange }: { get
         },[editable])
 
     const LoadData = useCallback(async (token: string) => {
-        if (data.length == 0) {
             setIsLoading(true)
             let tempData;
             switch (editable.type) {
@@ -104,8 +103,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 setData(tempData.sort((a, b) => ((a.order ?? 0) - (b.order ?? 0))))
             }
             setIsLoading(false)
-        }
-    }, [editable, data.length])
+    }, [editable])
 
     const backgroundClicked = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (e.currentTarget == e.target)

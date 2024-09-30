@@ -23,8 +23,12 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
 
     const createNewUser = async () => {
         const user = await CreateNewUser({ getParams })
-        await CreateNewUserInformation({ getParams: getParams, user: user, name: 'name'})
+        await CreateNewUserInformation({ getParams: getParams, user: user, name: 'name' })
         await CreateNewUserInformation({ getParams: getParams, user: user, name: 'surname' })
+        await CreateNewUserInformation({ getParams: getParams, user: user, name: 'telefon' })
+        await CreateNewUserInformation({ getParams: getParams, user: user, name: 'address' })
+        await CreateNewUserInformation({ getParams: getParams, user: user, name: 'birthday' })
+        await CreateNewUserInformation({ getParams: getParams, user: user, name: 'birthplace' })
         setUsers([...users, user])
     }
 

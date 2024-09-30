@@ -18,7 +18,7 @@ import TripPage from "./pages/trip-page";
 import { useState } from "react";
 import LoginWidget from "./widgets/login-widget";
 import UsersWidget from "./widgets/users-widget";
-import { User } from "./structs/user";
+import { CreateNewUserInformation, User } from "./structs/user";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Root() {
@@ -35,8 +35,16 @@ export default function Root() {
         if (type == "user") {
             const user = localStorage.getItem("user")
             const userID = localStorage.getItem("userid")
-            if (user != null && userID != null)
-                return await func({ id: userID, user: user } as User)
+            if (user != null && userID != null) {
+                const userObj = { id: userID, user: user } as User
+                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'name' })
+                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'surname' })
+                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'telefon' })
+                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'address' })
+                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'birthday' })
+                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'birthplace' })
+                return await func(userObj)
+            }
             setSelectUser(selectUser || show)
             return null
         }

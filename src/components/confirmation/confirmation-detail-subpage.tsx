@@ -91,24 +91,24 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                         <div>
                             <EditableElement getParams={getParams} editable={
                                 {
-                                    name: role?.roleID + 'address',
+                                    name: role?.user.user + 'address',
                                     type: 'text',
                                     multiple: false,
-                                    description: 'Adres zamieszkania',
-                                    dbkey: role?.roleID,
-                                    showdescription: true,
+                                    description: 'Adres',
+                                    dbkey: role?.user.id + 'address',
+                                    showdescription: false,
                                     showchildren: false,
                                 }} />
                         </div>
                         <div>
                             <EditableElement getParams={getParams} editable={
                                 {
-                                    name: role?.roleID + 'telefon',
-                                    type: 'tel',
-                                    multiple: true,
+                                    name: role?.user.user + 'telefon',
+                                    type: 'text',
+                                    multiple: false,
+                                    dbkey: role?.user.id + 'telefon',
                                     description: 'Telefon',
-                                    dbkey: role?.roleID,
-                                    showdescription: true,
+                                    showdescription: false,
                                     showchildren: false,
                                 }} />
                         </div>
