@@ -54,46 +54,39 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
     }
     return (
         <div className="confirmation-detail">
-            {aliases ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
+            {aliases && adminRole ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
                 {aliases.map((alias) => (<option>
                     {alias.alias}            </option>))}
             </select> : null}
             {
                 role?.isRegistered ?
                     <>
-                        <div><EditableElement getParams={getParams} editable={
+                        <h4><EditableElement getParams={getParams} editable={
                             {
                                 name: role.roleID + 'alias',
                                 type: 'text',
                                 multiple: false,
                                 description: 'Alias',
-                                dbkey: role.roleID,
+                                dbkey: adminRole?.roleID,
                                 showdescription: false,
                                 showchildren: false,
                             }} />
-                        </div>
-                        <div>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.roleID + 'birthday',
-                                    type: 'date',
-                                    multiple: false,
-                                    description: 'Data urodzenia',
-                                    dbkey: role?.roleID,
-                                    showdescription: true,
-                                    showchildren: false,
-                                }} />
-                            <span> </span>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.roleID + 'birthplace',
-                                    type: 'text',
-                                    multiple: false,
-                                    description: 'Miejsce urodzenia',
-                                    dbkey: role?.roleID,
-                                    showdescription: false,
-                                    showchildren: false,
-                                }} />
+                        </h4>
+                        <div><EditableElement getParams={getParams} editable={
+                            {
+                                name: role.roleID + 'level',
+                                type: 'radio',
+                                multiple: false,
+                                description: 'Rok formacyjny',
+                                dbkey: adminRole?.roleID,
+                                showdescription: true,
+                                showchildren: false,
+                                options: [
+                                    { label: '1. rok formacyjny', value: '0' },
+                                    { label: '2. rok formacyjny', value: '1' },
+                                    { label: '3. rok formacyjny', value: '2' },
+                                ],
+                            }} />
                         </div>
                         <div>
                             <EditableElement getParams={getParams} editable={
@@ -122,22 +115,10 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                         <div>
                             <EditableElement getParams={getParams} editable={
                                 {
-                                    name: role?.roleID + 'set0',
-                                    type: 'checkbox',
-                                    multiple: false,
-                                    description: 'Zestaw podstawowy (Katechizm + Naklejki + Teczka + Książeczka I Piątek + Rachunek Sumienia + Wydruki) - 30 zł',
-                                    dbkey: role?.roleID,
-                                    showdescription: true,
-                                    showchildren: false,
-                                }} />
-                        </div>
-                        <div>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.roleID + 'set1',
-                                    type: 'checkbox',
-                                    multiple: false,
-                                    description: 'Zestaw dodatkowy (Modlitewnik + Medalik + Łańcuch + Pamiątka I Komunii) - 100 zł',
+                                    name: role?.roleID + 'aims',
+                                    type: 'string',
+                                    multiple: true,
+                                    description: 'Cele na rok formacyjny',
                                     dbkey: role?.roleID,
                                     showdescription: true,
                                     showchildren: false,

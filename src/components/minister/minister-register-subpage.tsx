@@ -12,7 +12,6 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
         (async function () {
             await getParams({
                 func: async (param: string | User) => {
-                    console.log('asd2')
                     setSelectedUser(param as User)
                 }, type: 'user', show: true
             })

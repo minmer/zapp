@@ -33,77 +33,79 @@ export default function EditableElement({ getParams, editable, onChange }: { get
         },[editable])
 
     const LoadData = useCallback(async (token: string) => {
-        setIsLoading(true)
-        let tempData;
-        switch (editable.type) {
-            case 'number': {
-                tempData = await FetchInformationGetAll('double', token, editable.name) as unknown as IOutput[]
-                break;
+        if (data.length == 0) {
+            setIsLoading(true)
+            let tempData;
+            switch (editable.type) {
+                case 'number': {
+                    tempData = await FetchInformationGetAll('double', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'string': {
+                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'text': {
+                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'checkbox': {
+                    tempData = await FetchInformationGetAll('bool', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'binary': {
+                    tempData = (await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]).map((output) => ({ id: output.id, output: (output.output as string).padEnd(editable.options?.length ?? 0, 'O'), order: output.order }))
+                    break;
+                }
+                case 'radio': {
+                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'select': {
+                    tempData = await FetchInformationGetAll('', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'color': {
+                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'date': {
+                    tempData = await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'datetime': {
+                    tempData = await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'time': {
+                    tempData = await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'tel': {
+                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'link': {
+                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                case 'email': {
+                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
-            case 'string': {
-                tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
-                break;
+            if (tempData != null) {
+                if (editable.isOrdered) {
+                    tempData = await Promise.all(tempData.map(async (item) => ({ id: item.id, output: item.output, order: (await FetchInformationGetAll('double', token, item.id + 'order') as NumberOutput[])[0]?.output ?? 0 })))
+                }
+                setData(tempData.sort((a, b) => ((a.order ?? 0) - (b.order ?? 0))))
             }
-            case 'text': {
-                tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            case 'checkbox': {
-                tempData = await FetchInformationGetAll('bool', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            case 'binary': {
-                tempData = (await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]).map((output) => ({ id: output.id, output: (output.output as string).padEnd(editable.options?.length ?? 0, 'O'), order: output.order }))
-                break;
-            }
-            case 'radio': {
-                tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            case 'select': {
-                tempData = await FetchInformationGetAll('', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            case 'color': {
-                tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            case 'date': {
-                tempData = await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            case 'datetime': {
-                tempData = await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            case 'time': {
-                tempData = await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            case 'tel': {
-                tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            case 'link': {
-                tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            case 'email': {
-                tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
-                break;
-            }
-            default: {
-                break;
-            }
+            setIsLoading(false)
         }
-        if (tempData != null) {
-            if (editable.isOrdered) {
-                tempData= await Promise.all(tempData.map(async (item) => ({ id: item.id, output: item.output, order: (await FetchInformationGetAll('double', token, item.id + 'order') as NumberOutput[])[0]?.output ?? 0 })))
-            }
-            setData(tempData.sort((a, b) => ((a.order ?? 0) - (b.order ?? 0)) ))
-        }
-        setIsLoading(false)
-    }, [editable])
+    }, [editable, data.length])
 
     const backgroundClicked = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (e.currentTarget == e.target)
@@ -182,8 +184,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     if (onChange != null)
                         onChange(data.find(item => item.id == id))
                     LoadData(token)
-                    if (!editable.multiple)
-                        setIsEditing(editable.multiple);
+                    setIsEditing(editable.multiple);
                 }, type: 'token', show: false
             })
         }
@@ -199,7 +200,6 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 LoadData(token)
             }, type: 'token', show: false
         })
-        setIsEditing(false)
     }
 
     const transformToData = (e: ChangeEvent) => {

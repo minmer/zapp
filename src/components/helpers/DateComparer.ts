@@ -34,7 +34,7 @@ export function AddTimeToDate(date: Date | undefined, hours: number | undefined,
     if (date == null || hours == null)
         return date ?? new Date()
     const newDate = new Date(date.getTime())
-    newDate.setHours(hours, minutes, 0, 0)
+    newDate.setHours(hours + date.getHours(), minutes ?? 0 + date.getMinutes(), 0, 0)
     return newDate
 
 }

@@ -33,7 +33,6 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
             getParams({
                 func: async (param: string | User) => {
                     const token = param as string
-                    console.log('asd')
                     setWidget((await Promise.all((await FetchInformationGetAll('string', token, 'chat_widget') as StringOutput[]).map(async (item) => (
                         {
                             alias: item.output,

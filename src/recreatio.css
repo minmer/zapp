@@ -99,6 +99,10 @@ h3 {
     z-index: 50;
     padding: 5%;
 }
+    .popup > div {
+        overflow: auto;
+        max-height: 100%;
+    }
 
     .popup > * {
         background: white;
@@ -222,6 +226,7 @@ h3 {
     overflow-y: scroll;
     padding: 2rem;
     background-color: ghostwhite;
+    white-space: pre-line;
 }
 .chat-element textarea {
     width: 80%;
@@ -254,6 +259,7 @@ h3 {
 }
 .chat-widget {
     overflow: auto;
+    white-space: pre-line;
 }
 .chat-widget .message {
     background-color: #ededed;

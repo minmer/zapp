@@ -31,7 +31,8 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
     const reload = async () => {
         getParams({
             func: async (param: string | User) => {
-                FetchTokenGet(param as string)
+                console.log(await FetchTokenGet(param as string))
+                setMembers(await GetMembers({ getParams: getParams, type: 'confirmation' }))
             }, type: 'token', show: false
         });
     }
@@ -104,7 +105,7 @@ export default function ConfirmationAdminSubpage({ getParams }: { getParams: ({ 
                             type: 'text',
                             multiple: false,
                             description: 'Alias',
-                            dbkey: alias.id,
+                            dbkey: alias.id + 'groupchannel',
                             showdescription: false,
                             showchildren: false,
                         }} />

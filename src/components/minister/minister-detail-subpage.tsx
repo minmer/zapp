@@ -23,7 +23,6 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
 
     useEffect(() => {
         (async function () {
-            console.log((await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
             setAliases((await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
         }());
     }, [getParams, adminRole])

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { CreateRole, GetRole, Role } from "../../structs/role";
 import { ShareUserInformation, User } from "../../structs/user";
 import EditableElement from "../../generals/editable-element";
+import { FetchInformationDelete } from "../../features/FetchInformationDelete";
 
 export default function ConfirmationRegisterSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
@@ -12,7 +13,6 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
             await getParams({
                 func: async (param: string | User) => {
                     setSelectedUser(param as User)
-                    console.log((param as User).id)
                 }, type: 'user', show: true
             })
         })();
@@ -28,7 +28,6 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
     useEffect(() => {
         (async function () {
             if (selectedUser != null) {
-                console.log(await GetRole({ getParams: getParams, type: "confirmation", user: selectedUser }))
                 setRole(await GetRole({ getParams: getParams, type: "confirmation", user: selectedUser }))
             }
         }());
@@ -45,16 +44,13 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
     }
 
     const removeAttendee = async () => {
-        //if (role != null) {
-        getParams({
-            func: async (token: string | User) => {
-                console.log(token)
-                console.log(selectedUser)
-                console.log(role)
-                //await FetchInformationDelete(token as string, role.roleID, role.user.id )
-            }, type: 'token', show: false
-        });
-        //}
+        if (role != null) {
+            getParams({
+                func: async (token: string | User) => {
+                    await FetchInformationDelete(token as string, role.user.id, role.roleID)
+                }, type: 'token', show: false
+            });
+        }
     }
 
     return (
@@ -87,14 +83,14 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
                     </>
                     :
                     <>
-                        <div onDoubleClick={removeAttendee}>Czy chcesz zgłosić następujące dziecko do I Komunii Świętej?</div>
+                        <div onDoubleClick={removeAttendee}>Czy chcesz zgłosić następującą osobę do bierzmowania?</div>
                         <EditableElement getParams={getParams} editable={
                             {
                                 name: selectedUser.user + 'name',
                                 type: 'text',
                                 multiple: false,
                                 description: 'Imię',
-                                dbkey: selectedUser.id,
+                                dbkey: selectedUser.id + 'name',
                                 showdescription: false,
                                 showchildren: false,
                             }} />
@@ -104,19 +100,19 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
                                 name: selectedUser.user + 'surname',
                                 type: 'text',
                                 multiple: false,
-                                dbkey: selectedUser.id,
+                                dbkey: selectedUser.id + 'surname',
                                 description: 'Nazwisko',
                                 showdescription: false,
                                 showchildren: false,
                             }} />
-                        <input type="button" className="button" value="Zgłoś użytkownika" onClick={register} />
-                        <input type="button" className="button" value="Wybierz innego użytkownika" onClick={selectUser} />
+                        <span><input type="button" className="button" value="Zgłoś użytkownika" onClick={register} /></span>
+                        <span><input type="button" className="button" value="Wybierz innego użytkownika" onClick={selectUser} /></span>
                     </>
                 :
                 <>
                     <h3>Musisz założyć i wybrać użytkownika, aby móc go zgłosić do bierzmowania.
                     </h3>
-                    <input type="button" className="button" value="Wybierz użytkownika" onClick={selectUser} />
+                    <span><input type="button" className="button" value="Wybierz użytkownika" onClick={selectUser} /></span>
                 </>
             }
         </>
