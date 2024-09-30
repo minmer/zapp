@@ -39,6 +39,8 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
                 setRole(await CreateRole({ getParams: getParams, type: 'confirmation', user: selectedUser, admin: 'dc31033d-ffea-469c-9d2e-9091280ece69' }))
                 ShareUserInformation({ getParams: getParams, name: 'name', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
                 ShareUserInformation({ getParams: getParams, name: 'surname', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
+                ShareUserInformation({ getParams: getParams, name: 'telefon', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
+                ShareUserInformation({ getParams: getParams, name: 'address', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
             }
         })();
     }

@@ -91,6 +91,19 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                         <div>
                             <EditableElement getParams={getParams} editable={
                                 {
+                                    name: role?.roleID + 'aims',
+                                    type: 'string',
+                                    multiple: true,
+                                    description: 'Cele na rok formacyjny',
+                                    dbkey: adminRole?.roleID,
+                                    showdescription: true,
+                                    showchildren: false,
+                                    break: '\n',
+                                }} />
+                        </div>
+                        <div>
+                            <EditableElement getParams={getParams} editable={
+                                {
                                     name: role?.user.user + 'address',
                                     type: 'text',
                                     multiple: false,
@@ -109,18 +122,6 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                     dbkey: role?.user.id + 'telefon',
                                     description: 'Telefon',
                                     showdescription: false,
-                                    showchildren: false,
-                                }} />
-                        </div>
-                        <div>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.roleID + 'aims',
-                                    type: 'string',
-                                    multiple: true,
-                                    description: 'Cele na rok formacyjny',
-                                    dbkey: role?.roleID,
-                                    showdescription: true,
                                     showchildren: false,
                                 }} />
                         </div>

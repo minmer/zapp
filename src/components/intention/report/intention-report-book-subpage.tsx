@@ -693,7 +693,7 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         tempIssues = [...tempIssues, propExams?.find((exam) => exam.date.getTime() == date.getTime())?.type ?? '']
                     if (propExams?.find((exam) => exam.date.getTime() - 86400000 == date.getTime()) != null) {
                         tempMasses[tempMasses.length - 1].intention = [...(tempMasses[tempMasses.length - 1].intention), 'W intencji uczniów rozpoczynających egzaminy']
-                        tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Z okazji ' + propExams?.find((exam) => exam.date.getTime() - 86400000 == date.getTime())?.type?.replace('Rozpoczęcie','rozpoczęcia') ?? '']
+                        tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Z okazji ' + propExams?.find((exam) => exam.date.getTime() - 86400000 == date.getTime())?.type?.replace('Rozpoczęcie','rozpoczęcia')]
                     }
                     if ((CompareDayMonthDate(date, 1, 1) && [8, 9, 11, 1, 2, 3].find((month) => month == date.getMonth())) || CompareDayMonthDate(AddDaysToDate(date, -2), 6, 1) && date.getMonth() == 10)
                         tempAppointments = [...tempAppointments,
