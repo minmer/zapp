@@ -5,7 +5,7 @@ import { FetchOwnerGet } from "../../features/FetchOwnerGet";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
 import EditableElement from "../../generals/editable-element";
 
-export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function ConfirmationPlanSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [role, setRole] = useState<Role | null>()
 
     const [adminRole, setAdminRole] = useState<Role | null>()
@@ -53,7 +53,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
             setRole({ roleID: alias.id, ownerID: alias.ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: alias.alias })
     }
     return (
-        <div className="confirmation-detail">
+        <div className="confirmation-plan">
             {aliases && adminRole ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
                 {aliases.map((alias) => (<option>
                     {alias.alias}            </option>))}
@@ -63,8 +63,8 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                     <>
                         <h4><EditableElement getParams={getParams} editable={
                             {
-                                name: role.roleID + 'alias',
-                                type: 'string',
+                                name: 'alias',
+                                type: 'text',
                                 multiple: false,
                                 description: 'Alias',
                                 dbkey: adminRole?.roleID,
@@ -72,87 +72,44 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                 showchildren: false,
                             }} />
                         </h4>
-                        <div>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.user.user + 'address',
-                                    type: 'text',
-                                    multiple: false,
-                                    description: 'Adres',
-                                    dbkey: role?.user.id + 'address',
-                                    showdescription: false,
-                                    showchildren: false,
-                                }} />
-                        </div>
-                        <div>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.user.user + 'telefon',
-                                    type: 'tel',
-                                    multiple: false,
-                                    dbkey: role?.user.id + 'telefon',
-                                    description: 'Telefon',
-                                    showdescription: false,
-                                    showchildren: false,
-                                }} />
-                        </div>
-
                         <div><EditableElement getParams={getParams} editable={
                             {
-                                name: role.roleID + 'level',
+                                name: 'point',
                                 type: 'string',
-                                multiple: false,
-                                description: 'Rok formacyjny',
+                                multiple: true,
+                                description: 'Wydarzenie',
                                 dbkey: adminRole?.roleID,
-                                showdescription: true,
+                                showdescription: false,
                                 showchildren: true,
                                 children: [
                                     {
-                                        name: 'aims',
-                                        type: 'string',
-                                        multiple: true,
-                                        description: 'Cele na rok formacyjny',
-                                        dbkey: role?.roleID,
+                                        name: 'start',
+                                        type: 'date',
+                                        multiple: false,
+                                        description: 'Początek',
                                         showdescription: true,
                                         showchildren: false,
-                                        break: '\n',
                                     },
                                     {
-                                        name: 'appointment0',
-                                        type: 'datetime',
+                                        name: 'end',
+                                        type: 'date',
                                         multiple: false,
-                                        description: 'I spotkanie',
-                                        showchildren: false,
-                                    },
-                                    {
-                                        name: 'appointment_description0',
-                                        type: 'string',
-                                        multiple: true,
-                                        description: 'Ustalenia z I spotkania',
-                                        showchildren: false,
-                                    },
-                                    {
-                                        name: 'appointment1',
-                                        type: 'datetime',
-                                        multiple: false,
-                                        description: 'II spotkanie',
-                                        showchildren: false,
-                                    },
-                                    {
-                                        name: 'appointment_description1',
-                                        type: 'string',
-                                        multiple: true,
-                                        description: 'Ustalenia z II spotkania',
+                                        description: 'Koniec',
+                                        showdescription: true,
                                         showchildren: false,
                                     },
                                     {
                                         name: 'note',
                                         type: 'string',
                                         multiple: true,
-                                        description: 'Uwagi',
+                                        description: 'Opis uczestnictwa',
+                                        dbkey: role?.roleID,
+                                        showdescription: true,
                                         showchildren: false,
+                                        break: '\n',
                                     },
                                 ],
+
                             }} />
                         </div>
                     </> :

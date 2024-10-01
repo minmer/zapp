@@ -7,6 +7,8 @@ import ConfirmationDetailSubpage from '../components/confirmation/confirmation-d
 import { useEffect, useState } from 'react';
 import { User } from '../structs/user';
 import { CreateAdminRole, GetAdminRole, GetRole } from '../structs/role';
+import ConfirmationPlanSubpage from '../components/confirmation/confirmation-plan-subpage';
+import ConfirmationChatSubpage from '../components/confirmation/confirmation-chat-subpage';
 export default function ConfirmationPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
     const [isToken, setIsToken] = useState(false)
@@ -58,6 +60,12 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                         {isRole || isAdmin ? <li>
                             <Link to={`detail`}>Szczegóły</Link>
                         </li> : null}
+                        {isRole || isAdmin ? <li>
+                            <Link to={`plan`}>Katechumenat</Link>
+                        </li> : null}
+                        {isRole || isAdmin ? <li>
+                            <Link to={`chat`}>Chat</Link>
+                        </li> : null}
                         {isAdmin ? <li>
                             <Link to={`admin`}>Admin</Link>
                         </li> : null}
@@ -68,6 +76,8 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                     <Route path="overview" element={<ConfirmationOverviewSubpage getParams={getParams} />} />
                     <Route path="register" element={<ConfirmationRegisterSubpage getParams={getParams} />} />
                     <Route path="detail" element={<ConfirmationDetailSubpage getParams={getParams} />} />
+                    <Route path="plan" element={<ConfirmationPlanSubpage getParams={getParams} />} />
+                    <Route path="chat" element={<ConfirmationChatSubpage getParams={getParams} />} />
                     <Route path="admin" element={<ConfirmationAdminSubpage getParams={getParams} />} />
                 </Routes>
                 <div className="description">
