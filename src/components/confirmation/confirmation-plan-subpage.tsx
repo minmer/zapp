@@ -26,7 +26,7 @@ export default function ConfirmationPlanSubpage({ getParams }: { getParams: ({ f
     useEffect(() => {
         (async function () {
             const aliasList = (await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0)
-            if (role_id != null && adminRole != null) {
+            if (role_id != '-' && adminRole != null) {
                 const alias = aliasList.find((item) => item.id == role_id)
                 if (alias)
                     setRole({ roleID: alias.id, ownerID: alias.ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: alias.alias })

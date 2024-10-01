@@ -58,10 +58,10 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                             <Link to={`register`}>Zapisy</Link>
                         </li> : null}
                         {isRole || isAdmin ? <li>
-                            <Link to={`detail`}>Szczegóły</Link>
+                            <Link to={`detail/-`}>Szczegóły</Link>
                         </li> : null}
                         {isRole || isAdmin ? <li>
-                            <Link to={`plan`}>Katechumenat</Link>
+                            <Link to={`plan/-`}>Katechumenat</Link>
                         </li> : null}
                         {isRole || isAdmin ? <li>
                             <Link to={`chat`}>Chat</Link>
@@ -75,7 +75,7 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                 <Routes>
                     <Route path="overview" element={<ConfirmationOverviewSubpage getParams={getParams} />} />
                     <Route path="register" element={<ConfirmationRegisterSubpage getParams={getParams} />} />
-                    <Route path="detail" element={<ConfirmationDetailSubpage getParams={getParams} />} />
+                    <Route path="detail/:role_id" element={<ConfirmationDetailSubpage getParams={getParams} />} />
                     <Route path="plan/:role_id" element={<ConfirmationPlanSubpage getParams={getParams} />} />
                     <Route path="chat" element={<ConfirmationChatSubpage getParams={getParams} />} />
                     <Route path="admin" element={<ConfirmationAdminSubpage getParams={getParams} />} />
