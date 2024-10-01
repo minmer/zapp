@@ -18,8 +18,8 @@ export default function ConfirmationChatSubpage({ getParams }: { getParams: ({ f
                 </ul>
             </div>
             <Routes>
-                <Route path="channel" element={<MinisterChatChannelSubpage getParams={getParams} />} />
-                <Route path="admin" element={<MinisterChatAdminSubpage getParams={getParams} />} />
+                <Route path="channel" element={<ConfirmationChatChannelSubpage getParams={getParams} />} />
+                <Route path="admin" element={<ConfirmationChatAdminSubpage getParams={getParams} />} />
             </Routes>
         </div>
     );
