@@ -63,7 +63,7 @@ export default function ConfirmationPlanSubpage({ getParams }: { getParams: ({ f
                     <>
                         <h4><EditableElement getParams={getParams} editable={
                             {
-                                name: 'alias',
+                                name: role.roleID + 'alias',
                                 type: 'text',
                                 multiple: false,
                                 description: 'Alias',
@@ -99,7 +99,7 @@ export default function ConfirmationPlanSubpage({ getParams }: { getParams: ({ f
                                         showchildren: false,
                                     },
                                     {
-                                        name: 'note',
+                                        name: role.roleID + 'note',
                                         type: 'string',
                                         multiple: true,
                                         description: 'Opis uczestnictwa',
