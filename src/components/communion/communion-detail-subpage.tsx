@@ -1,15 +1,18 @@
+
 import { useEffect, useState } from "react";
 import { Alias, GetAdminRole, GetAliases, GetRole, Role } from "../../structs/role";
 import { User } from "../../structs/user";
-import EditableElement from "../../generals/editable-element";
 import { FetchOwnerGet } from "../../features/FetchOwnerGet";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
+import EditableElement from "../../generals/editable-element";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function CommunionDetailSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [role, setRole] = useState<Role | null>()
-
+    const { role_id } = useParams()
     const [adminRole, setAdminRole] = useState<Role | null>()
     const [aliases, setAliases] = useState<Alias[]>([])
+    const navigator = useNavigate()
     useEffect(() => {
         (async function () {
             getParams({
@@ -23,9 +26,18 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
 
     useEffect(() => {
         (async function () {
-            setAliases((await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
+            const aliasList = (await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0)
+            if (role_id != '-' && adminRole != null) {
+                const alias = aliasList.find((item) => item.id == role_id)
+                if (alias)
+                    setRole({ roleID: alias.id, ownerID: alias.ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: alias.alias })
+                else if (aliasList.length > 0)
+                    setRole({ roleID: aliasList[0].id, ownerID: aliasList[0].ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: aliasList[0].alias })
+
+            }
+            setAliases(aliasList)
         }());
-    }, [getParams, adminRole])
+    }, [getParams, adminRole, role_id])
     useEffect(() => {
         (async function () {
             await getParams({
@@ -50,47 +62,36 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
     }, [getParams, role])
     const selectAlias = (alias: Alias) => {
         if (adminRole != null)
-            setRole({ roleID: alias.id, ownerID: alias.ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: alias.alias })
+            navigator('/zielonki/communion/detail/' + alias.id)
     }
     return (
         <div className="communion-detail">
-            {aliases ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
+            {aliases && adminRole ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
                 {aliases.map((alias) => (<option>
                     {alias.alias}            </option>))}
             </select> : null}
             {
-                role?.isRegistered ? 
+                role?.isRegistered ?
                     <>
-                        <div><EditableElement getParams={getParams} editable={
+                        <h4><EditableElement getParams={getParams} editable={
                             {
                                 name: role.roleID + 'alias',
-                                type: 'text',
+                                type: 'string',
                                 multiple: false,
                                 description: 'Alias',
-                                dbkey: role.roleID,
+                                dbkey: adminRole?.roleID,
                                 showdescription: false,
                                 showchildren: false,
                             }} />
-                        </div>
+                        </h4>
                         <div>
                             <EditableElement getParams={getParams} editable={
                                 {
-                                    name: role?.roleID + 'birthday',
-                                    type: 'date',
-                                    multiple: false,
-                                    description: 'Data urodzenia',
-                                    dbkey: role?.roleID,
-                                    showdescription: true,
-                                    showchildren: false,
-                                }} />
-                            <span> </span>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.roleID + 'birthplace',
+                                    name: role?.user.user + 'address',
                                     type: 'text',
                                     multiple: false,
-                                    description: 'Miejsce urodzenia',
-                                    dbkey: role?.roleID,
+                                    description: 'Adres',
+                                    dbkey: role?.user.id + 'address',
                                     showdescription: false,
                                     showchildren: false,
                                 }} />
@@ -98,24 +99,35 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                         <div>
                             <EditableElement getParams={getParams} editable={
                                 {
-                                    name: role?.roleID + 'address',
-                                    type: 'text',
+                                    name: role?.user.user + 'telefon',
+                                    type: 'tel',
                                     multiple: false,
-                                    description: 'Adres zamieszkania',
-                                    dbkey: role?.roleID,
-                                    showdescription: true,
+                                    dbkey: role?.user.id + 'telefon',
+                                    description: 'Telefon',
+                                    showdescription: false,
                                     showchildren: false,
                                 }} />
                         </div>
                         <div>
                             <EditableElement getParams={getParams} editable={
                                 {
-                                    name: role?.roleID + 'telefon',
-                                    type: 'tel',
-                                    multiple: true,
-                                    description: 'Telefon',
-                                    dbkey: role?.roleID,
+                                    name: role?.user.user + 'birthday',
+                                    type: 'date',
+                                    multiple: false,
+                                    description: 'Data urodzenia',
+                                    dbkey: role?.user.id,
                                     showdescription: true,
+                                    showchildren: false,
+                                }} />
+                            <span> </span>
+                            <EditableElement getParams={getParams} editable={
+                                {
+                                    name: role?.user.user + 'birthplace',
+                                    type: 'text',
+                                    multiple: false,
+                                    description: 'Miejsce urodzenia',
+                                    dbkey: role?.user.id,
+                                    showdescription: false,
                                     showchildren: false,
                                 }} />
                         </div>
@@ -145,8 +157,8 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                         </div>
                     </> :
                     <>
-                    <h3>Zgłoszenie czeka na zatwierdzenie</h3>
-                </> 
+                        <h3>Zgłoszenie czeka na zatwierdzenie</h3>
+                    </>
             }
         </div>
     );

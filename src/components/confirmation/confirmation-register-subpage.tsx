@@ -41,6 +41,8 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
                 ShareUserInformation({ getParams: getParams, name: 'surname', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
                 ShareUserInformation({ getParams: getParams, name: 'telefon', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
                 ShareUserInformation({ getParams: getParams, name: 'address', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
+                ShareUserInformation({ getParams: getParams, name: 'birthday', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
+                ShareUserInformation({ getParams: getParams, name: 'birthplace', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
             }
         })();
     }

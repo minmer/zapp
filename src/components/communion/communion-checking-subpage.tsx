@@ -35,10 +35,10 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
             <input type='button' value='3D' onClick={() => loadAliases('3D')} />
             <input type='button' value='3E' onClick={() => loadAliases('3E')} />
             <input type='button' value='3F' onClick={() => loadAliases('3F')} />
-            <input style={{ height: '40px', width: '40px', margin: '0 10px', verticalAlign: 'middle' }} type='checkbox' onChange={(e) => setCheck0(e.target.checked == true)} />
-            <input style={{ height: '40px', width: '40px', margin: '0 10px', verticalAlign: 'middle' }} type='checkbox' onChange={(e) => setCheck1(e.target.checked == true)} />
-            <input style={{ height: '40px', width: '40px', margin: '0 10px', verticalAlign: 'middle' }} type='checkbox' onChange={(e) => setCheck2(e.target.checked == true)} />
-            <input style={{ height: '40px', width: '40px', margin: '0 10px', verticalAlign: 'middle' }} type='checkbox' onChange={(e) => setCheck3(e.target.checked == true)} />
+            <input style={{ height: '40px', width: '40px', margin: '0 5px', verticalAlign: 'middle' }} type='checkbox' onChange={(e) => setCheck0(e.target.checked == true)} />
+            <input style={{ height: '40px', width: '40px', margin: '0 5px', verticalAlign: 'middle' }} type='checkbox' onChange={(e) => setCheck1(e.target.checked == true)} />
+            <input style={{ height: '40px', width: '40px', margin: '0 5px', verticalAlign: 'middle' }} type='checkbox' onChange={(e) => setCheck2(e.target.checked == true)} />
+            <input style={{ height: '40px', width: '40px', margin: '0 5px', verticalAlign: 'middle' }} type='checkbox' onChange={(e) => setCheck3(e.target.checked == true)} />
             {aliases?.map(alias => (
                 <div key={alias.id}>
                     <span className='alias'>

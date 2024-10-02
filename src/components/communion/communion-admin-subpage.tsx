@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Alias, ConnectAliasRole, GetAdminRole, GetAliases, GetMembers, RegisterAliasRole, Role } from "../../structs/role";
 import { User } from "../../structs/user";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
-import EditableElement from "../../generals/editable-element";
 import { FetchInformationDelete } from "../../features/FetchInformationDelete";
+import EditableElement from "../../generals/editable-element";
 
 export default function CommunionAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
@@ -31,7 +31,8 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
     const reload = async () => {
         getParams({
             func: async (param: string | User) => {
-                FetchTokenGet(param as string)
+                console.log(await FetchTokenGet(param as string))
+                setMembers(await GetMembers({ getParams: getParams, type: 'communion' }))
             }, type: 'token', show: false
         });
     }
@@ -40,7 +41,7 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
         if (role != null) {
             const alias = await RegisterAliasRole({ getParams: getParams, admin: role })
             if (alias != null)
-                setAliases([... aliases, alias])
+                setAliases([...aliases, alias])
         }
     }
 
@@ -69,24 +70,24 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
             {members?.map(member => (
                 <div style={{
                     backgroundColor: member.roleID == selectedRole?.roleID ? 'orange' : undefined,
-                    opacity: member.alias != null ? '.2': '1',
-                } }
+                    opacity: member.alias != null ? '.2' : '1',
+                }}
                     key={member.roleID}>
                     <EditableElement getParams={getParams} editable={
                         {
                             name: member.user.user + 'name',
-                            type: 'text',
+                            type: 'string',
                             multiple: false,
                             description: 'Imię',
                             dbkey: member.user.id,
                             showdescription: false,
                             showchildren: false,
                         }} />
-                        <span> </span>
+                    <span> </span>
                     <EditableElement getParams={getParams} editable={
                         {
                             name: member.user.user + 'surname',
-                            type: 'text',
+                            type: 'string',
                             multiple: false,
                             dbkey: member.user.id,
                             description: 'Nazwisko',
@@ -101,10 +102,10 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
                     <EditableElement getParams={getParams} editable={
                         {
                             name: alias.id + 'alias',
-                            type: 'text',
+                            type: 'string',
                             multiple: false,
                             description: 'Alias',
-                            dbkey: alias.id,
+                            dbkey: alias.id + 'groupchannel',
                             showdescription: false,
                             showchildren: false,
                         }} />
