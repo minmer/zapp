@@ -4,12 +4,15 @@ import { User } from "../../structs/user";
 import { FetchOwnerGet } from "../../features/FetchOwnerGet";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
 import EditableElement from "../../generals/editable-element";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function MinisterDetailSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [role, setRole] = useState<Role | null>()
 
+    const { role_id } = useParams()
     const [adminRole, setAdminRole] = useState<Role | null>()
     const [aliases, setAliases] = useState<Alias[]>([])
+    const navigator = useNavigate()
     useEffect(() => {
         (async function () {
             getParams({
@@ -23,9 +26,18 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
 
     useEffect(() => {
         (async function () {
-            setAliases((await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
+            const aliasList = (await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0)
+            if (role_id != '-' && adminRole != null) {
+                const alias = aliasList.find((item) => item.id == role_id)
+                if (alias)
+                    setRole({ roleID: alias.id, ownerID: alias.ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: alias.alias })
+                else if (aliasList.length > 0)
+                    setRole({ roleID: aliasList[0].id, ownerID: aliasList[0].ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: aliasList[0].alias })
+
+            }
+            setAliases(aliasList)
         }());
-    }, [getParams, adminRole])
+    }, [getParams, adminRole, role_id])
     useEffect(() => {
         (async function () {
             await getParams({
@@ -50,7 +62,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
     }, [getParams, role])
     const selectAlias = (alias: Alias) => {
         if (adminRole != null)
-            setRole({ roleID: alias.id, ownerID: alias.ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: alias.alias })
+            navigator('/zielonki/minister/detail/' + alias.id)
     }
     return (
         <div className="minister-detail">

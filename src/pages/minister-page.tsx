@@ -66,7 +66,7 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
                             <Link to={`register`}>Zapisy</Link>
                         </li> : null}
                         {isRole || isAdmin ? <li>
-                            <Link to={`detail`}>Szczegóły</Link>
+                            <Link to={`detail/-`}>Szczegóły</Link>
                         </li> : null}
                         {isRole || isAdmin ? <li>
                             <Link to={`chat`}>Messenger</Link>
@@ -84,7 +84,7 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
                     <Route path="overview" element={<MinisterOverviewSubpage getParams={getParams} />} />
                     <Route path="encyclopaedia" element={<MinisterEncyclopaediaSubpage getParams={getParams} />} />
                     <Route path="register" element={<MinisterRegisterSubpage getParams={getParams} />} />
-                    <Route path="detail" element={<MinisterDetailSubpage getParams={getParams} />} />
+                    <Route path="detail/:role_id" element={<MinisterDetailSubpage getParams={getParams} />} />
                     <Route path="chat/*" element={<MinisterChatSubpage getParams={getParams} />} />
                     <Route path="presence" element={<MinisterPresenceSubpage getParams={getParams} />} />
                     <Route path="admin" element={<MinisterAdminSubpage getParams={getParams} />} />

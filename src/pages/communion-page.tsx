@@ -58,7 +58,7 @@ export default function CommunionPage({ getParams }: { getParams: ({ func, type,
                             <Link to={`register`}>Zapisy</Link>
                         </li> : null}
                         {isRole || isAdmin ? <li>
-                            <Link to={`detail`}>Szczegóły</Link>
+                            <Link to={`detail/-`}>Szczegóły</Link>
                         </li> : null}
                         {isAdmin ? <li>
                             <Link to={`checking`}>Sprawdzanie</Link>
@@ -72,7 +72,7 @@ export default function CommunionPage({ getParams }: { getParams: ({ func, type,
                 <Routes>
                     <Route path="overview" element={<CommunionOverviewSubpage getParams={getParams} />} />
                     <Route path="register" element={<CommunionRegisterSubpage getParams={getParams} />} />
-                    <Route path="detail" element={<CommunionDetailSubpage getParams={getParams} />} />
+                    <Route path="detail/:role_id" element={<CommunionDetailSubpage getParams={getParams} />} />
                     <Route path="checking" element={<CommunionCheckingSubpage getParams={getParams} />} />
                     <Route path="admin" element={<CommunionAdminSubpage getParams={getParams} />} />
                 </Routes>
