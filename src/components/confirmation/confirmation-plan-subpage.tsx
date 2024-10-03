@@ -90,6 +90,7 @@ export default function ConfirmationPlanSubpage({ getParams }: { getParams: ({ f
                                 dbkey: adminRole?.roleID,
                                 showdescription: false,
                                 showchildren: true,
+                                isOrdered: true,
                                 children: [
                                     {
                                         name: 'start',

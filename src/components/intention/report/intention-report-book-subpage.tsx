@@ -84,10 +84,10 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
             (async function () {
                 setPropSchool((await Promise.all(((await FetchInformationGetAll('datetime', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', 'school_prop')) as unknown as DateOutput[]).map(async (start) => ({
                     start: AddTimeToDate(start.output, -start.output.getHours(), -start.output.getMinutes()),
-                    end: ((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', start.id + 'end')) as unknown as DateOutput[])[0]?.output,
-                    break_start: ((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', start.id + 'break_start')) as unknown as DateOutput[])[0]?.output,
-                    break_end: ((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', start.id + 'break_end')) as unknown as DateOutput[])[0]?.output,
-                } as School))))[0])
+                    end: ((await FetchInformationGetAll('datetime', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', start.id + 'end')) as unknown as DateOutput[])[0]?.output,
+                    break_start: ((await FetchInformationGetAll('datetime', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', start.id + 'break_start')) as unknown as DateOutput[])[0]?.output,
+                    break_end: ((await FetchInformationGetAll('datetime', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', start.id + 'break_end')) as unknown as DateOutput[])[0]?.output,
+                } as School)))).find((item) => item.start.getFullYear() == date.getFullYear()))
             })();
         }, [propSchool, date, getParams])
 
@@ -473,11 +473,11 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                     }
                     if (CompareMonthDay(date, new Date(2001, 11, 31)))
                         tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Zakończenie Roku', 'Nieszpory']
-                    if (date.getTime() == propSchool?.start?.getTime()) {
+                    if (CompareMonthDay(date, propSchool?.start)) {
                         tempIssues = [...tempIssues, 'Rozpoczęcie Roku Szkolnego']
                         tempMasses = [...tempMasses, { date: AddTimeToDate(date, 8, 30), intention: ['W intencji uczniów, nauczycieli oraz pracowników szkoły'], description: ['Rozpoczęcie Roku Szkolnego'], },]
                     }
-                    else if (date.getTime() == propSchool?.end?.getTime()) {
+                    else if (CompareMonthDay(date, propSchool?.end)) {
                         tempIssues = [...tempIssues, 'Zakończenie Roku Szkolnego']
                         tempMasses = [...tempMasses, { date: AddTimeToDate(date, 8, 0), intention: ['W intencji uczniów, nauczycieli oraz pracowników szkoły'], description: ['Zakończenie Roku Szkolnego'], },]
                     }
@@ -621,8 +621,8 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                     }
                     if (date.getDate() > 12 && date.getDate() < 20 && date.getDay()== 0 && date.getMonth() > 3 && date.getMonth() < 10)
                         tempAppointments = [...tempAppointments,
-                        { date: AddTimeToDate(date, 16, 0), type: 'Nabożeństwo Fatimskie' },]
-                    else if (CompareDayMonthDate(date, 9, 1)) {
+                            { date: AddTimeToDate(date, 16, 0), type: 'Nabożeństwo Fatimskie' },]
+                    else if (CompareDayMonthDate(date, 0, 1) && date.getMonth() == 9) {
                         tempAppointments = [...tempAppointments,
                             { date: AddTimeToDate(date, 13, 0), type: 'Procesja Różańcowa' },]
                         const mass = tempMasses.find((mass) => mass.date.getHours() == 12)
@@ -706,7 +706,7 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                     setPropAppointments(tempAppointments.sort((a, b) => a.date.getTime() - b.date.getTime()))
                 }
                 )();
-        }, [date, getParams, propFeastes, propEastern, propStartWeek, propExams, propSchool])
+            }, [date, getParams, propFeastes, propEastern, propStartWeek, propExams, propSchool])
     useEffect(
         () => {
         }, [propEastern, date])

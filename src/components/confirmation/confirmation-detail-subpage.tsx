@@ -117,6 +117,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                 dbkey: adminRole?.roleID,
                                 showdescription: true,
                                 showchildren: true,
+                                isOrdered: true,
                                 children: [
                                     {
                                         name: 'aims',
