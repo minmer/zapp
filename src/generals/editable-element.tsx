@@ -454,7 +454,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                         {editable.multiple || data.length == 0 ?
                             <div className='editable-input'>
                                 {renderInput()}
-                                <input type="button" value='Zapisz' onClick={AddData} />
+                                <input type="button" value={data.length > 0 ? 'Dodaj' : 'Zapisz'} onClick={AddData} />
                             </div>
                             : null
                         }
