@@ -178,7 +178,7 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
 
             <input className='loadbutton' type='button' value='Załaduj wcześniejsze wiadomości' onClick={loadPreviousMessage} />
             {messages.map((message) => (
-                <div className=
+                <div translate="no" className=
                     {
                         message.writer == writer ? 'own-message' : 'message'
                     } key={message.id} onDoubleClick={() => deleteMessage(message.id)}>

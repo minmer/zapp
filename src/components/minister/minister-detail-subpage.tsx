@@ -180,7 +180,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                 type: 'radio',
                                 multiple: true,
                                 description: 'Dyżury',
-                                dbkey: adminRole?.roleID,
+                                dbkey: role?.roleID + 'groupchannel',
                                 showdescription: false,
                                 showchildren: false,
                                 options: [
