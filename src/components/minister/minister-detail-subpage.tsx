@@ -91,7 +91,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                 multiple: false,
                                 description: 'Funkcja',
                                 dbkey: adminRole?.roleID,
-                                showdescription: false,
+                                showdescription: true,
                                 showchildren: false,
                                 options: [
                                     { label: 'Zainteresowany', value: '0' },
@@ -103,6 +103,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                     { label: 'Ministrant Słowa Bożego', value: '6' },
                                     { label: 'Ceremoniarz', value: '7' },
                                 ],
+                                break: ', '
                             }} />
                         </div>
                         <div>

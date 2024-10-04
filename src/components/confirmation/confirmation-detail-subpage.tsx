@@ -100,7 +100,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                 {
                                     name: role?.user.user + 'telefon',
                                     type: 'tel',
-                                    multiple: false,
+                                    multiple: true,
                                     dbkey: role?.user.id + 'telefon',
                                     description: 'Telefon',
                                     showdescription: false,
