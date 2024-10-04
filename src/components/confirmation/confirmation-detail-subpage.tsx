@@ -167,7 +167,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                 ],
                             }} />
                         </div>
-                        <Link to='https://docs.google.com/spreadsheets/d/1BpcceLsD4cUGKVdRoRTRnrv0klobc2SGaHPYmrj6pBA/edit?usp=sharing'>Formularz do zapisów na spotkanie</Link>
+                        {role_id== 'asd' ? <Link to='https://docs.google.com/spreadsheets/d/1BpcceLsD4cUGKVdRoRTRnrv0klobc2SGaHPYmrj6pBA/edit?usp=sharing'>Formularz do zapisów na spotkanie</Link> : null}
                     </> :
                     <>
                         <h3>Zgłoszenie czeka na zatwierdzenie</h3>
