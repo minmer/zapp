@@ -87,12 +87,12 @@ export default function MinisterPresenceMassComponent({ getParams, aliases, mass
                 <>
                     <h5>Ministranci obecni na Mszy</h5>
                     {presents.map(present => (
-                        presence ? <span key={present.alias.id}><input type='button' value={present.alias.alias} onClick={() => removeDeclaration(present, mass)} /></span>
+                        (presence && Math.abs(mass.output.getTime() - Date.now()) < 5400000) || (presence && role != null) ? <span key={present.alias.id}><input type='button' value={present.alias.alias} onClick={() => removeDeclaration(present, mass)} /></span>
                             : <span key={present.alias.id}>{present.alias.alias}</span>
                     ))}
                     <h5>Ministranci zgłoszeni, że mają być</h5>
                     {reporteds.map(reported => (
-                        presence ?
+                        (presence && Math.abs(mass.output.getTime() - Date.now()) < 5400000) || (presence && role != null) ?
                             <span key={reported.alias.id}><input type='button' value={reported.alias.alias} onClick={() => addDeclaration(reported, mass)} /></span> :
                             role?.roleID == reported?.alias.id ?
                                 <span key={reported.alias.id}><input type='button' value={reported.alias.alias} onClick={() => removeReport(reported, mass)} /></span> :
@@ -100,7 +100,7 @@ export default function MinisterPresenceMassComponent({ getParams, aliases, mass
                     ))}
                     <h5>Pozostali ministranci</h5>
                     {others.map(other => (
-                        presence ?
+                        (presence && Math.abs(mass.output.getTime() - Date.now()) < 5400000) || (presence && role != null) ?
                             <span key={other.alias.id}><input type='button' value={other.alias.alias} onClick={() => addDeclaration(other, mass)} /></span> :
                             role?.roleID == other.alias.id ?
                                 <span key={other.alias.id}><input type='button' value={other.alias.alias} onClick={() => addReport(other, mass)} /></span> :
