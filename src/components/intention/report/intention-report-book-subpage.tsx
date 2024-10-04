@@ -707,9 +707,6 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                 }
                 )();
             }, [date, getParams, propFeastes, propEastern, propStartWeek, propExams, propSchool])
-    useEffect(
-        () => {
-        }, [propEastern, date])
 
     return (
 

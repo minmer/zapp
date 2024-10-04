@@ -174,6 +174,35 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                     showchildren: false,
                                 }} />
                         </div>
+                        <div><EditableElement getParams={getParams} editable={
+                            {
+                                name: role.roleID + 'service',
+                                type: 'radio',
+                                multiple: true,
+                                description: 'Dyżury',
+                                dbkey: adminRole?.roleID,
+                                showdescription: false,
+                                showchildren: false,
+                                options: [
+                                    { label: 'Niedziela 8:00', value: '8' },
+                                    { label: 'Niedziela 10:00', value: '10' },
+                                    { label: 'Niedziela 12:00', value: '12' },
+                                    { label: 'Niedziela 17:00', value: '17' },
+                                    { label: 'Poniedziałek 7:00', value: '31' },
+                                    { label: 'Poniedziałek 18:00', value: '42' },
+                                    { label: 'Wtorek 7:00', value: '55' },
+                                    { label: 'Wtorek 18:00', value: '66' },
+                                    { label: 'Środa 7:00', value: '79' },
+                                    { label: 'Środa 18:00', value: '90' },
+                                    { label: 'Czwartek 7:00', value: '103' },
+                                    { label: 'Czwartek 18:00', value: '114' },
+                                    { label: 'Piątek 7:00', value: '127' },
+                                    { label: 'Piątek 18:00', value: '138' },
+                                    { label: 'Sobota 7:00', value: '151' },
+                                    { label: 'Sobota 18:00', value: '162' },
+                                ],
+                            }} />
+                        </div>
                     </> :
                     <>
                         <h3>Zgłoszenie czeka na zatwierdzenie</h3>
