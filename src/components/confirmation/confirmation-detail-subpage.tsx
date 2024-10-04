@@ -4,7 +4,7 @@ import { User } from "../../structs/user";
 import { FetchOwnerGet } from "../../features/FetchOwnerGet";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
 import EditableElement from "../../generals/editable-element";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [role, setRole] = useState<Role | null>()
@@ -167,6 +167,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                 ],
                             }} />
                         </div>
+                        <Link to='https://docs.google.com/spreadsheets/d/1BpcceLsD4cUGKVdRoRTRnrv0klobc2SGaHPYmrj6pBA/edit?usp=sharing'>Formularz do zapisów na spotkanie</Link>
                     </> :
                     <>
                         <h3>Zgłoszenie czeka na zatwierdzenie</h3>
