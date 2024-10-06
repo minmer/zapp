@@ -88,7 +88,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                             {
                                 name: role.roleID + 'function',
                                 type: 'radio',
-                                multiple: false,
+                                multiple: true,
                                 description: 'Funkcja',
                                 dbkey: adminRole?.roleID,
                                 showdescription: true,
@@ -109,46 +109,23 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                         <div>
                             <EditableElement getParams={getParams} editable={
                                 {
-                                    name: role?.roleID + 'suit0',
+                                    name: 'minister_suit',
                                     type: 'string',
-                                    multiple: false,
-                                    description: 'Kaptur',
+                                    multiple: true,
+                                    description: 'Strój',
                                     dbkey: adminRole?.roleID,
-                                    showdescription: true,
-                                    showchildren: false,
-                                }} />
-                            <span> </span>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.roleID + 'suit1',
-                                    type: 'string',
-                                    multiple: false,
-                                    description: 'Komża',
-                                    dbkey: adminRole?.roleID,
-                                    showdescription: true,
-                                    showchildren: false,
-                                }} />
-                            <span> </span>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.roleID + 'suit2',
-                                    type: 'string',
-                                    multiple: false,
-                                    description: 'Sutanka',
-                                    dbkey: adminRole?.roleID,
-                                    showdescription: true,
-                                    showchildren: false,
-                                }} />
-                            <span> </span>
-                            <EditableElement getParams={getParams} editable={
-                                {
-                                    name: role?.roleID + 'suit3',
-                                    type: 'string',
-                                    multiple: false,
-                                    description: 'Alba',
-                                    dbkey: adminRole?.roleID,
-                                    showdescription: true,
-                                    showchildren: false,
+                                    showdescription: false,
+                                    showchildren: true,
+                                    isOrdered: true,
+                                    children: [
+                                        {
+                                            name: role.roleID,
+                                            type: 'string',
+                                            multiple: false,
+                                            description: 'Opis',
+                                            showchildren: false,
+                                        },
+                                    ],
                                 }} />
                         </div>
                         <div>
@@ -202,6 +179,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                     { label: 'Sobota 7:00', value: '151' },
                                     { label: 'Sobota 18:00', value: '162' },
                                 ],
+                                break: ', '
                             }} />
                         </div>
                     </> :
