@@ -6,6 +6,7 @@ import { DateOutput, FetchInformationGetAll, NumberOutput, StringOutput } from "
 import { User } from "../../../structs/user";
 import { AddDaysToDate, AddTimeToDate, BetweenDates, CompareDayMonthDate, CompareMonthDay } from "../../helpers/DateComparer";
 import { DaySpelling } from "../../../structs/consts";
+import { FetchInformationPost } from "../../../features/FetchInformationPost";
 export interface Feast {
     id: string,
     date: Date,
@@ -708,27 +709,47 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                 )();
             }, [date, getParams, propFeastes, propEastern, propStartWeek, propExams, propSchool])
 
+    const onCreate = () => {
+        getParams({
+        func: async (param: string | User) => {
+            const token = param as string
+                for (let i = 0; i < propMasses.length; i++) {
+                    const massID = await FetchInformationPost(token, 'new_intention_admin', ['new_zielonki_mass'], propMasses[i].date, [propMasses[i].date.getTime()])
+                    for (let j = 0; j < propMasses[i].intention.length; j++)
+                        await FetchInformationPost(token, 'new_intention_admin', [massID + 'intention'], propMasses[i].intention[j], [1])
+                    if (propMasses[i].description.length != 0)
+                        await FetchInformationPost(token, 'new_intention_admin', [massID + 'description'], propMasses[i].description[0], [1])
+                    else if (propIssues.length != 0)
+                        await FetchInformationPost(token, 'new_intention_admin', [massID + 'description'], propIssues[0], [1])
+                    if (propMasses[i].collective == true)
+                        await FetchInformationPost(token, 'new_intention_admin', [massID + 'collective'], true, [1])
+
+            }
+            }, type: 'token', show: false
+        });
+    }
     return (
 
         <>
             <MonthDateSelectionElement onSelectionChange={(date) => setDate(date)} />
             {propMasses.map((mass) => (<>
-                <div>
+                <div key={mass.date.getTime()}>
                     {mass.date.toTimeString()
                         + ' | ' +(mass.intention.map((intention, index) => ((index != 0 ? ' - ' : '') + intention)))
                         + ' | ' + (mass.description.map((description, index) => ((index != 0 ? ' - ' : '') + description)))}
                 </div>
             </>))}
             {propIssues.map((issue) => (<>
-                <div>
+                <div key={issue}>
                     {issue}
                 </div>
             </>))}
             {propAppointments.map((appointment) => (<>
-                <div>
+                <div key={appointment.date.getTime() + appointment.type}>
                     {appointment.date.getHours() + ':' + appointment.date.getMinutes().toString().padStart(2, '0') + ' - ' + appointment.type}
                 </div>
             </>))}
+            <input type='button' value='Przygotuj dzień' onClick={ onCreate} />
             <EditableElement getParams={getParams} editable={
                 {
                     name: 'fest_prop',

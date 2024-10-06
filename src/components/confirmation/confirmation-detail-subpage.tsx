@@ -112,7 +112,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                             {
                                 name: role.roleID + 'level',
                                 type: 'string',
-                                multiple: false,
+                                multiple: true,
                                 description: 'Rok formacyjny',
                                 dbkey: adminRole?.roleID,
                                 showdescription: true,
