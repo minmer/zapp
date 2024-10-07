@@ -229,6 +229,7 @@ h3 {
 
     .trip-detail .trip-parts div {
         margin: 3rem 1.5rem;
+        white-space: pre;
     }
 
     .trip-detail h2 {
@@ -260,6 +261,7 @@ h3 {
         font-size: 1rem;
         margin: 0 1rem;
         line-height: 115%;
+        display: inline-block;
     }
 
     .trip-detail .trip-submission div {
