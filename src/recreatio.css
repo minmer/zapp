@@ -255,11 +255,12 @@ h3 {
         }
 
 
-        .trip-detail .trip-image span {
-            font-style: italic;
-            font-size: 1rem;
-            margin: 0 1rem;
-        }
+    .trip-detail .trip-image span {
+        font-style: italic;
+        font-size: 1rem;
+        margin: 0 1rem;
+        line-height: 115%;
+    }
 
     .trip-detail .trip-submission div {
         margin: 0 2rem;

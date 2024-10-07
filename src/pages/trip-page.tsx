@@ -49,7 +49,7 @@ export default function TripPage({ getParams }: { getParams: ({ func, type, show
                     {
                         name: 'trip',
                         type: 'text',
-                        multiple: false,
+                        multiple: true,
                         description: 'Trips',
                         dbkey: 'website_admin',
                         showdescription: false,
