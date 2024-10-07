@@ -8,11 +8,11 @@ h3 {
     width: 100%;
 }
 
-.homedescription div, .homedescription h1, .homedescription img, .home a {
-    margin-left: 5%;
-    margin-right: 5%;
-    width: 90%;
-}
+    .homedescription div, .homedescription h1, .homedescription img, .home a {
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90%;
+    }
 
     .home a {
         display: block;
@@ -99,6 +99,7 @@ h3 {
     z-index: 50;
     padding: 5%;
 }
+
     .popup > div {
         overflow: auto;
         max-height: 100%;
@@ -115,10 +116,12 @@ h3 {
         box-shadow: 3px 3px 12px #000b;
         border-radius: .5rem;
     }
+
 .editable-span {
     user-select: none;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .editable {
     border-radius: 1rem;
     padding: 1rem;
@@ -127,6 +130,7 @@ h3 {
     background-color: transparent;
     white-space: pre-line;
 }
+
     .editable span {
         user-select: none;
     }
@@ -147,9 +151,10 @@ h3 {
 .editable-input {
     padding: .5rem;
 }
-.editable-input input {
-    margin:  0 .5rem;
-}
+
+    .editable-input input {
+        margin: 0 .5rem;
+    }
 
 .editable-children {
     margin: 0.5em 0 0 1rem;
@@ -160,8 +165,8 @@ h3 {
 }
 
 .user-widget {
-        overflow: auto;
-    }
+    overflow: auto;
+}
 
 .flow-down {
     position: absolute;
@@ -176,16 +181,16 @@ h3 {
     overflow-x: scroll;
 }
 
-.communion-checking > div {
-    padding: 0 1rem;
-    width: 88rem;
-}
+    .communion-checking > div {
+        padding: 0 1rem;
+        width: 88rem;
+    }
 
-.communion-checking .alias {
-    width: 16rem;
-    display: inline-block;
-    text-align: end;
-}
+    .communion-checking .alias {
+        width: 16rem;
+        display: inline-block;
+        text-align: end;
+    }
 
     .communion-checking > div > span {
         font-size: 1.25rem;
@@ -251,9 +256,9 @@ h3 {
     }
 
 
-        .trip-detail .trip-image img {
-            width: 100%;
-        }
+    .trip-detail .trip-image img {
+        width: 100%;
+    }
 
 
     .trip-detail .trip-image span {
@@ -280,46 +285,54 @@ h3 {
     background-color: ghostwhite;
     white-space: pre-line;
 }
-.chat-element textarea {
-    width: 80%;
-    min-height: 5rem;
-}
+
+    .chat-element textarea {
+        width: 80%;
+        min-height: 5rem;
+    }
+
     .chat-element input {
         width: 20%
     }
+
     .chat-element .loadbutton {
         width: 80%;
         margin: 1em 10%;
     }
-.chat-element .message {
-    background-color: #ededed;
-    border-radius: 2em 1em 2em 0;
-    margin: 1rem;
-    padding: 1rem;
-    width: fit-content;
-}
-.chat-element .own-message {
-    background-color: #b4edc3;
-    border-radius: 1em 2em 0 2rem;
-    margin: 1rem;
-    padding: 1rem;
-    width: fit-content;
-    float: right;
-}
-.chat-element div {
-    clear: both;
-}
+
+    .chat-element .message {
+        background-color: #ededed;
+        border-radius: 2em 1em 2em 0;
+        margin: 1rem;
+        padding: 1rem;
+        width: fit-content;
+    }
+
+    .chat-element .own-message {
+        background-color: #b4edc3;
+        border-radius: 1em 2em 0 2rem;
+        margin: 1rem;
+        padding: 1rem;
+        width: fit-content;
+        float: right;
+    }
+
+    .chat-element div {
+        clear: both;
+    }
+
 .chat-widget {
     overflow: auto;
     white-space: pre-line;
 }
-.chat-widget .message {
-    background-color: #ededed;
-    border-radius: 2em 1em 2em 0;
-    margin: 1rem;
-    padding: 1rem;
-    width: fit-content;
-}
+
+    .chat-widget .message {
+        background-color: #ededed;
+        border-radius: 2em 1em 2em 0;
+        margin: 1rem;
+        padding: 1rem;
+        width: fit-content;
+    }
 
 .month-date-selection .navigation input {
     width: 20%;
@@ -327,37 +340,38 @@ h3 {
     height: 4rem;
 }
 
-    .month-date-selection .navigation h4 {
-        width: 60%;
-        float: left;
+.month-date-selection .navigation h4 {
+    width: 60%;
+    float: left;
+    text-align: center;
+    font-size: 2rem;
+    margin: .25em 0;
+}
+
+.month-date-selection .calendar {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+}
+
+    .month-date-selection .calendar div {
+        background: #ddd;
+    }
+
+    .month-date-selection .calendar input {
+        border-radius: 0;
+        cursor: pointer;
+    }
+
+    .month-date-selection .calendar div.spelling {
+        background: #bbb;
         text-align: center;
-        font-size: 2rem;
-        margin: .25em 0;
+        padding: 12px;
     }
 
-    .month-date-selection .calendar {
-        display: grid;
-        grid-template-columns: auto auto auto auto auto auto auto;
+    .month-date-selection .calendar input:hover {
+        background: #eee;
     }
 
-        .month-date-selection .calendar div {
-            background: #ddd;
-        }
-
-        .month-date-selection .calendar input {
-            border-radius: 0;
-            cursor: pointer;
-        }
-
-        .month-date-selection .calendar div.spelling {
-            background: #bbb;
-            text-align: center;
-            padding: 12px;
-        }
-
-        .month-date-selection .calendar input:hover {
-            background: #eee;
-        }
 .menu-button {
     background-color: #dddc;
     width: 3rem;
@@ -400,6 +414,7 @@ h3 {
     #menu {
         display: flex;
     }
+
     .menu-button {
         display: none;
     }
@@ -417,11 +432,11 @@ h3 {
         column-count: 2;
     }
 
-    .mosaic > * {
-        width: 92%;
-        padding: 4%;
-        margin: 4%;
-    }
+        .mosaic > * {
+            width: 92%;
+            padding: 4%;
+            margin: 4%;
+        }
 
     .homedescription div, .homedescription h1, .homedescription img, .home a {
         margin-left: 25%;
@@ -443,9 +458,9 @@ h3 {
         column-count: 3;
     }
 
-    .mosaic > * {
-        width: 96%;
-        padding: 2%;
-        margin: 2%;
-    }
+        .mosaic > * {
+            width: 96%;
+            padding: 2%;
+            margin: 2%;
+        }
 }

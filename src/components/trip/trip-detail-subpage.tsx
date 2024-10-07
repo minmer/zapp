@@ -184,8 +184,9 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
                     description: 'Wybór',
                     dbkey: 'website_admin',
                     showdescription: false,
-                    showchildren: true,
+                    showchildren: false,
                     isOrdered: true,
+                    break: '\n',
                 }} />
         </div>
     );

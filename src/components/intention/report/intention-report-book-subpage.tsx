@@ -29,6 +29,7 @@ export interface PropMass {
     intention: string[],
     description: string[],
     collective?: boolean,
+    color?: string,
 }
 export interface PropAppointment {
     date: Date,
@@ -114,171 +115,171 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                     let tempAppointments = [] as PropAppointment[]
                     if (date.getTime() == propEastern?.getTime()) 
                         tempMasses = [
-                            { date: AddTimeToDate(date, 7, 0), intention: ['Za parafian'], description: ['Msza Rezurekcyjna'],},
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description:[], },
-                            { date: AddTimeToDate(date, 12, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 7, 0), intention: ['Za parafian'], description: ['Msza Rezurekcyjna'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (date.getTime() == AddDaysToDate(propEastern, -1).getTime()) 
                         tempMasses = [
-                            { date: AddTimeToDate(date, 20, 0), intention: [], description: ['Wigilia Paschalna'], },
+                            { date: AddTimeToDate(date, 20, 0), intention: [], description: ['Wigilia Paschalna'], color: '#ffffff', },
                         ]
                     else if (date.getTime() == AddDaysToDate(propEastern, -2).getTime()) 
                         tempMasses = [
-                            { date: AddTimeToDate(date, 18, 0), intention: [' - Brak intencji - '], description: ['Liturgia Męki Pańskiej'], },
+                            { date: AddTimeToDate(date, 18, 0), intention: [' - Brak intencji - '], description: ['Liturgia Męki Pańskiej'], color: '#ff0000', },
                         ]
                     else if (date.getTime() == AddDaysToDate(propEastern, -3).getTime()) 
                         tempMasses = [
-                            { date: AddTimeToDate(date, 18, 0), intention: [], description: ['Msza Wieczerzy Pańskiej'], },
+                            { date: AddTimeToDate(date, 18, 0), intention: [], description: ['Msza Wieczerzy Pańskiej'], color: '#ffffff', },
                         ]
                     else if (date.getTime() == AddDaysToDate(propEastern, -7).getTime()) 
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Procesja Palmowa'], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ff0000', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ff0000', },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Procesja Palmowa'], color: '#ff0000', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ff0000', },
                         ]
                     else if (date.getTime() == AddDaysToDate(propEastern, -46).getTime()) 
                         tempMasses = [
-                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 16, 30), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 18, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 19, 30), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], color: '#800080', },
+                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], color: '#800080', },
+                            { date: AddTimeToDate(date, 16, 30), intention: [], description: [], color: '#800080', },
+                            { date: AddTimeToDate(date, 18, 0), intention: [], description: [], color: '#800080', },
+                            { date: AddTimeToDate(date, 19, 30), intention: [], description: [], color: '#800080', },
                         ]
                     else if (date.getTime() == AddDaysToDate(propEastern, +1).getTime()) 
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: [], description: ['Msza Chrzcielna'], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: [], description: ['Msza Chrzcielna'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]              
                     else if (date.getTime() == AddDaysToDate(propEastern, +49).getTime())
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: ['Za parafian'], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: ['Złoci Jubilaci'], description: ['Złoci Jubilaci'], },
-                            { date: AddTimeToDate(date, 12, 0), intention: ['Srebrni Jubilaci'], description: ['Srebrni Jubilaci'], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: ['Za parafian'], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: ['Złoci Jubilaci'], description: ['Złoci Jubilaci'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Srebrni Jubilaci'], description: ['Srebrni Jubilaci'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (date.getTime() == AddDaysToDate(propEastern, +50).getTime()) 
                         tempMasses = [
-                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 16, 30), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 18, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 16, 30), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 18, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (date.getTime() == AddDaysToDate(propEastern, +60).getTime()) 
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: ['Za parafian'], description: ['Procesja Bożego Ciała', 'Msza przy ołtarzu polowym'], },
-                            { date: AddTimeToDate(date, 12, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: ['Za parafian'], description: ['Procesja Bożego Ciała', 'Msza przy ołtarzu polowym'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (date.getTime() == AddDaysToDate(propEastern, +68).getTime()) 
                         tempMasses = [
-                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 18, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 18, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 4, 3)))
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: ['Za parafian'], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: ['I Komunia Święta'], description: ['I Komunia Święta'], },
-                            { date: AddTimeToDate(date, 12, 0), intention: ['I Komunia Święta'], description: ['I Komunia Święta'], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: ['Za parafian'], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: ['I Komunia Święta'], description: ['I Komunia Święta'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['I Komunia Święta'], description: ['I Komunia Święta'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 11, 25)))
                         tempMasses = [
-                            { date: AddTimeToDate(date, 0, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: [], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 0, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 11, 26)))
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: [], description: ['Msza Chrzcielna', 'Poświęcenie owies'], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ff0000', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ff0000', },
+                            { date: AddTimeToDate(date, 12, 0), intention: [], description: ['Msza Chrzcielna', 'Poświęcenie owies'], color: '#ff0000', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ff0000', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 0, 1)))
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: [], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 0, 6)))
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Orszak Trzech Króli'], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Orszak Trzech Króli'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (CompareDayMonthDate(date, 0,-1) && date.getMonth() == 6)
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Odpust parafialny'], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Odpust parafialny'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 7, 26)) && date.getDay() == 0)
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Odpust parafialny'], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Odpust parafialny'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 7, 26)))
                         tempMasses = [
-                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 18, 0), intention: ['Za parafian'], description: ['Odpust parafialny'], },
+                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 18, 0), intention: ['Za parafian'], description: ['Odpust parafialny'], color: '#ffffff', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 8, 8)) && date.getDay() == 0)
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Odpust parafialny'], },
-                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: ['Odpust parafialny'], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 17, 0), intention: [], description: [], color: '#ffffff', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 8, 7)) && date.getDay() == 6)
                         tempMasses = [
-                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 18, 0), intention: ['Bierzmowanie'], description: ['Bierzmowanie'], },
+                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [],  },
+                            { date: AddTimeToDate(date, 18, 0), intention: ['Bierzmowanie'], description: ['Bierzmowanie'], color: '#ff0000', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 8, 8)))
                         tempMasses = [
-                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 18, 0), intention: ['Bierzmowanie'], description: ['Odpust parafialny'], },
+                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 18, 0), intention: ['Bierzmowanie'], description: ['Odpust parafialny'], color: '#ff0000', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 10, 1)))
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: [], },
-                            { date: AddTimeToDate(date, 14, 0), intention: [], description: ['Msza na cmentarzu'], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 12, 0), intention: ['Za parafian'], description: [], color: '#ffffff', },
+                            { date: AddTimeToDate(date, 14, 0), intention: [], description: ['Msza na cmentarzu'], color: '#ffffff', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 10, 2)) && date.getDay() == 0)
                         tempMasses = [
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 12, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 17, 0), intention: ['Za zmarłych parafian'], description: ['Procesja do cmentarza'], },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#800080', },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: [], color: '#800080', },
+                            { date: AddTimeToDate(date, 12, 0), intention: [], description: [], color: '#800080', },
+                            { date: AddTimeToDate(date, 17, 0), intention: ['Za zmarłych parafian'], description: ['Procesja do cmentarza'], color: '#800080', },
+                        ]
+                    else if (CompareMonthDay(date, new Date(2001, 10, 2)))
+                        tempMasses = [
+                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], color: '#800080', },
+                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], color: '#800080', },
+                            { date: AddTimeToDate(date, 18, 0), intention: ['Za zmarłych parafian'], description: ['Procesja do cmentarza'], color: '#800080', },
                         ]
                     else if (CompareMonthDay(date, new Date(2001, 10, 11)) && date.getDay() != 0)
                         tempMasses = [
                             { date: AddTimeToDate(date, 7, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 10, 0), intention: [], description: ['Za Ojczyznę'], },
+                            { date: AddTimeToDate(date, 10, 0), intention: [], description: ['Za Ojczyznę'], color: '#ffffff', },
                             { date: AddTimeToDate(date, 18, 0), intention: [], description: [], },
-                        ]
-                    else if (CompareMonthDay(date, new Date(2001, 10, 2)))
-                        tempMasses = [
-                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 8, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 18, 0), intention: ['Za zmarłych parafian'], description: ['Procesja do cmentarza'], },
                         ]
                     else if (date.getDay() == 0) 
                         tempMasses = [
@@ -289,16 +290,16 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         ]
                     else if (dateFeast?.feast == '5' && !BetweenDates(date, AddDaysToDate(propEastern, -7), AddDaysToDate(propEastern, +7)))
                         tempMasses = [
-                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 16, 30), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 18, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], color: dateFeast?.color, },
+                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], color: dateFeast?.color, },
+                            { date: AddTimeToDate(date, 16, 30), intention: [], description: [], color: dateFeast?.color, },
+                            { date: AddTimeToDate(date, 18, 0), intention: [], description: [], color: dateFeast?.color, },
                         ]
                     else if (dateFeast?.feast == '6' && !BetweenDates(date, AddDaysToDate(propEastern, -7), AddDaysToDate(propEastern, +7)))
                         tempMasses = [
-                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], },
-                            { date: AddTimeToDate(date, 18, 0), intention: [], description: [], },
+                            { date: AddTimeToDate(date, 7, 0), intention: [], description: [], color: dateFeast?.color, },
+                            { date: AddTimeToDate(date, 9, 30), intention: [], description: [], color: dateFeast?.color, },
+                            { date: AddTimeToDate(date, 18, 0), intention: [], description: [], color: dateFeast?.color, },
                         ]
                     else
                         tempMasses = [
@@ -308,7 +309,7 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                     if (CompareMonthDay(date, new Date(date.getFullYear(), 11, 24)))
                         tempMasses = tempMasses.filter((_item, index) => (index != tempMasses.length - 1))
                     if ([6, 7].find((month) => month == date.getMonth()) == null && CompareDayMonthDate(date, 0, 2))
-                        tempMasses = [...tempMasses, { date: AddTimeToDate(date, 19, 0), intention: [], description: ['Msza Młodzi Duchem'], },]
+                        tempMasses = [...tempMasses, { date: AddTimeToDate(date, 19, 0), intention: [], description: ['Msza Młodzi Duchem'], color: tempMasses[0]?.color },]
                     if (BetweenDates(date, AddDaysToDate(new Date(date.getFullYear(), 11, 3), - new Date(date.getFullYear(), 11, 3).getDay()), new Date(date.getFullYear(), 11, 24)) && date.getDate() != 8) {
                         const mass = tempMasses.find((mass) => mass.date.getHours() == 7)
                         if (mass)
@@ -326,73 +327,107 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                     else if (date.getTime() == AddDaysToDate(propEastern, -7).getTime()) {
                         tempIssues = [...tempIssues, 'Niedziela Palmowa']
                         tempAppointments = [...tempAppointments,
-                            {
-                                date: AddTimeToDate(date, 11,30), type: 'Konkurs Palm'
-                            },]
+                        {
+                            date: AddTimeToDate(date, 11, 30), type: 'Konkurs Palm'
+                        },]
                     }
                     else if (BetweenDates(date, AddDaysToDate(propEastern, -45), AddDaysToDate(propEastern, -8))) {
-                        if (BetweenDates(date, AddDaysToDate(propEastern, -45), AddDaysToDate(propEastern, -43)) && dateFeast == null)
+                        if (BetweenDates(date, AddDaysToDate(propEastern, -45), AddDaysToDate(propEastern, -43)) && dateFeast == null) {
                             tempIssues = [...tempIssues, DaySpelling[date.getDay()] + ' po Środzie Popielcowej']
-                        if (BetweenDates(date, AddDaysToDate(propEastern, -42), AddDaysToDate(propEastern, -8)) && (dateFeast == null || date.getDay() == 0))
+                        }
+                        if (BetweenDates(date, AddDaysToDate(propEastern, -42), AddDaysToDate(propEastern, -8)) && (dateFeast == null || date.getDay() == 0)) {
                             tempIssues = [...tempIssues, date.getDay() == 0 ? Math.floor((date.getTime() - AddDaysToDate(propEastern, -50).getTime()) / 604800000) + '. Niedziela Wielkiego Postu' : DaySpelling[date.getDay()] + ' ' + Math.floor((date.getTime() - AddDaysToDate(propEastern, -49).getTime()) / 604800000) + '. Tygodnia Wielkiego Postu']
-                        if (date.getTime() == AddDaysToDate(propEastern, -8).getTime())
+                            tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#800080', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
+                        }
+                        if (date.getTime() == AddDaysToDate(propEastern, -8).getTime()) {
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia Niedzieli Palmowej']
+                            tempMasses[tempMasses.length - 1].color = '#800080'
+                        }
                         else if (BetweenDates(date, AddDaysToDate(propEastern, -43), AddDaysToDate(propEastern, -8)) && date.getDay() == 6 && tempMasses.length > 0)
                             tempMasses[tempMasses.length - 1].description = [...tempMasses[tempMasses.length - 1].description, 'Wigilia ' + Math.floor((date.getTime() - AddDaysToDate(propEastern, -51).getTime()) / 604800000) + '. ' + ' Niedzieli Wielkiego Postu']
-                        
+
                     }
                     else if (date.getTime() == AddDaysToDate(propEastern, -46).getTime())
                         tempIssues = [...tempIssues, 'Środa Popielcowa']
                     else if (BetweenDates(date, AddDaysToDate(propEastern, 1), AddDaysToDate(propEastern, 6))) {
                         tempIssues = [...tempIssues, DaySpelling[date.getDay()] + ' Oktawy Wielkanocnej']
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                         if (date.getTime() == AddDaysToDate(propEastern, 6).getTime())
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia 2. Niedzieli Wielkanocnej']
                     }
-                    else if (date.getTime() == AddDaysToDate(propEastern, 7).getTime())
+                    else if (date.getTime() == AddDaysToDate(propEastern, 7).getTime()) {
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                         tempIssues = [...tempIssues, '2. Niedziela Wielkanocna', 'Niedziela Miłosierdzia Bożego']
+                    }
                     else if (BetweenDates(date, AddDaysToDate(propEastern, 8), AddDaysToDate(propEastern, 49))) {
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                         if (date.getTime() == AddDaysToDate(propEastern, 42).getTime())
                             tempIssues = [...tempIssues, 'Wniebowstąpienie Pańskie']
-                        else if (date.getTime() == AddDaysToDate(propEastern, 49).getTime())
+                        else if (date.getTime() == AddDaysToDate(propEastern, 49).getTime()) {
+                            tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ff0000', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                             tempIssues = [...tempIssues, 'Zesłanie Ducha Świętego']
+                        }
                         else if (BetweenDates(date, AddDaysToDate(propEastern, 8), AddDaysToDate(propEastern, 48)) && (dateFeast == null || date.getDay() == 0))
                             tempIssues = [...tempIssues, date.getDay() == 0 ? Math.floor((date.getTime() - AddDaysToDate(propEastern, -8).getTime()) / 604800000) + '. Niedziela Wielkanocna' : DaySpelling[date.getDay()] + ' ' + Math.floor((date.getTime() - AddDaysToDate(propEastern, -7).getTime()) / 604800000) + '. Tygodnia Okresu Wielkanocnego']
                         if (date.getTime() == AddDaysToDate(propEastern, 41).getTime())
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia Wniebowstąpienia Pańskiego']
-                        else if (date.getTime() == AddDaysToDate(propEastern, 48).getTime())
+                        else if (date.getTime() == AddDaysToDate(propEastern, 48).getTime()) {
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia Zesłania Ducha Świętego']
+                            tempMasses[tempMasses.length - 1].color = '#ff0000'
+                        }
                         else if (BetweenDates(date, AddDaysToDate(propEastern, 8), AddDaysToDate(propEastern, 47)) && date.getDay() == 6)
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia ' + Math.floor((date.getTime() - AddDaysToDate(propEastern, -8).getTime()) / 604800000) + '. ' + ' Niedzieli Wielkanocnej']
                     }
-                    else if (date.getTime() == AddDaysToDate(propEastern, +50).getTime())
+                    else if (date.getTime() == AddDaysToDate(propEastern, +50).getTime()) {
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                         tempIssues = [...tempIssues, 'Wspomnienie Najświętszej Maryi Panny Matki Kościoła', 'Drugie Święto Wielkanocne']
-                    else if (date.getTime() == AddDaysToDate(propEastern, +53).getTime())
+                    }
+                    else if (date.getTime() == AddDaysToDate(propEastern, +53).getTime()) {
                         tempIssues = [...tempIssues, 'Święto Jezusa Chrystusa Najwyższego i Wiecznego Kapłana']
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
+                    }
                     else if (date.getTime() == AddDaysToDate(propEastern, +60).getTime())
                         tempIssues = [...tempIssues, 'Uroczystość Najświętszego Ciała i Krwi Chrystusa']
                     else if (date.getTime() == AddDaysToDate(propEastern, +68).getTime())
                         tempIssues = [...tempIssues, 'Uroczystość Najświętszego Serca Pana Jezusa']
-                    else if (date.getTime() == AddDaysToDate(propEastern, +69).getTime())
+                    else if (date.getTime() == AddDaysToDate(propEastern, +69).getTime()) {
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                         tempIssues = [...tempIssues, 'Wspomnienie Niepokalanego Serca Najświętszej Maryi Panny']
-                    else if (date.getTime() == AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 7 - new Date(date.getFullYear(), 11, 3).getDay()).getTime())
+                    }
+                    else if (date.getTime() == AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 7 - new Date(date.getFullYear(), 11, 3).getDay()).getTime()) {
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                         tempIssues = [...tempIssues, 'Uroczystość Jezusa Chrystusa, Króla Wszechświata']
+                    }
                     else if (BetweenDates(date, AddDaysToDate(new Date(date.getFullYear(), 11, 3), - new Date(date.getFullYear(), 11, 3).getDay()), new Date(date.getFullYear(), 11, 31))) {
-                        if (BetweenDates(date, new Date(date.getFullYear(), 11, 17), new Date(date.getFullYear(), 11, 24)) && date.getDay() != 0)
+                        if (BetweenDates(date, new Date(date.getFullYear(), 11, 17), new Date(date.getFullYear(), 11, 24)) && date.getDay() != 0) {
+                            tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#800080', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                             tempIssues = [...tempIssues, date.getDate() + '. Grudnia']
-                        else if (BetweenDates(date, AddDaysToDate(new Date(date.getFullYear(), 11, 3), - new Date(date.getFullYear(), 11, 3).getDay()), new Date(date.getFullYear(), 11, 24)) && dateFeast == null || date.getDay() == 0 && date.getDate() < 25)
+                        }
+                        else if (BetweenDates(date, AddDaysToDate(new Date(date.getFullYear(), 11, 3), - new Date(date.getFullYear(), 11, 3).getDay()), new Date(date.getFullYear(), 11, 24)) && dateFeast == null || date.getDay() == 0 && date.getDate() < 25) {
+                            tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#800080', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                             tempIssues = [...tempIssues, date.getDay() == 0 ? (Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 8 - new Date(date.getFullYear(), 11, 3).getDay()).getTime()) / 604800000)) + '. Niedziela Adwentu' : DaySpelling[date.getDay()] + ' ' + (Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 7 - new Date(date.getFullYear(), 11, 3).getDay()).getTime()) / 604800000)) + '. Tygodnia Adwentu']
+                        }
                         if (date.getTime() == new Date(date.getFullYear(), 11, 24).getTime())
                             tempIssues = [...tempIssues, 'Wiglia Bożego Narodzenia']
-                        else if (date.getDay() == 6)
+                        else if (date.getDay() == 6) {
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia ' + (Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 9 - new Date(date.getFullYear(), 11, 3).getDay()).getTime()) / 604800000)) + '. ' + ' Niedzieli Adwentu']
-                        if (date.getTime() == new Date(date.getFullYear(), 11, 25).getTime())
+                            tempMasses[tempMasses.length - 1].color = '#800080'
+                        }
+                        if (date.getTime() == new Date(date.getFullYear(), 11, 25).getTime()) {
+                            tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                             tempIssues = [...tempIssues, 'Uroczystość Narodzenia Pańskiego']
-                        if (BetweenDates(date, new Date(date.getFullYear(), 11, 26), new Date(date.getFullYear(), 11, 31)))
+                        }
+                        if (BetweenDates(date, new Date(date.getFullYear(), 11, 26), new Date(date.getFullYear(), 11, 31))) {
+                            tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                             tempIssues = [...tempIssues, date.getDay() == 0 || date.getDate() == 31 && date.getDay() == 1 ? 'Uroczystość Świętej Rodziny' : ' Oktawa Bożego Narodzenia']
+                        }
                     }
-                    else if (date.getTime() == new Date(date.getFullYear(), 0, 6).getTime())
+                    else if (date.getTime() == new Date(date.getFullYear(), 0, 6).getTime()) {
                         tempIssues = [...tempIssues, 'Uroczystość Objawienia Paskiego']
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
+                    }
                     else if (BetweenDates(date, new Date(date.getFullYear(), 0, 2), AddDaysToDate(new Date(date.getFullYear(), 0, 12), - new Date(date.getFullYear(), 0, 12).getDay()))) {
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                         if (dateFeast == null && date.getDay() != 0)
                             tempIssues = [...tempIssues, 'Okres Bożego Narodzenia']
                         if (BetweenDates(date, new Date(date.getFullYear(), 0, 2), new Date(date.getFullYear(), 0, 5)) && date.getDay() == 0)
@@ -404,30 +439,43 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         else if (BetweenDates(date, new Date(date.getFullYear(), 0, 7), new Date(date.getFullYear(), 0, 12)) && date.getDay() == 6)
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia Niedzieli Chrztu Pańskiego']
                     }
-                    else if (date.getTime() == new Date(date.getFullYear(), 0, 7).getTime() && date.getDay() == 1)
+                    else if (date.getTime() == new Date(date.getFullYear(), 0, 7).getTime() && date.getDay() == 1) {
                         tempIssues = [...tempIssues, 'Święto Chrztu Pańskiego']
-                    else if (CompareDayMonthDate(date, 0, -1) && date.getMonth() == 9)
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
+                    }
+                    else if (CompareDayMonthDate(date, 0, -1) && date.getMonth() == 9) {
                         tempIssues = [...tempIssues, 'Rocznica poświęcenia Kościoła']
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
+                                            }
                     else if (date.getTime() == new Date(date.getFullYear(), 10, 2).getTime())
                         tempIssues = [...tempIssues, 'Wspomnienie wszystkich wiernych zmarłych']
                     else if (BetweenDates(date, AddDaysToDate(new Date(date.getFullYear(), 0, 12), - new Date(date.getFullYear(), 0, 12).getDay()), AddDaysToDate(propEastern, -47))) {
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#00ff00', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                         if (dateFeast == null || date.getDay() == 0)
                             tempIssues = [...tempIssues, date.getDay() == 0 ? Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 0, 5), -new Date(date.getFullYear(), 0, 5).getDay()).getTime()) / 604800000) + '. Niedziela Okresu Zwykłego' : DaySpelling[date.getDay()] + ' ' + Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 0, 6), -new Date(date.getFullYear(), 0, 6).getDay()).getTime()) / 604800000) + '. Tygodnia Okresu Zwykłego']
-                        if (date.getDay() == 6)
+                        if (date.getDay() == 6) {
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia ' + Math.floor((date.getTime() - AddDaysToDate(new Date(date.getFullYear(), 0, 4), -new Date(date.getFullYear(), 0, 4).getDay()).getTime()) / 604800000) + '. Niedzieli Okresu Zwykłego']
+                            tempMasses[tempMasses.length - 1].color = '#00ff00'
+                        }
                     }
                     else if (BetweenDates(date, AddDaysToDate(propEastern, 51), AddDaysToDate(new Date(date.getFullYear(), 11, 3), - new Date(date.getFullYear(), 11, 3).getDay()))) {
+                        tempMasses = tempMasses.map(mass => ({ color: mass.color ?? '#00ff00', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                         if (dateFeast == null || date.getDay() == 0)
                             tempIssues = [...tempIssues, date.getDay() == 0 ? (Math.floor((date.getTime() - AddDaysToDate(propEastern, 49).getTime()) / 604800000) + propStartWeek) + '. Niedziela Okresu Zwykłego' : DaySpelling[date.getDay()] + ' ' + (Math.floor((date.getTime() - AddDaysToDate(propEastern, 50).getTime()) / 604800000) + propStartWeek) + '. Tygodnia Okresu Zwykłego']
-                        if (date.getTime() == AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 8 - new Date(date.getFullYear(), 11, 3).getDay()).getTime())
+                        if (date.getTime() == AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 8 - new Date(date.getFullYear(), 11, 3).getDay()).getTime()) {
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia Uroczystości Jezusa Chrystusa, Króla Wszechświata']
-                        if (date.getTime() == AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 1 - new Date(date.getFullYear(), 11, 3).getDay()).getTime())
+                            tempMasses[tempMasses.length - 1].color = '#ffffff'
+                        }
+                        if (date.getTime() == AddDaysToDate(new Date(date.getFullYear(), 11, 3), - 1 - new Date(date.getFullYear(), 11, 3).getDay()).getTime()) {
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia 1. Niedzieli Adwentu']
+                            tempMasses[tempMasses.length - 1].color = '#800080'
+                        }
                         else if (date.getDay() == 6)
                             tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Wigilia ' + (Math.floor((date.getTime() - AddDaysToDate(propEastern, 48).getTime()) / 604800000) + propStartWeek) + '. ' + ' Niedzieli Okresu Zwykłego']
                     }
                     if (BetweenDates(new Date(date.getFullYear(), 2, 25), AddDaysToDate(propEastern, -7), AddDaysToDate(propEastern, 7)) ? date.getTime() == AddDaysToDate(propEastern, +8).getTime() : CompareMonthDay(date, new Date(2001, 2, 25))) {
                         tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Adopcja dziecka poczętego']
+                        tempMasses = tempMasses.map(mass => ({ color: '#ffffff', date: mass.date, intention: mass.intention, description: mass.description, collective: mass.collective }))
                         if (date.getDate() != 25)
                             tempIssues = [...tempIssues, 'Uroczystość Zwiastowania Pańskiego']
                     }
@@ -441,8 +489,10 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         tempIssues = [...tempIssues, 'Drugie Święto Wielkanocne']
                     if (dateFeast && !BetweenDates(date, AddDaysToDate(propEastern, -7), AddDaysToDate(propEastern, +7)))
                         tempIssues = [...tempIssues, dateFeast.description]
-                    if (nextDateFeast && !BetweenDates(date, AddDaysToDate(propEastern, -7), AddDaysToDate(propEastern, +7)) && date.getDay() != 0 && date.getDay() != 0 && ['0', '4', '5', '6'].find((feast) => feast == nextDateFeast.feast))
+                    if (nextDateFeast && !BetweenDates(date, AddDaysToDate(propEastern, -7), AddDaysToDate(propEastern, +7)) && date.getDay() != 0 && date.getDay() != 0 && ['0', '4', '5', '6'].find((feast) => feast == nextDateFeast.feast)) {
                         tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), nextDateFeast.description.replace('Uroczystość', 'Wigilia uroczystości')]
+                        tempMasses[tempMasses.length - 1].color = nextDateFeast.color
+                    }
                     if (CompareDayMonthDate(date, 4, 1))
                         tempMasses[tempMasses.length - 1].intention = [...(tempMasses[tempMasses.length - 1].intention), 'O powołania kapłańskie, zakonne i misyjne, umocnienie istniejących oraz łaski dla osób konsekrowanych pracujących i wywodzących się z naszej parafii, a dla tych, co już odeszli do domu Pana o życie wieczne']
                     if (CompareDayMonthDate(date, 6, 1))
@@ -456,9 +506,11 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         tempIssues = [...tempIssues, 'Odpust parafialny']
                     if (CompareDayMonthDate(date, 4, -1)) {
                         const mass = tempMasses.find((mass) => mass.date.getHours() == 18)
-                        if (mass)
+                        if (mass) {
                             mass.description = [...(mass.description), 'Msza przy ołtarzu św. Józefa'
                                 , 'Msza wotywna o św. Józefie']
+                            mass.color = mass.color == '#00ff00' ? '#ffffff' : '#00ff00'
+                        }
                     }
                     if (CompareDayMonthDate(date, 6, 2)) {
                         tempMasses[tempMasses.length - 1].collective = true
@@ -471,16 +523,17 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                     if (CompareDayMonthDate(date, 5, 3)) {
                         tempMasses[tempMasses.length - 1].collective = true
                         tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Msza wotywna o Miłosierdziu Bożym']
+                        tempMasses[tempMasses.length - 1].color = tempMasses[tempMasses.length - 1].color ?? '#ffffff'
                     }
                     if (CompareMonthDay(date, new Date(2001, 11, 31)))
                         tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Zakończenie Roku', 'Nieszpory']
                     if (CompareMonthDay(date, propSchool?.start)) {
                         tempIssues = [...tempIssues, 'Rozpoczęcie Roku Szkolnego']
-                        tempMasses = [...tempMasses, { date: AddTimeToDate(date, 8, 30), intention: ['W intencji uczniów, nauczycieli oraz pracowników szkoły'], description: ['Rozpoczęcie Roku Szkolnego'], },]
+                        tempMasses = [...tempMasses, { date: AddTimeToDate(date, 8, 30), intention: ['W intencji uczniów, nauczycieli oraz pracowników szkoły'], description: ['Rozpoczęcie Roku Szkolnego'], color: '#ffffff', },]
                     }
                     else if (CompareMonthDay(date, propSchool?.end)) {
                         tempIssues = [...tempIssues, 'Zakończenie Roku Szkolnego']
-                        tempMasses = [...tempMasses, { date: AddTimeToDate(date, 8, 0), intention: ['W intencji uczniów, nauczycieli oraz pracowników szkoły'], description: ['Zakończenie Roku Szkolnego'], },]
+                        tempMasses = [...tempMasses, { date: AddTimeToDate(date, 8, 0), intention: ['W intencji uczniów, nauczycieli oraz pracowników szkoły'], description: ['Zakończenie Roku Szkolnego'], color: '#ffffff', },]
                     }
                     else if (BetweenDates(date, propSchool?.break_start, propSchool?.break_end))
                         tempIssues = [...tempIssues, 'Ferie zimowe']
@@ -525,6 +578,7 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                             else if (date.getMonth() == 4 || date.getMonth() == 9) {
                                 const mass = tempMasses.find((mass) => mass.date.getHours() == 18)
                                 if (mass) {
+                                    mass.color = mass.color == '#00ff00' ? '#ffffff' : '#00ff00'
                                     mass.date = AddTimeToDate(mass.date, 0, 10)
                                     mass.description = [...(mass.description), 'Nowenna do Matki Bożej Nieustającej Pomocy']
                                     tempAppointments = [...tempAppointments,
@@ -535,6 +589,7 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                                 else {
                                     const mass = tempMasses.find((mass) => mass.date.getHours() == 18)
                                     if (mass) {
+                                        mass.color = mass.color == '#00ff00' ? '#ffffff' : '#00ff00'
                                         mass.date = AddTimeToDate(mass.date, 0, 10)
                                         mass.description = [...(mass.description), 'Nowenna do Matki Bożej Nieustającej Pomocy',
                                             'Msza w kaplicy Matki Bożej']
@@ -572,9 +627,11 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                                 { date: AddTimeToDate(date, 20, 0), type: 'Droga Krzyżowa dla młodzieży' },]
                     if (CompareDayMonthDate(date, 2, 1))
                         tempAppointments = [...tempAppointments, { date: AddTimeToDate(date, 19, 30), type: 'Adoracja Najświętszego Sakramentu' }]
-                    if (CompareDayMonthDate(date, 5, 1))
-                            tempAppointments = [...tempAppointments, { date: AddTimeToDate(date, 17, 0), type: 'Spowiedź I Piątkowa' },
-                            { date: AddTimeToDate(date, 18, 30), type: 'Nabożeństwo do Najświętszego Serca Pana Jezusa' },]
+                    if (CompareDayMonthDate(date, 5, 1)) {
+                        tempMasses[tempMasses.length - 1].color = tempMasses[tempMasses.length - 1].color == '#00ff00' ? '#ffffff' : '#00ff00'
+                        tempAppointments = [...tempAppointments, { date: AddTimeToDate(date, 17, 0), type: 'Spowiedź I Piątkowa' },
+                        { date: AddTimeToDate(date, 18, 30), type: 'Nabożeństwo do Najświętszego Serca Pana Jezusa' },]
+                    }
                     if (CompareDayMonthDate(date, 6, 1))
                         if (date.getMonth() == 4 || date.getMonth() == 9) {
                             tempAppointments = [...tempAppointments, { date: AddTimeToDate(date, 17, 10), type: 'Nabożeństwo I Sobót' }]
@@ -651,8 +708,10 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         tempAppointments = [...tempAppointments,
                             { date: AddTimeToDate(date, 13, 0), type: 'Procesja Różańcowa' },]
                         const mass = tempMasses.find((mass) => mass.date.getHours() == 12)
-                        if (mass)
+                        if (mass) {
                             mass.description = [...mass.description, 'Procesja Różańcowa']
+                            mass.color= '#ffffff'
+                        }
                     }
                     else if (BetweenDates(date, AddDaysToDate(propEastern, 61), AddDaysToDate(propEastern, 67))) {
                         const mass = tempMasses.find((mass) => mass.date.getHours() == 18 || mass.date.getHours() == 17)
@@ -760,8 +819,9 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
             {propMasses.map((mass) => (<>
                 <div key={mass.date.getTime()}>
                     {mass.date.toTimeString()
-                        + ' | ' +(mass.intention.map((intention, index) => ((index != 0 ? ' - ' : '') + intention)))
-                        + ' | ' + (mass.description.map((description, index) => ((index != 0 ? ' - ' : '') + description)))}
+                        + ' | ' + (mass.intention.map((intention, index) => ((index != 0 ? ' - ' : '') + intention)))
+                        + ' | ' + (mass.description.map((description, index) => ((index != 0 ? ' - ' : '') + description)))
+                        + ' | ' + mass.color }
                 </div>
             </>))}
             {propIssues.map((issue) => (<>
