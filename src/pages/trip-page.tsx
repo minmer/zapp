@@ -1,26 +1,30 @@
-import { Link, Route, Routes, useParams } from 'react-router-dom';
+import { Link, Route, Routes} from 'react-router-dom';
 import baner from '../assets/trip.jpg'
-import TripsEnlistComponent from '../components/trips-enlist-component';
-import TripsCreateComponent from '../components/trips-create-component';
-import { FetchInformationGetAll } from '../features/FetchInformationGet';
 import { useEffect, useState } from 'react';
-import TripsDetailComponent from '../components/trips-detail-component';
 import { User } from '../structs/user';
-export default function UserPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
-    const { token } = useParams();
-    const [isAdmin, setIsAdmin] = useState(false)
+import EditableElement from '../generals/editable-element';
+import TripDetailSubpage from '../components/trip/trip-detail-subpage';
+import { FetchInformationGetAll, StringOutput } from '../features/FetchInformationGet';
+export default function TripPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+    const [user, setUser] = useState<User | null>()
+    const [trips, setTrips] = useState<StringOutput[]>([])
 
     useEffect(() => {
         (async function () {
-            try {
-                if (token !== undefined) {
-                    setIsAdmin(((await FetchInformationGetAll('text', token, 'admin') as []).length == 0 ? false : true))
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        })();
-    }, [token])
+            await getParams({
+                func: async () => {
+                getParams({
+                    func: async (param: string | User) => {
+                        setUser(param as User)
+                        setTrips((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', 'trip')) as unknown as StringOutput[])
+                    }, type: 'user', show: true
+                });
+
+                }, type: 'token', show: true
+            });
+        }());
+    }, [getParams])
+
     return (
 
         <>
@@ -31,26 +35,28 @@ export default function UserPage({ getParams }: { getParams: ({ func, type, show
                         <h1>Wycieczki</h1>
                     </div>
                 </div>
-                <div className="tabs">
+                {user ? <div className="tabs">
                     <ul>
-                        <li>
-                            <Link to={`enlist`}>Zapisy</Link>
-                        </li>
-                        <li style={{
-                            display: isAdmin ? 'block' : 'none',
-                        }}>
-                            <Link to={`create`}>Nowa wycieczka</Link>
-                        </li>
-                        <li>
-                            <Link to={`detail`}>Szczegóły</Link>
-                        </li>
+                        {trips.map(trip => (
+                            <li key={trip.id}>
+                                <Link to={trip.id}>{trip.output}</Link>
+                            </li>
+                        ))}
                         <div className="clear"></div>
                     </ul>
-                </div>
+                </div> : null}
+                <EditableElement getParams={getParams} editable={
+                    {
+                        name: 'trip',
+                        type: 'text',
+                        multiple: false,
+                        description: 'Trips',
+                        dbkey: 'website_admin',
+                        showdescription: false,
+                        showchildren: false,
+                    }} />
                 <Routes>
-                    <Route path="enlist/*" element={<TripsEnlistComponent getParams={getParams} />} />
-                    <Route path="create/*" element={<TripsCreateComponent />} />
-                    <Route path="detail/*" element={<TripsDetailComponent getParams={getParams} />} />
+                    <Route path=":trip" element={<TripDetailSubpage getParams={getParams} />} />
                 </Routes>
                 <div className="description">
                     <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>

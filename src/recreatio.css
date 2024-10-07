@@ -221,6 +221,55 @@ h3 {
     font-size: 1.25rem;
     margin: .5rem;
 }
+
+.trip-detail {
+    font-size: 1.25rem;
+    line-height: 165%;
+}
+
+    .trip-detail .trip-parts div {
+        margin: 3rem 1.5rem;
+    }
+
+    .trip-detail h2 {
+        margin: 3rem 5rem;
+        width: 90%;
+        clear: both;
+    }
+
+
+    .trip-detail .trip-part .trip-image {
+        float: left;
+        margin: 1rem;
+        width: 40%;
+    }
+
+
+    .trip-detail .trip-part:nth-child(odd) .trip-image {
+        float: right;
+    }
+
+
+        .trip-detail .trip-image img {
+            width: 100%;
+        }
+
+
+        .trip-detail .trip-image span {
+            font-style: italic;
+            font-size: 1rem;
+            margin: 0 1rem;
+        }
+
+    .trip-detail .trip-submission div {
+        margin: 0 2rem;
+    }
+
+    .trip-detail .trip-submission input {
+        margin: 1rem 0;
+        font-size: 1.3rem
+    }
+
 .chat-element {
     max-height: 64rem;
     overflow-y: scroll;

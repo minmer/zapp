@@ -462,7 +462,7 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                     }
                     if (CompareDayMonthDate(date, 6, 2)) {
                         tempMasses[tempMasses.length - 1].collective = true
-                        tempMasses[tempMasses.length - 1].date = AddTimeToDate(tempMasses[tempMasses.length - 1].date, 0, 15)
+                        tempMasses[tempMasses.length - 1].date = AddTimeToDate(tempMasses[tempMasses.length - 1].date, 0, 10)
                         tempMasses[tempMasses.length - 1].description = [...(tempMasses[tempMasses.length - 1].description), 'Msza o Matce Bożej Zwycięskiej']
                         tempAppointments = [...tempAppointments,
                             { date: AddTimeToDate(date, 17, 30), type: 'Wystawienie Najświętszego Sakramentu' },
@@ -515,18 +515,37 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         { date: AddTimeToDate(date, 14, 0), type: 'Nabożeństwo 40-godzinne' },
                         { date: AddTimeToDate(date, 15, 0), type: 'Nabożeństwo 40-godzinne' },
                             { date: AddTimeToDate(date, 16, 0), type: 'Nabożeństwo 40-godzinne' },]
-                    if (date.getDay() == 3 && AddDaysToDate(propEastern, -46).getTime() != date.getTime()) {
-                        const mass = tempMasses.find((mass) => mass.date.getHours() == 18)
-                        if (mass) {
-                            mass.date = AddTimeToDate(mass.date, 0, 15)
-                            mass.description = [...(mass.description), 'Nowenna do Matki Bożej Nieustającej Pomocy',
-                                'Msza w kaplicy Matki Bożej']
-                            tempAppointments = [...tempAppointments,
-                                { date: AddTimeToDate(date, 17, 30), type: 'Adoracja Najświętszego Sakramentu' },
-                                { date: AddTimeToDate(date, 17, 30), type: 'Różaniec w kaplicy Matki Bożej' },
-                                { date: AddTimeToDate(date, 18, 0), type: 'Nowenna do Matki Bożej Nieustającej Pomocy' },]
+                    if (date.getDay() == 3)
+                        if (AddDaysToDate(propEastern, -46).getTime() == date.getTime()) {
+                            const mass = tempMasses.find((mass) => mass.date.getHours() == 18)
+                            if (mass) {
+                                tempAppointments = [...tempAppointments,
+                                { date: AddTimeToDate(date, 17, 30), type: 'Różaniec' },]
+                            }
+                            else if (date.getMonth() == 4 || date.getMonth() == 9) {
+                                const mass = tempMasses.find((mass) => mass.date.getHours() == 18)
+                                if (mass) {
+                                    mass.date = AddTimeToDate(mass.date, 0, 10)
+                                    mass.description = [...(mass.description), 'Nowenna do Matki Bożej Nieustającej Pomocy']
+                                    tempAppointments = [...tempAppointments,
+                                    { date: AddTimeToDate(date, 17, 30), type: 'Adoracja Najświętszego Sakramentu' },
+                                    { date: AddTimeToDate(date, 17, 30), type: 'Różaniec' },
+                                    { date: AddTimeToDate(date, 18, 0), type: 'Nowenna do Matki Bożej Nieustającej Pomocy' },]
+                                }
+                                else {
+                                    const mass = tempMasses.find((mass) => mass.date.getHours() == 18)
+                                    if (mass) {
+                                        mass.date = AddTimeToDate(mass.date, 0, 10)
+                                        mass.description = [...(mass.description), 'Nowenna do Matki Bożej Nieustającej Pomocy',
+                                            'Msza w kaplicy Matki Bożej']
+                                        tempAppointments = [...tempAppointments,
+                                        { date: AddTimeToDate(date, 17, 30), type: 'Adoracja Najświętszego Sakramentu' },
+                                        { date: AddTimeToDate(date, 17, 30), type: 'Różaniec w kaplicy Matki Bożej' },
+                                        { date: AddTimeToDate(date, 18, 0), type: 'Nowenna do Matki Bożej Nieustającej Pomocy' },]
+                                    }
+                                }
+                            }
                         }
-                    }
                     if (BetweenDates(date, AddDaysToDate(propEastern, 37), AddDaysToDate(propEastern, 39)))
                         tempAppointments = [...tempAppointments,
                             { date: AddTimeToDate(date, 17, 50), type: 'Dni Krzyżowe' },]
@@ -556,12 +575,17 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                     if (CompareDayMonthDate(date, 5, 1))
                             tempAppointments = [...tempAppointments, { date: AddTimeToDate(date, 17, 0), type: 'Spowiedź I Piątkowa' },
                             { date: AddTimeToDate(date, 18, 30), type: 'Nabożeństwo do Najświętszego Serca Pana Jezusa' },]
-                    if (CompareDayMonthDate(date, 6, 1)) {
-                        tempAppointments = [...tempAppointments, { date: AddTimeToDate(date, 17, 15), type: 'Nabożeństwo I Sobót' }]
-                        const mass = tempMasses.find((mass) => mass.date.getHours() == 18)
-                        if (mass)
-                            mass.description = [...(mass.description), 'Msza w kaplicy Matki Bożej']
-                    }
+                    if (CompareDayMonthDate(date, 6, 1))
+                        if (date.getMonth() == 4 || date.getMonth() == 9) {
+                            tempAppointments = [...tempAppointments, { date: AddTimeToDate(date, 17, 10), type: 'Nabożeństwo I Sobót' }]
+
+                        }
+                        else {
+                            tempAppointments = [...tempAppointments, { date: AddTimeToDate(date, 17, 15), type: 'Nabożeństwo I Sobót' }]
+                            const mass = tempMasses.find((mass) => mass.date.getHours() == 18)
+                            if (mass)
+                                mass.description = [...(mass.description), 'Msza w kaplicy Matki Bożej']
+                        }
                     else if (date.getDay() == 6) {
                         tempAppointments = [...tempAppointments, { date: AddTimeToDate(date, 17, 30), type: 'Różaniec w kaplicy Matki Bożej' }]
                         const mass = tempMasses.find((mass) => mass.date.getHours() == 18)
@@ -652,8 +676,9 @@ export default function ItentionReportBookSubpage    ({ getParams }: { getParams
                         const mass = tempMasses.find((mass) => mass.date.getHours() == 18 || mass.date.getHours() == 17)
                         if (mass) {
                             tempAppointments = [...tempAppointments,
-                            { date: AddTimeToDate(date, mass.date.getHours() == 17 ? 16 : 17, 30), type: 'Nabożeństwo Różańcowe' },]
-                            mass.date = AddTimeToDate(mass.date, 0, 5)
+                                { date: AddTimeToDate(date, mass.date.getHours() == 17 ? 16 : 17, 30), type: 'Adoracja Najświętszego Sakramentu' },
+                                { date: AddTimeToDate(date, mass.date.getHours() == 17 ? 16 : 17, 30), type: 'Nabożeństwo Różańcowe' },]
+                            mass.date = AddTimeToDate(mass.date, 0, 0)
                         }
                         if (date.getDay() != 0 && date.getDay() != 6)
                             tempAppointments = [...tempAppointments,
