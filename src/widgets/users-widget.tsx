@@ -53,7 +53,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
             {
                 users.map((user) =>
 
-                    <div style={
+                    <div key={user.id} style={
                         {
                             background: user.id == selectedUser?.id ? "#ff4f004f" : "transparent",
                             padding: '12px',

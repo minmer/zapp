@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingComponent from "../generals/loading-component";
-import { FetchInformationGet, FetchInformationGetAll, StringOutput, DateOutput } from "../features/FetchInformationGet";
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import OldEditableElement from "../temp/old-editable-element";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { User } from "../structs/user";
+import { LoadMasses, Mass } from "../structs/mass";
+import { AddDaysToDate } from "./helpers/DateComparer";
 
-interface Mass {
-    time: Date,
-    id: string,
-    intentions: string[]
-}
 export default function ItentionEditElement({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const monthSpelling = [
         "Styczeń ", "Luty ", "Marzec ", "Kwiecień ", "Maj ", "Czerwiec ", "Lipiec ", "Sierpień ", "Wrzesień ", "Październik ", "Listopad ", "Grudzień "
@@ -52,30 +48,15 @@ export default function ItentionEditElement({ getParams }: { getParams: ({ func,
             setNextMonth(next)
         }, [date])
     useEffect(() => {
-        getParams({
-            func: async (param: string | User) => {
-                const token = param as string
-                {
-                    {
+
+        (async function () {
                         setIsLoading(true)
                         setMasses([])
                         date.setHours(0, 0, 0, 0)
-                        const massData = await FetchInformationGet('datetime', token, 'new_zielonki_mass', date.getTime(), date.getTime() + 86400000, 'new_intention_viewer') as unknown as DateOutput[]
-                        const tempMasses = [] as Mass[]
-                        for (let j = 0; j < massData.length; j++) {
-                            const intentionData = await FetchInformationGetAll('string', token, massData[j].id + 'intention') as unknown as StringOutput[]
-                            tempMasses.push({
-                                id: massData[j].id,
-                                time: massData[j].output,
-                                intentions: intentionData.map(item => item.output),
-                            })
-                        }
-                        setIsLoading(false)
-                        setMasses(tempMasses)
-                    }
-                }
-            }, type: 'token', show: false
-        });
+                        setMasses(await LoadMasses(getParams, date, AddDaysToDate(date, 1)))
+            setIsLoading(false)
+        }
+        )();
     }, [date, getParams])
 
     const changeMonth = (change: number) => {
@@ -158,9 +139,9 @@ export default function ItentionEditElement({ getParams }: { getParams: ({ func,
                         }}>{daySpelling[date.getDay()] + ' ' + (date.getDate() + '.').padStart(3, '0') + ((date.getMonth() + 1) + '.').padStart(3, '0') + date.getFullYear() + ' r.'} </h4>
                     <div className="daygrid">
                         {masses.map(mass => (
-                            <>
+                            <div key={mass.id}>
                                 <div className="masshour" style={{
-                                    gridRow: 'span ' + mass.intentions.length,
+                                    gridRow: 'span ' + mass.intentions?.length,
                                 }}>
                                     {mass.time.getHours() + ':' + mass.time.getMinutes().toString().padStart(2, '0')}
                                 </div>
@@ -171,7 +152,7 @@ export default function ItentionEditElement({ getParams }: { getParams: ({ func,
                                     <OldEditableElement getParams={getParams} showdescription={true} description="Zbiorowa" type="checkbox" name={mass.id + 'collective'} multiple={false} dbkey="new_intention_admin" />
                                     <input type="button" value='Usuń Mszę' onClick={() => deleteMass(mass.id)} />
                                 </div>
-                            </>
+                            </div>
                         ))}
                     </div>
                     {hourProposition.map(proposition =>

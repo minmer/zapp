@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DaySpelling, MonthSpelling } from "../structs/consts";
-import { CompareDate } from "../components/helpers/DateComparer";
+import { CompareDate, ResetTime } from "../components/helpers/DateComparer";
 
 export default function MonthDateSelectionElement({ onSelectionChange }: { onSelectionChange?: (t: Date) => void }) {
     const [date, setDate] = useState(new Date(Date.now()))
@@ -12,7 +12,7 @@ export default function MonthDateSelectionElement({ onSelectionChange }: { onSel
     useEffect(
         () => {
             if (onSelectionChange != null)
-                onSelectionChange(date)
+                onSelectionChange(ResetTime(date))
         }, [date, onSelectionChange])
 
     useEffect(

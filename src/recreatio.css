@@ -117,12 +117,16 @@ h3 {
         border-radius: .5rem;
     }
 
+.editable {
+    white-space: pre-line;
+}
+
 .editable-span {
     user-select: none;
     cursor: pointer;
 }
 
-.editable {
+.editable-children {
     border-radius: 1rem;
     padding: 1rem;
     box-shadow: 3px 3px 12px #0003;
@@ -131,7 +135,7 @@ h3 {
     white-space: pre-line;
 }
 
-    .editable span {
+    .editable-children span {
         user-select: none;
     }
 
@@ -141,11 +145,11 @@ h3 {
 
 
 
-    .editable > div:first-child {
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 1.1rem;
-    }
+.editable-children > div:first-child {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
 
 
 .editable-input {

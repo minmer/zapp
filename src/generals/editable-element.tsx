@@ -374,7 +374,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 editable.showchildren ?
                     <>
                         {data.map((item, index) => (
-                            <div className='editable' key={item.id}>
+                            <div className='editable-children' key={item.id}>
                                 {expanded == index ?
                                     <>
                                         <div className='editable-span' onDoubleClick={onClickData} onClick={() => { setExpanded(-1) }}>
@@ -413,7 +413,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                         ))}
                     </>
                     :
-                    <>
+                    <span className='editable'>
                         {data.map((item, index) => (
                             editable.type == 'link' ?
                                 <span className='editable-span' key={item.id} onDoubleClick={onClickData}>
@@ -426,7 +426,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                                     <span>{((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? '')) + convertToString(item)}</span>
                                 </span>
                         ))}
-                    </>
+                    </span>
             }
             {isEditing ?
                 <div className='popup' onClick={(e) => { backgroundClicked(e) }}>

@@ -17,7 +17,6 @@ export default function UsersWidget({ getParams }: { getParams: ({ func, type, s
             getParams({
                 func: async (param: string | User) => {
                     const token = param as string
-                    console.log('asd')
                     setChats(await Promise.all((await FetchInformationGetAll('string', token, 'chat_widget') as StringOutput[]).map(async (item) => (
                         {
                             name: item.output,

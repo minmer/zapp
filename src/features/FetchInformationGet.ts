@@ -53,8 +53,8 @@ export async function FetchInformationGetAll(type: string, token: string, contex
                 }
             }
         }
-        catch {
-            console.log('Error - ' + i)
+        catch (ex) {
+            console.log('Error - ' + i + ' - '+ ex)
         }
     }
     return []
@@ -70,8 +70,8 @@ export async function FetchInformationGet(type: string, token: string, context: 
                         "token": token,
                         "context": context,
                         "key": key,
-                        "preordermaximum": preordermaximum,
-                        "preorderminimum": preorderminimum,
+                        "preordermaximum": preordermaximum-1000,
+                        "preorderminimum": preorderminimum - 1000,
 
                     }),
                     headers: {
@@ -96,8 +96,8 @@ export async function FetchInformationGet(type: string, token: string, context: 
                 }
             }
         }
-        catch {
-            console.log('Error - ' + i)
+        catch (ex) {
+            console.log('Error - ' + i + ' - ' + ex)
         }
     }
     return []

@@ -2,6 +2,10 @@ export function CompareDate(date0: Date | undefined, date1: Date | undefined) {
     return (date0 == null || date1 == null) ? false : (date0.getDate() == date1.getDate()) && (date0.getMonth() == date1.getMonth()) && (date0.getFullYear() == date1.getFullYear())
 
 }
+export function ResetTime(date: Date | undefined) {
+    date?.setHours(0, 0, 0, 0)
+    return date ?? new Date()
+}
 export function CompareMonthDay(date0: Date | undefined, date1: Date | undefined) {
     return (date0 == null || date1 == null) ? false : (date0.getDate() == date1.getDate()) && (date0.getMonth() == date1.getMonth())
 
