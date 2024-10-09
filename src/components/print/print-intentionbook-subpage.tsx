@@ -3,21 +3,26 @@ import { useParams } from "react-router-dom";
 import { AddDaysToDate } from "../helpers/DateComparer";
 import { User } from "../../structs/user";
 import { DaySpelling, MonthSpelling } from "../../structs/consts";
+import { LoadMasses } from "../../structs/mass";
 
 export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const {year } = useParams()
     const [dates, setDates] = useState<Date[]>([])
 
     useEffect(() => {
-        const tempYear = Number(year)
-        let tempDates = [] as Date[]
-        let date = new Date(tempYear ?? 0, 0, 1, 0, 0, 0, 0)
-        while (date.getFullYear() == tempYear) {
-            tempDates = [...tempDates, date]
-            date = AddDaysToDate(date, 1)
-        }
-        setDates(tempDates)
-    }, [year])
+
+        (async function () {
+            const tempYear = Number(year)
+            let tempDates = [] as Date[]
+            let date = new Date(tempYear ?? 0, 0, 1, 0, 0, 0, 0)
+            while (date.getFullYear() == tempYear) {
+                await LoadMasses(getParams, date, AddDaysToDate(date, 1))
+                tempDates = [...tempDates, date]
+                date = AddDaysToDate(date, 1)
+            }
+            setDates(tempDates)
+        })()
+    }, [year, getParams])
 
     return (
 
