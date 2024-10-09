@@ -14,7 +14,7 @@ export default function ConfirmationChatChannelSubpage({ getParams }: { getParam
                     const user = param as User
                     setAdminRole(await GetAdminRole({ getParams: getParams, type: 'confirmation', user: user }))
                     setRole(await GetRole({ getParams: getParams, type: "confirmation", user: user as User }))
-                }, type: 'user', show: false
+                }, type: 'user', show: true
             });
         }());
     }, [getParams])

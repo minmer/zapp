@@ -14,7 +14,7 @@ export default function MinisterChatChannelSubpage({ getParams }: { getParams: (
                     const user = param as User
                     setAdminRole(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }))
                     setRole(await GetRole({ getParams: getParams, type: "minister", user: user as User }))
-                }, type: 'user', show: false
+                }, type: 'user', show: true
             });
         }());
     }, [getParams])

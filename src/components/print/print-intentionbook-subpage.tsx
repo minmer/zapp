@@ -7,7 +7,17 @@ import { LoadMasses } from "../../structs/mass";
 
 export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const {year } = useParams()
-    const [dates, setDates] = useState<Date[]>([])
+    const [dates, setDates] = useState<{
+        date: Date,
+        masses: {
+            time: Date,
+            intentions:
+            {
+                description: string,
+
+            }
+        }
+    }[]>([])
 
     useEffect(() => {
 
@@ -19,6 +29,7 @@ export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({
                 await LoadMasses(getParams, date, AddDaysToDate(date, 1))
                 tempDates = [...tempDates, date]
                 date = AddDaysToDate(date, 1)
+                console.log(date)
             }
             setDates(tempDates)
         })()
