@@ -291,6 +291,13 @@ export default function IntentionReportBookSubpage({ getParams }: { getParams: (
                                 { date: AddTimeToDate(innerDate, 12, 0), intention: ['Za parafian'], description: [], },
                                 { date: AddTimeToDate(innerDate, 17, 0), intention: [], description: [], },
                             ]
+                        else if (dateFeast?.feast == '4' && !BetweenDates(innerDate, AddDaysToDate(propEastern, -7), AddDaysToDate(propEastern, +7)))
+                            tempMasses = [
+                                { date: AddTimeToDate(innerDate, 8, 0), intention: [], description: [], },
+                                { date: AddTimeToDate(innerDate, 10, 0), intention: [], description: [], },
+                                { date: AddTimeToDate(innerDate, 12, 0), intention: ['Za parafian'], description: [], },
+                                { date: AddTimeToDate(innerDate, 17, 0), intention: [], description: [], },
+                            ]
                         else if (dateFeast?.feast == '5' && !BetweenDates(innerDate, AddDaysToDate(propEastern, -7), AddDaysToDate(propEastern, +7)))
                             tempMasses = [
                                 { date: AddTimeToDate(innerDate, 7, 0), intention: [], description: [], color: dateFeast?.color, },

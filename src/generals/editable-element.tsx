@@ -217,7 +217,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     return prev.substring(0, index) + ((e.target as HTMLInputElement).checked == true ? 'X' : 'O') + prev.substring(index+1)
                 }
             case 'radio':
-                return editable.options ? editable.options[(e.target as HTMLSelectElement).selectedIndex].value as string ?? '' : '';
+                return editable.options ? editable.options[(e.target as HTMLSelectElement).selectedIndex].value as string ?? editable.options[0].value ??'' : '';
             case 'select':
                 return ''
             case 'color':
@@ -279,9 +279,10 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 return null
             }
             case 'radio': {
-                return <select defaultValue={item ? editable.options?.find((opt) => opt.value == item.output)?.label : undefined} onChange={(e) => { onChangeData(e, item?.id) }}>
+                return <select onChange={(e) => { onChangeData(e, item?.id) }}>
                     {editable.options?.map((opt) => (<option>
                         {opt.label}            </option>))}
+                    <option value="none" selected disabled hidden>Wybierz</option>
                 </select>
             }
             case 'select': {
@@ -367,7 +368,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
 
     return (
 
-        <>
+        <span className='editable'>
             {isEditable && data.length == 0 ?
                 <input type="button" value={editable.description} onClick={onClickData} />
                 :
@@ -413,20 +414,30 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                         ))}
                     </>
                     :
-                    <span className='editable'>
+                    <>
                         {data.map((item, index) => (
-                            editable.type == 'link' ?
-                                <span className='editable-span' key={item.id} onDoubleClick={onClickData}>
-                                    <span>{((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? ''))}</span> <a href={convertToString(item) ?? ''}>
-                                        {convertToString(item)}</a>
-                                </span>
+                            editable.type == 'binary' && editable.showdescription ?
+                                <div key={item.id} onDoubleClick={onClickData}>
+                                    <h4>{editable.description}</h4>
+                                    {editable.options?.map((option, optionIndex) => (
+                                        <div key={option.value as string}>
+                                            {option.value + ': ' + ((item.output as string)[optionIndex] == 'X' ? '✅' : '❌') }
+                                        </div>))}
+                                </div>
 
                                 :
+                                editable.type == 'link' ?
+                                    <span className='editable-span' key={item.id} onDoubleClick={onClickData}>
+                                        <span>{((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? ''))}</span> <a href={convertToString(item) ?? ''}>
+                                            {convertToString(item)}</a>
+                                    </span>
+
+                                    :
                                 <span className='editable-span' key={item.id} onDoubleClick={onClickData}>
                                     <span>{((index == 0 ? editable.showdescription ? editable.description + ': ' : '' : editable.break ?? '')) + convertToString(item)}</span>
                                 </span>
                         ))}
-                    </span>
+                    </>
             }
             {isEditing ?
                 <div className='popup' onClick={(e) => { backgroundClicked(e) }}>
@@ -474,6 +485,6 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             </div>
                 : null
             }
-        </>
+        </span>
     );
 }

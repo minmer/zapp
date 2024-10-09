@@ -69,6 +69,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
             {aliases && adminRole ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
                 {aliases.map((alias) => (<option>
                     {alias.alias}            </option>))}
+                <option value="none" selected disabled hidden>Wybierz</option>
             </select> : null}
             {
                 role?.isRegistered ?
@@ -155,6 +156,101 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                     showchildren: false,
                                 }} />
                         </div>
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: role?.roleID + 'checking',
+                                type: 'binary',
+                                multiple: false,
+                                description: 'Części Mszy Świętej',
+                                showdescription: true,
+                                showchildren: false,
+                                options: [
+                                    { label: 'Pozdrowienie ludu', value: 'Pozdrowienie ludu' },
+                                    { label: 'Akt pokutny', value: 'Akt pokutny' },
+                                    { label: 'Panie zmiłuj się', value: 'Panie zmiłuj się' },
+                                    { label: 'Chwała na wysokości Bogu', value: 'Chwała na wysokości Bogu' },
+                                    { label: 'Czytania i Ewangelia', value: 'Czytania i Ewangelia' },
+                                    { label: 'Wyznanie wiary', value: 'Wyznanie wiary' },
+                                    { label: 'Modlitwa Wiernych', value: 'Modlitwa Wiernych' },
+                                    { label: 'Modlitwa za kapłana', value: 'Modlitwa za kapłana' },
+                                    { label: 'Prefacja', value: 'Prefacja' },
+                                    { label: 'Święty, święty, święty', value: 'Święty, święty, święty' },
+                                    { label: 'Aklamacja', value: 'Aklamacja' },
+                                    { label: 'Ojcze nasz', value: 'Ojcze nasz' },
+                                    { label: 'Znak pokoju', value: 'Znak pokoju' },
+                                    { label: 'Baranku Boży', value: 'Baranku Boży' },
+                                    { label: 'Oto Baranek Boży', value: 'Oto Baranek Boży' },
+                                    { label: 'Błogosławieństwo', value: 'Błogosławieństwo' },
+                                ],
+                            }} />
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: role?.roleID + 'praiers',
+                                type: 'binary',
+                                multiple: false,
+                                description: 'Modlitwy',
+                                showdescription: true,
+                                showchildren: false,
+                                options: [
+                                    { label: 'Znak krzyża', value: 'Znak krzyża' },
+                                    { label: 'Ojcze nasz', value: 'Ojcze nasz' },
+                                    { label: 'Zdrowaś Maryjo', value: 'Zdrowaś Maryjo' },
+                                    { label: 'Modlitwa przed nauką', value: 'Modlitwa przed nauką' },
+                                    { label: 'Uwielbienie Najświętszego Sakramentu', value: 'Uwielbienie Najświętszego Sakramentu' },
+                                    { label: 'Uwielbienie Trójcy', value: 'Uwielbienie Trójcy' },
+                                    { label: 'Anioł Pański', value: 'Anioł Pański' },
+                                    { label: 'Akt wiary', value: 'Akt wiary' },
+                                    { label: 'Akt nadziei', value: 'Akt nadziei' },
+                                    { label: 'Akt miłości', value: 'Akt miłości' },
+                                    { label: 'Akt żalu', value: 'Akt żalu' },
+                                    { label: 'Pod twoją obronę', value: 'Pod twoją obronę' },
+                                    { label: 'Skład apostolski', value: 'Skład apostolski' },
+                                ],
+                            }} />
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: role?.roleID + 'lists',
+                                type: 'binary',
+                                multiple: false,
+                                description: 'Zestawienia',
+                                showdescription: true,
+                                showchildren: false,
+                                options: [
+                                    { label: 'Sakramenty Święte', value: 'Sakramenty Święte' },
+                                    { label: 'Główne Prawdy Wiary', value: 'Główne Prawdy Wiary' },
+                                    { label: 'Trzy cnoty Boskie', value: 'Trzy cnoty Boskie' },
+                                    { label: '10 Przykazań Bożych', value: '10 Przykazań Bożych' },
+                                    { label: 'Przykazanie Miłości', value: 'Przykazanie Miłości' },
+                                    { label: '5 Warunkach Dobrej Spowiedzi', value: '5 Warunkach Dobrej Spowiedzi' },
+                                    { label: 'Przykazania kościelne', value: 'Przykazania kościelne' },
+                                    { label: 'Grzechy główne', value: 'Grzechy główne' },
+                                    { label: 'Rzeczy ostateczne człowieka', value: 'Rzeczy ostateczne człowieka' },
+                                ],
+                            }} />
+                        <EditableElement getParams={getParams} editable={
+                            {
+                                name: role?.roleID + 'questions',
+                                type: 'binary',
+                                multiple: false,
+                                description: 'Pytania',
+                                showdescription: true,
+                                showchildren: false,
+                                options: [
+                                    { label: 'O Panu Bogu', value: 'O Panu Bogu' },
+                                    { label: 'O Panu Jezusie', value: 'O Panu Jezusie' },
+                                    { label: 'O Duchu Świętym', value: 'O Duchu Świętym' },
+                                    { label: 'O aniołach', value: 'O aniołach' },
+                                    { label: 'O czowieku', value: 'O czowieku' },
+                                    { label: 'O rzeczach ostatecznych', value: 'O rzeczach ostatecznych' },
+                                    { label: 'O łasce', value: 'O łasce' },
+                                    { label: 'O grzechu', value: 'O grzechu' },
+                                    { label: 'O grzechu pierworodnym', value: 'O grzechu pierworodnym' },
+                                    { label: 'O Kościele', value: 'O Kościele' },
+                                    { label: 'O Sakramentach', value: 'O Sakramentach' },
+                                    { label: 'O Sakramencie Eucharystii', value: 'O Sakramencie Eucharystii' },
+                                    { label: 'O Sakramencie Pokuty', value: 'O Sakramencie Pokuty' },
+                                ],
+                            }} />
                     </> :
                     <>
                         <h3>Zgłoszenie czeka na zatwierdzenie</h3>

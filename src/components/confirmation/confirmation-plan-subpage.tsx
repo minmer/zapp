@@ -66,6 +66,7 @@ export default function ConfirmationPlanSubpage({ getParams }: { getParams: ({ f
             {aliases && adminRole ? <select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
                 {aliases.map((alias) => (<option>
                     {alias.alias}            </option>))}
+                <option value="none" selected disabled hidden>Wybierz</option>
             </select> : null}
             {
                 role?.isRegistered ?

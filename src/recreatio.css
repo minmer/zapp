@@ -90,7 +90,7 @@ h3 {
 }
 
 .popup {
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
@@ -119,6 +119,7 @@ h3 {
 
 .editable {
     white-space: pre-line;
+    position: relative;
 }
 
 .editable-span {
@@ -128,11 +129,11 @@ h3 {
 
 .editable-children {
     border-radius: 1rem;
+    position: relative;
     padding: 1rem;
     box-shadow: 3px 3px 12px #0003;
     margin: 1rem;
     background-color: transparent;
-    white-space: pre-line;
 }
 
     .editable-children span {
@@ -468,3 +469,282 @@ h3 {
             margin: 2%;
         }
 }
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+}
+
+.print-page {
+    page-break-after: always;
+    margin: 0;
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+}
+.intentionbook{
+    font-family: Georgia, Times, Times New Roman, serif
+}
+
+    .intentionbook .print-page .date {
+        position: absolute;
+        top: 0;
+        bottom: 260mm;
+        border-radius: 10mm;
+        border-style: solid;
+        border-color: lightgray;
+        background-color: white;
+    }
+
+    .intentionbook .print-page:nth-child(odd) .date {
+        right: 0;
+        left: 99mm;
+        border-width: 0 0 1mm 1mm;
+    }
+
+    .intentionbook .print-page:nth-child(even) .date {
+        left: 0;
+        right: 99mm;
+        border-width: 0 1mm 1mm 0;
+    }
+
+    .intentionbook .print-page .date > div {
+        border-radius: 8mm;
+        border-style: solid;
+        border-color: lightgray;
+        margin: 2mm;
+        height: 32mm;
+    }
+
+    .intentionbook .print-page:nth-child(odd) .date > div {
+        border-width: 0 0 1mm 1mm;
+    }
+
+    .intentionbook .print-page:nth-child(even) .date > div {
+        border-width: 0 1mm 1mm 0;
+    }
+
+    .intentionbook .print-page .date .day {
+        position: absolute;
+        bottom: 2mm;
+        font-size: 26mm;
+    }
+
+    .intentionbook .print-page:nth-child(odd) .date .day {
+        left: 6mm;
+    }
+
+    .intentionbook .print-page:nth-child(even) .date .day {
+        right: 8mm;
+    }
+
+    .intentionbook .print-page .date .spelling {
+        position: absolute;
+        bottom: 0mm;
+        font-size: 12mm;
+    }
+
+    .intentionbook .print-page:nth-child(odd) .date .spelling {
+        right: 8mm;
+    }
+
+    .intentionbook .print-page:nth-child(even) .date .spelling {
+        left: 6mm;
+    }
+
+    .intentionbook .print-page .date .month {
+        position: absolute;
+        top: 5mm;
+        font-size: 9mm;
+    }
+
+    .intentionbook .print-page:nth-child(odd) .date .month {
+        right: 8mm;
+    }
+
+    .intentionbook .print-page:nth-child(even) .date .month {
+        left: 6mm;
+    }
+
+    .intentionbook .print-page .issues {
+        position: absolute;
+        top: 0;
+        bottom: 260mm;
+    }
+
+    .intentionbook .print-page:nth-child(odd) .issues {
+        right: 111mm;
+        left: 0;
+    }
+
+    .intentionbook .print-page:nth-child(even) .issues {
+        right: 0;
+        left: 111mm;
+    }
+
+    .intentionbook .print-page .issues .header {
+        position: relative;
+        top: 4mm;
+        border-radius: 10mm;
+        border-style: solid;
+        border-color: lightgray;
+        padding: 1mm 3mm;
+        color:lightgray;
+    }
+
+    .intentionbook .print-page:nth-child(odd) .issues .header {
+        left: 8mm;
+        border-width: 0 1mm 1mm 0;
+        float: left;
+    }
+    .intentionbook .print-page:nth-child(even) .issues .header {
+        right: 8mm;
+        border-width: 0 1mm 1mm;
+        float: right;
+    }
+
+    .intentionbook .print-page .issues .lines {
+        top: 14mm;
+        position: relative;
+        background-color: white;
+    }
+
+        .intentionbook .print-page .issues .lines div {
+            border-style: solid;
+            border-color: black;
+            border-width: 0 0 .5mm 0;
+            height: 5.5mm;
+        }
+
+    .intentionbook .print-page:nth-child(odd) .issues .lines {
+        left: 8mm;
+    }
+
+    .intentionbook .print-page:nth-child(even) .issues .lines {
+        left: -8mm;
+    }
+
+    .intentionbook .print-page .homily {
+        position: absolute;
+        top: 33mm;
+        height: 16mm;
+        border-radius: 6mm;
+        border-style: solid;
+        border-color: black;
+        background-color: white;
+        border-width: 0 0 1mm 1mm;
+        color: lightgray;
+        width: 60mm;
+        font-size: 6mm;
+        text-align: center;
+        padding: 4mm;
+        left: 75mm;
+    }
+
+    .intentionbook .print-page .masses {
+        position: absolute;
+        top: 50mm;
+    }
+
+    .intentionbook .print-page:nth-child(odd) .masses {
+        left:8mm;
+        right:5mm;
+    }
+
+    .intentionbook .print-page:nth-child(even) .masses {
+        left: 5mm;
+        right: 8mm;
+    }
+
+    .intentionbook .print-page .mass {
+        position: relative;
+        margin-bottom: 5mm;
+    }
+
+        .intentionbook .print-page .mass .hour {
+            position: absolute;
+            height: 14mm;
+            border-radius: 6mm;
+            border-style: solid;
+            border-color: black;
+            border-width: 0 0 1mm 1mm;
+            width: 32mm;
+            font-size: 9mm;
+            text-align: center;
+            padding: 0 2mm 0 0;
+        }
+        .intentionbook .print-page .mass .intention {
+            position: relative;
+            height: 24mm;
+        }
+
+
+        .intentionbook .print-page .mass .celebrator {
+            position: absolute;
+            height: 100%;
+            border-radius: 6mm;
+            border-style: solid;
+            border-color: black;
+            background-color: white;
+            border-width: 0 0 1mm 1mm;
+            color: lightgray;
+            width: 26mm;
+            font-size: 5mm;
+            text-align: center;
+            padding: 8mm 8mm 2mm 0mm;
+            left: 28mm;
+        }
+        .intentionbook .print-page .mass .lines {
+            position: absolute;
+            height: 100%;
+            border-radius: 6mm;
+            border-style: solid;
+            border-color: black;
+            background-color: white;
+            border-width: 0 0 1mm 1mm;
+            left: 44mm;
+            right: 0;
+        }
+            .intentionbook .print-page .mass .lines div {
+                height: 36%;
+                border-radius: 6mm;
+                border-style: solid;
+                border-color: lightgray;
+                border-width: 0 0 .5mm 0;
+            }
+
+
+        .intentionbook .print-page .mass .donator {
+            position: absolute;
+            height: 50%;
+            border-radius: 6mm;
+            border-style: solid;
+            border-color: black;
+            background-color: white;
+            border-width: 0 0 1mm 1mm;
+            color: lightgray;
+            width: 32mm;
+            font-size: 5mm;
+            text-align: center;
+            padding: 2mm 0;
+            right: 0;
+        }
+
+
+        .intentionbook .print-page .mass .sign {
+            position: absolute;
+            height: 50%;
+            border-radius: 6mm;
+            border-style: solid;
+            border-color: black;
+            background-color: white;
+            border-width: 0 0 1mm 1mm;
+            color: lightgray;
+            width: 32mm;
+            font-size: 5mm;
+            text-align: center;
+            padding: 2mm 0;
+            right: 0;
+            top: 50%;
+        }

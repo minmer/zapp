@@ -59,6 +59,7 @@ export default function MinisterChatAdminSubpage({ getParams }: { getParams: ({ 
             {aliases && adminRole ? <div><select defaultValue={undefined} onChange={(e) => { selectAlias(aliases[e.currentTarget.selectedIndex]) }}>
                 {aliases.map((alias) => (<option>
                     {alias.alias}            </option>))}
+                <option value="none" selected disabled hidden>Wybierz</option>
             </select>
                 <input type='button' value='Add viewer' onClick={addViewer} />
             </div> : null}

@@ -52,9 +52,49 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                             dbkey: 'new_intention_admin',
                             description: 'Intencje',
                             isOrdered: true,
-                            showchildren: false,
+                            showchildren: true,
                             showdescription: true,
-                            break: '\n',
+                                break: '\n',
+                                children: [
+                                    {
+                                        name: 'donation',
+                                        type: 'number',
+                                        multiple: false,
+                                        description: 'Ofiara',
+                                        isOrdered: false,
+                                        showchildren: false,
+                                    },
+                                    {
+                                        name: 'donated',
+                                        type: 'radio',
+                                        multiple: false,
+                                        description: 'Przyjmujący',
+                                        isOrdered: false,
+                                        showchildren: false,
+                                        options:
+                                            [
+                                                { value: '0', label: 'ks. Michał' },
+                                                { value: '1', label: 'ks. Proboszcz' },
+                                                { value: '2', label: 'ks. Leszek' },
+                                            ],
+                                    },
+                                    {
+                                        name: 'celebrator',
+                                        type: 'radio',
+                                        multiple: false,
+                                        description: 'Celebrans',
+                                        isOrdered: false,
+                                        showchildren: false,
+                                        options:
+                                            [
+                                                { value: '1', label: 'ks. Proboszcz' },
+                                                { value: '2', label: 'ks. Leszek' },
+                                                { value: '0', label: 'ks. Michał' },
+                                                { value: '3', label: 'ks. Gość 1' },
+                                                { value: '4', label: 'ks. Gość 2' },
+                                                { value: '5', label: 'ks. Gość 3' },
+                                            ],
+                                    },],
                         }
                     } />
                     </div>
