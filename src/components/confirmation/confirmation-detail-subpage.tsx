@@ -131,6 +131,16 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                         break: '\n',
                                     },
                                     {
+                                        name: 'printed',
+                                        type: 'checkbox',
+                                        multiple: false,
+                                        description: 'Wydrukowane',
+                                        dbkey: adminRole?.roleID,
+                                        showdescription: true,
+                                        showchildren: false,
+                                        break: '\n',
+                                    },
+                                    {
                                         name: 'appointment0',
                                         type: 'datetime',
                                         multiple: false,

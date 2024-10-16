@@ -4,6 +4,7 @@ import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchContextPost } from "../features/FetchContextPost";
 import { User } from "../structs/user";
+import LoadingComponent from "./loading-component";
 
 export interface Message {
     id: string,
@@ -15,6 +16,7 @@ export interface Message {
     preorder: number,
 }
 export default function ChatElement({ getParams, name, viewer, writer, alias }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown>, name: string, viewer: string, writer?: string, alias?: string}) {
+    const [isLoading, setIsLoading] = useState(true)
     const [messages, setMessages] = useState([] as Message[])
     const [scroll] = useState(0)
     const root = useRef(null);
@@ -62,6 +64,7 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
     const LoadData = useCallback(async (start: Date, end: Date) => {
         await getParams({
             func: async (token: string | User) => {
+                setIsLoading(true);
                 let newMessages = (await Promise.all((await FetchInformationGet('datetime', token as string, name, start.getTime(), end.getTime(), viewer) as unknown as DateOutput[]).map(async (item) => {
                     const textData = await FetchInformationGetAll('string', token as string, item.id + 'text') as unknown as StringOutput[]
                     return { preorder: item.preorder, id: item.id, date: item.output, textID: textData[0].id, text: textData[0].output, writer: (await FetchInformationGetAll('string', token as string, item.id + 'writer') as unknown as StringOutput[])[0]?.output, alias: (await FetchInformationGetAll('string', token as string, item.id + 'alias') as unknown as StringOutput[])[0]?.output } as Message
@@ -71,6 +74,7 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
                     setMessages([...messages, ...newMessages].sort((a, b) => a.date.getTime() - b.date.getTime()))
                     setIntervalLength(1000)
                 }
+                setIsLoading(false);
             }, type: 'token', show: true
         });
     }, [getParams, name, viewer, messages])
@@ -189,6 +193,16 @@ export default function ChatElement({ getParams, name, viewer, writer, alias }: 
                 <textarea value={message} onChange={(e) => { setMessage(e.target.value) }} />
                 <input type='button' value='Wyślij' onClick={sendMessage} />
             </div> : null : null}
+            {isLoading ? <div style=
+                {{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                }}>
+                <LoadingComponent />
+            </div> : null}
         </div>
     );
 }

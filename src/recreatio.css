@@ -284,6 +284,7 @@ h3 {
     }
 
 .chat-element {
+    position: relative;
     max-height: 64rem;
     overflow-y: scroll;
     padding: 2rem;
@@ -483,9 +484,15 @@ h3 {
     height: 297mm;
     position: relative;
 }
-.intentionbook{
+.intentionbook {
     font-family: Georgia, Times, Times New Roman, serif
 }
+    .intentionbook .light {
+        color: lightgray;
+    }
+    .intentionbook .gray {
+        color: gray;
+    }
 
     .intentionbook .print-page .date {
         position: absolute;
@@ -625,6 +632,22 @@ h3 {
         left: -8mm;
     }
 
+    .intentionbook .print-page .issues .issue {
+        position: absolute;
+        top: 14mm;
+        line-height: 5.5mm;
+    }
+
+    .intentionbook .print-page:nth-child(odd) .issues .issue {
+        left: 8mm;
+        right: 1mm;
+    }
+
+    .intentionbook .print-page:nth-child(even) .issues .issue {
+        left: 1mm;
+        right: 8mm;
+    }
+
     .intentionbook .print-page .homily {
         position: absolute;
         top: 33mm;
@@ -662,6 +685,31 @@ h3 {
         margin-bottom: 5mm;
     }
 
+        .intentionbook .print-page .mass .color {
+            font-size: 7mm;
+            position: absolute;
+            left: 0;
+            right: 170mm;
+            text-align: center;
+            font-style: italic;
+            color: gray;
+            margin: 14mm 0;
+        }
+
+        .intentionbook .print-page .mass .type {
+            font-size: 3.5mm;
+        }
+
+            .intentionbook .print-page .mass .type span {
+                border-radius: 6mm;
+                border-style: solid;
+                border-color: black;
+                border-width: 0 0 .5mm .5mm;
+                text-align: center;
+                padding: 1mm 2mm;
+                background-color: white;
+            }
+
         .intentionbook .print-page .mass .hour {
             position: absolute;
             height: 14mm;
@@ -674,11 +722,11 @@ h3 {
             text-align: center;
             padding: 0 2mm 0 0;
         }
+
         .intentionbook .print-page .mass .intention {
             position: relative;
             height: 24mm;
         }
-
 
         .intentionbook .print-page .mass .celebrator {
             position: absolute;
@@ -695,6 +743,7 @@ h3 {
             padding: 8mm 8mm 2mm 0mm;
             left: 28mm;
         }
+
         .intentionbook .print-page .mass .lines {
             position: absolute;
             height: 100%;
@@ -706,6 +755,7 @@ h3 {
             left: 44mm;
             right: 0;
         }
+
             .intentionbook .print-page .mass .lines div {
                 height: 36%;
                 border-radius: 6mm;
@@ -714,23 +764,36 @@ h3 {
                 border-width: 0 0 .5mm 0;
             }
 
-
-        .intentionbook .print-page .mass .donator {
+        .intentionbook .print-page .mass .intention_desc {
+            left: 50mm;
+            right: 34mm;
             position: absolute;
-            height: 50%;
-            border-radius: 6mm;
-            border-style: solid;
-            border-color: black;
-            background-color: white;
-            border-width: 0 0 1mm 1mm;
-            color: lightgray;
-            width: 32mm;
-            font-size: 5mm;
             text-align: center;
-            padding: 2mm 0;
-            right: 0;
-        }
+            margin: -4mm 0 0 0;
+            font-size: 4mm;
+            top: 4mm;
+            bottom: 0;
+            align-self: center;
+        
+            }
 
+
+
+.intentionbook .print-page .mass .donator {
+    position: absolute;
+    height: 50%;
+    border-radius: 6mm;
+    border-style: solid;
+    border-color: black;
+    background-color: white;
+    border-width: 0 0 1mm 1mm;
+    color: lightgray;
+    width: 32mm;
+    font-size: 5mm;
+    text-align: center;
+    padding: 2mm 0;
+    right: 0;
+}
 
         .intentionbook .print-page .mass .sign {
             position: absolute;
@@ -748,3 +811,60 @@ h3 {
             right: 0;
             top: 50%;
         }
+
+    .intentionbook .print-page .appointments {
+        position: absolute;
+        left: 5mm;
+        right: 5mm;
+        bottom: 5mm;
+    }
+
+        .intentionbook .print-page .appointments .appointment {
+            height: 12mm;
+        }
+
+    .intentionbook .print-page .appointment .hour {
+        position: absolute;
+        border-radius: 6mm;
+        border-style: solid;
+        border-color: black;
+        background-color: white;
+        border-width: 0 0 1mm 1mm;
+        font-size: 5mm;
+        text-align: center;
+        padding: 2mm 4mm 2mm 0;
+        width: 24mm;
+        height: 12mm;
+    }
+
+    .intentionbook .print-page .appointment .type {
+        position: absolute;
+        border-radius: 6mm;
+        border-style: solid;
+        border-color: black;
+        background-color: white;
+        border-width: 0 0 1mm 1mm;
+        font-size: 5mm;
+        text-align: center;
+        padding: 2mm 11mm 2mm 2mm;
+        left: 18mm;
+        width: 160mm;
+        height: 12mm;
+    }
+
+    .intentionbook .print-page .appointment .responsible {
+        position: absolute;
+        border-radius: 6mm;
+        border-style: solid;
+        border-color: black;
+        background-color: white;
+        border-width: 0 0 1mm 1mm;
+        color: lightgray;
+        font-size: 4mm;
+        text-align: center;
+        padding: 2mm 0;
+        right: 0;
+        width: 32mm;
+        height: 12mm;
+    }
+

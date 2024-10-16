@@ -196,6 +196,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 if (onChange != null)
                     onChange(data.find(item => item.id == id))
                 LoadData(token)
+                setIsEditing(editable.multiple);
             }, type: 'token', show: false
         })
     }

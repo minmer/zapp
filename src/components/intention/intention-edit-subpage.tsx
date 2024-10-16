@@ -40,6 +40,13 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
 
         <>
             <MonthDateSelectionElement onSelectionChange={(date) => setDate(date)} />
+            <h2>Wydarzenia</h2>
+            {issues.map(issue => (
+                <div >
+                    {issue.output}
+                    <input type='button' value='Kasuj' onClick={() => deleteByID(issue.id)} />
+                </div>
+            ))}
             {masses.map(mass => (
                 <div key={mass.id} >
                     <h2>{'Msza ' + mass.time.getHours() + ':' + mass.time.getMinutes().toString().padStart(2, '0')} <input type='button' value='Kasuj' onClick={() => deleteByID(mass.id)} /></h2>
@@ -150,13 +157,6 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                 <div key={appointment.time.getTime() + appointment.type}>
                     {appointment.time.getHours() + ':' + appointment.time.getMinutes().toString().padStart(2, '0') + ' ' + appointment.type}
                     <input type='button' value='Kasuj' onClick={() => deleteByID(appointment.id)} />
-                </div>
-            ))}
-            <h2>Wydarzenia</h2>
-            {issues.map(issue => (
-                <div >
-                    {issue.output}
-                    <input type='button' value='Kasuj' onClick={() => deleteByID(issue.id)} />
                 </div>
             ))}
             
