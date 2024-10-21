@@ -909,8 +909,8 @@ export default function IntentionReportBookSubpage({ getParams }: { getParams: (
                     description: 'Wspomnienia',
                     viewertoken: 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc',
                     isOrdered: true,
-                    showdescription: true,
-                    showchildren: true,
+                            showdescription: true,
+                            display: 'dropdown',
                     children: [
                         {
                             name: 'description',
@@ -954,8 +954,8 @@ export default function IntentionReportBookSubpage({ getParams }: { getParams: (
                     description: 'Egzaminy',
                     viewertoken: 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc',
                     isOrdered: true,
-                    showdescription: true,
-                    showchildren: true,
+                            showdescription: true,
+                            display: 'dropdown',
                     children: [
                         {
                             name: 'name',
@@ -976,8 +976,8 @@ export default function IntentionReportBookSubpage({ getParams }: { getParams: (
                     description: 'Szkoła',
                     viewertoken: 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc',
                     isOrdered: true,
-                    showdescription: true,
-                    showchildren: true,
+                            showdescription: true,
+                            display: 'dropdown',
                     children: [
                         {
                             name: 'break_start',
@@ -1012,8 +1012,8 @@ export default function IntentionReportBookSubpage({ getParams }: { getParams: (
                     description: 'Wielkanoc',
                     viewertoken: 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc',
                     isOrdered: true,
-                    showdescription: true,
-                    showchildren: true,
+                            showdescription: true,
+                            display: 'dropdown',
                     children: [
                         {
                             name: 'start_week',

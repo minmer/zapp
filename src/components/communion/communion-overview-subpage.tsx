@@ -13,13 +13,14 @@ export default function CommunionOverviewSubpage({ getParams }: { getParams: ({ 
                     description: 'Rozdziały',
                     viewertoken: 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc',
                     showdescription: false,
-                    showchildren: true,
+                    display: 'dropdown',
                     children: [
                         {
                             name: 'header',
                             type: 'text',
                             multiple: true,
                             description: 'Nagłówek',
+                            display: 'single',
                             children: [
                                 {
                                     name: 'detail',

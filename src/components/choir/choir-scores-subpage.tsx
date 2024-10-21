@@ -12,8 +12,8 @@ export default function ChoirScoresSubpage({ getParams }: { getParams: ({ func, 
                         type: 'string',
                         multiple: true,
                         description: 'Nazwa',
-                        showdescription: false,
-                    showchildren: true,
+                    showdescription: false,
+                    display: 'dropdown',
                     isOrdered: true,
                     children: [
                         {

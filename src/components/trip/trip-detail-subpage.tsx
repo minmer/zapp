@@ -150,7 +150,7 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
                     description: 'Rozdział',
                     dbkey: 'website_admin',
                     showdescription: false,
-                    showchildren: true,
+                    display: 'dropdown',
                     isOrdered: true,
                     children: [
                         {

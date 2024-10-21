@@ -116,7 +116,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                     description: 'Strój',
                                     dbkey: adminRole?.roleID,
                                     showdescription: false,
-                                    showchildren: true,
+                                    display: 'grid',
                                     isOrdered: true,
                                     children: [
                                         {
