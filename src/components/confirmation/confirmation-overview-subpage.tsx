@@ -12,21 +12,21 @@ export default function ConfirmationOverviewSubpage({ getParams }: { getParams: 
                     dbkey: 'website_admin',
                     description: 'Rozdziały',
                     viewertoken: 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc',
-                    showdescription: false,
-                    showchildren: true,
+                    display: 'single',
                     children: [
                         {
                             name: 'header',
                             type: 'text',
                             multiple: true,
                             description: 'Nagłówek',
+                            display: 'single',
                             children: [
                                 {
                                     name: 'detail',
                                     type: 'text',
                                     multiple: false,
                                     description: 'Informacja',
-                                    showchildren: false,
+                                    display: 'single',
                                 }],
                         }],
                 }

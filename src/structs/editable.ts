@@ -10,7 +10,7 @@ export interface Editable {
     description?: string,
     isOrdered?: boolean,
     showdescription?: boolean,
-    showchildren?: boolean,
+    display: string,
     viewertoken?: string,
     break?: string,
     options?: LabeledValue[],

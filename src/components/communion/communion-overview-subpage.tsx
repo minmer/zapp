@@ -26,7 +26,7 @@ export default function CommunionOverviewSubpage({ getParams }: { getParams: ({ 
                                     type: 'text',
                                     multiple: false,
                                     description: 'Informacja',
-                                    showchildren: false,
+                                    display: 'single',
                                 }],
                         }],
                 }

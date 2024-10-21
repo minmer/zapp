@@ -917,14 +917,14 @@ export default function IntentionReportBookSubpage({ getParams }: { getParams: (
                             type: 'string',
                             multiple: false,
                             description: 'Opis',
-                            showchildren: false,
+                            display: 'single',
                         },
                         {
                             name: 'feast',
                             type: 'radio',
                             multiple: false,
                             description: 'Rodzaj',
-                            showchildren: false,
+                            display: 'single',
                             options: [
                                 { label: 'Uroczystość', value: '0' },
                                 { label: 'Święto', value: '1' },
@@ -940,7 +940,7 @@ export default function IntentionReportBookSubpage({ getParams }: { getParams: (
                             type: 'color',
                             multiple: false,
                             description: 'Kolor',
-                            showchildren: false,
+                            display: 'single',
                         },
                     ],
                 }
@@ -962,7 +962,7 @@ export default function IntentionReportBookSubpage({ getParams }: { getParams: (
                             type: 'string',
                             multiple: false,
                             description: 'Rozpoczęcie...',
-                            showchildren: false,
+                            display: 'single',
                         }
                     ],
                 }
@@ -984,21 +984,21 @@ export default function IntentionReportBookSubpage({ getParams }: { getParams: (
                             type: 'date',
                             multiple: false,
                             description: 'Początek ferii',
-                            showchildren: false,
+                            display: 'single',
                         },
                         {
                             name: 'break_end',
                             type: 'date',
                             multiple: false,
                             description: 'Koniec ferii',
-                            showchildren: false,
+                            display: 'single',
                         },
                         {
                             name: 'end',
                             type: 'date',
                             multiple: false,
                             description: 'Zakończenie',
-                            showchildren: false,
+                            display: 'single',
                         }
                     ],
                 }
@@ -1020,7 +1020,7 @@ export default function IntentionReportBookSubpage({ getParams }: { getParams: (
                             type: 'number',
                             multiple: false,
                             description: 'Tydzień po Wielkanocy',
-                            showchildren: false,
+                            display: 'single',
                         }
                     ],
                 }

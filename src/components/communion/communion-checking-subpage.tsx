@@ -50,7 +50,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                             description: 'Alias',
                             dbkey: alias.id,
                             showdescription: false,
-                            showchildren: false,
+                            display: 'single',
                             }} />
                     </span>
                     <span className='static-font'>
@@ -63,7 +63,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                                 description: 'Sprawdzanie',
                                 dbkey: alias.id,
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                                 options: [
                                     { label: 'Pozdrowienie ludu', value: 'Pozdrowienie ludu' },
                                     { label: 'Akt pokutny', value: 'Akt pokutny' },
@@ -92,7 +92,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                             description: 'Modlitwy',
                             dbkey: alias.id,
                             showdescription: false,
-                            showchildren: false,
+                            display: 'single',
                             options: [
                                 { label: 'Znak krzyża', value: 'Znak krzyża' },
                                 { label: 'Ojcze nasz', value: 'Ojcze nasz' },
@@ -118,7 +118,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                             description: 'Zestawienia',
                             dbkey: role?.roleID,
                             showdescription: false,
-                            showchildren: false,
+                            display: 'single',
                             options: [
                                 { label: 'Sakramenty Święte', value: 'Sakramenty Święte' },
                                 { label: 'Główne Prawdy Wiary', value: 'Główne Prawdy Wiary' },
@@ -141,7 +141,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                             description: 'Pytania',
                             dbkey: role?.roleID,
                             showdescription: false,
-                            showchildren: false,
+                            display: 'single',
                             options: [
                                 { label: 'O Panu Bogu', value: 'O Panu Bogu' },
                                 { label: 'O Panu Jezusie', value: 'O Panu Jezusie' },

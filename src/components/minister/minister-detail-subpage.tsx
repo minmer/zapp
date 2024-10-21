@@ -82,7 +82,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                 description: 'Alias',
                                 dbkey: adminRole?.roleID,
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                             }} />
                         </h4>
                         <div><EditableElement getParams={getParams} editable={
@@ -93,7 +93,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                 description: 'Funkcja',
                                 dbkey: adminRole?.roleID,
                                 showdescription: true,
-                                showchildren: false,
+                                display: 'single',
                                 options: [
                                     { label: 'Zainteresowany', value: '0' },
                                     { label: 'Kandydat', value: '1' },
@@ -124,7 +124,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                             type: 'string',
                                             multiple: false,
                                             description: 'Opis',
-                                            showchildren: false,
+                                            display: 'single',
                                         },
                                     ],
                                 }} />
@@ -138,7 +138,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                     description: 'Adres',
                                     dbkey: role?.user.id + 'address',
                                     showdescription: false,
-                                    showchildren: false,
+                                    display: 'single',
                                 }} />
                         </div>
                         <div>
@@ -150,7 +150,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                     dbkey: role?.user.id + 'telefon',
                                     description: 'Telefon',
                                     showdescription: false,
-                                    showchildren: false,
+                                    display: 'single',
                                 }} />
                         </div>
                         <div><EditableElement getParams={getParams} editable={
@@ -161,7 +161,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
                                 description: 'Dyżury',
                                 dbkey: role?.roleID + 'groupchannel',
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                                 options: [
                                     { label: 'Niedziela 8:00', value: '8' },
                                     { label: 'Niedziela 10:00', value: '10' },

@@ -58,8 +58,8 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                             multiple: true,
                             dbkey: 'new_intention_admin',
                             description: 'Intencje',
-                            isOrdered: true,
-                            showchildren: true,
+                                isOrdered: true,
+                                display: 'grid',
                             showdescription: true,
                                 break: '\n',
                                 children: [
@@ -69,7 +69,7 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                                         multiple: false,
                                         description: 'Ofiara',
                                         isOrdered: false,
-                                        showchildren: false,
+                                        display: 'single',
                                     },
                                     {
                                         name: 'donated',
@@ -77,7 +77,7 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                                         multiple: false,
                                         description: 'Przyjmujący',
                                         isOrdered: false,
-                                        showchildren: false,
+                                        display: 'single',
                                         options:
                                             [
                                                 { value: '0', label: 'ks. Michał' },
@@ -91,7 +91,7 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                                         multiple: false,
                                         description: 'Celebrans',
                                         isOrdered: false,
-                                        showchildren: false,
+                                        display: 'single',
                                         options:
                                             [
                                                 { value: '1', label: 'ks. Proboszcz' },
@@ -114,7 +114,7 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                                 dbkey: 'new_intention_admin',
                                 description: 'Kolor',
                                 isOrdered: true,
-                                showchildren: false,
+                                display: 'single',
                                 showdescription: true,
                                 break: ', ',
                             }
@@ -130,7 +130,7 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                             description: 'Wspomnienie',
                             isOrdered: true,
                             showdescription: true,
-                            showchildren: false,
+                            display: 'single',
                             break: ', ',
                         }
                     } />
@@ -146,7 +146,7 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                             isOrdered: true,
                             multiple: false,
                             showdescription: true,
-                            showchildren: false,
+                            display: 'single',
                         }
                     } />
                     </div>

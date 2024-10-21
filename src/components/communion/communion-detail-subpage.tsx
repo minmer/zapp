@@ -82,7 +82,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                 description: 'Alias',
                                 dbkey: adminRole?.roleID,
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                             }} />
                         </h4>
                         <div>
@@ -94,7 +94,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                     description: 'Adres',
                                     dbkey: role?.user.id + 'address',
                                     showdescription: false,
-                                    showchildren: false,
+                                    display: 'single',
                                 }} />
                         </div>
                         <div>
@@ -106,7 +106,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                     dbkey: role?.user.id + 'telefon',
                                     description: 'Telefon',
                                     showdescription: false,
-                                    showchildren: false,
+                                    display: 'single',
                                 }} />
                         </div>
                         <div>
@@ -118,7 +118,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                     description: 'Data urodzenia',
                                     dbkey: role?.user.id,
                                     showdescription: true,
-                                    showchildren: false,
+                                    display: 'single',
                                 }} />
                             <span> </span>
                             <EditableElement getParams={getParams} editable={
@@ -129,7 +129,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                     description: 'Miejsce urodzenia',
                                     dbkey: role?.user.id,
                                     showdescription: false,
-                                    showchildren: false,
+                                    display: 'single',
                                 }} />
                         </div>
                         <div>
@@ -141,7 +141,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                     description: 'Zestaw podstawowy (Katechizm + Naklejki + Teczka + Książeczka I Piątek + Rachunek Sumienia + Wydruki) - 30 zł',
                                     dbkey: role?.roleID,
                                     showdescription: true,
-                                    showchildren: false,
+                                    display: 'single',
                                 }} />
                         </div>
                         <div>
@@ -153,7 +153,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                     description: 'Zestaw dodatkowy (Modlitewnik + Medalik + Łańcuch + Pamiątka I Komunii) - 100 zł',
                                     dbkey: role?.roleID,
                                     showdescription: true,
-                                    showchildren: false,
+                                    display: 'single',
                                 }} />
                         </div>
                         <EditableElement getParams={getParams} editable={
@@ -163,7 +163,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                 multiple: false,
                                 description: 'Części Mszy Świętej',
                                 showdescription: true,
-                                showchildren: false,
+                                display: 'single',
                                 options: [
                                     { label: 'Pozdrowienie ludu', value: 'Pozdrowienie ludu' },
                                     { label: 'Akt pokutny', value: 'Akt pokutny' },
@@ -190,7 +190,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                 multiple: false,
                                 description: 'Modlitwy',
                                 showdescription: true,
-                                showchildren: false,
+                                display: 'single',
                                 options: [
                                     { label: 'Znak krzyża', value: 'Znak krzyża' },
                                     { label: 'Ojcze nasz', value: 'Ojcze nasz' },
@@ -214,7 +214,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                 multiple: false,
                                 description: 'Zestawienia',
                                 showdescription: true,
-                                showchildren: false,
+                                display: 'single',
                                 options: [
                                     { label: 'Sakramenty Święte', value: 'Sakramenty Święte' },
                                     { label: 'Główne Prawdy Wiary', value: 'Główne Prawdy Wiary' },
@@ -234,7 +234,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
                                 multiple: false,
                                 description: 'Pytania',
                                 showdescription: true,
-                                showchildren: false,
+                                display: 'single',
                                 options: [
                                     { label: 'O Panu Bogu', value: 'O Panu Bogu' },
                                     { label: 'O Panu Jezusie', value: 'O Panu Jezusie' },

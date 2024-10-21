@@ -13,7 +13,7 @@ export default function ChoirPreparationSubpage({ getParams }: { getParams: ({ f
                     multiple: true,
                     description: 'Próba',
                     showdescription: false,
-                    showchildren: true,
+                    display: 'dropdown',
                     isOrdered: true,
                     children: [
                         {
@@ -21,21 +21,21 @@ export default function ChoirPreparationSubpage({ getParams }: { getParams: ({ f
                             type: 'string',
                             multiple: false,
                             description: 'Nagłówek',
-                            showchildren: false,
+                            display: 'single',
                         },
                         {
                             name: 'length-',
                             type: 'time',
                             multiple: false,
                             description: 'Długość próby',
-                            showchildren: false,
+                            display: 'single',
                         },
                         {
                             name: 'topics',
                             type: 'string',
                             multiple: true,
                             description: 'Temat',
-                            showchildren: false,
+                            display: 'single',
                             isOrdered: true,
                             break: '\n',
                         }],

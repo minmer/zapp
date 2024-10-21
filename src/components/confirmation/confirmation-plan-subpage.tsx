@@ -79,7 +79,7 @@ export default function ConfirmationPlanSubpage({ getParams }: { getParams: ({ f
                                 description: 'Alias',
                                 dbkey: adminRole?.roleID,
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                             }} />
                         </h4>
                         <div><EditableElement getParams={getParams} editable={
@@ -99,7 +99,7 @@ export default function ConfirmationPlanSubpage({ getParams }: { getParams: ({ f
                                         multiple: false,
                                         description: 'Początek',
                                         showdescription: true,
-                                        showchildren: false,
+                                        display: 'single',
                                     },
                                     {
                                         name: 'end',
@@ -107,7 +107,7 @@ export default function ConfirmationPlanSubpage({ getParams }: { getParams: ({ f
                                         multiple: false,
                                         description: 'Koniec',
                                         showdescription: true,
-                                        showchildren: false,
+                                        display: 'single',
                                     },
                                     {
                                         name: role.roleID + 'note',
@@ -116,7 +116,7 @@ export default function ConfirmationPlanSubpage({ getParams }: { getParams: ({ f
                                         description: 'Opis uczestnictwa',
                                         dbkey: role?.roleID,
                                         showdescription: true,
-                                        showchildren: false,
+                                        display: 'single',
                                         break: '\n',
                                     },
                                 ],

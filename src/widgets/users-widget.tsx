@@ -69,7 +69,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
                                         description: 'Imię',
                                         dbkey: user.id + 'name',
                                         showdescription: false,
-                                        showchildren: false,
+                                        display: 'single',
                                     }} />
                                 <span> </span>
                                 <EditableElement getParams={getParams} editable={
@@ -80,7 +80,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
                                         dbkey: user.id + 'surname',
                                         description: 'Nazwisko',
                                         showdescription: false,
-                                        showchildren: false,
+                                        display: 'single',
                                     }} />
                                 <span><input type='button' value='wybierz' onClick={() => selectUser(user)} onDoubleClick={() => deleteUser(user)} /></span>
                         </div>

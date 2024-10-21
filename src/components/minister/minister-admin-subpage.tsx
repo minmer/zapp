@@ -81,7 +81,7 @@ export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func
                             description: 'Imię',
                             dbkey: member.user.id,
                             showdescription: false,
-                            showchildren: false,
+                            display: 'single',
                         }} />
                     <span> </span>
                     <EditableElement getParams={getParams} editable={
@@ -92,7 +92,7 @@ export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func
                             dbkey: member.user.id,
                             description: 'Nazwisko',
                             showdescription: false,
-                            showchildren: false,
+                            display: 'single',
                         }} />
                     {member.isRegistered ? null : < input type="button" value="Wybierz" onClick={() => { acceptMember(member) }} />}
                 </div>
@@ -107,7 +107,7 @@ export default function MinisterAdminSubpage({ getParams }: { getParams: ({ func
                             description: 'Alias',
                             dbkey: alias.id + 'groupchannel',
                             showdescription: false,
-                            showchildren: false,
+                            display: 'single',
                         }} />
                     {selectedRole ? <input type="button" value="Connect to alias" onClick={() => { connectAlias(alias) }} /> : null}
                     <input type="button" value="Delete" onClick={() => { deleteAlias(alias) }} />

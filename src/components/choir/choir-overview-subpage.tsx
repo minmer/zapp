@@ -12,8 +12,8 @@ export default function ChoirOverviewSubpage({ getParams }: { getParams: ({ func
                         type: 'string',
                         multiple: true,
                         description: 'Nagłówek',
-                        showdescription: false,
-                    showchildren: true,
+                    showdescription: false,
+                    display: 'dropdown',
                     isOrdered: true,
                         children: [
                             {
@@ -21,7 +21,7 @@ export default function ChoirOverviewSubpage({ getParams }: { getParams: ({ func
                                 type: 'text',
                                 multiple: false,
                                 description: 'Informacja',
-                                showchildren: false,
+                                display: 'single',
                             }],
                 }
             } />

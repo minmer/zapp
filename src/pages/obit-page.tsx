@@ -38,7 +38,7 @@ export default function ObitPage({ getParams }: { getParams: ({ func, type, show
                 </div>
                 <Routes>
                     <Route path="intentions/*" element={<ObitsIntentionsComponent/>} />
-                    <Route path="edit/*" element={<ObitsEditComponent/>} />
+                    <Route path="edit/*" element={<ObitsEditComponent getParams={getParams} />} />
                 </Routes>
                 <div className="description">
                     <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>

@@ -106,7 +106,7 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
                         description: 'Imię',
                         dbkey: user?.id + 'name',
                         showdescription: false,
-                        showchildren: false,
+                        display: 'single',
                     }} />
                 <span> </span>
                 <EditableElement getParams={getParams} editable={
@@ -117,7 +117,7 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
                         dbkey: user?.id + 'surname',
                         description: 'Nazwisko',
                         showdescription: false,
-                        showchildren: false,
+                        display: 'single',
                     }} />
                 </div>
             {selections.map((selection) => (
@@ -134,7 +134,7 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
                                 dbkey: 'website_viewer_viewer',
                                 description: 'Zapisani',
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                                 break: ', ',
                                 }} />
                         </div>
@@ -158,21 +158,21 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
                             type: 'text',
                             multiple: true,
                             description: 'Opis',
-                            showchildren: false,
+                            display: 'single',
                         },
                         {
                             name: 'image',
                             type: 'string',
                             multiple: true,
                             description: 'Zdjęcie',
-                            showchildren: false,
+                            display: 'single',
                         },
                         {
                             name: 'image_description',
                             type: 'string',
                             multiple: true,
                             description: 'Opis zdjęcia',
-                            showchildren: false,
+                            display: 'single',
                         },
                     ],
                 }} />
@@ -184,7 +184,7 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
                     description: 'Wybór',
                     dbkey: 'website_admin',
                     showdescription: false,
-                    showchildren: false,
+                    display: 'single',
                     isOrdered: true,
                     break: '\n',
                 }} />

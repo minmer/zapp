@@ -53,7 +53,7 @@ export default function TripPage({ getParams }: { getParams: ({ func, type, show
                         description: 'Trips',
                         dbkey: 'website_admin',
                         showdescription: false,
-                        showchildren: false,
+                        display: 'single',
                     }} />
                 <Routes>
                     <Route path=":trip" element={<TripDetailSubpage getParams={getParams} />} />

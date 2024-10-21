@@ -26,7 +26,7 @@ export default function MinisterOverviewSubpage({ getParams }: { getParams: ({ f
                                     type: 'text',
                                     multiple: false,
                                     description: 'Informacja',
-                                    showchildren: false,
+                                    display: 'single',
                                 }],
                         }],
                 }

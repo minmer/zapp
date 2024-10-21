@@ -373,7 +373,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             {isEditable && data.length == 0 ?
                 <input type="button" value={editable.description} onClick={onClickData} />
                 :
-                editable.showchildren ?
+                editable.display == 'dropdown' ?
                     <>
                         {data.map((item, index) => (
                             <div className='editable-children' key={item.id}>
@@ -383,7 +383,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                                             {'△ ' + (editable.showdescription ? editable.description + ': ' : editable.break ?? '') + convertToString(item)}
                                         </div>
                                         {editable.children?.map(child => (
-                                            <div className='editable-children' key={child.name}>
+                                            <div key={child.name}>
                                                 <EditableElement getParams={getParams} editable=
                                                     {
                                                         {
@@ -393,7 +393,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                                                             dbkey: child.dbkey ?? editable.dbkey,
                                                             description: child.description,
                                                             showdescription: child.showdescription ?? editable.showdescription,
-                                                            showchildren: child.showchildren ?? editable.showchildren,
+                                                            display: child.display,
                                                             viewertoken: child.viewertoken ?? editable.viewertoken,
                                                             children: child.children,
                                                             options: child.options,
@@ -414,6 +414,41 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                             </div>
                         ))}
                     </>
+                    :
+                    editable.display == 'grid' ?
+                        <>
+                            {data.map((item) => (
+                                <div className='editable-grid' key={item.id}>
+                                    {<>
+                                            <div className='editable-span' onDoubleClick={onClickData} onClick={() => { setExpanded(-1) }}>
+                                                {(editable.showdescription ? editable.description + ': ' : editable.break ?? '') + convertToString(item)}
+                                            </div>
+                                            {editable.children?.map(child => (
+                                                <div className='editable-grid-item' key={child.name}>
+                                                    <EditableElement getParams={getParams} editable=
+                                                        {
+                                                            {
+                                                                name: item.id + child.name,
+                                                                type: child.type,
+                                                                multiple: child.multiple,
+                                                                dbkey: child.dbkey ?? editable.dbkey,
+                                                                description: child.description,
+                                                                showdescription: child.showdescription ?? editable.showdescription,
+                                                                display: child.display,
+                                                                viewertoken: child.viewertoken ?? editable.viewertoken,
+                                                                children: child.children,
+                                                                options: child.options,
+                                                                break: child.break ?? editable.break,
+                                                                isOrdered: child.isOrdered ?? editable.isOrdered,
+                                                            }
+                                                        } />
+                                                </div>
+                                            ))}
+                                        </>
+                                    }
+                                </div>
+                            ))}
+                        </>
                     :
                     <>
                         {data.map((item, index) => (
@@ -453,8 +488,8 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                                             multiple: false,
                                             dbkey: editable.dbkey,
                                             description: 'Order',
-                                            showdescription: false,
-                                            showchildren: false,
+                                        showdescription: false,
+                                        display: 'single',
                                         }
                                     } /> : null}
                                 {renderInput(item)}

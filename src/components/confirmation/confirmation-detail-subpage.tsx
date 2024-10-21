@@ -81,7 +81,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                 description: 'Alias',
                                 dbkey: adminRole?.roleID,
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                             }} />
                         </h4>
                         <div>
@@ -93,7 +93,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                     description: 'Adres',
                                     dbkey: role?.user.id + 'address',
                                     showdescription: false,
-                                    showchildren: false,
+                                    display: 'single',
                                 }} />
                         </div>
                         <div>
@@ -105,7 +105,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                     dbkey: role?.user.id + 'telefon',
                                     description: 'Telefon',
                                     showdescription: false,
-                                    showchildren: false,
+                                    display: 'single',
                                 }} />
                         </div>
 
@@ -127,7 +127,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                         description: 'Cele na rok formacyjny',
                                         dbkey: role?.roleID,
                                         showdescription: true,
-                                        showchildren: false,
+                                        display: 'single',
                                         break: '\n',
                                     },
                                     {
@@ -137,7 +137,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                         description: 'Wydrukowane',
                                         dbkey: adminRole?.roleID,
                                         showdescription: true,
-                                        showchildren: false,
+                                        display: 'single',
                                         break: '\n',
                                     },
                                     {
@@ -145,35 +145,35 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                         type: 'datetime',
                                         multiple: false,
                                         description: 'I spotkanie',
-                                        showchildren: false,
+                                        display: 'single',
                                     },
                                     {
                                         name: 'appointment_description0',
                                         type: 'string',
                                         multiple: true,
                                         description: 'Ustalenia z I spotkania',
-                                        showchildren: false,
+                                        display: 'single',
                                     },
                                     {
                                         name: 'appointment1',
                                         type: 'datetime',
                                         multiple: false,
                                         description: 'II spotkanie',
-                                        showchildren: false,
+                                        display: 'single',
                                     },
                                     {
                                         name: 'appointment_description1',
                                         type: 'string',
                                         multiple: true,
                                         description: 'Ustalenia z II spotkania',
-                                        showchildren: false,
+                                        display: 'single',
                                     },
                                     {
                                         name: 'note',
                                         type: 'string',
                                         multiple: true,
                                         description: 'Uwagi',
-                                        showchildren: false,
+                                        display: 'single',
                                     },
                                 ],
                             }} />

@@ -71,7 +71,7 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
                                 description: 'Imię',
                                 dbkey: selectedUser.id + 'name',
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                             }} />
                         <span> </span>
                         <EditableElement getParams={getParams} editable={
@@ -82,7 +82,7 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
                                 dbkey: selectedUser.id + 'surname',
                                 description: 'Nazwisko',
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                             }} />
                     </>
                     :
@@ -96,7 +96,7 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
                                 description: 'Imię',
                                 dbkey: selectedUser.id + 'name',
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                             }} />
                         <span> </span>
                         <EditableElement getParams={getParams} editable={
@@ -107,7 +107,7 @@ export default function MinisterRegisterSubpage({ getParams }: { getParams: ({ f
                                 dbkey: selectedUser.id + 'surname',
                                 description: 'Nazwisko',
                                 showdescription: false,
-                                showchildren: false,
+                                display: 'single',
                             }} />
                         <span><input type="button" className="button" value="Zgłoś użytkownika" onClick={register} /></span>
                         <span><input type="button" className="button" value="Wybierz innego użytkownika" onClick={selectUser} /></span>

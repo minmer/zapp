@@ -165,6 +165,21 @@ h3 {
     margin: 0.5em 0 0 1rem;
 }
 
+.editable-grid .editable-span{
+    padding: .5rem;
+}
+
+.editable-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    border: 1px black solid;
+}
+
+.editable-grid-item {
+    border: 1px black solid
+}
+
 .user-widget input {
     width: 100%;
 }

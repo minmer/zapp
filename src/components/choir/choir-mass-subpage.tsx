@@ -12,8 +12,8 @@ export default function ChoirMassSubpage({ getParams }: { getParams: ({ func, ty
                         type: 'datetime',
                         multiple: true,
                         description: 'Msze Śpiewane',
-                        showdescription: false,
-                    showchildren: true,
+                    showdescription: false,
+                    display: 'dropdown',
                     isOrdered: true,
                     children: [
                         {
@@ -21,7 +21,7 @@ export default function ChoirMassSubpage({ getParams }: { getParams: ({ func, ty
                             type: 'string',
                             multiple: false,
                             description: 'Pieśń na wejście',
-                            showchildren: false,
+                            display: 'single',
                             showdescription: true
                         },
                         {
@@ -29,7 +29,7 @@ export default function ChoirMassSubpage({ getParams }: { getParams: ({ func, ty
                             type: 'string',
                             multiple: false,
                             description: 'Pieśń na przygotowanie darów',
-                            showchildren: false,
+                            display: 'single',
                             showdescription: true
                         },
                         {
@@ -37,7 +37,7 @@ export default function ChoirMassSubpage({ getParams }: { getParams: ({ func, ty
                             type: 'string',
                             multiple: false,
                             description: 'Pieśń na Komunię',
-                            showchildren: false,
+                            display: 'single',
                             showdescription: true
                         },
                         {
@@ -45,7 +45,7 @@ export default function ChoirMassSubpage({ getParams }: { getParams: ({ func, ty
                             type: 'string',
                             multiple: false,
                             description: 'Pieśń na uwielbienie',
-                            showchildren: false,
+                            display: 'single',
                             showdescription: true
                         },
                         {
@@ -53,7 +53,7 @@ export default function ChoirMassSubpage({ getParams }: { getParams: ({ func, ty
                             type: 'string',
                             multiple: false,
                             description: 'Pieśń na zakończenie',
-                            showchildren: false,
+                            display: 'single',
                             showdescription: true
                         },],
                 }

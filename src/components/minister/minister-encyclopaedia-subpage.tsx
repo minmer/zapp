@@ -14,20 +14,21 @@ export default function MinisterEncyclopaediaSubpage({ getParams }: { getParams:
                     viewertoken: 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc',
                     isOrdered: true,
                     showdescription: false,
-                    showchildren: true,
+                    display: 'dropdown',
                     children: [
                         {
                             name: 'question',
                             type: 'string',
                             multiple: true,
                             description: 'Pytanie',
+                            display: 'dropdown',
                             children: [
                                 {
                                     name: 'answer',
                                     type: 'text',
                                     multiple: false,
                                     description: 'Odpowiedź',
-                                    showchildren: false,
+                                    display: 'single',
                                 }],
                         }],
                 }

@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, Route, Routes, useParams } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import ObitEditElement from "./obit-edit-component";
 import { FetchInformationPost } from "../features/FetchInformationPost";
+import { User } from "../structs/user";
 
 interface IObit {
     id: string,
     name: string
 }
 
-export default function ObitsEditElement() {
-    const { token } = useParams();
+export default function ObitsEditElement({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [obits, setObits] = useState<IObit[]>([])
     const [isAdmin, setIsAdmin] = useState(false)
     const [name, setName] = useState('')
@@ -19,23 +19,35 @@ export default function ObitsEditElement() {
     useEffect(() => {
         (async function () {
             try {
-
-                if (token !== undefined) {
-                    setIsAdmin(((await FetchInformationGetAll('string', token, 'admin') as []).length == 0 ? false : true))
-                    setObits((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).map(p => ({ id: p.id, name: p.output })  ))
-                }
+                getParams({
+                    func: async (param: string | User) => {
+                        const token = param as string
+                        setIsAdmin(((await FetchInformationGetAll('string', token, 'admin') as []).length == 0 ? false : true))
+                        setObits((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).map(p => ({ id: p.id, name: p.output })  ))
+                    }, type: 'token', show: false
+                });
             } catch (e) {
                 console.error(e);
             }
         })();
-    }, [token])
+    }, [getParams])
 
     const removeObit = async (obit: IObit) => {
-        FetchInformationDelete(token ?? '', 'new_intention_admin', obit.id)
+        getParams({
+            func: async (param: string | User) => {
+                const token = param as string
+                FetchInformationDelete(token ?? '', 'new_intention_admin', obit.id)
+            }, type: 'token', show: false
+        });
     }
 
     const createObit = async () => {
-        await FetchInformationPost(token ?? '', 'new_intention_admin', ['obit'], name, [obits.length])
+        getParams({
+            func: async (param: string | User) => {
+                const token = param as string
+                await FetchInformationPost(token ?? '', 'new_intention_admin', ['obit'], name, [obits.length])
+            }, type: 'token', show: false
+        });
     }
 
     return (
@@ -61,7 +73,7 @@ export default function ObitsEditElement() {
             }
             <div className="clear" />
             <Routes>
-                <Route path="/:obit" element={<ObitEditElement />} />
+                <Route path="/:obit" element={<ObitEditElement getParams={getParams} />} />
             </Routes >
         </>
     );
