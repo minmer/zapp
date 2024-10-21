@@ -418,7 +418,10 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     editable.display == 'grid' ?
                         <>
                             {data.map((item) => (
-                                <div className='editable-grid' key={item.id}>
+                                <div className='editable-grid' key={item.id}
+                                    style={{
+                                        gridTemplateColumns: 'Auto' + editable.children?.map(() => ' Auto').reduce((a, v) => a + v)
+                                    } }>
                                     {<>
                                             <div className='editable-span' onDoubleClick={onClickData} onClick={() => { setExpanded(-1) }}>
                                                 {(editable.showdescription ? editable.description + ': ' : editable.break ?? '') + convertToString(item)}
