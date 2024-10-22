@@ -50,7 +50,7 @@ export default function MinisterPresenceSubpage({ getParams }: { getParams: ({ f
 
     return (
         <>
-            <MonthDateSelectionElement onSelectionChange={(date) => setDate(date)} />
+            <MonthDateSelectionElement onSelectionChange={(date) => {if (date) setDate(date) }} />
             <div className="minister-presence">
                 {masses.map(mass => (
                     <div>

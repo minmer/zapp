@@ -9,7 +9,7 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
     return (
 
         <>
-            <MonthDateSelectionElement onSelectionChange={(newDate) => setDate(newDate)} />
+            <MonthDateSelectionElement onSelectionChange={(newDate) => { if (newDate)  setDate(newDate) }} />
             {date ? 
                 <>
             <h2>Wydarzenia</h2>
