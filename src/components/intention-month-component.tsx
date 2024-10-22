@@ -45,7 +45,7 @@ export default function ItentionMonthElement() {
 
         <>
             <div className="content-intentionmonth">
-                <MonthDateSelectionElement onSelectionChange={(date) => setDate(date)} />
+                <MonthDateSelectionElement onSelectionChange={(date) => { if (date) setDate(date) }} />
                 <div className="day">
                     <div className="loadingcontainer" style=
                         {{
