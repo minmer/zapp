@@ -1,6 +1,6 @@
 ﻿import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import LoadingComponent from "./loading-component";
-import { FetchInformationGetAll, NumberOutput} from "../features/FetchInformationGet";
+import { FetchInformationGet, FetchInformationGetAll, NumberOutput} from "../features/FetchInformationGet";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchInformationPut } from "../features/FetchInformationPut";
@@ -37,59 +37,59 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             let tempData;
             switch (editable.type) {
                 case 'number': {
-                    tempData = await FetchInformationGetAll('double', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('double', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('double', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'string': {
-                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('string', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'text': {
-                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('string', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'checkbox': {
-                    tempData = await FetchInformationGetAll('bool', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('bool', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('bool', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'binary': {
-                    tempData = (await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]).map((output) => ({ id: output.id, output: (output.output as string).padEnd(editable.options?.length ?? 0, 'O'), order: output.order }))
+                    tempData = editable.preorderKey ? (await FetchInformationGet('string', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[]).map((output) => ({ id: output.id, output: (output.output as string).padEnd(editable.options?.length ?? 0, 'O'), order: output.order })) : (await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]).map((output) => ({ id: output.id, output: (output.output as string).padEnd(editable.options?.length ?? 0, 'O'), order: output.order }))
                     break;
                 }
                 case 'radio': {
-                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('string', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'select': {
-                    tempData = await FetchInformationGetAll('', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'color': {
-                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('string', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'date': {
-                    tempData = await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('datetime', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'datetime': {
-                    tempData = await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('datetime', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'time': {
-                    tempData = await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('datetime', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('datetime', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'tel': {
-                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('string', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'link': {
-                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('string', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 case 'email': {
-                    tempData = await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
+                    tempData = editable.preorderKey ? await FetchInformationGet('string', token, editable.name, editable.preorderMin ?? 0, editable.preorderMax ?? 0, editable.preorderKey) as unknown as IOutput[] : await FetchInformationGetAll('string', token, editable.name) as unknown as IOutput[]
                     break;
                 }
                 default: {
@@ -150,6 +150,13 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             setIsEditing(true)
     }
 
+    const onFocusData = async () => {
+        if (isEditable) {
+            setIsEditing(true)
+            setIsEditing(true)
+        }
+    }
+
     const orderChanged = async () => {
         getParams({
             func: async (token: string | User) => {
@@ -173,16 +180,19 @@ export default function EditableElement({ getParams, editable, onChange }: { get
         if (newData != undefined) {
             getParams({
                 func: async (param: string | User) => {
+                    setIsEditing(editable.multiple);
                     const token = param as string
                     setIsLoading(true)
-                    const id = await FetchInformationPost(token, editable.dbkey ?? '', [editable.name], newData, [data.length + 1])
+                    const id = await FetchInformationPost(token, editable.dbkey ?? '', [editable.name], newData, [
+                        editable.type == 'date' || editable.type == 'datetime' || editable.type == 'time' ? (newData as Date).getTime()
+                            : editable.type == 'number' ? newData as number
+                                : data.length + 1])
                     if (editable.isOrdered)
                         await FetchInformationPost(token, editable.dbkey ?? '', [id + 'order'], data.length + 1, [1])
                     setNewData(editable.type == 'checkbox' ? false : editable.type == 'date' || editable.type == 'datetime' || editable.type == 'time' ? undefined : '')
                     if (onChange != null)
                         onChange(data.find(item => item.id == id))
                     LoadData(token)
-                    setIsEditing(editable.multiple);
                 }, type: 'token', show: false
             })
         }
@@ -263,16 +273,16 @@ export default function EditableElement({ getParams, editable, onChange }: { get
     const renderInput = (item?: IOutput) => {
         switch (editable.type) {
             case 'number': {
-                return <input type='number' value={(item ? item.output : newData) as number} onChange={(e) => { onChangeData(e, item?.id) } } placeholder={editable.description} />
+                return <input autoFocus type='number' value={(item ? item.output : newData) as number} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'string': {
-                return <input type='text' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <input autoFocus type='text' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'text': {
-                return <textarea value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <textarea autoFocus value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'checkbox': {
-                return <input type='checkbox' checked={(item ? item.output : newData) as boolean == true} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <input autoFocus type='checkbox' checked={(item ? item.output : newData) as boolean == true} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'binary': {
                 if (item != null)
@@ -280,7 +290,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 return null
             }
             case 'radio': {
-                return <select onChange={(e) => { onChangeData(e, item?.id) }}>
+                return <select autoFocus onChange={(e) => { onChangeData(e, item?.id) }}>
                     {editable.options?.map((opt) => (<option>
                         {opt.label}            </option>))}
                     <option value="none" selected disabled hidden>Wybierz</option>
@@ -290,25 +300,25 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 return
             }
             case 'color': {
-                return <input type='color' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <input autoFocus type='color' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'date': {
-                return <input type="date" value={((item ? item.output : newData) as Date)?.getFullYear().toString().padStart(4, '0') + '-' + (((item ? item.output : newData) as Date)?.getMonth() + 1).toString().padStart(2, '0') + '-' + ((item ? item.output : newData) as Date)?.getDate().toString().padStart(2, '0')} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <input autoFocus type="date" value={((item ? item.output : newData) as Date)?.getFullYear().toString().padStart(4, '0') + '-' + (((item ? item.output : newData) as Date)?.getMonth() + 1).toString().padStart(2, '0') + '-' + ((item ? item.output : newData) as Date)?.getDate().toString().padStart(2, '0')} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'datetime': {
-                return <input type="datetime-local" value={((item ? item.output : newData) as Date)?.toLocaleString('sv')?.replace(' GMT', '')?.substring(0, 16)} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <input autoFocus type="datetime-local" value={((item ? item.output : newData) as Date)?.toLocaleString('sv')?.replace(' GMT', '')?.substring(0, 16)} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'time': {
-                return <input type="time" value={((item ? item.output : newData) as Date)?.getHours().toString().padStart(2, '0') + ':' + ((item ? item.output : newData) as Date)?.getMinutes().toString().padStart(2, '0')} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <input autoFocus type="time" value={((item ? item.output : newData) as Date)?.getHours().toString().padStart(2, '0') + ':' + ((item ? item.output : newData) as Date)?.getMinutes().toString().padStart(2, '0')} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'tel': {
-                return <input type='tel' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} pattern='[+][0-9]{11}' />
+                return <input autoFocus type='tel' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} pattern='[+][0-9]{11}' />
             }
             case 'link': {
-                return <input type='text' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <input autoFocus type='text' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             case 'email': {
-                return <input type='email' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
+                return <input autoFocus type='email' value={(item ? item.output : newData) as string} onChange={(e) => { onChangeData(e, item?.id) }} placeholder={editable.description} />
             }
             default: {
                 break;
@@ -371,7 +381,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
 
         <span className='editable'>
             {isEditable && data.length == 0 ?
-                <input type="button" value={editable.description} onClick={onClickData} />
+                <input type="button" value={editable.description} onClick={onClickData} onFocus={onFocusData} />
                 :
                 editable.display == 'dropdown' ?
                     <>
@@ -479,8 +489,11 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     </>
             }
             {isEditing ?
-                <div className='popup' onClick={(e) => { backgroundClicked(e) }}>
+                <div className='popup' onClick={(e) => { backgroundClicked(e) }} onKeyDown={(e) => { if (e.key == 'Escape') { setIsEditing(false); } }} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) { setIsEditing(false) } }} >
                     <div>
+                        <div>
+                            {editable.description}
+                        </div>
                         {data.map(item => (
                             <div key={item.id} className='editable-input'>
                                 {editable.isOrdered ? <EditableElement getParams={getParams} onChange={orderChanged} editable=
@@ -504,7 +517,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                         {editable.multiple || data.length == 0 ?
                             <div className='editable-input'>
                                 {renderInput()}
-                                <input type="button" value={data.length > 0 ? 'Dodaj' : 'Zapisz'} onClick={AddData} />
+                                <input type="button" value={data.length > 0 ? 'Dodaj' : 'Zapisz'} onClick={AddData} onFocus={AddData} />
                             </div>
                             : null
                         }

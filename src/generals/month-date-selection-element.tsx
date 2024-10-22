@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
 import { DaySpelling, MonthSpelling } from "../structs/consts";
-import { CompareDate, ResetTime } from "../components/helpers/DateComparer";
+import { AddDaysToDate, CompareDate, ResetTime } from "../components/helpers/DateComparer";
 
-export default function MonthDateSelectionElement({ onSelectionChange }: { onSelectionChange?: (t: Date) => void }) {
-    const [date, setDate] = useState(new Date(Date.now()))
+export default function MonthDateSelectionElement({ onSelectionChange, isRange = false }: { onSelectionChange?: (t: Date | undefined, s: Date | undefined, e: Date | undefined) => void, isRange?: boolean }) {
+    const [date, setDate] = useState<Date | undefined>()
     const [preMonth, setPreMonth] = useState([] as string[])
     const [month, setMonth] = useState([] as Date[])
     const [nextMonth, setNextMonth] = useState([] as string[])
     const [viewDate, setViewDate] = useState(new Date(Date.now()))
+    const [start, setStart] = useState<Date | undefined>()
+    const [end, setEnd] = useState<Date | undefined>()
+    const [duringSelection, setDuringSelection] = useState(false)
 
     useEffect(
         () => {
-            if (onSelectionChange != null)
-                onSelectionChange(ResetTime(date))
-        }, [date, onSelectionChange])
+            if (onSelectionChange != null && (date != undefined || start != undefined || end != undefined)) {
+
+                onSelectionChange(date ? ResetTime(date) : undefined, start ? ResetTime(start) : undefined, end ? AddDaysToDate(ResetTime(end), 1) : undefined)
+            }
+        }, [date, start, end, onSelectionChange])
 
     useEffect(
         () => {
@@ -46,7 +51,15 @@ export default function MonthDateSelectionElement({ onSelectionChange }: { onSel
     }
 
     const selectedDate = (newDate: Date) => {
-        setDate(newDate);
+        if (isRange) {
+            if (duringSelection)
+                setEnd(newDate)
+            else
+                setStart(newDate)
+            setDuringSelection(!duringSelection)
+        }
+        else
+            setDate(newDate);
     }
 
     return (
@@ -75,6 +88,10 @@ export default function MonthDateSelectionElement({ onSelectionChange }: { onSel
                         (
                             <input style={{
                                 backgroundColor: CompareDate(day, date) ? 'orange' : CompareDate(day, new Date(Date.now())) ? 'gray' : undefined,
+                                borderLeft: CompareDate(day, start) ? '20px orange solid' : '20px transparent solid',
+                                borderTop: CompareDate(day, start) ? '20px orange solid' : '20px transparent solid',
+                                borderRight: CompareDate(day, end) ? '20px orange solid' : '20px transparent solid',
+                                borderBottom: CompareDate(day, end) ? '20px orange solid' : '20px transparent solid',
                             }} key={index} type="button" value={day.getDate()} onClick={() => selectedDate(day)} />
                         ))
                     }

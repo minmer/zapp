@@ -1,129 +1,114 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MonthDateSelectionElement from "../../generals/month-date-selection-element";
 import EditableElement from "../../generals/editable-element";
 import { User } from "../../structs/user";
-import { LoadMasses, Mass } from "../../structs/mass";
 import { AddDaysToDate } from "../helpers/DateComparer";
-import { DateOutput, FetchInformationGet, FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
-import { FetchInformationDelete } from "../../features/FetchInformationDelete";
 export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [date, setDate] = useState<Date>()
-    const [masses, setMasses] = useState<Mass[]>([])
-    const [issues, setIssues] = useState<StringOutput[]>([])
-    const [appointments, setAppointments] = useState<{id: string, time: Date, type: string}[]>([])
-    useEffect(
-        () => {
-            if (date != null)
-                (async function () {
-                    getParams({
-                        func: async (param: string | User) => {
-                            const token = param as string
-                            setMasses(await LoadMasses(getParams, date, AddDaysToDate(date, 1)))
-                            console.log(date.getTime(), AddDaysToDate(date, 1).getTime())
-                            setIssues((await FetchInformationGet('string', token, 'new_zielonki_date', date.getTime(), AddDaysToDate(date, 1).getTime(), 'new_intention_admin')) as unknown as StringOutput[])
-                            setAppointments(await Promise.all(((await FetchInformationGet('datetime', token, 'new_zielonki_appointment', date.getTime(), AddDaysToDate(date, 1).getTime(), 'new_intention_admin')) as unknown as DateOutput[]).map(async item => ({id: item.id, time: item.output, type: ((await FetchInformationGetAll('string', token, item.id + 'description')) as unknown as StringOutput[])[0].output }))))
-                        }, type: 'token', show: false
-                    })
-                })();
-        }, [getParams, date])
-
-    const deleteByID = (id: string) => {
-        getParams({
-            func: async (param: string | User) => {
-                const token = param as string
-                FetchInformationDelete(token, 'new_intention_admin', id)
-            }, type: 'token', show: false
-        });
-    }
 
     return (
 
         <>
-            <MonthDateSelectionElement onSelectionChange={(date) => setDate(date)} />
+            <MonthDateSelectionElement onSelectionChange={(newDate) => setDate(newDate)} />
+            {date ? 
+                <>
             <h2>Wydarzenia</h2>
-            {issues.map(issue => (
-                <div >
-                    {issue.output}
-                    <input type='button' value='Kasuj' onClick={() => deleteByID(issue.id)} />
-                </div>
-            ))}
-            {masses.map(mass => (
-                <div key={mass.id} >
-                    <h2>{'Msza ' + mass.time.getHours() + ':' + mass.time.getMinutes().toString().padStart(2, '0')} <input type='button' value='Kasuj' onClick={() => deleteByID(mass.id)} /></h2>
-                    <div>
-                    <EditableElement getParams={getParams} editable={
+            <EditableElement getParams={getParams} editable={
+                {
+                    name: 'new_zielonki_date',
+                    type: 'string',
+                    multiple: true,
+                    dbkey: 'new_intention_admin',
+                    description: 'Wydarzenia',
+                    isOrdered: true,
+                    display: 'single',
+                    showdescription: true,
+                    break: '\n',
+                    preorderKey: 'new_intention_admin',
+                    preorderMin: date?.getTime(),
+                    preorderMax: AddDaysToDate(date, 1).getTime(),
+                }
+            } />
+            <h2>Msze</h2>
+            <EditableElement getParams={getParams} editable={
+                {
+                    name: 'new_zielonki_mass',
+                    type: 'datetime',
+                    multiple: true,
+                    dbkey: 'new_intention_admin',
+                    description: 'Msze',
+                    isOrdered: true,
+                    display: 'grid',
+                    showdescription: true,
+                    break: '\n',
+                    preorderKey: 'new_intention_viewer',
+                    preorderMin: date?.getTime(),
+                    preorderMax: AddDaysToDate(date, 1).getTime(),
+                    children: [
                         {
-                            name: mass.id + 'intention',
+                            name: 'intention',
                             type: 'string',
                             multiple: true,
                             dbkey: 'new_intention_admin',
                             description: 'Intencje',
-                                isOrdered: true,
-                                display: 'grid',
+                            isOrdered: true,
+                            display: 'grid',
                             showdescription: true,
-                                break: '\n',
-                                children: [
-                                    {
-                                        name: 'donation',
-                                        type: 'number',
-                                        multiple: false,
-                                        description: 'Ofiara',
-                                        isOrdered: false,
-                                        display: 'single',
-                                    },
-                                    {
-                                        name: 'donated',
-                                        type: 'radio',
-                                        multiple: false,
-                                        description: 'Przyjmujący',
-                                        isOrdered: false,
-                                        display: 'single',
-                                        options:
-                                            [
-                                                { value: '0', label: 'ks. Michał' },
-                                                { value: '1', label: 'ks. Proboszcz' },
-                                                { value: '2', label: 'ks. Leszek' },
-                                            ],
-                                    },
-                                    {
-                                        name: 'celebrator',
-                                        type: 'radio',
-                                        multiple: false,
-                                        description: 'Celebrans',
-                                        isOrdered: false,
-                                        display: 'single',
-                                        options:
-                                            [
-                                                { value: '1', label: 'ks. Proboszcz' },
-                                                { value: '2', label: 'ks. Leszek' },
-                                                { value: '0', label: 'ks. Michał' },
-                                                { value: '3', label: 'ks. Gość 1' },
-                                                { value: '4', label: 'ks. Gość 2' },
-                                                { value: '5', label: 'ks. Gość 3' },
-                                            ],
-                                    },],
-                        }
-                    } />
-                    </div>
-                    <div>
-                        <EditableElement getParams={getParams} editable={
-                            {
-                                name: mass.id + 'color',
-                                type: 'color',
-                                multiple: true,
-                                dbkey: 'new_intention_admin',
-                                description: 'Kolor',
-                                isOrdered: true,
-                                display: 'single',
-                                showdescription: true,
-                                break: ', ',
-                            }
-                        } />
-                    </div>
-                    <div>
-                    <EditableElement getParams={getParams} editable={
+                            break: '\n',
+                            children: [
+                                {
+                                    name: 'donation',
+                                    type: 'number',
+                                    multiple: false,
+                                    description: 'Ofiara',
+                                    isOrdered: false,
+                                    display: 'single',
+                                },
+                                {
+                                    name: 'donated',
+                                    type: 'radio',
+                                    multiple: false,
+                                    description: 'Przyjmujący',
+                                    isOrdered: false,
+                                    display: 'single',
+                                    options:
+                                        [
+                                            { value: '2', label: 'ks. Leszek' },
+                                            { value: '1', label: 'ks. Proboszcz' },
+                                            { value: '0', label: 'ks. Michał' },
+                                        ],
+                                },
+                                {
+                                    name: 'celebrator',
+                                    type: 'radio',
+                                    multiple: false,
+                                    description: 'Celebrans',
+                                    isOrdered: false,
+                                    display: 'single',
+                                    options:
+                                        [
+                                            { value: '5', label: 'ks. Gość 3' },
+                                            { value: '4', label: 'ks. Gość 2' },
+                                            { value: '3', label: 'ks. Gość 1' },
+                                            { value: '0', label: 'ks. Michał' },
+                                            { value: '2', label: 'ks. Leszek' },
+                                            { value: '1', label: 'ks. Proboszcz' },
+                                        ],
+                                },],
+                        },
                         {
-                            name: mass.id + 'description',
+                            name: 'color',
+                            type: 'color',
+                            multiple: true,
+                            dbkey: 'new_intention_admin',
+                            description: 'Kolor',
+                            isOrdered: true,
+                            display: 'single',
+                            showdescription: true,
+                            break: ', ',
+                        },
+                        {
+                            name: 'description',
                             type: 'string',
                             multiple: true,
                             dbkey: 'new_intention_admin',
@@ -132,13 +117,9 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                             showdescription: true,
                             display: 'single',
                             break: ', ',
-                        }
-                    } />
-                    </div>
-                    <div>
-                    <EditableElement getParams={getParams} editable={
+                        },
                         {
-                            name: mass.id + 'collective',
+                            name: 'collective',
                             type: 'checkbox',
                             dbkey: 'new_intention_admin',
                             description: 'Zbiorowa',
@@ -148,18 +129,40 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                             showdescription: true,
                             display: 'single',
                         }
-                    } />
-                    </div>
-                </div>
-            ))}
+                    ],
+                }} />
             <h2>Spotkania</h2>
-            {appointments.map(appointment => (
-                <div key={appointment.time.getTime() + appointment.type}>
-                    {appointment.time.getHours() + ':' + appointment.time.getMinutes().toString().padStart(2, '0') + ' ' + appointment.type}
-                    <input type='button' value='Kasuj' onClick={() => deleteByID(appointment.id)} />
-                </div>
-            ))}
-            
+            <EditableElement getParams={getParams} editable={
+                {
+                    name: 'new_zielonki_appointment',
+                    type: 'datetime',
+                    multiple: true,
+                    dbkey: 'new_intention_admin',
+                    description: 'Wydarzenia',
+                    isOrdered: true,
+                    display: 'grid',
+                    showdescription: true,
+                    break: '\n',
+                    preorderKey: 'new_intention_admin',
+                    preorderMin: date?.getTime(),
+                            preorderMax: AddDaysToDate(date, 1).getTime(),
+                            children:
+                                [
+                                    {
+                                        name: 'description',
+                                        type: 'string',
+                                        multiple: false,
+                                        dbkey: 'new_intention_admin',
+                                        description: 'Opis',
+                                        isOrdered: true,
+                                        showdescription: true,
+                                        display: 'single',
+                                    },
+                                ]
+                }
+            } />
+                    </>
+            : null}
         </>
     );
 }

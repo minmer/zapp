@@ -15,4 +15,7 @@ export interface Editable {
     break?: string,
     options?: LabeledValue[],
     children?: Editable[],
+    preorderMin?: number,
+    preorderMax?: number,
+    preorderKey?: string,
 }
