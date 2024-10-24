@@ -5,6 +5,7 @@ import { useState } from 'react';
 import LoginWidget from '../widgets/login-widget';
 import PrintConfirmationaimsSubpage from '../components/print/print-confirmationaims-subpage';
 import UsersWidget from '../widgets/users-widget';
+import PrintIntentionreportSubpage from '../components/print/print-intentionreport-subpage';
 export default function PrintPage() {
 
     const [login, setLogin] = useState(false);
@@ -44,6 +45,7 @@ export default function PrintPage() {
 
         <>
             <Routes>
+                <Route path="intentionreport/:start/:end" element={<PrintIntentionreportSubpage getParams={getParams} />} />
                 <Route path="intentionbook/:year" element={<PrintIntentionbookSubpage getParams={getParams} />} />
                 <Route path="confirmationaims" element={<PrintConfirmationaimsSubpage getParams={getParams} />} />
             </Routes>

@@ -20,7 +20,9 @@ export default function EditableElement({ getParams, editable, onChange }: { get
     const [newData, setNewData] = useState<number | string | boolean | Date>()
     const [isEditing, setIsEditing] = useState(false)
     const [isEditable, setIsEditable] = useState(false)
-    
+    const [isUnsafed, setIsUnsafed] = useState(false)
+    const [isAdding, setIsAdding] = useState(0)
+
 
     useEffect(
         () => {
@@ -30,7 +32,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             if (editable.type == 'binary') {
                 setNewData(''.padEnd(editable.options?.length ?? 0, 'O'))
             }
-        },[editable])
+        }, [editable])
 
     const LoadData = useCallback(async (token: string) => {
             setIsLoading(true)
@@ -130,7 +132,8 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             else
                 getParams({
                     func: async (token: string | User) => {
-                        LoadData(token as string)
+                        await LoadData(token as string)
+                        setIsUnsafed(false)
                     }, type: 'token', show: true
                 });
         }
@@ -151,10 +154,8 @@ export default function EditableElement({ getParams, editable, onChange }: { get
     }
 
     const onFocusData = async () => {
-        if (isEditable) {
+        if (isEditable)
             setIsEditing(true)
-            setIsEditing(true)
-        }
     }
 
     const orderChanged = async () => {
@@ -176,27 +177,6 @@ export default function EditableElement({ getParams, editable, onChange }: { get
         })
     }
 
-    const AddData = async () => {
-        if (newData != undefined) {
-            getParams({
-                func: async (param: string | User) => {
-                    setIsEditing(editable.multiple);
-                    const token = param as string
-                    setIsLoading(true)
-                    const id = await FetchInformationPost(token, editable.dbkey ?? '', [editable.name], newData, [
-                        editable.type == 'date' || editable.type == 'datetime' || editable.type == 'time' ? (newData as Date).getTime()
-                            : editable.type == 'number' ? newData as number
-                                : data.length + 1])
-                    if (editable.isOrdered)
-                        await FetchInformationPost(token, editable.dbkey ?? '', [id + 'order'], data.length + 1, [1])
-                    setNewData(editable.type == 'checkbox' ? false : editable.type == 'date' || editable.type == 'datetime' || editable.type == 'time' ? undefined : '')
-                    if (onChange != null)
-                        onChange(data.find(item => item.id == id))
-                    LoadData(token)
-                }, type: 'token', show: false
-            })
-        }
-    }
 
     const RefreshData = (id: string) => {
         getParams({
@@ -207,6 +187,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     onChange(data.find(item => item.id == id))
                 LoadData(token)
                 setIsEditing(editable.multiple);
+                setIsUnsafed(false)
             }, type: 'token', show: false
         })
     }
@@ -251,6 +232,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
     }
 
     const onChangeData = (e: ChangeEvent, id?: string) => {
+        setIsUnsafed(true)
         if (id) {
             const refreshedData = data.map(item => {
                 if (item.id == id)
@@ -376,6 +358,35 @@ export default function EditableElement({ getParams, editable, onChange }: { get
             }
         }
     }
+    useEffect(
+        () => {
+            if (isAdding == 1) {
+                setIsAdding(2)
+                if (newData == '')
+                    return
+                if (newData != undefined) {
+                    setNewData(editable.type == 'checkbox' ? false : editable.type == 'date' || editable.type == 'datetime' || editable.type == 'time' ? undefined : '')
+                    getParams({
+                        func: async (param: string | User) => {
+                            setIsEditing(editable.multiple);
+                            const token = param as string
+                            setIsLoading(true)
+                            const id = await FetchInformationPost(token, editable.dbkey ?? '', [editable.name], newData, [
+                                editable.type == 'date' || editable.type == 'datetime' || editable.type == 'time' ? (newData as Date).getTime()
+                                    : editable.type == 'number' ? newData as number
+                                        : data.length + 1])
+                            if (editable.isOrdered)
+                                await FetchInformationPost(token, editable.dbkey ?? '', [id + 'order'], data.length + 1, [1])
+                            if (onChange != null)
+                                onChange(data.find(item => item.id == id))
+                            LoadData(token)
+                            setIsUnsafed(false)
+                        }, type: 'token', show: false
+                    })
+                }
+                setIsAdding(0)
+            }
+        }, [isAdding, LoadData, editable, getParams, data, newData, onChange])
 
     return (
 
@@ -489,8 +500,12 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     </>
             }
             {isEditing ?
-                <div className='popup' onClick={(e) => { backgroundClicked(e) }} onKeyDown={(e) => { if (e.key == 'Escape') { setIsEditing(false); } }} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) { setIsEditing(false) } }} >
-                    <div>
+                <div className='popup' onClick={(e) => { backgroundClicked(e) }} onKeyDown={(e) => { if (e.key == 'Escape') { setIsEditing(false); } }} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) { setIsEditing(false) } }}
+                >
+                    <div
+                        style={{
+                            backgroundColor: isUnsafed ? '#fbe5dc' : 'white',
+                        }}>
                         <div>
                             {editable.description}
                         </div>
@@ -517,7 +532,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                         {editable.multiple || data.length == 0 ?
                             <div className='editable-input'>
                                 {renderInput()}
-                                <input type="button" value={data.length > 0 ? 'Dodaj' : 'Zapisz'} onClick={AddData} onFocus={AddData} />
+                                <input type="button" value={data.length > 0 ? 'Dodaj' : 'Zapisz'} onClick={() => setIsAdding(1)} onFocus={() => setIsAdding(1)} />
                             </div>
                             : null
                         }

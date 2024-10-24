@@ -886,3 +886,15 @@ h3 {
         height: 12mm;
     }
 
+.intentionreport {
+}
+
+    .intentionreport .intentionreportgrid {
+        display: grid;
+        grid-template-columns: 192px 256px 256px 160px 160px 160px;
+    }
+
+        .intentionreport .intentionreportgrid > div {
+            border: 1px black solid;
+            padding: 2px 6px;
+        }

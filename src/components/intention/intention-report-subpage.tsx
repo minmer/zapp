@@ -2,6 +2,7 @@ import { useState } from "react";
 import MonthDateSelectionElement from "../../generals/month-date-selection-element";
 import EditableElement from "../../generals/editable-element";
 import { User } from "../../structs/user";
+import { Link } from "react-router-dom";
 export default function IntentionReportSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [start, setStart] = useState<Date | undefined>()
     const [end, setEnd] = useState<Date | undefined>()
@@ -90,6 +91,11 @@ export default function IntentionReportSubpage({ getParams }: { getParams: ({ fu
                         }
                     ],
                 }} />
+            <Link to={'/print/intentionreport/' + start?.getTime() +'/' +  end?.getTime()}>
+                <h4>
+                    Przygotuj rozpiskę do wydruku
+                </h4>
+            </Link >
         </>
     );
 }
