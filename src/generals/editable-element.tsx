@@ -108,8 +108,11 @@ export default function EditableElement({ getParams, editable, onChange }: { get
     }, [editable])
 
     const backgroundClicked = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        if (e.currentTarget == e.target)
+        console.log('qwe0')
+        if (e.currentTarget == e.target) {
             setIsEditing(false);
+            console.log('qwe1')
+        }
     }
 
 
@@ -361,13 +364,17 @@ export default function EditableElement({ getParams, editable, onChange }: { get
     useEffect(
         () => {
             if (isAdding == 1) {
+                console.log('asd0')
                 setIsAdding(2)
-                if (newData == '')
+                if (newData?.toString() == '')
                     return
+                console.log('asd1')
                 if (newData != undefined) {
+                    console.log('asd2')
                     setNewData(editable.type == 'checkbox' ? false : editable.type == 'date' || editable.type == 'datetime' || editable.type == 'time' ? undefined : '')
                     getParams({
                         func: async (param: string | User) => {
+                            console.log('asd2')
                             setIsEditing(editable.multiple);
                             const token = param as string
                             setIsLoading(true)
@@ -381,7 +388,8 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                                 onChange(data.find(item => item.id == id))
                             LoadData(token)
                             setIsUnsafed(false)
-                        }, type: 'token', show: false
+                            console.log('asd3')
+                        }, type: 'token', show: true
                     })
                 }
                 setIsAdding(0)
@@ -500,7 +508,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     </>
             }
             {isEditing ?
-                <div className='popup' onClick={(e) => { backgroundClicked(e) }} onKeyDown={(e) => { if (e.key == 'Escape') { setIsEditing(false); } }} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) { setIsEditing(false) } }}
+                <div className='popup' tabIndex={-1} onClick={(e) => { backgroundClicked(e) }} onKeyDown={(e) => { if (e.key == 'Escape') { setIsEditing(false); } }} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) { setIsEditing(false) } }} 
                 >
                     <div
                         style={{

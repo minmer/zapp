@@ -6,22 +6,11 @@ import EditableElement from '../generals/editable-element';
 import TripDetailSubpage from '../components/trip/trip-detail-subpage';
 import { FetchInformationGetAll, StringOutput } from '../features/FetchInformationGet';
 export default function TripPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
-    const [user, setUser] = useState<User | null>()
     const [trips, setTrips] = useState<StringOutput[]>([])
 
     useEffect(() => {
         (async function () {
-            await getParams({
-                func: async () => {
-                getParams({
-                    func: async (param: string | User) => {
-                        setUser(param as User)
-                        setTrips((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', 'trip')) as unknown as StringOutput[])
-                    }, type: 'user', show: true
-                });
-
-                }, type: 'token', show: true
-            });
+            setTrips((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', 'trip')) as unknown as StringOutput[])
         }());
     }, [getParams])
 
@@ -35,7 +24,7 @@ export default function TripPage({ getParams }: { getParams: ({ func, type, show
                         <h1>Wycieczki</h1>
                     </div>
                 </div>
-                {user ? <div className="tabs">
+                <div className="tabs">
                     <ul>
                         {trips.map(trip => (
                             <li key={trip.id}>
@@ -44,7 +33,7 @@ export default function TripPage({ getParams }: { getParams: ({ func, type, show
                         ))}
                         <div className="clear"></div>
                     </ul>
-                </div> : null}
+                </div>
                 <EditableElement getParams={getParams} editable={
                     {
                         name: 'trip',

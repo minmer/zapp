@@ -26,19 +26,19 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
 
     useEffect(() => {
         (async function () {
+            setParts(((await Promise.all(((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', trip + 'part')) as unknown as StringOutput[]).map(async (item) =>
+            ({
+                order: (await FetchInformationGetAll('double', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', item.id + 'order') as unknown as NumberOutput[]).map(desc => desc.output)[0] as number,
+                header: item.output,
+                description: (await Promise.all((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', item.id + 'description') as unknown as StringOutput[]).map(async (sub) => ({ output: sub.output, order: (await FetchInformationGetAll('double', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', sub.id + 'order') as unknown as NumberOutput[]).map(desc => desc.output)[0] as number })))).sort((a, b) => a.order - b.order).map(desc => desc.output),
+                image: (await Promise.all((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', item.id + 'image') as unknown as StringOutput[]).map(async (sub) => ({ output: sub.output, order: (await FetchInformationGetAll('double', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', sub.id + 'order') as unknown as NumberOutput[]).map(desc => desc.output)[0] as number })))).sort((a, b) => a.order - b.order).map(desc => desc.output),
+                image_description: (await Promise.all((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', item.id + 'image_description') as unknown as StringOutput[]).map(async (sub) => ({ output: sub.output, order: (await FetchInformationGetAll('double', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', sub.id + 'order') as unknown as NumberOutput[]).map(desc => desc.output)[0] as number })))).sort((a, b) => a.order - b.order).map(desc => desc.output),
+            })))).sort((a, b) => a.order - b.order) as Part[]))
             await getParams({
                 func: async (param0: string | User) => {
                     getParams({
                         func: async (param1: string | User) => {
                             setUser(param1 as User)
-                            setParts(((await Promise.all(((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', trip + 'part')) as unknown as StringOutput[]).map(async (item) =>
-                            ({
-                                order: (await FetchInformationGetAll('double', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', item.id + 'order') as unknown as NumberOutput[]).map(desc => desc.output)[0] as number,
-                                header: item.output,
-                                description: (await Promise.all((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', item.id + 'description') as unknown as StringOutput[]).map(async (sub) => ({ output: sub.output, order: (await FetchInformationGetAll('double', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', sub.id + 'order') as unknown as NumberOutput[]).map(desc => desc.output)[0] as number })))).sort((a, b) => a.order - b.order).map(desc => desc.output),
-                                image: (await Promise.all((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', item.id + 'image') as unknown as StringOutput[]).map(async (sub) => ({ output: sub.output, order: (await FetchInformationGetAll('double', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', sub.id + 'order') as unknown as NumberOutput[]).map(desc => desc.output)[0] as number })))).sort((a, b) => a.order - b.order).map(desc => desc.output),
-                                image_description: (await Promise.all((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', item.id + 'image_description') as unknown as StringOutput[]).map(async (sub) => ({ output: sub.output, order: (await FetchInformationGetAll('double', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', sub.id + 'order') as unknown as NumberOutput[]).map(desc => desc.output)[0] as number })))).sort((a, b) => a.order - b.order).map(desc => desc.output),
-                            })))).sort((a, b) => a.order - b.order) as Part[]))
                             setSelections(await Promise.all(((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', trip + 'selection')) as unknown as StringOutput[]).map(async (item) =>
                             ({
                                 id: item.id,
@@ -47,10 +47,10 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
                                 submitted: (await Promise.all((await FetchInformationGetAll('string', 'zyWJot_ATD3c3ac7dzSer30IY2pldF5K06erG2tq_fc', item.id + 'submission') as unknown as StringOutput[]).map(async (sub) => sub.output == ((await FetchInformationGetAll('string', param0 as string, (param1 as User).user + 'name') as unknown as StringOutput[])[0]?.output + ' ' + (await FetchInformationGetAll('string', param0 as string, (param1 as User).user + 'surname') as unknown as StringOutput[])[0]?.output)))).find(submission => submission) != null,
                             } as Selection))) as Selection[])
                             setIsAdmin(await FetchOwnerGet(param0 as string, 'website_admin') != null)
-                        }, type: 'user', show: true
+                        }, type: 'user', show: false
                     });
 
-                }, type: 'token', show: true
+                }, type: 'token', show: false
             });
         }());
     }, [getParams, trip])
@@ -96,6 +96,7 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
                 </div>
             ))}
             <h2>Zgłoszenie</h2>
+            {user? 
             <div className='trip-submission'>
                 <div><span>Na co chcesz zgłosić następującą osobę: </span>
                 <EditableElement getParams={getParams} editable={
@@ -142,6 +143,12 @@ export default function TripDetailSubpage({ getParams }: { getParams: ({ func, t
                 </div>
             ))}
             </div>
+                :
+                <div>
+                    Aby się zapisać, musisz się zgłosić do ks. Michała (np. w zakrystii) lub napisać mail:
+                    <a href='mailto:mleczek_zielonki@outlook.com'>mleczek_zielonki@outlook.com</a>
+                    </div>
+            }
             <EditableElement getParams={getParams} editable={
                 {
                     name: trip + 'part',
