@@ -508,7 +508,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     </>
             }
             {isEditing ?
-                <div className='popup' tabIndex={-1} onClick={(e) => { backgroundClicked(e) }} onKeyDown={(e) => { if (e.key == 'Escape') { setIsEditing(false); } }} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) { setIsEditing(false) } }} 
+                <div className='popup' tabIndex={-1} onClick={(e) => { backgroundClicked(e) }} onKeyDown={(e) => { if (e.key == 'Escape') { setIsEditing(false); } }} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget) && editable.type != 'color') { setIsEditing(false) } }} 
                 >
                     <div
                         style={{
