@@ -370,18 +370,19 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     return
                 console.log('asd1')
                 if (newData != undefined) {
-                    console.log('asd2')
+                    console.log('Saving started')
                     setNewData(editable.type == 'checkbox' ? false : editable.type == 'date' || editable.type == 'datetime' || editable.type == 'time' ? undefined : '')
                     getParams({
                         func: async (param: string | User) => {
-                            console.log('asd2')
                             setIsEditing(editable.multiple);
                             const token = param as string
                             setIsLoading(true)
+                            console.log('Post for saving')
                             const id = await FetchInformationPost(token, editable.dbkey ?? '', [editable.name], newData, [
                                 editable.type == 'date' || editable.type == 'datetime' || editable.type == 'time' ? (newData as Date).getTime()
                                     : editable.type == 'number' ? newData as number
                                         : data.length + 1])
+                            console.log('Post saved')
                             if (editable.isOrdered)
                                 await FetchInformationPost(token, editable.dbkey ?? '', [id + 'order'], data.length + 1, [1])
                             if (onChange != null)
