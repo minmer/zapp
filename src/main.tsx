@@ -14,6 +14,7 @@ import HomePage from './pages/home-page';
 import ObitIntentionsPrint from './components/obit-intentions-print-component';
 import SignInPage from './pages/signin-page';
 import PrintPage from './pages/print-page';
+import { AuthProvider } from './generals/permission/AuthContext';
 
 
 const router = createHashRouter(
@@ -30,7 +31,9 @@ const router = createHashRouter(
             ));
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-        <RouterProvider router={router} />
-  </React.StrictMode>,
+    <AuthProvider>
+        <React.StrictMode>
+            <RouterProvider router={router} />
+        </React.StrictMode>,
+    </AuthProvider>
 )

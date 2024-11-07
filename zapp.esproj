@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\components\communion\chat\" />
+    <Folder Include="src\generals\permission\" />
     <Folder Include="src\routes\intention\" />
   </ItemGroup>
 </Project>

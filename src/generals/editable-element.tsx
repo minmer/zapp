@@ -212,17 +212,17 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                     return prev.substring(0, index) + ((e.target as HTMLInputElement).checked == true ? 'X' : 'O') + prev.substring(index+1)
                 }
             case 'radio':
-                return editable.options ? editable.options[(e.target as HTMLSelectElement).selectedIndex].value as string ?? editable.options[0].value ??'' : '';
+                return editable.options ? editable.options[(e.target as HTMLSelectElement).selectedIndex].value as string ?? editable.options[0].value.toString() ?? '' : '';
             case 'select':
                 return ''
             case 'color':
                 return (e.target as HTMLInputElement).value
             case 'date':
-                return new Date((e.target as HTMLInputElement).value)
+                return new Date((e.target as HTMLInputElement).value) 
             case 'datetime':
-                return new Date((e.target as HTMLInputElement).value)
+                return new Date((e.target as HTMLInputElement).value) 
             case 'time':
-                return new Date('0001-01-01T' + (e.target as HTMLInputElement).value)
+                return new Date('0001-01-01T' + (e.target as HTMLInputElement).value) 
             case 'tel':
                 return (e.target as HTMLInputElement).value
             case 'link':
