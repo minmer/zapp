@@ -1,5 +1,5 @@
 // src/context/AuthContext.tsx
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import LoginElement from "./LoginElement";
 
 interface AuthContextProps {
@@ -7,8 +7,7 @@ interface AuthContextProps {
     isAuthenticated: boolean;
     login: (username: string, password: string) => Promise<void>;
     logout: () => void;
-    fetchAuthState: () => Promise<void>;
-    triggerLoginPopup: () => void;  // To trigger login popup
+    triggerLoginPopup: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -28,16 +27,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const fetchAuthState = async () => {
         try {
-            const response = await fetch("https://zapp.hostingasp.pl/user/get", {
+            const response = await fetch("https://zapp.hostingasp.pl/newuser/", {
                 method: "GET",
                 credentials: "include",
             });
-            if (response.ok) {
-                const data = await response.json();
-                setUser(data.user);
+
+            if (response.status == 200) {
                 setIsAuthenticated(true);
             } else {
-                setUser(null);
                 setIsAuthenticated(false);
             }
         } catch (error) {
@@ -45,20 +42,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    useEffect(() => {
+        fetchAuthState();
+    }, []);
+
     const login = async (username: string, password: string) => {
         try {
-            const response = await fetch("https://zapp.hostingasp.pl/user/get", {
+            const response = await fetch("https://zapp.hostingasp.pl/newuser/login/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ User: username, Password: password }),
+                body: JSON.stringify({ user: username, password }),
                 credentials: "include",
             });
 
             if (response.ok) {
-                await fetchAuthState();
-                setShowLoginPopup(false); // Close popup on successful login
+                setIsAuthenticated(true);
+                setShowLoginPopup(false);
             } else {
                 console.error("Failed to log in");
             }
@@ -69,12 +70,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const logout = async () => {
         try {
-            await fetch("/api/user/logout", {
+            await fetch("https://zapp.hostingasp.pl/newuser/logout", {
                 method: "POST",
                 credentials: "include",
             });
             setUser(null);
-            setIsAuthenticated(false);
+            fetchAuthState();
         } catch (error) {
             console.error("Error during logout:", error);
         }
@@ -84,12 +85,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setShowLoginPopup(true);
     };
 
-    useEffect(() => {
-        fetchAuthState();
-    }, []);
-
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, login, logout, fetchAuthState, triggerLoginPopup }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, login, logout, triggerLoginPopup }}>
             {children}
             {showLoginPopup && <LoginElement onClose={() => setShowLoginPopup(false)} />}
         </AuthContext.Provider>

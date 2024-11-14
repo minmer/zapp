@@ -6,11 +6,11 @@ interface Option {
     value: string;
 }
 
-interface EditableSelectProps extends EditableType<string> {
-    options: Option[];  // Array of options for the dropdown
+interface EditableTypeSelectProps extends EditableType<string> {
+    options: Option[];
 }
 
-const EditableSelect: React.FC<EditableSelectProps> = React.memo(function EditableSelect({ value, setValue, options }) {
+const EditableTypeSelect: React.FC<EditableTypeSelectProps> = React.memo(function EditableSelect({ value, setValue, options }) {
     const handleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
         setValue(e.target.value);
     }, [setValue]);
@@ -26,4 +26,4 @@ const EditableSelect: React.FC<EditableSelectProps> = React.memo(function Editab
     );
 });
 
-export default EditableSelect;
+export default EditableTypeSelect;

@@ -1,6 +1,5 @@
 export async function FetchInformationDelete(key: string, id: string) {
-    console.log("Deleting information:", { key, id });
-    return await fetch('https://zapp.hostingasp.pl/information/', {
+    return await fetch('https://zapp.hostingasp.pl/newinformation/', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

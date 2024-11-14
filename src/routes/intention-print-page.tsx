@@ -78,7 +78,7 @@ export default function IntentionPage() {
                 }
                 const colorData = await FetchInformationGetAll('string', token ?? '', massData[j].id + 'color') as unknown as StringOutput[]
                 const collectiveData = await FetchInformationGetAll('bool', token ?? '', massData[j].id + 'collective') as unknown as BooleanOutput[]
-                if (collectiveData.length > 0) {
+                if (collectiveData[0].output) {
                     masses.push({
                         row: massRow,
                         time: new Date(massData[j].output),

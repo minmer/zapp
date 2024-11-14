@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { EditableType } from '../EditableType';
 
-interface EditableTextProps extends EditableType<string> { }
+interface EditableTypeTextProps extends EditableType<string> { }
 
-const EditableText = React.memo(function EditableText({ value, setValue }: EditableTextProps) {
+const EditableTypeText = React.memo(function EditableText({ value, setValue }: EditableTypeTextProps) {
     const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setValue(e.target.value);
     }, [setValue]);
@@ -11,4 +11,4 @@ const EditableText = React.memo(function EditableText({ value, setValue }: Edita
     return <textarea value={value} onChange={handleChange} />;
 });
 
-export default EditableText;
+export default EditableTypeText;

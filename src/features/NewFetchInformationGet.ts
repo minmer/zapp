@@ -1,17 +1,15 @@
 // Generic base interface for Output with a dynamic output type
-interface BaseOutput<T> {
+export interface BaseOutput<T> {
     id: string;
     output: T;
     preorder: number;
 }
 
-// Specific output types extending BaseOutput with respective types
 export type StringOutput = BaseOutput<string>;
 export type NumberOutput = BaseOutput<number>;
 export type DateOutput = BaseOutput<Date>;
 export type BooleanOutput = BaseOutput<boolean>;
 
-// FetchRequest interface that uses generics to specify the expected return type
 interface FetchRequest<T> {
     type: string;
     context: string;
@@ -25,58 +23,64 @@ interface FetchRequest<T> {
 const requestQueue: FetchRequest<any>[] = [];
 let isProcessingQueue = false;
 
-// Process queue in batches with a delay
 async function processQueue() {
-    if (isProcessingQueue || requestQueue.length === 0) return;
+    if (isProcessingQueue) return;
     isProcessingQueue = true;
 
-    while (requestQueue.length > 0) {
-        const batch = requestQueue.splice(0, 1); // Adjust batch size here if needed
-
-        for (const request of batch) {
-            try {
-                const result = await executeFetch(request);
-                request.resolve(result);
-            } catch (error) {
-                request.reject(error);
-            }
+    try {
+        while (requestQueue.length > 0) {
+            await executeFetchBatch();
         }
-        await new Promise(resolve => setTimeout(resolve, 100)); // Delay for batching
+    } finally {
+        isProcessingQueue = false;
     }
+} async function executeFetchBatch() {
+    const url = 'https://zapp.hostingasp.pl/newinformation/batch/';
 
-    isProcessingQueue = false;
+    const currentBatch = [...requestQueue];
+
+    const payload = currentBatch.map(request =>
+        request.key
+            ? {
+                Type: request.type,
+                Context: request.context,
+                Key: request.key,
+                PreorderMaximum: request.preordermaximum - 1000,
+                PreorderMinimum: request.preorderminimum - 1000,
+            }
+            : {
+                Type: request.type,
+                Context: request.context,
+            }
+    );
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(payload),
+        });
+
+        if (response.status === 200) {
+            const data = await response.json();
+            data.forEach((result: any, index: number) => {
+                const request = currentBatch[index];
+                request.resolve(parseData(request.type, result));
+            });
+        } else {
+            const errorText = await response.text();
+            console.error("Batch request failed with status:", response.status, "Response:", errorText);
+            throw new Error(`Batch request failed with status: ${response.status}`);
+        }
+    } catch (error) {
+        currentBatch.forEach(request => request.reject(error));
+    } finally {
+        requestQueue.splice(0, currentBatch.length);
+    }
 }
 
-// Execute a fetch request and return parsed data based on type
-async function executeFetch<T>(request: FetchRequest<BaseOutput<T>>): Promise<BaseOutput<T>[]> {
-    const { type, context, preorderminimum, preordermaximum, key } = request;
-    const url = 'https://zapp.hostingasp.pl/information/get/';
-    const payload = {
-        type,
-        context,
-        key,
-        preordermaximum: preordermaximum ? preordermaximum - 1000 : undefined,
-        preorderminimum: preorderminimum ? preorderminimum - 1000 : undefined,
-        databasekey: 'c5jY&V8;kXo!5HFy?)Z8g%qzgC',
-    };
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(payload),
-    });
-
-    if (response.status === 204) return [];
-    if (response.status === 200) {
-        const data = await response.json();
-        return parseData(type, data);
-    }
-
-    throw new Error(`Failed to fetch data for ${context}`);
-}
-
-// Generic parser function to handle data parsing based on type
 function parseData(type: string, data: any): BaseOutput<any>[] {
     switch (type) {
         case 'string':
@@ -97,7 +101,6 @@ function parseData(type: string, data: any): BaseOutput<any>[] {
     }
 }
 
-// Batched FetchInformationGetAll function using generics
 export function FetchInformationGetAll<T>(type: string, context: string): Promise<BaseOutput<T>[]> {
     return new Promise((resolve, reject) => {
         requestQueue.push({ type, context, resolve, reject });
@@ -105,7 +108,6 @@ export function FetchInformationGetAll<T>(type: string, context: string): Promis
     });
 }
 
-// Batched FetchInformationGet function with preorderminimum and preordermaximum
 export function FetchInformationGet<T>(
     type: string,
     context: string,

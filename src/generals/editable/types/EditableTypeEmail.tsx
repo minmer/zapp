@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { EditableType } from '../EditableType';
 
-interface EditableEmailProps extends EditableType<string> { }
+interface EditableTypeEmailProps extends EditableType<string> { }
 
-const EditableEmail: React.FC<EditableEmailProps> = React.memo(function EditableEmail({ value, setValue }) {
+const EditableTypeEmail: React.FC<EditableTypeEmailProps> = React.memo(function EditableEmail({ value, setValue }) {
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
     }, [setValue]);
@@ -11,4 +11,4 @@ const EditableEmail: React.FC<EditableEmailProps> = React.memo(function Editable
     return <input type="email" value={value} onChange={handleChange} />;
 });
 
-export default EditableEmail;
+export default EditableTypeEmail;

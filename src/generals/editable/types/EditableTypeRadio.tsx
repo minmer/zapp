@@ -6,11 +6,11 @@ interface Option {
     value: string;
 }
 
-interface EditableRadioProps extends EditableType<string> {
+interface EditableTypeRadioProps extends EditableType<string> {
     options: Option[];
 }
 
-const EditableRadio: React.FC<EditableRadioProps> = React.memo(function EditableRadio({ value, setValue, options }) {
+const EditableTypeRadio: React.FC<EditableTypeRadioProps> = React.memo(function EditableRadio({ value, setValue, options }) {
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
     }, [setValue]);
@@ -32,4 +32,4 @@ const EditableRadio: React.FC<EditableRadioProps> = React.memo(function Editable
     );
 });
 
-export default EditableRadio;
+export default EditableTypeRadio;

@@ -4,9 +4,9 @@ export async function FetchInformationPost(
     data: string | number | Date | boolean,
     preorder: number[]
 ): Promise<string> {
-    const res = await fetch('https://zapp.hostingasp.pl/information/', {
+    const res = await fetch('https://zapp.hostingasp.pl/newinformation/', {
         method: "POST",
-        credentials: 'include', // Include cookies for authentication
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             databasekey: "c5jY&V8;kXo!5HFy?)Z8g%qzgC",
@@ -18,7 +18,7 @@ export async function FetchInformationPost(
     const informationID = await res.json().then((resJson) => resJson.id);
 
     const contextRequests = context.map((ctx, i) =>
-        fetch('https://zapp.hostingasp.pl/context/', {
+        fetch('https://zapp.hostingasp.pl/newcontext/', {
             method: "POST",
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

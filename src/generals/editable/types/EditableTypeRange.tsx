@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import { EditableType } from '../EditableType';
 
-interface EditableRangeProps extends EditableType<number> {
+interface EditableTypeRangeProps extends EditableType<number> {
     min: number;
     max: number;
 }
 
-const EditableRange: React.FC<EditableRangeProps> = React.memo(function EditableRange({ value, setValue, min, max }) {
+const EditableTypeRange: React.FC<EditableTypeRangeProps> = React.memo(function EditableRange({ value, setValue, min, max }) {
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(Number(e.target.value));
     }, [setValue]);
@@ -22,4 +22,4 @@ const EditableRange: React.FC<EditableRangeProps> = React.memo(function Editable
     );
 });
 
-export default EditableRange;
+export default EditableTypeRange;

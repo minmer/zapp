@@ -108,10 +108,8 @@ export default function EditableElement({ getParams, editable, onChange }: { get
     }, [editable])
 
     const backgroundClicked = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        console.log('qwe0')
         if (e.currentTarget == e.target) {
             setIsEditing(false);
-            console.log('qwe1')
         }
     }
 

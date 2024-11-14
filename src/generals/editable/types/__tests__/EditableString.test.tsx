@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import EditableString from '../EditableString';
+import EditableString from '../EditableTypeString';
 
 describe('EditableString', () => {
     it('renders with the correct initial value', () => {

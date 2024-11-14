@@ -4,10 +4,12 @@ import { User } from "../structs/user";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
+import { useAuth } from '../generals/permission/AuthContext';
 export default function Root({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
     const [token, setToken] = useState<string | undefined>()
     const [isShown, setIsShown] = useState(false)
+    const { logout } = useAuth();
 
 
     useEffect(
@@ -39,12 +41,13 @@ export default function Root({ getParams }: { getParams: ({ func, type, show }: 
         })
     }
 
-    const logout = () => {
+    const onLogout = () => {
         toast.success('Użytkownik został wylogowany')
         setToken(undefined)
         localStorage.removeItem("token")
         localStorage.removeItem("user")
         localStorage.removeItem("userid")
+        logout();
     }
 
     return (
@@ -148,7 +151,7 @@ export default function Root({ getParams }: { getParams: ({ func, type, show }: 
                                             <span onClick={showLogin}>Zmień użytkownika</span>
                                         </li>
                                         <li>
-                                            <span onClick={logout}>Wyloguj się</span>
+                                            <span onClick={onLogout}>Wyloguj się</span>
                                         </li>
                                     </>
                                     :

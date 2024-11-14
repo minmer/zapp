@@ -8,6 +8,7 @@ import IntentionReportBookSubpage from '../components/intention/report/intention
 import { User } from '../structs/user';
 import IntentionEditSubpage from '../components/intention/intention-edit-subpage';
 import IntentionReportSubpage from '../components/intention/intention-report-subpage';
+import NewIntentionReportSubpage from '../components/intention/NewIntentionReportSubpage';
 export default function IntentionPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
 
@@ -46,6 +47,11 @@ export default function IntentionPage({ getParams }: { getParams: ({ func, type,
                         <li style={{
                             display: isAdmin ? 'block' : 'none',
                         }}>
+                            <Link to={`newreport`}>Nowe podsumowanie</Link>
+                        </li>
+                        <li style={{
+                            display: isAdmin ? 'block' : 'none',
+                        }}>
                             <Link to={`edit/-1`}>Edycja intencji</Link>
                         </li>
                         <div className="clear"></div>
@@ -55,6 +61,7 @@ export default function IntentionPage({ getParams }: { getParams: ({ func, type,
                     <Route path="week/:init_date" element={<IntentionWeekComponent/>} />
                     <Route path="month/:init_date" element={<IntentionMonthComponent />} />
                     <Route path="report" element={<IntentionReportSubpage getParams={getParams} />} />
+                    <Route path="newreport" element={<NewIntentionReportSubpage />} />
                     <Route path="report/book" element={<IntentionReportBookSubpage getParams={getParams} />} />
                     <Route path="edit/:init_date" element={<IntentionEditSubpage getParams={getParams} />} />
                 </Routes>

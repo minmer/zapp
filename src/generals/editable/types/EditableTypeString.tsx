@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { EditableType } from '../EditableType';
 
-interface EditableNumberProps extends EditableType<string> { }
+interface EditableTypeNumberProps extends EditableType<string> { }
 
-const EditableNumber = React.memo(function EditableNumber({ value, setValue }: EditableNumberProps) {
+const EditableTypeNumber = React.memo(function EditableNumber({ value, setValue }: EditableTypeNumberProps) {
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
     }, [setValue]);
@@ -11,4 +11,4 @@ const EditableNumber = React.memo(function EditableNumber({ value, setValue }: E
     return <input type="text" value={value} onChange={handleChange} />;
 })
 
-export default EditableNumber;
+export default EditableTypeNumber;

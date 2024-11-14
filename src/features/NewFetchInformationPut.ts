@@ -3,9 +3,9 @@ export async function FetchInformationPut(
     id: string,
     data: string | number | boolean | Date
 ) {
-    const response = await fetch('https://zapp.hostingasp.pl/information/', {
+    const response = await fetch('https://zapp.hostingasp.pl/newinformation/', {
         method: 'PUT',
-        credentials: 'include', // Include cookies for authentication
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             key,

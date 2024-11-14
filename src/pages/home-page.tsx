@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg'
+import EditableDisplaySingle from '../generals/editable/EditableDisplaySingle';
+import { Editable } from '../generals/editable/Editable';
+import { useAuth } from '../generals/permission/AuthContext';
 export default function HomePage() {
+    const { logout } = useAuth()
     return (
 
         <>
