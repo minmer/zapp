@@ -4,24 +4,28 @@ import { useAuth } from "../permission/AuthContext";
 import { BaseOutput } from "./Editable";
 import EditablePopup from "./EditablePopup";
 import { renderAsString } from "./EditableType";
+import EditableDisplay from "./EditableDisplay";
 
-interface EditableDisplayGridProps {
+interface EditableExpanderProps {
     editableProps: EditableProps;
 }
 
-const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps }) => {
+const EditableExpander: React.FC<EditableExpanderProps> = ({ editableProps }) => {
     const { isAuthenticated, triggerLoginPopup } = useAuth();
     const [editable, setEditable] = useState<Editable | null>(null);
     const [popupEditable, setPopupEditable] = useState<Editable | null>(null);
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<BaseOutput[]>([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<{ id: string; value: any } | null>(null);
     const [hasPermission, setHasPermission] = useState(false);
+    const [expanded, setExpanded] = useState<string | null>(null);
+    const clickTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
+        console.log(editable)
         if (!isAuthenticated) return;
-        const instance = new Editable(editableProps);
 
+        const instance = new Editable(editableProps);
         const handleDataChange = () => {
             setData([...instance.data]);
         };
@@ -32,7 +36,7 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
         (async () => {
             const permissionGranted = await instance.checkPermission();
             setHasPermission(permissionGranted);
-            await instance.fetchAllData();
+            await instance.fetchData();
         })();
 
         return () => {
@@ -40,12 +44,27 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
         };
     }, [editableProps, isAuthenticated]);
 
-    const handleDoubleClick = (id: string, value: any, renderedEditable: Editable) => {
+    const handleSingleClick = (id: string) => {
+        setExpanded(expanded === id ? null : id);
+    };
+
+    const handleDoubleClick = (id: string, value: any) => {
+        if (clickTimeoutRef.current) {
+            clearTimeout(clickTimeoutRef.current);
+            clickTimeoutRef.current = null;
+        }
+
         if (hasPermission) {
             setSelectedItem({ id, value });
-            setPopupEditable(renderedEditable);
+            setPopupEditable(editable);
             setIsPopupOpen(true);
         }
+    };
+
+    const handleClick = (id: string) => {
+        clickTimeoutRef.current = setTimeout(() => {
+            handleSingleClick(id);
+        }, 500);
     };
 
     const handleSave = async (id: string, newValue: any) => {
@@ -60,58 +79,39 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
     const openNewEntryPopup = (renderedEditable: Editable) => {
         setPopupEditable(renderedEditable);
         setSelectedItem(null);
-        console.log(renderedEditable)
         setIsPopupOpen(true);
     };
-
-    const renderGridItem = (item: BaseOutput, depth = 0, renderedEditable: Editable) => {
-        const rowSpan = calculateRowSpan(item);
-
-        return (
-            <>
-                <div
-                    key={item.id}
-                    className="grid-item"
-                    style={{
-                        gridColumn: depth + 1,
-                        gridRowEnd: `span ${rowSpan}`,
-                    }}
-                    onDoubleClick={() => handleDoubleClick(item.id, item.output, renderedEditable)}
-                >
-                    {renderAsString(renderedEditable.type, item.output, renderedEditable.options)}
-                </div>
-                {item.children && item.children.map((child, index) => (
-                    <>
-                        {child.data.length > 0 ? (
-                            child.data.map(dataEntry => renderGridItem(dataEntry, depth + index + 1, child))
-                        ) : child?.hasPermission && (
-                            <button
-                                className="new-entry-button"
-                                onClick={() => openNewEntryPopup(child)}
-                                onFocus={() => openNewEntryPopup(child)}
-                            >
-                                Dodaj wpis
-                            </button>
-                        )}
-                    </>
-                ))}
-            </>
-        );
-    };
-
-    function calculateRowSpan(item: BaseOutput): number {
-        if (!item.children || item.children.length === 0) return 1;
-        return item.children.reduce((total, child) => total + child.data.reduce((sum, data) => sum + calculateRowSpan(data), 0), 0);
-    }
 
     return (
         <div>
             <h3>{editable?.description}</h3>
             {isAuthenticated ? (
-                <div className="grid-container">
+                <div className="expandable-container">
                     {data.length > 0 ? (
-                        data.map(entry => renderGridItem(entry, 0, editable!))
-                    ) : editable?.hasPermission && (
+                        data.map(entry => 
+                            <div key={entry.id} style={{ marginLeft: "20px" }}>
+                                <div
+                                    className="expandable-item"
+                                    style={{ cursor: "pointer", borderBottom: "1px solid #ddd", padding: "8px" }}
+                                    onClick={() => handleClick(entry.id)}
+                                    onDoubleClick={() => handleDoubleClick(entry.id, entry.output)}
+                                >
+                                    <span style={{ fontWeight: expanded === entry.id ? "bold" : "normal" }}>
+                                        {expanded === entry.id ? "▼ " : "▶ "}
+                                        {renderAsString(editable.type, entry.output, editable.options)}
+                                    </span>
+                                </div>
+                                {expanded === entry.id && editable.children && editable.children.length > 0 && (
+                                    <div style={{ marginLeft: "20px", paddingLeft: "10px", borderLeft: "1px solid #ddd" }}>
+                                        {editable.children.map(child => (
+                                            <>
+                                                <EditableDisplay editableProps={{ ...child, name: entry.id + child.name }} />
+                                            </>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>)
+                    ) : (
                         <button
                             className="new-entry-button"
                             onClick={() => openNewEntryPopup(editable!)}
@@ -139,4 +139,4 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
     );
 };
 
-export default EditableDisplayGrid;
+export default EditableExpander;

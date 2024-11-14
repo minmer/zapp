@@ -81,12 +81,20 @@ export class Editable implements EditableProps {
 
     async checkPermission(): Promise<boolean> {
         const permissionService = PermissionService.getInstance();
+
         this.hasPermission = await permissionService.checkPermission(this.dbkey);
+
+        if (this.children && this.children.length > 0) {
+            await Promise.all(this.children.map(async (child) => {
+                await child.checkPermission();
+            }));
+        }
+
         this.notifyListeners();
         return this.hasPermission;
     }
 
-    async fetchData(): Promise<void> {
+    async fetchAllData(): Promise<void> {
         await this.fetchSelfData(this.name);
         if (this.children && this.children.length > 0) {
             await Promise.all(
@@ -95,6 +103,11 @@ export class Editable implements EditableProps {
                 })
             );
         }
+        this.notifyListeners();
+    }
+
+    async fetchData(): Promise<void> {
+        await this.fetchSelfData(this.name);
         this.notifyListeners();
     }
 
@@ -170,7 +183,7 @@ export class Editable implements EditableProps {
             for (const child of this.children) {
                 const childInstance = new Editable(child);
                 childInstance.name = `${parentId}${child.name}`;
-                await childInstance.fetchData();
+                await childInstance.fetchAllData();
                 childInstances.push(childInstance);
             }
             return childInstances;

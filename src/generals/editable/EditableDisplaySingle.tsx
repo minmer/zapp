@@ -5,7 +5,7 @@ import { useAuth } from "../permission/AuthContext";
 import EditablePopup from "./EditablePopup";
 
 interface EditableDisplaySingleProps {
-    editableProps: EditableProps & { description: string; multiple: boolean };
+    editableProps: EditableProps;
 }
 
 const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableProps }) => {
@@ -38,7 +38,7 @@ const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableP
         (async () => {
             const permissionGranted = await instance.checkPermission();
             setHasPermission(permissionGranted);
-            await instance.fetchData();
+            await instance.fetchAllData();
         })();
 
         return () => {
@@ -46,7 +46,7 @@ const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableP
         };
     }, [editableProps, isAuthenticated]);
 
-    const handleDoubleClick = () => {
+    const handleClick = () => {
         if (hasPermission) {
             setIsPopupOpen(true);
         } else {
@@ -58,7 +58,7 @@ const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableP
         <div>
             <h3>{editable?.description}</h3>
             {isAuthenticated ? (
-                <p onDoubleClick={handleDoubleClick}>{displayText}</p>
+                <p onDoubleClick={handleClick}>{displayText}</p>
             ) : (
                 <div>
                     <p>Zaloguj się, aby mieć dostęp do tych danych</p>
@@ -69,7 +69,7 @@ const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableP
                 <EditablePopup
                 editable={editable!}
                 onSave={async () => {
-                    await editable?.fetchData();
+                    await editable?.fetchAllData();
                     setDisplayText(editable?.data.map(item => item.output).join(", ") || "");
                 }}
                 onClose={() => setIsPopupOpen(false)}

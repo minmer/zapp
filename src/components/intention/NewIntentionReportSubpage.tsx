@@ -1,9 +1,7 @@
 import { useState } from "react";
 import MonthDateSelectionElement from "../../generals/month-date-selection-element";
-import EditableElement from "../../generals/editable-element";
-import { User } from "../../structs/user";
 import { Link } from "react-router-dom";
-import EditableDisplayGrid from "../../generals/editable/EditableDisplayGrid";
+import EditableDisplay from "../../generals/editable/EditableDisplay";
 export default function NewIntentionReportSubpage() {
     const [start, setStart] = useState<Date | undefined>()
     const [end, setEnd] = useState<Date | undefined>()
@@ -13,7 +11,7 @@ export default function NewIntentionReportSubpage() {
         <>
             <MonthDateSelectionElement onSelectionChange={(_, newStart, newEnd) => { if (newStart?.getTime() != start?.getTime()) setStart(newStart); if (newEnd?.getTime() != end?.getTime()) setEnd(newEnd); console.log(newStart); console.log(newEnd) }} isRange={true} />
             <h2>Msze</h2>
-            <EditableDisplayGrid editableProps={
+            <EditableDisplay editableProps={
                 {
                     name: 'new_zielonki_mass',
                     type: 'datetime',
@@ -21,7 +19,7 @@ export default function NewIntentionReportSubpage() {
                     dbkey: 'new_intention_admin',
                     description: 'Msze',
                     isOrdered: true,
-                    display: 'grid',
+                    display: 'expander',
                     showdescription: true,
                     break: '\n',
                     preorderKey: 'new_intention_viewer',
@@ -46,7 +44,7 @@ export default function NewIntentionReportSubpage() {
                             dbkey: 'new_intention_admin',
                             description: 'Intencje',
                             isOrdered: true,
-                            display: 'grid',
+                            display: 'expander',
                             showdescription: true,
                             break: '\n',
                             children: [
@@ -54,6 +52,7 @@ export default function NewIntentionReportSubpage() {
                                     name: 'donation',
                                     type: 'number',
                                     multiple: false,
+                                    dbkey: 'new_intention_admin',
                                     description: 'Ofiara',
                                     isOrdered: false,
                                     display: 'single',
@@ -62,6 +61,7 @@ export default function NewIntentionReportSubpage() {
                                     name: 'donated',
                                     type: 'radio',
                                     multiple: false,
+                                    dbkey: 'new_intention_admin',
                                     description: 'Przyjmujący',
                                     isOrdered: false,
                                     display: 'single',
@@ -76,6 +76,7 @@ export default function NewIntentionReportSubpage() {
                                     name: 'celebrator',
                                     type: 'radio',
                                     multiple: false,
+                                    dbkey: 'new_intention_admin',
                                     description: 'Celebrans',
                                     isOrdered: false,
                                     display: 'single',
