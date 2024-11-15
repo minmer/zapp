@@ -547,7 +547,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 </div> :
                 null
             }
-            {isLoading || true ? <div style=
+            {isLoading ? <div style=
                 {{
                     position: 'absolute',
                     left: 0,

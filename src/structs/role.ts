@@ -5,6 +5,12 @@ import { FetchOwnerGet } from "../features/FetchOwnerGet"
 import { FetchOwnerPost } from "../features/FetchOwnerPost"
 import { FetchOwnerPut, PutOwnerOutput } from "../features/FetchOwnerPut"
 import { User } from "./user"
+import { FetchInformationGetAll as NewFetchInformationGetAll } from "../features/NewFetchInformationGet"
+import { FetchInformationPost as NewFetchInformationPost } from "../features/NewFetchInformationPost"
+import { FetchInformationPut as NewFetchInformationPut } from "../features/NewFetchInformationPut"
+import { FetchOwnerGet as NewFetchOwnerGet } from "../features/NewFetchOwnerGet"
+import { FetchOwnerPost as NewFetchOwnerPost } from "../features/NewFetchOwnerPost"
+import { FetchOwnerPut as NewFetchOwnerPut } from "../features/NewFetchOwnerPut"
 
 export interface Role {
     roleID: string;
@@ -41,20 +47,20 @@ export async function CreateNewRole({
     await getParams({
         func: async (param: string | User) => {
             const token = param as string;
-            const roleID = await FetchInformationPost(token, user.id, [`${user.id}_role_${type}`], "Temp", [1]);
+            const roleID = await NewFetchInformationPost(user.id, [`${user.id}_role_${type}`], "Temp", [1]);
 
-            await FetchOwnerPost(token, roleID, user.id);
-            const ownerID = await FetchOwnerGet(token, roleID);
+            await NewFetchOwnerPost(roleID, user.id);
+            const ownerID = await NewFetchOwnerGet(roleID);
 
-            await FetchInformationPut(token, user.id, roleID, ownerID);
+            await NewFetchInformationPut(user.id, roleID, ownerID);
             await FetchOwnerPut(token, `${roleID}viewer`, roleID, admin, false, false, true);
 
-            await FetchInformationPost(token, roleID, [`${type}member`], roleID, [1]);
-            await FetchInformationPost(token, roleID, [`${roleID}user`], user.id, [1]);
-            await FetchInformationPost(token, roleID, [`${roleID}userowner`], user.user, [1]);
-            await FetchInformationPost(token, roleID, [`${roleID}owner`], ownerID, [1]);
+            await NewFetchInformationPost(roleID, [`${type}member`], roleID, [1]);
+            await NewFetchInformationPost(roleID, [`${roleID}user`], user.id, [1]);
+            await NewFetchInformationPost(roleID, [`${roleID}userowner`], user.user, [1]);
+            await NewFetchInformationPost(roleID, [`${roleID}owner`], ownerID, [1]);
 
-            role = { roleID, user, ownerID, type } as Role;
+            role = { roleID: roleID, user: user, ownerID:ownerID, type: type } as Role;
         },
         type: "token",
         show: false

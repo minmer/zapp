@@ -1,4 +1,4 @@
-export async function FetchOwnerGet(key: string): Promise<boolean> {
+export async function FetchOwnerGet(key: string): Promise<string| undefined> {
     const response = await fetch('https://zapp.hostingasp.pl/newowner/get/', {
         method: 'POST',
         credentials: 'include',
@@ -7,11 +7,11 @@ export async function FetchOwnerGet(key: string): Promise<boolean> {
     });
 
     if (response.status === 204) {
-        return false;
+        return null;
     }
 
     if (response.status === 200) {
-        return true;
+        return await response.text();
     }
 
     throw new Error(`Failed to fetch owner data: ${response.statusText}, ${key}`);
