@@ -1,5 +1,5 @@
 ﻿import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import LoadingComponent from "./loading-component";
+import LoadingComponent from "./LoadingComponent";
 import { FetchInformationGet, FetchInformationGetAll, NumberOutput} from "../features/FetchInformationGet";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchInformationPost } from "../features/FetchInformationPost";
@@ -547,7 +547,7 @@ export default function EditableElement({ getParams, editable, onChange }: { get
                 </div> :
                 null
             }
-            {isLoading ? <div style=
+            {isLoading || true ? <div style=
                 {{
                     position: 'absolute',
                     left: 0,

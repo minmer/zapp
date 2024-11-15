@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
+import { FetchInformationGetAll, StringOutput } from "../features/NewFetchInformationGet";
 import { CreateNewUser, CreateNewUserInformation, DeleteUser, User } from "../structs/user";
 import EditableElement from "../generals/editable-element";
 
@@ -15,7 +15,7 @@ export default function UsersWidget({ getParams, onSelected }: { getParams: ({ f
             getParams({
                 func: async (param: string | User) => {
                     const token = param as string
-                    setUsers((await FetchInformationGetAll('string', token, 'user') as StringOutput[]).map<User>((output) => ({ id: output.id, user: output.output })))
+                    setUsers((await FetchInformationGetAll('string', 'user') as StringOutput[]).map<User>((output) => ({ id: output.id, user: output.output })))
 
                 }, type: 'token', show: true
             })

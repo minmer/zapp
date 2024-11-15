@@ -1076,3 +1076,66 @@
     .new-entry-button:focus {
         outline: none;
     }
+.loadingwave {
+    margin: auto;
+    width: 33%;
+    height: 33%;
+    display: grid;
+    grid-template-rows: repeat(15, 1fr);
+    mask-image: linear-gradient(to bottom, transparent 0%, #00000044 30%, black 50%, #00000044 70%, transparent 100%);
+    min-height: 20px;
+    max-height: 200px;
+}
+
+.wave {
+    width: 100%;
+    height: auto;
+    max-height: 2px;
+    background: #888;
+    animation: wave 2s linear infinite;
+    transform: scale(0);
+    opacity: 0.05;
+}
+
+    .wave:nth-child(n) {
+        animation-delay: calc((var(--i, 0) - 1) * 0.1s);
+        opacity: calc(0.05 + var(--i) * 0.06);
+    }
+
+@keyframes wave {
+    0% {
+        transform: scale(0.01, 1);
+    }
+
+    12.5% {
+        transform: scale(0.35, 0.9);
+    }
+
+    25% {
+        transform: scale(0.65, 0.8);
+    }
+
+    37.5% {
+        transform: scale(0.87, 0.7);
+    }
+
+    45%, 55% {
+        transform: scale(1, 0.6);
+    }
+
+    62.5% {
+        transform: scale(0.87, 0.7);
+    }
+
+    75% {
+        transform: scale(0.65, 0.8);
+    }
+
+    87.5% {
+        transform: scale(0.35, 0.9);
+    }
+
+    100% {
+        transform: scale(0.01, 1);
+    }
+}

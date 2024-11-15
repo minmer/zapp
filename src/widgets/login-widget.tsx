@@ -1,5 +1,5 @@
 import { useState } from "react";
-import LoadingComponent from "../generals/loading-component";
+import LoadingComponent from "../generals/LoadingComponent";
 import { FetchUserGet, UserOutput } from "../features/FetchUserGet";
 
 export default function LoginWidget({onLogin }: {onLogin?: () => void }) {

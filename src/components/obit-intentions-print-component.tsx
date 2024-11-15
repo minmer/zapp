@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import logo from '../assets/logo.png'
-import LoadingComponent from "../generals/loading-component";
+import LoadingComponent from "../generals/LoadingComponent";
 
 interface IIntention {
     id: string,

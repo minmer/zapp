@@ -4,6 +4,7 @@ import { useAuth } from "../permission/AuthContext";
 import { BaseOutput } from "./Editable";
 import EditablePopup from "./EditablePopup";
 import { renderAsString } from "./EditableType";
+import LoadingComponent from "../LoadingComponent"; // Import the LoadingComponent
 
 interface EditableDisplayGridProps {
     editableProps: EditableProps;
@@ -17,6 +18,7 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<{ id: string; value: any } | null>(null);
     const [hasPermission, setHasPermission] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // Track loading state
 
     useEffect(() => {
         if (!isAuthenticated) return;
@@ -24,15 +26,18 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
 
         const handleDataChange = () => {
             setData([...instance.data]);
+            setIsLoading(false); // Stop loading once data is set
         };
 
         instance.addListener(handleDataChange);
         setEditable(instance);
 
         (async () => {
+            setIsLoading(true); // Start loading when fetching data
             const permissionGranted = await instance.checkPermission();
             setHasPermission(permissionGranted);
             await instance.fetchAllData();
+            setIsLoading(false); // Stop loading once fetch completes
         })();
 
         return () => {
@@ -60,7 +65,6 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
     const openNewEntryPopup = (renderedEditable: Editable) => {
         setPopupEditable(renderedEditable);
         setSelectedItem(null);
-        console.log(renderedEditable)
         setIsPopupOpen(true);
     };
 
@@ -108,19 +112,23 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
         <div>
             <h3>{editable?.description}</h3>
             {isAuthenticated ? (
-                <div className="grid-container">
-                    {data.length > 0 ? (
-                        data.map(entry => renderGridItem(entry, 0, editable!))
-                    ) : editable?.hasPermission && (
-                        <button
-                            className="new-entry-button"
-                            onClick={() => openNewEntryPopup(editable!)}
-                            onFocus={() => openNewEntryPopup(editable!)}
-                        >
-                            Dodaj wpis
-                        </button>
-                    )}
-                </div>
+                isLoading ? (
+                    <LoadingComponent /> // Display LoadingComponent while loading
+                ) : (
+                    <div className="grid-container">
+                        {data.length > 0 ? (
+                            data.map(entry => renderGridItem(entry, 0, editable!))
+                        ) : editable?.hasPermission && (
+                            <button
+                                className="new-entry-button"
+                                onClick={() => openNewEntryPopup(editable!)}
+                                onFocus={() => openNewEntryPopup(editable!)}
+                            >
+                                Dodaj wpis
+                            </button>
+                        )}
+                    </div>
+                )
             ) : (
                 <div>
                     <p>Zaloguj się, aby mieć dostęp do danych</p>

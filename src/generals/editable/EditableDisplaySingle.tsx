@@ -1,8 +1,9 @@
-// EditableDisplay.tsx
 import React, { useEffect, useState } from "react";
 import { Editable, EditableProps } from "./Editable";
 import { useAuth } from "../permission/AuthContext";
 import EditablePopup from "./EditablePopup";
+import LoadingComponent from "../LoadingComponent";
+import { renderAsString } from "./EditableType";
 
 interface EditableDisplaySingleProps {
     editableProps: EditableProps;
@@ -14,10 +15,12 @@ const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableP
     const [displayText, setDisplayText] = useState<string>("Ładuje...");
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [hasPermission, setHasPermission] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (!isAuthenticated) {
             setDisplayText("Zaloguj się, aby zobaczyć te dane");
+            setIsLoading(false);
             return;
         }
 
@@ -25,7 +28,7 @@ const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableP
 
         const handleDataChange = () => {
             if (instance.data.length > 0) {
-                const formattedData = instance.data.map(item => item.output).join(", ");
+                const formattedData = instance.data.map(item => renderAsString(editable.type, item, editable.options)).join(", ");
                 setDisplayText(formattedData);
             } else {
                 setDisplayText("Brak danych");
@@ -39,6 +42,7 @@ const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableP
             const permissionGranted = await instance.checkPermission();
             setHasPermission(permissionGranted);
             await instance.fetchAllData();
+            setIsLoading(false);
         })();
 
         return () => {
@@ -50,14 +54,16 @@ const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableP
         if (hasPermission) {
             setIsPopupOpen(true);
         } else {
-            setDisplayText(displayText == "Nie masz pozwolenie na edycję danych" ? editable?.data.map(item => item.output).join(", ") || "" : "Nie masz pozwolenie na edycję danych");
+            setDisplayText(displayText === "Nie masz pozwolenie na edycję danych" ? editable?.data.map(item => item.output).join(", ") || "" : "Nie masz pozwolenie na edycję danych");
         }
     };
 
     return (
         <div>
             <h3>{editable?.description}</h3>
-            {isAuthenticated ? (
+            {isLoading ? (
+                <LoadingComponent />
+            ) : isAuthenticated ? (
                 <p onDoubleClick={handleClick}>{displayText}</p>
             ) : (
                 <div>
@@ -67,13 +73,13 @@ const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableP
             )}
             {isPopupOpen && hasPermission &&
                 <EditablePopup
-                editable={editable!}
-                onSave={async () => {
-                    await editable?.fetchAllData();
-                    setDisplayText(editable?.data.map(item => item.output).join(", ") || "");
-                }}
-                onClose={() => setIsPopupOpen(false)}
-            />}
+                    editable={editable!}
+                    onSave={async () => {
+                        await editable?.fetchAllData();
+                        setDisplayText(editable?.data.map(item => item.output).join(", ") || "");
+                    }}
+                    onClose={() => setIsPopupOpen(false)}
+                />}
         </div>
     );
 };

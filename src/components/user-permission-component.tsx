@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
 import { useEffect, useState } from "react";
-import LoadingComponent from "../generals/loading-component";
+import LoadingComponent from "../generals/LoadingComponent";
 import { FetchOwnerPost } from "../features/FetchOwnerPost";
 import { FetchShareOwner } from "../features/FetchShareOwner";
 export default function UserPermissionElement({ permission }: { permission: string })  {

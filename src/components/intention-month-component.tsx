@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import LoadingComponent from "../generals/loading-component";
+import LoadingComponent from "../generals/LoadingComponent";
 import { FetchInformationGet, FetchInformationGetAll, DateOutput, StringOutput } from "../features/FetchInformationGet";
 import MonthDateSelectionElement from "../generals/month-date-selection-element";
 import { DaySpelling } from "../structs/consts";

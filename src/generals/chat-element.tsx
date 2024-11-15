@@ -4,7 +4,7 @@ import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchContextPost } from "../features/FetchContextPost";
 import { User } from "../structs/user";
-import LoadingComponent from "./loading-component";
+import LoadingComponent from "./LoadingComponent";
 
 export interface Message {
     id: string,

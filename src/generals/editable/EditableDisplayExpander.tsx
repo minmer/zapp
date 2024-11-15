@@ -5,6 +5,7 @@ import { BaseOutput } from "./Editable";
 import EditablePopup from "./EditablePopup";
 import { renderAsString } from "./EditableType";
 import EditableDisplay from "./EditableDisplay";
+import LoadingComponent from "../LoadingComponent";
 
 interface EditableExpanderProps {
     editableProps: EditableProps;
@@ -19,10 +20,10 @@ const EditableExpander: React.FC<EditableExpanderProps> = ({ editableProps }) =>
     const [selectedItem, setSelectedItem] = useState<{ id: string; value: any } | null>(null);
     const [hasPermission, setHasPermission] = useState(false);
     const [expanded, setExpanded] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
     const clickTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-        console.log(editable)
         if (!isAuthenticated) return;
 
         const instance = new Editable(editableProps);
@@ -34,9 +35,11 @@ const EditableExpander: React.FC<EditableExpanderProps> = ({ editableProps }) =>
         setEditable(instance);
 
         (async () => {
+            setLoading(true);
             const permissionGranted = await instance.checkPermission();
             setHasPermission(permissionGranted);
-            await instance.fetchData();
+            await instance.fetchAllData();
+            setLoading(false);
         })();
 
         return () => {
@@ -86,41 +89,43 @@ const EditableExpander: React.FC<EditableExpanderProps> = ({ editableProps }) =>
         <div>
             <h3>{editable?.description}</h3>
             {isAuthenticated ? (
-                <div className="expandable-container">
-                    {data.length > 0 ? (
-                        data.map(entry => 
-                            <div key={entry.id} style={{ marginLeft: "20px" }}>
-                                <div
-                                    className="expandable-item"
-                                    style={{ cursor: "pointer", borderBottom: "1px solid #ddd", padding: "8px" }}
-                                    onClick={() => handleClick(entry.id)}
-                                    onDoubleClick={() => handleDoubleClick(entry.id, entry.output)}
-                                >
-                                    <span style={{ fontWeight: expanded === entry.id ? "bold" : "normal" }}>
-                                        {expanded === entry.id ? "▼ " : "▶ "}
-                                        {renderAsString(editable.type, entry.output, editable.options)}
-                                    </span>
-                                </div>
-                                {expanded === entry.id && editable.children && editable.children.length > 0 && (
-                                    <div style={{ marginLeft: "20px", paddingLeft: "10px", borderLeft: "1px solid #ddd" }}>
-                                        {editable.children.map(child => (
-                                            <>
-                                                <EditableDisplay editableProps={{ ...child, name: entry.id + child.name }} />
-                                            </>
-                                        ))}
+                loading ?(
+                    <LoadingComponent />
+                ) : (
+                    <div className="expandable-container">
+                        {data.length > 0 ? (
+                            data.map(entry =>
+                                <div key={entry.id} style={{ marginLeft: "20px" }}>
+                                    <div
+                                        className="expandable-item"
+                                        style={{ cursor: "pointer", borderBottom: "1px solid #ddd", padding: "8px" }}
+                                        onClick={() => handleClick(entry.id)}
+                                        onDoubleClick={() => handleDoubleClick(entry.id, entry.output)}
+                                    >
+                                        <span style={{ fontWeight: expanded === entry.id ? "bold" : "normal" }}>
+                                            {expanded === entry.id ? "▼ " : "▶ "}
+                                            {renderAsString(editable.type, entry.output, editable.options)}
+                                        </span>
                                     </div>
-                                )}
-                            </div>)
-                    ) : (
-                        <button
-                            className="new-entry-button"
-                            onClick={() => openNewEntryPopup(editable!)}
-                            onFocus={() => openNewEntryPopup(editable!)}
-                        >
-                            Dodaj wpis
-                        </button>
-                    )}
-                </div>
+                                    {expanded === entry.id && editable.children && editable.children.length > 0 && (
+                                        <div style={{ marginLeft: "20px", paddingLeft: "10px", borderLeft: "1px solid #ddd" }}>
+                                            {editable.children.map(child => (
+                                                <EditableDisplay key={child.name} editableProps={{ ...child, name: entry.id + child.name }} />
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>)
+                        ) : (
+                            <button
+                                className="new-entry-button"
+                                onClick={() => openNewEntryPopup(editable!)}
+                                onFocus={() => openNewEntryPopup(editable!)}
+                            >
+                                Dodaj wpis
+                            </button>
+                        )}
+                    </div>
+                )
             ) : (
                 <div>
                     <p>Zaloguj się, aby mieć dostęp do danych</p>

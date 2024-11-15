@@ -4,7 +4,7 @@ import { FetchInformationGetAll, NumberOutput, StringOutput } from "../features/
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import OldEditableElement from "../temp/old-editable-element";
-import LoadingComponent from "../generals/loading-component";
+import LoadingComponent from "../generals/LoadingComponent";
 import { User } from "../structs/user";
 
 interface IValue {

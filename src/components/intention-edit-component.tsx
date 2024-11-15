@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import LoadingComponent from "../generals/loading-component";
+import LoadingComponent from "../generals/LoadingComponent";
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import OldEditableElement from "../temp/old-editable-element";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";

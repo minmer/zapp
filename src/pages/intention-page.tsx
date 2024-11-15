@@ -3,7 +3,7 @@ import baner from '../assets/intention.jpg'
 import IntentionWeekComponent from '../components/intention-week-component';
 import IntentionMonthComponent from '../components/intention-month-component';
 import { useEffect, useState } from 'react';
-import { FetchOwnerGet } from '../features/FetchOwnerGet';
+import { FetchOwnerGet } from '../features/NewFetchOwnerGet';
 import IntentionReportBookSubpage from '../components/intention/report/intention-report-book-subpage';
 import { User } from '../structs/user';
 import IntentionEditSubpage from '../components/intention/intention-edit-subpage';
@@ -13,9 +13,7 @@ export default function IntentionPage({ getParams }: { getParams: ({ func, type,
     const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
-        getParams({
-            func: async (param: unknown) => setIsAdmin((await FetchOwnerGet(param as string, 'intention_admin'))), type: 'token', show: false
-        });
+        (async function () { setIsAdmin((await FetchOwnerGet('intention_admin'))); })();
     }, [getParams])
 
     return (

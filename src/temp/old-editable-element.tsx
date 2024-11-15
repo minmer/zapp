@@ -1,5 +1,5 @@
 ﻿import { ChangeEvent, useEffect, useState } from "react";
-import LoadingComponent from "../generals/loading-component";
+import LoadingComponent from "../generals/LoadingComponent";
 import { FetchInformationGetAll} from "../features/FetchInformationGet";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchInformationPost } from "../features/FetchInformationPost";

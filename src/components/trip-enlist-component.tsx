@@ -7,7 +7,7 @@ import { FetchShareOwner } from "../features/FetchShareOwner";
 import { FetchOwnerPost } from "../features/FetchOwnerPost";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchReloadToken } from "../features/FetchReloadToken";
-import LoadingComponent from "../generals/loading-component";
+import LoadingComponent from "../generals/LoadingComponent";
 
 export interface IList {
     name: string,

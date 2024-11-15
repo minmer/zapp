@@ -4,7 +4,7 @@ import OldEditableElement from '../temp/old-editable-element';
 import { FetchUserPost } from '../features/FetchUserPost';
 import { useEffect, useState } from 'react';
 import { FetchUserGet, UserOutput } from '../features/FetchUserGet';
-import LoadingComponent from '../generals/loading-component';
+import LoadingComponent from '../generals/LoadingComponent';
 import { FetchInformationGetAll, StringOutput } from '../features/FetchInformationGet';
 export default function SignInPage() {
     const { entry, token } = useParams()
