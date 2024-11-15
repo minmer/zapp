@@ -13,7 +13,7 @@ export default function IntentionPage({ getParams }: { getParams: ({ func, type,
     const [isAdmin, setIsAdmin] = useState(false)
 
     useEffect(() => {
-        (async function () { setIsAdmin((await FetchOwnerGet('intention_admin'))); })();
+        (async function () { setIsAdmin((await FetchOwnerGet('intention_admin')) != null); })();
     }, [getParams])
 
     return (

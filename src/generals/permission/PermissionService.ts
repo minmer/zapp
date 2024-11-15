@@ -17,7 +17,7 @@ class PermissionService {
         if (key == null)
             this.hasEditPermission = false;
         if (this.hasEditPermission === null) {
-            this.hasEditPermission = await FetchOwnerGet(key);
+            this.hasEditPermission = (await FetchOwnerGet(key)) != null;
         }
         return this.hasEditPermission;
     }
