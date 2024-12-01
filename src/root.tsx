@@ -79,7 +79,7 @@ export default function Root() {
             <ToastContainer position='top-center' autoClose={2500} />
             {(selectUser || login) ? (<div className="popup" onClick={(e) => { if (e.currentTarget == e.target) { setLogin(false); setSelectUser(false) } }} >
                 <div>
-                    {login ? <LoginWidget onLogin={() => setLogin(false)} /> : selectUser ? <UsersWidget getParams={getParams} onSelected={() => setSelectUser(false)} /> : null}
+                    {login ? <LoginWidget onLogin={() => setLogin(false)} /> : selectUser ? <UsersWidget onSelected={() => setSelectUser(false)} /> : null}
                 </div>
             </div>): null}
         </>
