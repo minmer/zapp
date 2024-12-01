@@ -8,35 +8,21 @@ import CommunionRegisterSubpage from '../components/communion/communion-register
 import CommunionDetailSubpage from '../components/communion/communion-detail-subpage';
 import CommunionAdminSubpage from '../components/communion/communion-admin-subpage';
 import CommunionCheckingSubpage from '../components/communion/communion-checking-subpage';
+import { useAuth } from '../generals/permission/AuthContext';
 
 export default function CommunionPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>; type: string; show: boolean; }) => Promise<unknown>; }) {
     const [isAdmin, setIsAdmin] = useState(false);
-    const [isToken, setIsToken] = useState(false);
     const [isRole, setIsRole] = useState(false);
+    const { user, token } = useAuth();
     useEffect(() => {
         (async function () {
-            getParams({
-                func: async () => {
-                    setIsToken(true);
-                    getParams({
-                        func: async (param: string | User) => {
-                            const user = param as User;
-                            setIsRole(await GetRole({ type: 'communion', user: user }) != null);
-                            setIsAdmin(await GetAdminRole({ type: 'communion', user: user }) != null);
-                        }, type: 'user', show: false
-                    });
-                }, type: 'token', show: false
-            });
+                    setIsRole(await GetRole({ type: 'communion', user: user }) != null);
+                    setIsAdmin(await GetAdminRole({ type: 'communion', user: user }) != null);
         }());
-    }, [getParams]);
+    }, [user]);
     const register = () => {
         (async function () {
-            await getParams({
-                func: async (param: string | User) => {
-                    const user = param as User;
-                    console.log(await CreateAdminRole({ type: 'communion', user: user }));
-                }, type: 'user', show: true
-            });
+            console.log(await CreateAdminRole({ type: 'communion', user: user }));
         })();
     };
     return (
@@ -54,7 +40,7 @@ export default function CommunionPage({ getParams }: { getParams: ({ func, type,
                         <li>
                             <Link to={`overview`}>Ogólne informacje</Link>
                         </li>
-                        {isToken ? <li>
+                        {token ? <li>
                             <Link to={`register`}>Zapisy</Link>
                         </li> : null}
                         {isRole || isAdmin ? <li>

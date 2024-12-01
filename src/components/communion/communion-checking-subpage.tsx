@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Alias, GetAdminRole, GetAliases, Role } from "../../structs/role";
 import { User } from "../../structs/user";
-import EditableElement from "../../generals/editable-element";
+import EditableDisplay from "../../generals/editable/EditableDisplay";
+import { useAuth } from "../../generals/permission/AuthContext";
 
 export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
 
@@ -11,14 +12,10 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
     const [check3, setCheck3] = useState(false)
     const [role, setRole] = useState<Role | null>()
     const [aliases, setAliases] = useState<Alias[]>([])
+    const { user } = useAuth();
     useEffect(() => {
         (async function () {
-            getParams({
-                func: async (param: string | User) => {
-                    const user = param as User
-                    setRole(await GetAdminRole({ type: 'communion', user: user }))
-                }, type: 'user', show: false
-            });
+            setRole(await GetAdminRole({ type: 'communion', user: user }))
         }());
     }, [getParams])
 
@@ -42,7 +39,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
             {aliases?.map(alias => (
                 <div key={alias.id}>
                     <span className='alias'>
-                    <EditableElement getParams={getParams} editable={
+                        <EditableDisplay editableProps={
                         {
                             name: alias.id + 'alias',
                             type: 'text',
@@ -55,7 +52,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                     </span>
                     <span className='static-font'>
                         <span>:</span>
-                        {check0 ? <EditableElement getParams={getParams} editable={
+                        {check0 ? <EditableDisplay editableProps={
                             {
                                 name: alias.id + 'checking',
                                 type: 'binary',
@@ -84,7 +81,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                                 ],
                             }} />: null}
                     <span>-</span>
-                        {check1 ?<EditableElement getParams={getParams} editable={
+                        {check1 ? <EditableDisplay editableProps={
                         {
                             name: alias.id + 'praiers',
                             type: 'binary',
@@ -110,7 +107,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                             ],
                             }} />: null}
                     <span>-</span>
-                        {check2 ?<EditableElement getParams={getParams} editable={
+                        {check2 ? <EditableDisplay editableProps={
                         {
                             name: alias.id + 'lists',
                             type: 'binary',
@@ -132,8 +129,8 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
                             ],
                             }} />: null}
 
-                    <span>-</span>
-                        {check3 ?<EditableElement getParams={getParams} editable={
+                        <span>-</span>
+                        {check3 ? <EditableDisplay editableProps={
                         {
                             name: alias.id + 'questions',
                             type: 'binary',
