@@ -3,24 +3,15 @@ import { CreateRole, GetRole, Role } from "../../structs/role";
 import { ShareUserInformation, User } from "../../structs/user";
 import EditableElement from "../../generals/editable-element";
 import { FetchInformationDelete } from "../../features/FetchInformationDelete";
+import { useAuth } from "../../generals/permission/AuthContext";
 
 export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
-
-    const [selectedUser, setSelectedUser] = useState<User>()
+    const { user, selectUser } = useAuth();
     const [role, setRole] = useState<Role | null>()
-    useEffect(() => {
-        (async function () {
-            await getParams({
-                func: async (param: string | User) => {
-                    setSelectedUser(param as User)
-                }, type: 'user', show: true
-            })
-        })();
-    }, [getParams])
 
-    const selectUser = async () => {
-        if (selectedUser == null)
-            await getParams({ func: async (param: unknown) => setSelectedUser(param as User), type: 'user', show: true })
+    const selectedUser = async () => {
+        if (user == null)
+            await getParams({ func: async (param: unknown) => selectUser(param as User), type: 'user', show: true })
         else
             await getParams({ func: async () => { }, type: 'newuser', show: true })
     }
@@ -28,7 +19,7 @@ export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ 
     useEffect(() => {
         (async function () {
             if (selectedUser != null) {
-                setRole(await GetRole({ getParams: getParams, type: "communion", user: selectedUser }))
+                setRole(await GetRole({ type: "communion", user: user }))
             }
         }());
     }, [getParams, selectedUser])
@@ -36,13 +27,13 @@ export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ 
     const register = () => {
         (async function () {
             if (selectedUser != null) {
-                setRole(await CreateRole({ getParams: getParams, type: 'communion', user: selectedUser, admin: '4344984e-0583-4148-82f0-76a29651f47d' }))
-                ShareUserInformation({ getParams: getParams, name: 'name', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
-                ShareUserInformation({ getParams: getParams, name: 'surname', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
-                ShareUserInformation({ getParams: getParams, name: 'telefon', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
-                ShareUserInformation({ getParams: getParams, name: 'address', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
-                ShareUserInformation({ getParams: getParams, name: 'birthday', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
-                ShareUserInformation({ getParams: getParams, name: 'birthplace', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
+                setRole(await CreateRole({ type: 'communion', user: user, admin: '4344984e-0583-4148-82f0-76a29651f47d' }))
+                ShareUserInformation({ name: 'name', user: user, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
+                ShareUserInformation({ name: 'surname', user: user, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
+                ShareUserInformation({ name: 'telefon', user: user, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
+                ShareUserInformation({ name: 'address', user: user, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
+                ShareUserInformation({ name: 'birthday', user: user, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
+                ShareUserInformation({ name: 'birthplace', user: user, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
             }
         })();
     }
@@ -65,21 +56,21 @@ export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ 
                         <div onDoubleClick={removeAttendee}>Następująca osoba jest zgłoszona:</div>
                         <EditableElement getParams={getParams} editable={
                             {
-                                name: selectedUser.user + 'name',
+                                name: user.user + 'name',
                                 type: 'text',
                                 multiple: false,
                                 description: 'Imię',
-                                dbkey: selectedUser.id + 'name',
+                                dbkey: user.id + 'name',
                                 showdescription: false,
                                 display: 'single',
                             }} />
                         <span> </span>
                         <EditableElement getParams={getParams} editable={
                             {
-                                name: selectedUser.user + 'surname',
+                                name: user.user + 'surname',
                                 type: 'text',
                                 multiple: false,
-                                dbkey: selectedUser.id + 'surname',
+                                dbkey: user.id + 'surname',
                                 description: 'Nazwisko',
                                 showdescription: false,
                                 display: 'single',
@@ -90,33 +81,33 @@ export default function CommunionRegisterSubpage({ getParams }: { getParams: ({ 
                         <div onDoubleClick={removeAttendee}>Czy chcesz zgłosić następującą osobę do Komunii Świętej?</div>
                         <EditableElement getParams={getParams} editable={
                             {
-                                name: selectedUser.user + 'name',
+                                name: user.user + 'name',
                                 type: 'text',
                                 multiple: false,
                                 description: 'Imię',
-                                dbkey: selectedUser.id + 'name',
+                                dbkey: user.id + 'name',
                                 showdescription: false,
                                 display: 'single',
                             }} />
                         <span> </span>
                         <EditableElement getParams={getParams} editable={
                             {
-                                name: selectedUser.user + 'surname',
+                                name: user.user + 'surname',
                                 type: 'text',
                                 multiple: false,
-                                dbkey: selectedUser.id + 'surname',
+                                dbkey: user.id + 'surname',
                                 description: 'Nazwisko',
                                 showdescription: false,
                                 display: 'single',
                             }} />
                         <span><input type="button" className="button" value="Zgłoś użytkownika" onClick={register} /></span>
-                        <span><input type="button" className="button" value="Wybierz innego użytkownika" onClick={selectUser} /></span>
+                        <span><input type="button" className="button" value="Wybierz innego użytkownika" onClick={selectedUser} /></span>
                     </>
                 :
                 <>
                     <h3>Musisz założyć i wybrać użytkownika, aby móc go zgłosić do I Komunii Świętej.
                     </h3>
-                    <span><input type="button" className="button" value="Wybierz użytkownika" onClick={selectUser} /></span>
+                    <span><input type="button" className="button" value="Wybierz użytkownika" onClick={selectedUser} /></span>
                 </>
             }
         </>

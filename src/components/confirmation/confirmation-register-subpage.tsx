@@ -28,7 +28,7 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
     useEffect(() => {
         (async function () {
             if (selectedUser != null) {
-                setRole(await GetRole({ getParams: getParams, type: "confirmation", user: selectedUser }))
+                setRole(await GetRole({ type: "confirmation", user: selectedUser }))
             }
         }());
     }, [getParams, selectedUser])
@@ -36,13 +36,13 @@ export default function ConfirmationRegisterSubpage({ getParams }: { getParams: 
     const register = () => {
         (async function () {
             if (selectedUser != null) {
-                setRole(await CreateRole({ getParams: getParams, type: 'confirmation', user: selectedUser, admin: 'dc31033d-ffea-469c-9d2e-9091280ece69' }))
-                ShareUserInformation({ getParams: getParams, name: 'name', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
-                ShareUserInformation({ getParams: getParams, name: 'surname', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
-                ShareUserInformation({ getParams: getParams, name: 'telefon', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
-                ShareUserInformation({ getParams: getParams, name: 'address', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
-                ShareUserInformation({ getParams: getParams, name: 'birthday', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
-                ShareUserInformation({ getParams: getParams, name: 'birthplace', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
+                setRole(await CreateRole({ type: 'confirmation', user: selectedUser, admin: 'dc31033d-ffea-469c-9d2e-9091280ece69' }))
+                ShareUserInformation({ name: 'name', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
+                ShareUserInformation({ name: 'surname', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
+                ShareUserInformation({ name: 'telefon', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
+                ShareUserInformation({ name: 'address', user: selectedUser, sharingID: 'dc31033d-ffea-469c-9d2e-9091280ece69' })
+                ShareUserInformation({ name: 'birthday', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
+                ShareUserInformation({ name: 'birthplace', user: selectedUser, sharingID: '4344984e-0583-4148-82f0-76a29651f47d' })
             }
         })();
     }

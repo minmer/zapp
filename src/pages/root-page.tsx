@@ -7,8 +7,6 @@ export default function RootPage({ getParams }: { getParams: ({ func, type, show
 
         <>
             <div className="mosaic">
-                <UsersWidget getParams={getParams} />
-                <ChatWidget getParams={getParams} />
             </div>
         </>
     );

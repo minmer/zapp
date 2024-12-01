@@ -6,6 +6,7 @@ import MonthDateSelectionElement from "../../generals/month-date-selection-eleme
 import { AddDaysToDate } from "../helpers/DateComparer";
 import MinisterPresenceMassComponent from "./component/minister-presence-mass-component";
 import { FetchOwnerGet } from "../../features/FetchOwnerGet";
+import { useAuth } from "../../generals/permission/AuthContext";
 
 export interface AliasExt
 {
@@ -19,26 +20,18 @@ export default function MinisterPresenceSubpage({ getParams }: { getParams: ({ f
     const [adminRole, setAdminRole] = useState<Role | null>()
     const [aliases, setAliases] = useState<AliasExt[]>([])
     const [masses, setMasses] = useState<DateOutput[]>([])
+    const { user, token } = useAuth();
 
     useEffect(() => {
         (async function () {
-            await getParams({
-                func: async (user: User | string) => {
-                    await getParams({
-                        func: async (token: User | string) => {
-                            setAliases(await Promise.all((await GetAliases({ getParams: getParams, adminID: 'c2202738-d09e-4b3e-a7e2-56846e1dfb91' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0).map(async alias =>
-                            ({
-                                alias: alias,
-                                weeks: (await FetchInformationGetAll('string', token as string, alias.id + 'service') as StringOutput[]).map(serv => Number(serv.output)) as number[],
-                            } as AliasExt))))
-                        setRole(await GetRole({ getParams: getParams, type: "minister", user: user as User }))
-                        setAdminRole(await GetAdminRole({ getParams: getParams, type: "minister", user: user as User }))
-                            setPresence(await FetchOwnerGet(token as string, 'minister_presence'))
-                            console.log(await FetchOwnerGet(token as string, 'minister_presence'))
-                        }, type: 'token', show: false
-                    })
-                }, type: 'user', show: false
-            })
+                setAliases(await Promise.all((await GetAliases({ adminID: 'c2202738-d09e-4b3e-a7e2-56846e1dfb91' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0).map(async alias =>
+                ({
+                    alias: alias,
+                    weeks: (await FetchInformationGetAll('string', token as string, alias.id + 'service') as StringOutput[]).map(serv => Number(serv.output)) as number[],
+                } as AliasExt))))
+            setRole(await GetRole({ type: "minister", user: user as User }))
+            setAdminRole(await GetAdminRole({ type: "minister", user: user as User }))
+                setPresence(await FetchOwnerGet(token as string, 'minister_presence'))
         }());
     }, [getParams])
 

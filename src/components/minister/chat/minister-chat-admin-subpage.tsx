@@ -5,52 +5,39 @@ import ChatElement from "../../../generals/chat-element";
 import { FetchInformationGetAll, StringOutput } from "../../../features/FetchInformationGet";
 import { FetchOwnerGet } from "../../../features/FetchOwnerGet";
 import { FetchOwnerPut } from "../../../features/FetchOwnerPut";
+import { useAuth } from "../../../generals/permission/AuthContext";
 
 export default function MinisterChatAdminSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string| User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [role, setRole] = useState<Role | null>()
+    const { token, user } = useAuth();
 
     const [adminRole, setAdminRole] = useState<Role | null>()
     const [aliases, setAliases] = useState<Alias[]>([])
     const [alias, setAlias] = useState('')
     useEffect(() => {
         (async function () {
-            getParams({
-                func: async (param: string | User) => {
-                    const user = param as User
-                    setAdminRole(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }))
-                    setRole(await GetRole({ getParams: getParams, type: "minister", user: user as User }))
-                }, type: 'user', show: false
-            });
+            setAdminRole(await GetAdminRole({ type: 'minister', user: user }))
+            setRole(await GetRole({ type: "minister", user: user as User }))
         }());
-    }, [getParams])
+    }, [])
 
     useEffect(() => {
         (async function () {
-            setAliases((await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
+            setAliases((await GetAliases({ adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
         }());
-    }, [getParams, adminRole])
+    }, [adminRole])
     const selectAlias = (alias: Alias) => {
         if (adminRole != null)
             setRole({ roleID: alias.id, ownerID: alias.ownerID, user: adminRole.user, type: 'alias', isRegistered: true, alias: alias.alias })
     }
     const addViewer = async () => {
-        getParams({
-            func: async (param: string | User) => {
-                const token = param as string
-                const groupID = await FetchOwnerGet(token, role?.roleID + 'group')
-                console.log(groupID)
-                await FetchOwnerPut(token, role?.roleID + 'groupchannel_viewer', role?.roleID + 'groupchannel', groupID, false, false, true)
-            }, type: 'token', show: false
-        });
+        const groupID = await FetchOwnerGet(token, role?.roleID + 'group')
+        await FetchOwnerPut(token, role?.roleID + 'groupchannel_viewer', role?.roleID + 'groupchannel', groupID, false, false, true)
     }
     useEffect(() => {
         if (!adminRole && role)
             (async function () {
-                getParams({
-                    func: async (token: string | User) => {
                         setAlias((await FetchInformationGetAll('string', token as string, role ? (role.roleID + 'alias') : '') as StringOutput[])[0]?.id)
-                    }, type: 'token', show: false
-                });
             }());
     }, [getParams, adminRole, role])
 

@@ -16,7 +16,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
             getParams({
                 func: async (param: string | User) => {
                     const user = param as User
-                    setRole(await GetAdminRole({ getParams: getParams, type: 'communion', user: user }))
+                    setRole(await GetAdminRole({ type: 'communion', user: user }))
                 }, type: 'user', show: false
             });
         }());
@@ -24,7 +24,7 @@ export default function CommunionCheckingSubpage({ getParams }: { getParams: ({ 
 
     const loadAliases = async (filter: string) =>
     {
-        setAliases((await GetAliases({ getParams: getParams, adminID: role?.roleID ?? '' })).filter((alias) => alias.alias?.startsWith(filter)).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
+        setAliases((await GetAliases({ adminID: role?.roleID ?? '' })).filter((alias) => alias.alias?.startsWith(filter)).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
     }
 
     return (

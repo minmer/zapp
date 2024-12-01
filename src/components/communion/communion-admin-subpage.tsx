@@ -16,15 +16,15 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
             getParams({
                 func: async (param: string | User) => {
                     const user = param as User
-                    setRole(await GetAdminRole({ getParams: getParams, type: 'communion', user: user }))
-                    setMembers(await GetMembers({ getParams: getParams, type: 'communion' }))
+                    setRole(await GetAdminRole({ type: 'communion', user: user }))
+                    setMembers(await GetMembers({ type: 'communion' }))
                 }, type: 'user', show: false
             });
         }());
     }, [getParams])
     useEffect(() => {
         (async function () {
-            setAliases((await GetAliases({ getParams: getParams, adminID: role?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
+            setAliases((await GetAliases({ adminID: role?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
         }());
     }, [getParams, role])
 
@@ -32,14 +32,14 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
         getParams({
             func: async (param: string | User) => {
                 console.log(await FetchTokenGet(param as string))
-                setMembers(await GetMembers({ getParams: getParams, type: 'communion' }))
+                setMembers(await GetMembers({type: 'communion' }))
             }, type: 'token', show: false
         });
     }
 
     const addAlias = async () => {
         if (role != null) {
-            const alias = await RegisterAliasRole({ getParams: getParams, admin: role })
+            const alias = await RegisterAliasRole({ admin: role })
             if (alias != null)
                 setAliases([...aliases, alias])
         }
@@ -51,7 +51,7 @@ export default function CommunionAdminSubpage({ getParams }: { getParams: ({ fun
 
     const connectAlias = async (alias: Alias) => {
         if (selectedRole != null)
-            ConnectAliasRole({ getParams: getParams, role: selectedRole, alias: alias })
+            ConnectAliasRole({ role: selectedRole, alias: alias })
     }
 
     const deleteAlias = async (alias: Alias) => {

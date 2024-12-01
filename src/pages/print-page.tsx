@@ -23,12 +23,12 @@ export default function PrintPage() {
             const userID = localStorage.getItem("userid")
             if (user != null && userID != null) {
                 const userObj = { id: userID, user: user } as User
-                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'name' })
-                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'surname' })
-                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'telefon' })
-                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'address' })
-                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'birthday' })
-                await CreateNewUserInformation({ getParams: getParams, user: userObj, name: 'birthplace' })
+                await CreateNewUserInformation({ user: userObj, name: 'name' })
+                await CreateNewUserInformation({ user: userObj, name: 'surname' })
+                await CreateNewUserInformation({ user: userObj, name: 'telefon' })
+                await CreateNewUserInformation({ user: userObj, name: 'address' })
+                await CreateNewUserInformation({ user: userObj, name: 'birthday' })
+                await CreateNewUserInformation({ user: userObj, name: 'birthplace' })
                 return await func(userObj)
             }
             setSelectUser(selectUser || show)
@@ -51,7 +51,7 @@ export default function PrintPage() {
             </Routes>
             {(selectUser || login) ? (<div className="popup" onClick={(e) => { if (e.currentTarget == e.target) { setLogin(false); setSelectUser(false) } }} >
                 <div>
-                    {login ? <LoginWidget onLogin={() => setLogin(false)} /> : selectUser ? <UsersWidget getParams={getParams} onSelected={() => setSelectUser(false)} /> : null}
+                    {login ? <LoginWidget onLogin={() => setLogin(false)} /> : selectUser ? <UsersWidget onSelected={() => setSelectUser(false)} /> : null}
                 </div>
             </div>) : null}
         </>

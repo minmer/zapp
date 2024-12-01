@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { FetchInformationGetAll, StringOutput } from "../features/NewFetchInformationGet";
-import { CreateNewUser, CreateNewUserInformation, DeleteUser, User } from "../structs/user";
-import EditableDisplay from "../generals/editable/EditableDisplay";
+import { FetchInformationGetAll, StringOutput } from "../../features/NewFetchInformationGet";
+import { CreateNewUser, CreateNewUserInformation, DeleteUser, User } from "../../structs/user";
+import EditableDisplay from "../../generals/editable/EditableDisplay";
+import { useAuth } from "./AuthContext";
 
-export default function UsersWidget({ onSelected }: { onSelected?: () => void }) {
+export default function UserElement({ onSelected }: { onSelected?: () => void }) {
+    const { user, selectUser } = useAuth()
     const [users, setUsers] = useState<User[]>([])
-    const [selectedUser, setSelectedUser] = useState<User>()
 
-    useEffect(() => {
-    }, [])
     useEffect(
         () => {
             (async function () {
+                setUsers((await FetchInformationGetAll('string', 'user') as StringOutput[]).map<User>((output) => ({ id: output.id, user: output.output, roles: [] })))
             })();
         }, [])
 
@@ -26,14 +26,6 @@ export default function UsersWidget({ onSelected }: { onSelected?: () => void })
         setUsers([...users, user])
     }
 
-    const selectUser = (user: User) => {
-        setSelectedUser(user)
-        localStorage.setItem("user", user.user)
-        localStorage.setItem("userid", user.id)
-        if (onSelected != null)
-            onSelected()
-    }
-
     let deleteCount = 0;
 
     const deleteUser = (user: User) => {
@@ -43,13 +35,14 @@ export default function UsersWidget({ onSelected }: { onSelected?: () => void })
     }
 
     return (
-        <div className="user-widget">
+        <div className="modal-overlay">
+            <div className="modal-content">
             {
-                users.map((user) =>
+                users.map((singleuser) =>
 
-                    <div key={user.id} style={
+                    <div key={singleuser.id} style={
                         {
-                            background: user.id == selectedUser?.id ? "#ff4f004f" : "transparent",
+                            background: singleuser.id == user?.id ? "#ff4f004f" : "transparent",
                             padding: '12px',
                             borderRadius: '12px',
                             border: '1px solid',
@@ -57,31 +50,32 @@ export default function UsersWidget({ onSelected }: { onSelected?: () => void })
                             <div style={{ display: 'inline-block' }}>
                                 <EditableDisplay editableProps={
                                     {
-                                        name: user.user + 'name',
-                                        type: 'text',
+                                        name: singleuser.user + 'name',
+                                        type: 'string',
                                         multiple: false,
                                         description: 'Imię',
-                                        dbkey: user.id + 'name',
+                                        dbkey: singleuser.id + 'name',
                                         showdescription: false,
                                         display: 'single',
                                     }} />
                                 <span> </span>
                                 <EditableDisplay editableProps={
                                     {
-                                        name: user.user + 'surname',
-                                        type: 'text',
+                                        name: singleuser.user + 'surname',
+                                        type: 'string',
                                         multiple: false,
-                                        dbkey: user.id + 'surname',
+                                        dbkey: singleuser.id + 'surname',
                                         description: 'Nazwisko',
                                         showdescription: false,
                                         display: 'single',
                                     }} />
-                                <span><input type='button' value='wybierz' onClick={() => selectUser(user)} onDoubleClick={() => deleteUser(user)} /></span>
+                                <span><input type='button' value='wybierz' onClick={() => { selectUser(singleuser); onSelected(); }} onDoubleClick={() => deleteUser(singleuser)} /></span>
                             </div>
                         }
                     </div>
                 )}
-            <span><input type="button" value="Stwórz nową osobę" onClick={createNewUser} /></span>
+                    <span><input type="button" value="Stwórz nową osobę" onClick={createNewUser} /></span>
+            </div>
         </div>
     );
 }

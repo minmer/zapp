@@ -21,8 +21,8 @@ export default function CommunionPage({ getParams }: { getParams: ({ func, type,
                     getParams({
                         func: async (param: string | User) => {
                             const user = param as User;
-                            setIsRole(await GetRole({ getParams: getParams, type: 'communion', user: user }) != null);
-                            setIsAdmin(await GetAdminRole({ getParams: getParams, type: 'communion', user: user }) != null);
+                            setIsRole(await GetRole({ type: 'communion', user: user }) != null);
+                            setIsAdmin(await GetAdminRole({ type: 'communion', user: user }) != null);
                         }, type: 'user', show: false
                     });
                 }, type: 'token', show: false
@@ -34,7 +34,7 @@ export default function CommunionPage({ getParams }: { getParams: ({ func, type,
             await getParams({
                 func: async (param: string | User) => {
                     const user = param as User;
-                    console.log(await CreateAdminRole({ getParams: getParams, type: 'communion', user: user }));
+                    console.log(await CreateAdminRole({ type: 'communion', user: user }));
                 }, type: 'user', show: true
             });
         })();

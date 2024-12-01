@@ -23,7 +23,7 @@ export default function Root({ getParams }: { getParams: ({ func, type, show }: 
                         let user = { id: localStorage.getItem("userid"), user: localStorage.getItem("user") } as User
                         if (user.id)
                             return toast.success('Użytkownik jest wybrany')
-                        user = (await FetchInformationGetAll('string', newToken, 'user') as StringOutput[]).map<User>((output) => ({ id: output.id, user: output.output }))[0]
+                        user = (await FetchInformationGetAll('string', newToken, 'user') as StringOutput[]).map<User>((output) => ({ id: output.id, user: output.output, roles: [] }))[0]
                         if (!user.id)
                             return toast.dismiss('Żadna osoba nie jest wybrana')
                         localStorage.setItem("userid", user.id)

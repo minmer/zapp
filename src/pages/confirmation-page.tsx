@@ -9,35 +9,34 @@ import { User } from '../structs/user';
 import { CreateAdminRole, GetAdminRole, GetRole } from '../structs/role';
 import ConfirmationPlanSubpage from '../components/confirmation/confirmation-plan-subpage';
 import ConfirmationChatSubpage from '../components/confirmation/confirmation-chat-subpage';
+import { useAuth } from '../generals/permission/AuthContext';
 export default function ConfirmationPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
-    const [isToken, setIsToken] = useState(false)
     const [isRole, setIsRole] = useState(false)
+    const { triggerLoginPopup, triggerUserPopup, isAuthenticated, user, logout } = useAuth()
     useEffect(() => {
         (async function () {
-            getParams({
-                func: async () => {
-                    setIsToken(true)
-                    getParams({
-                        func: async (param: string | User) => {
-                            const user = param as User
-                            setIsRole(await GetRole({ getParams: getParams, type: 'confirmation', user: user }) != null)
-                            setIsAdmin(await GetAdminRole({ getParams: getParams, type: 'confirmation', user: user }) != null)
-                        }, type: 'user', show: false
-                    });
-                }, type: 'token', show: false
-            });
-        }());
-    }, [getParams])
+            if (user != null) {
+                setIsRole(await GetRole({ type: 'confirmation', user: user }) != null)
+                setIsAdmin(await GetAdminRole({ type: 'confirmation', user: user }) != null)
+            }
+        })();
+    }, [getParams, user])
     const register = () => {
         (async function () {
             await getParams({
                 func: async (param: string | User) => {
                     const user = param as User;
-                    console.log(await CreateAdminRole({ getParams: getParams, type: 'confirmation', user: user }));
+                    console.log(await CreateAdminRole({ type: 'confirmation', user: user }));
                 }, type: 'user', show: true
             });
         })();
+    };
+    const selectUser = () => {
+        if (!isAuthenticated)
+            triggerLoginPopup();
+        if (!user)
+            triggerUserPopup();
     };
 
     return (
@@ -54,7 +53,7 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                         <li>
                             <Link to={`overview`}>Ogólne informacje</Link>
                         </li>
-                        {isToken ? <li>
+                        {user && !(isRole || isAdmin) ? <li>
                             <Link to={`register`}>Zapisy</Link>
                         </li> : null}
                         {isRole || isAdmin ? <li>
@@ -63,11 +62,17 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                         {isRole || isAdmin ? <li>
                             <Link to={`plan/-`}>Katechumenat</Link>
                         </li> : null}
-                        {isRole || isAdmin ? <li>
+                        {/*isRole || isAdmin ? <li>
                             <Link to={`chat`}>Chat</Link>
-                        </li> : null}
+                        </li> : null*/}
                         {isAdmin ? <li>
                             <Link to={`admin`}>Admin</Link>
+                        </li> : null}
+                        {!(isRole || isAdmin) ? <li>
+                            <a onClick={selectUser}>Zaloguj</a>
+                        </li> : null}
+                        {isRole || isAdmin ? <li>
+                            <a onClick={logout}>Wyloguj</a>
                         </li> : null}
                         <div className="clear"></div>
                     </ul>
@@ -75,19 +80,13 @@ export default function ConfirmationPage({ getParams }: { getParams: ({ func, ty
                 <Routes>
                     <Route path="overview" element={<ConfirmationOverviewSubpage getParams={getParams} />} />
                     <Route path="register" element={<ConfirmationRegisterSubpage getParams={getParams} />} />
-                    <Route path="detail/:role_id" element={<ConfirmationDetailSubpage getParams={getParams} />} />
+                    <Route path="detail/:role_id" element={<ConfirmationDetailSubpage />} />
                     <Route path="plan/:role_id" element={<ConfirmationPlanSubpage getParams={getParams} />} />
                     <Route path="chat/*" element={<ConfirmationChatSubpage getParams={getParams} />} />
-                    <Route path="admin" element={<ConfirmationAdminSubpage getParams={getParams} />} />
+                    <Route path="admin" element={<ConfirmationAdminSubpage />} />
                 </Routes>
                 <div className="description">
-                    <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
-                    <ul>
-                        <li>Zgłoszenie do Bierzmowania</li>
-                        <li>Sprawdzenie potrzebnych dokumentów do Bierzmowani</li>
-                        <li>Sprawdzenie wszystkich terminów spotkań</li>
-                        <li onDoubleClick={register}>Kontakt z kapłanem w sprawie bierzmowania</li>
-                    </ul>
+                    <p>Aby móc korzystać ze strony internetowej należy się zalogować.</p>
                 </div>
             </div>
         </>

@@ -1,31 +1,28 @@
 import { useEffect, useState } from "react";
 import { Alias, GetAdminRole, GetAliases, GetRole, Role } from "../../structs/role";
 import { User } from "../../structs/user";
-import { FetchOwnerGet } from "../../features/FetchOwnerGet";
+import { FetchOwnerGet } from "../../features/NewFetchOwnerGet";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
-import EditableElement from "../../generals/editable-element";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import EditableDisplay from "../../generals/editable/EditableDisplay";
+import { useAuth } from "../../generals/permission/AuthContext";
 
-export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+export default function ConfirmationDetailSubpage() {
     const [role, setRole] = useState<Role | null>()
+    const { token, user } = useAuth();
     const { role_id } = useParams()
     const [adminRole, setAdminRole] = useState<Role | null>()
     const [aliases, setAliases] = useState<Alias[]>([])
     const navigator = useNavigate()
     useEffect(() => {
         (async function () {
-            getParams({
-                func: async (param: string | User) => {
-                    const user = param as User
-                    setAdminRole(await GetAdminRole({ getParams: getParams, type: 'confirmation', user: user }))
-                }, type: 'user', show: false
-            });
+            setAdminRole(await GetAdminRole({ type: 'confirmation', user: user }))
         }());
-    }, [getParams])
+    }, [])
 
     useEffect(() => {
         (async function () {
-            const aliasList = (await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0)
+            const aliasList = (await GetAliases({ adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0)
             if (role_id != '-' && adminRole != null) {
                 const alias = aliasList.find((item) => item.id == role_id)
                 if (alias)
@@ -36,29 +33,20 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
             }
             setAliases(aliasList)
         }());
-    }, [getParams, adminRole, role_id])
+    }, [adminRole, role_id])
     useEffect(() => {
         (async function () {
-            await getParams({
-                func: async (user: unknown) => {
-                    setRole(await GetRole({ getParams: getParams, type: "confirmation", user: user as User }))
-                }, type: 'user', show: true
-            })
+                    setRole(await GetRole({ type: "confirmation", user: user as User }))
         })();
-    }, [getParams])
+    }, [])
 
     useEffect(() => {
         if (role != null)
             (async function () {
-                await getParams({
-                    func: async (param: string | User) => {
-                        const token = param as string
-                        if ((await FetchOwnerGet(token, role.roleID) == null) || !role.isRegistered)
+                        if ((await FetchOwnerGet(role.roleID) == null) || !role.isRegistered)
                             await FetchTokenGet(token)
-                    }, type: 'token', show: true
-                })
             })();
-    }, [getParams, role])
+    }, [role])
     const selectAlias = (alias: Alias) => {
         if (adminRole != null)
             navigator('/zielonki/confirmation/detail/' + alias.id)
@@ -73,7 +61,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
             {
                 role?.isRegistered ?
                     <>
-                        <h4><EditableElement getParams={getParams} editable={
+                        <h4><EditableDisplay editableProps={
                             {
                                 name: role.roleID + 'alias',
                                 type: 'string',
@@ -85,7 +73,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                             }} />
                         </h4>
                         <div>
-                            <EditableElement getParams={getParams} editable={
+                            <EditableDisplay editableProps={
                                 {
                                     name: role?.user.user + 'address',
                                     type: 'text',
@@ -97,7 +85,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                 }} />
                         </div>
                         <div>
-                            <EditableElement getParams={getParams} editable={
+                            <EditableDisplay editableProps={
                                 {
                                     name: role?.user.user + 'telefon',
                                     type: 'tel',
@@ -109,7 +97,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                 }} />
                         </div>
 
-                        <div><EditableElement getParams={getParams} editable={
+                        <div><EditableDisplay editableProps={
                             {
                                 name: role.roleID + 'level',
                                 type: 'string',
@@ -117,7 +105,7 @@ export default function ConfirmationDetailSubpage({ getParams }: { getParams: ({
                                 description: 'Rok formacyjny',
                                 dbkey: adminRole?.roleID,
                                 showdescription: true,
-                                display: 'dropdown',
+                                display: 'expander',
                                 isOrdered: true,
                                 children: [
                                     {

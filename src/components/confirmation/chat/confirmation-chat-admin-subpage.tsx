@@ -17,8 +17,8 @@ export default function ConfirmationChatAdminSubpage({ getParams }: { getParams:
             getParams({
                 func: async (param: string | User) => {
                     const user = param as User
-                    setAdminRole(await GetAdminRole({ getParams: getParams, type: 'confirmation', user: user }))
-                    setRole(await GetRole({ getParams: getParams, type: "confirmation", user: user as User }))
+                    setAdminRole(await GetAdminRole({ type: 'confirmation', user: user }))
+                    setRole(await GetRole({ type: "confirmation", user: user as User }))
                 }, type: 'user', show: false
             });
         }());
@@ -26,7 +26,7 @@ export default function ConfirmationChatAdminSubpage({ getParams }: { getParams:
 
     useEffect(() => {
         (async function () {
-            setAliases((await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
+            setAliases((await GetAliases({ adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0))
         }());
     }, [getParams, adminRole])
     const selectAlias = (alias: Alias) => {

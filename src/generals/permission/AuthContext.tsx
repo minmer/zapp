@@ -1,13 +1,19 @@
 // src/context/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import LoginElement from "./LoginElement";
+import { User } from "../../structs/user";
+import UserElement from "./UserElement";
+import { FetchInformationGetAll, StringOutput } from "../../features/NewFetchInformationGet";
 
 interface AuthContextProps {
-    user: string | null;
+    user: User | null;
+    token: string | null;
     isAuthenticated: boolean;
     login: (username: string, password: string) => Promise<void>;
+    selectUser: (user: User) => Promise<void>;
     logout: () => void;
     triggerLoginPopup: () => void;
+    triggerUserPopup: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -21,9 +27,11 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<string | null>(null);
+    const [user, setUser] = useState<User | null>(null);
+    const [token, setToken] = useState<string | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [showLoginPopup, setShowLoginPopup] = useState(false);
+    const [showUserPopup, setShowUserPopup] = useState(false);
 
     const fetchAuthState = async () => {
         try {
@@ -31,9 +39,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 method: "GET",
                 credentials: "include",
             });
-
             if (response.status == 200) {
                 setIsAuthenticated(true);
+                setToken(await response.text())
+                const users = (await FetchInformationGetAll('string', 'user') as StringOutput[]).map<User>((output) => ({ id: output.id, user: output.output, roles: [] }))
+                if (users.length == 1) {
+                    selectUser(users[0]);
+                }
             } else {
                 setIsAuthenticated(false);
             }
@@ -44,6 +56,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     useEffect(() => {
         fetchAuthState();
+        if (localStorage.getItem("user") != null) {
+            setUser({ id: localStorage.getItem("userid"), user: localStorage.getItem("user"),roles: []})
+        }
     }, []);
 
     const login = async (username: string, password: string) => {
@@ -58,8 +73,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             });
 
             if (response.ok) {
-                setIsAuthenticated(true);
+                await fetchAuthState();
                 setShowLoginPopup(false);
+
             } else {
                 console.error("Failed to log in");
             }
@@ -75,20 +91,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 credentials: "include",
             });
             setUser(null);
+            localStorage.removeItem("user")
+            localStorage.removeItem("userid")
             fetchAuthState();
         } catch (error) {
             console.error("Error during logout:", error);
         }
     };
 
+    const selectUser = async (selectedUser: User) => {
+        setUser(selectedUser)
+        localStorage.setItem("user", selectedUser.user)
+        localStorage.setItem("userid", selectedUser.id)
+    };
+
     const triggerLoginPopup = () => {
         setShowLoginPopup(true);
     };
 
+    const triggerUserPopup = () => {
+        setShowUserPopup(true);
+    };
+
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, login, logout, triggerLoginPopup }}>
+        <AuthContext.Provider value={{ user, token, isAuthenticated, login, logout, triggerLoginPopup, triggerUserPopup, selectUser }}>
             {children}
             {showLoginPopup && <LoginElement onClose={() => setShowLoginPopup(false)} />}
+            {(!showLoginPopup && showUserPopup) && <UserElement onSelected={() => setShowUserPopup(false)} />}
         </AuthContext.Provider>
     );
 };

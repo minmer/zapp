@@ -18,7 +18,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
             getParams({
                 func: async (param: string | User) => {
                     const user = param as User
-                    setAdminRole(await GetAdminRole({ getParams: getParams, type: 'communion', user: user }))
+                    setAdminRole(await GetAdminRole({ type: 'communion', user: user }))
                 }, type: 'user', show: false
             });
         }());
@@ -26,7 +26,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
 
     useEffect(() => {
         (async function () {
-            const aliasList = (await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0)
+            const aliasList = (await GetAliases({ adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0)
             if (role_id != '-' && adminRole != null) {
                 const alias = aliasList.find((item) => item.id == role_id)
                 if (alias)
@@ -42,7 +42,7 @@ export default function CommunionDetailSubpage({ getParams }: { getParams: ({ fu
         (async function () {
             await getParams({
                 func: async (user: unknown) => {
-                    setRole(await GetRole({ getParams: getParams, type: "communion", user: user as User }))
+                    setRole(await GetRole({ type: "communion", user: user as User }))
                 }, type: 'user', show: true
             })
         })();

@@ -11,36 +11,22 @@ import MinisterEncyclopaediaSubpage from '../components/minister/minister-encycl
 import { FetchOwnerGet } from '../features/FetchOwnerGet';
 import MinisterPresenceSubpage from '../components/minister/minister-presence-subpage';
 import MinisterChatSubpage from '../components/minister/minister-chat-subpage';
+import { useAuth } from '../generals/permission/AuthContext';
 export default function MinisterPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
-    const [isToken, setIsToken] = useState(false)
     const [isRole, setIsRole] = useState(false)
     const [isPresence, setIsPresence] = useState(false)
+    const { token, user } = useAuth();
     useEffect(() => {
         (async function () {
-            getParams({
-                func: async (token: string | User) => {
-                    setIsToken(true)
-                    getParams({
-                        func: async (param: string | User) => {
-                            const user = param as User
-                            setIsRole(await GetRole({ getParams: getParams, type: 'minister', user: user }) != null)
-                            setIsAdmin(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }) != null)
-                        }, type: 'user', show: false
-                    });
+                            setIsRole(await GetRole({ type: 'minister', user: user }) != null)
+                            setIsAdmin(await GetAdminRole({ type: 'minister', user: user }) != null)
                     setIsPresence(await FetchOwnerGet(token as string, "minister_presence") != null)
-                }, type: 'token', show: false
-            });
         }());
     }, [getParams])
     const register = () => {
         (async function () {
-            await getParams({
-                func: async (param: string | User) => {
-                    const user = param as User
-                    console.log(await CreateAdminRole({ getParams: getParams, type: 'minister', user: user }))
-                }, type: 'user', show: true
-            });
+            console.log(await CreateAdminRole({ type: 'minister', user: user }))
         })();
     }
 
@@ -62,7 +48,7 @@ export default function MinisterPage({ getParams }: { getParams: ({ func, type, 
                         <li>
                             <Link to={`encyclopaedia`}>Skarbiec wiedzy</Link>
                         </li>
-                        {isToken ? <li>
+                        {token ? <li>
                             <Link to={`register`}>Zapisy</Link>
                         </li> : null}
                         {isRole || isAdmin ? <li>

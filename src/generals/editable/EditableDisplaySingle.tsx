@@ -28,7 +28,7 @@ const EditableDisplaySingle: React.FC<EditableDisplaySingleProps> = ({ editableP
 
         const handleDataChange = () => {
             if (instance.data.length > 0) {
-                const formattedData = instance.data.map(item => renderAsString(editable.type, item, editable.options)).join(", ");
+                const formattedData = instance.data.map(item => renderAsString(instance.type, item.output, instance.options)).join(", ");
                 setDisplayText(formattedData);
             } else {
                 setDisplayText("Brak danych");

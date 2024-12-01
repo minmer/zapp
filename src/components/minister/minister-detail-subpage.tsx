@@ -5,9 +5,11 @@ import { FetchOwnerGet } from "../../features/FetchOwnerGet";
 import { FetchTokenGet } from "../../features/FetchTokenGet";
 import EditableElement from "../../generals/editable-element";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../generals/permission/AuthContext";
 
 export default function MinisterDetailSubpage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [role, setRole] = useState<Role | null>()
+    const { user } = useAuth();
 
     const { role_id } = useParams()
     const [adminRole, setAdminRole] = useState<Role | null>()
@@ -15,18 +17,13 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
     const navigator = useNavigate()
     useEffect(() => {
         (async function () {
-            getParams({
-                func: async (param: string | User) => {
-                    const user = param as User
-                    setAdminRole(await GetAdminRole({ getParams: getParams, type: 'minister', user: user }))
-                }, type: 'user', show: false
-            });
+            setAdminRole(await GetAdminRole({ type: 'minister', user: user }))
         }());
     }, [getParams])
 
     useEffect(() => {
         (async function () {
-            const aliasList = (await GetAliases({ getParams: getParams, adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0)
+            const aliasList = (await GetAliases({ adminID: adminRole?.roleID ?? '' })).sort((a, b) => a.alias?.localeCompare(b.alias ?? '') ?? 0)
             if (role_id != '-' && adminRole != null) {
                 const alias = aliasList.find((item) => item.id == role_id)
                 if (alias)
@@ -40,11 +37,7 @@ export default function MinisterDetailSubpage({ getParams }: { getParams: ({ fun
     }, [getParams, adminRole, role_id])
     useEffect(() => {
         (async function () {
-            await getParams({
-                func: async (user: unknown) => {
-                    setRole(await GetRole({ getParams: getParams, type: "minister", user: user as User }))
-                }, type: 'user', show: true
-            })
+                    setRole(await GetRole({ type: "minister", user: user as User }))
         })();
     }, [getParams])
 
