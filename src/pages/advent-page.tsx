@@ -9,25 +9,92 @@ export default function AdventPage() {
         { id: 'SB', display: 'SB' },
         { id: 'KR', display: 'KR' },
         { id: 'FK', display: 'FK' },
+        { id: 'PK', display: 'PK' },
+        { id: 'MM', display: 'MM' },
     ]
     const szachy =
         [
             { winner: 'BS', looser: 'SB' },
             { winner: 'BS', looser: 'KR' },
+            { winner: 'SB', looser: 'KR' },
             { winner: 'FK', looser: 'SB' },
         ]
+
+    // Inicjalizacja wyników
+    let scores = users.reduce((acc, user) => {
+        acc[user.id] = 1000; // Start with 1000 points for everyone
+        return acc;
+    }, {});
+
+    const kFactor = 32; // Współczynnik przyrostu/straty punktów
+    const activityFactor = 10; // Współczynnik wpływu aktywności
+    const tolerance = 0.01; // Konwergencja
+    const maxIterations = 100; // Limit iteracji
+    let iterations = 0;
+
+    // Iteracyjna aktualizacja wyników
+    let updated = true;
+
+    while (updated && iterations < maxIterations) {
+        updated = false;
+        const newScores = { ...scores };
+
+        for (const user of users) {
+            let score = scores[user.id]; // Obecny wynik gracza
+            const matchesPlayed = szachy.filter(match => match.winner === user.id || match.looser === user.id).length;
+
+            // Przeanalizuj mecze z innymi graczami
+            for (const opponent of users) {
+                if (user.id === opponent.id) continue;
+
+                const winsAgainst = szachy.filter(match => match.winner === user.id && match.looser === opponent.id).length;
+                const lossesAgainst = szachy.filter(match => match.winner === opponent.id && match.looser === user.id).length;
+
+                const totalMatches = winsAgainst + lossesAgainst;
+                if (totalMatches > 0) {
+                    const opponentScore = scores[opponent.id];
+                    const expectedWinRate = 1 / (1 + Math.pow(10, (opponentScore - scores[user.id]) / 400));
+                    const actualWinRate = winsAgainst / totalMatches;
+
+                    // Aktualizacja punktów w oparciu o różnicę przewidywanych i rzeczywistych wyników
+                    score += kFactor * (actualWinRate - expectedWinRate) * totalMatches;
+                }
+            }
+
+            // Dodaj premię za aktywność
+            score += activityFactor * Math.sqrt(matchesPlayed);
+
+            // Sprawdź, czy wynik zmienił się znacząco
+            if (Math.abs(newScores[user.id] - score) > tolerance) {
+                updated = true;
+            }
+
+            newScores[user.id] = score;
+        }
+
+        scores = newScores;
+        iterations++;
+    }
+
+    const scoresArray = Object.values(scores) as number[]; // Rzutowanie na tablicę liczb
+    const mean = scoresArray.reduce((acc, val) => acc + val, 0) / scoresArray.length; // Oblicz średnią
+    const stdDev = Math.sqrt(
+        scoresArray.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / scoresArray.length // Oblicz odchylenie standardowe
+    );
+
+    const k = 4;
+
     const results = users.map(user => ({
         id: user.display,
-        score: Math.floor(
-            6.5 * szachy.filter(match => match.winner === user.id || match.looser === user.id).length +
-            100 * users.reduce((acc, opponent) => acc + szachy.filter(match => match.winner === user.id && match.looser === opponent.id).length *
-                (1 + Math.max(0, szachy.filter(m => m.winner === opponent.id).length - szachy.filter(m => m.looser === opponent.id).length) /
-                    Math.max(1, szachy.filter(m => m.winner === opponent.id || m.looser === opponent.id).length + 1)), 0)
-        ),
+        score: Math.floor(1+99 / (1 + Math.exp(-k * (scores[user.id] - mean) / stdDev))), // Normalizacja z uwzględnieniem średniej i odchylenia
+        scorenom: Math.floor(scores[user.id]), // Normalizacja z uwzględnieniem średniej i odchylenia
         matches: szachy.filter(match => match.winner === user.id || match.looser === user.id).length,
         wins: szachy.filter(match => match.winner === user.id).length,
-        looses: szachy.filter(match => match.looser === user.id).length
+        looses: szachy.filter(match => match.looser === user.id).length,
     })).sort((a, b) => b.score - a.score);
+
+
+
 
 
 
@@ -54,7 +121,8 @@ export default function AdventPage() {
                         <Link to="https://www.youtube.com/watch?v=iHtxJJsrJN4" style={{
 
                             margin: '6px',
-                            display: 'inline',
+                            display: 'inline-block',
+                            width: 'auto',
                         }}>02.12.2024 r.</Link>
                     </div>
                     <h2>Materiały</h2>
@@ -66,17 +134,20 @@ export default function AdventPage() {
                         <Link to="https://www.recreatio.eu/00.pdf" style={{
 
                             margin: '6px',
-                            display: 'inline',
+                            display: 'inline-block',
+                            width: 'auto',
                         }}>Wprowadzenie</Link>
                         <Link to="https://www.recreatio.eu/01.pdf" style={{
 
                             margin: '6px',
-                            display: 'inline',
+                            display: 'inline-block',
+                            width: 'auto',
                         }}>01.12.2024 r.</Link>
                         <Link to="https://www.recreatio.eu/02.pdf" style={{
 
                             margin: '6px',
-                            display: 'inline',
+                            display: 'inline-block',
+                            width: 'auto',
                         }}>02.12.2024 r.</Link>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
@@ -107,7 +178,7 @@ export default function AdventPage() {
                                         {result.id}
                                     </td>
                                     <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>
-                                        {Math.floor(result.score)}
+                                        {Math.floor(result.score) + '(' + Math.floor(result.scorenom) + ')'}
                                     </td>
                                     <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>
                                         {result.matches}
