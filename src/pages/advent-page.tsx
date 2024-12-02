@@ -131,19 +131,19 @@ export default function AdventPage() {
                         margin: '6px',
                         width: 'auto',
                     }}>
-                        <Link to="https://www.recreatio.eu/00.pdf" style={{
+                        <a href="https://www.recreatio.eu/roraty/00.pdf" style={{
 
                             margin: '6px',
                             display: 'inline-block',
                             width: 'auto',
-                        }}>Wprowadzenie</Link>
-                        <Link to="https://www.recreatio.eu/01.pdf" style={{
+                        }}>Wprowadzenie</a>
+                        <a href="https://www.recreatio.eu/roraty/01.pdf" style={{
 
                             margin: '6px',
                             display: 'inline-block',
                             width: 'auto',
-                        }}>01.12.2024 r.</Link>
-                        <Link to="https://www.recreatio.eu/02.pdf" style={{
+                        }}>01.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/02.pdf" style={{
 
                             margin: '6px',
                             display: 'inline-block',
