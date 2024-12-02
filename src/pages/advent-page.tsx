@@ -51,7 +51,7 @@ export default function AdventPage() {
                         margin: '6px',
                         width: 'auto',
                     }}>
-                        <Link to="/zielonki" style={{
+                        <Link to="https://www.youtube.com/watch?v=iHtxJJsrJN4" style={{
 
                             margin: '6px',
                             display: 'inline',
@@ -63,16 +63,21 @@ export default function AdventPage() {
                         margin: '6px',
                         width: 'auto',
                     }}>
-                        <Link to="/zielonki" style={{
+                        <Link to="https://www.recreatio.eu/00.pdf" style={{
+
+                            margin: '6px',
+                            display: 'inline',
+                        }}>Wprowadzenie</Link>
+                        <Link to="https://www.recreatio.eu/01.pdf" style={{
 
                             margin: '6px',
                             display: 'inline',
                         }}>01.12.2024 r.</Link>
-                        <Link to="/zielonki" style={{
+                        <Link to="https://www.recreatio.eu/02.pdf" style={{
 
                             margin: '6px',
                             display: 'inline',
-                        }}>01.12.2024 r.</Link>
+                        }}>02.12.2024 r.</Link>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
                     <div style={{
