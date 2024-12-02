@@ -148,7 +148,7 @@ export default function AdventPage() {
                             margin: '6px',
                             display: 'inline-block',
                             width: 'auto',
-                        }}>02.12.2024 r.</Link>
+                        }}>02.12.2024 r.</a>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
                     <div style={{
