@@ -6,11 +6,11 @@ import { useAuth } from '../generals/permission/AuthContext';
 export default function AdventPage() {
     const users = [
         { id: 'BS', display: 'BS' },
-        { id: 'SB', display: 'SB' },
+        { id: 'SB', display: 'Szymon B' },
         { id: 'KR', display: 'KR' },
         { id: 'FK', display: 'FK' },
-        { id: 'PK', display: 'PK' },
-        { id: 'MM', display: 'MM' },
+        { id: 'MP', display: 'MP' },
+        { id: 'SW', display: 'SW' },
     ]
     const szachy =
         [
@@ -18,6 +18,10 @@ export default function AdventPage() {
             { winner: 'BS', looser: 'KR' },
             { winner: 'SB', looser: 'KR' },
             { winner: 'FK', looser: 'SB' },
+            { winner: 'KR', looser: 'MP' },
+            { winner: 'MP', looser: 'KR' },
+            { winner: 'SB', looser: 'KR' },
+            { winner: 'SW', looser: 'FK' },
         ]
 
     // Inicjalizacja wyników
