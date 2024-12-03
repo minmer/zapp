@@ -118,12 +118,18 @@ export default function AdventPage() {
                         margin: '6px',
                         width: 'auto',
                     }}>
-                        <Link to="https://www.youtube.com/watch?v=iHtxJJsrJN4" style={{
+                        <a href="https://www.youtube.com/watch?v=iHtxJJsrJN4" target="_blank" style={{
 
                             margin: '6px',
                             display: 'inline-block',
                             width: 'auto',
-                        }}>02.12.2024 r.</Link>
+                        }}>02.12.2024 r.</a>
+                        <a href="https://youtu.be/2HgGv6_EogY" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>03.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
@@ -131,24 +137,30 @@ export default function AdventPage() {
                         margin: '6px',
                         width: 'auto',
                     }}>
-                        <a href="https://www.recreatio.eu/roraty/00.pdf" style={{
+                        <a href="https://www.recreatio.eu/roraty/00.pdf" target="_blank" style={{
 
                             margin: '6px',
                             display: 'inline-block',
                             width: 'auto',
                         }}>Wprowadzenie</a>
-                        <a href="https://www.recreatio.eu/roraty/01.pdf" style={{
+                        <a href="https://www.recreatio.eu/roraty/01.pdf" target="_blank" style={{
 
                             margin: '6px',
                             display: 'inline-block',
                             width: 'auto',
                         }}>01.12.2024 r.</a>
-                        <a href="https://www.recreatio.eu/roraty/02.pdf" style={{
+                        <a href="https://www.recreatio.eu/roraty/02.pdf" target="_blank" style={{
 
                             margin: '6px',
                             display: 'inline-block',
                             width: 'auto',
                         }}>02.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/03.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>03.12.2024 r.</a>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
                     <div style={{
