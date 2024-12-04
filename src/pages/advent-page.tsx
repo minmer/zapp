@@ -134,6 +134,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>03.12.2024 r.</a>
+                        <a href="https://youtu.be/2TfiCERUjCM" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>04.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
@@ -165,6 +171,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>03.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/04.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>04.12.2024 r.</a>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
                     <div style={{
