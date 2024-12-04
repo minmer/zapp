@@ -5,23 +5,41 @@ import { Editable } from '../generals/editable/Editable';
 import { useAuth } from '../generals/permission/AuthContext';
 export default function AdventPage() {
     const users = [
-        { id: 'BS', display: 'BS' },
+        { id: 'BS', display: 'Hetkik' },
         { id: 'SB', display: 'Szymon B' },
-        { id: 'KR', display: 'KR' },
-        { id: 'FK', display: 'FK' },
+        { id: 'KR', display: 'Rudy' },
+        { id: 'FK', display: 'Playmobil' },
         { id: 'MP', display: 'MP' },
         { id: 'SW', display: 'SW' },
+        { id: 'DK', display: 'DK' },
     ]
     const szachy =
         [
+        // 02
             { winner: 'BS', looser: 'SB' },
             { winner: 'BS', looser: 'KR' },
             { winner: 'SB', looser: 'KR' },
             { winner: 'FK', looser: 'SB' },
+        // 03
             { winner: 'KR', looser: 'MP' },
             { winner: 'MP', looser: 'KR' },
             { winner: 'SB', looser: 'KR' },
             { winner: 'SW', looser: 'FK' },
+        // 04
+            { winner: 'BS', looser: 'DK' },
+            { winner: 'FK', looser: 'SB' },
+        // 05
+        // 06
+        // 09
+        // 10
+        // 11
+        // 12
+        // 13
+        // 16
+        // 17
+        // 18
+        // 19
+        // 20
         ]
 
     // Inicjalizacja wyników
@@ -166,7 +184,7 @@ export default function AdventPage() {
                             width: 'auto',
                         }}>02.12.2024 r.</a>
                         <a href="https://www.recreatio.eu/roraty/03.pdf" target="_blank" style={{
-
+                                
                             margin: '6px',
                             display: 'inline-block',
                             width: 'auto',
