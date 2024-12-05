@@ -13,6 +13,7 @@ export default function AdventPage() {
         { id: 'SW', display: 'SW' },
         { id: 'DK', display: 'DK' },
         { id: 'JZ', display: 'JZ' },
+        { id: 'PK', display: 'Proboszcz' },
     ]
     const szachy =
         [
@@ -31,7 +32,8 @@ export default function AdventPage() {
             { winner: 'BS', looser: 'FK' },
             { winner: 'FK', looser: 'SB' },
             { winner: 'FK', looser: 'JZ' },
-        // 05
+            // 05
+            { winner: 'PK', looser: 'BS' },
         // 06
         // 09
         // 10
