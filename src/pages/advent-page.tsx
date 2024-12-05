@@ -12,6 +12,7 @@ export default function AdventPage() {
         { id: 'MP', display: 'MP' },
         { id: 'SW', display: 'SW' },
         { id: 'DK', display: 'DK' },
+        { id: 'JZ', display: 'JZ' },
     ]
     const szachy =
         [
@@ -25,9 +26,11 @@ export default function AdventPage() {
             { winner: 'MP', looser: 'KR' },
             { winner: 'SB', looser: 'KR' },
             { winner: 'SW', looser: 'FK' },
-        // 04
+            // 04
             { winner: 'BS', looser: 'DK' },
+            { winner: 'BS', looser: 'FK' },
             { winner: 'FK', looser: 'SB' },
+            { winner: 'FK', looser: 'JZ' },
         // 05
         // 06
         // 09
@@ -158,6 +161,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>04.12.2024 r.</a>
+                        <a href="https://youtu.be/27Ucz_I5FCs" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>05.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
@@ -195,6 +204,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>04.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/05.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>05.12.2024 r.</a>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
                     <div style={{
