@@ -14,15 +14,16 @@ export default function AdventPage() {
         { id: 'DK', display: 'DK' },
         { id: 'JZ', display: 'JZ' },
         { id: 'PK', display: 'Proboszcz' },
+        { id: 'MS', display: 'MS' },
     ]
     const szachy =
         [
-        // 02
+            // 02
             { winner: 'BS', looser: 'SB' },
             { winner: 'BS', looser: 'KR' },
             { winner: 'SB', looser: 'KR' },
             { winner: 'FK', looser: 'SB' },
-        // 03
+            // 03
             { winner: 'KR', looser: 'MP' },
             { winner: 'MP', looser: 'KR' },
             { winner: 'SB', looser: 'KR' },
@@ -34,7 +35,9 @@ export default function AdventPage() {
             { winner: 'FK', looser: 'JZ' },
             // 05
             { winner: 'PK', looser: 'BS' },
-        // 06
+            // 06
+            { winner: 'BS', looser: 'KR' },
+            { winner: 'FK', looser: 'MS' },
         // 09
         // 10
         // 11
@@ -169,6 +172,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>05.12.2024 r.</a>
+                        <a href="https://youtu.be/J75oz49EwAk" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>06.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
@@ -212,6 +221,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>05.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/06.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>06.12.2024 r.</a>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
                     <div style={{
@@ -241,7 +256,7 @@ export default function AdventPage() {
                                         {result.id}
                                     </td>
                                     <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>
-                                        {Math.floor(result.score) + '(' + Math.floor(result.scorenom) + ')'}
+                                        {Math.floor(result.score) + ' (' + Math.floor(result.scorenom) + ')'}
                                     </td>
                                     <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>
                                         {result.matches}
