@@ -3,7 +3,8 @@ import MonthDateSelectionElement from "../../generals/month-date-selection-eleme
 import EditableElement from "../../generals/editable-element";
 import { User } from "../../structs/user";
 import { AddDaysToDate } from "../helpers/DateComparer";
-export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
+import EditableDisplay from "../../generals/editable/EditableDisplay";
+export default function IntentionEditSubpage    () {
     const [date, setDate] = useState<Date>()
 
     return (
@@ -12,8 +13,8 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
             <MonthDateSelectionElement onSelectionChange={(newDate) => { if (newDate)  setDate(newDate) }} />
             {date ? 
                 <>
-            <h2>Wydarzenia</h2>
-            <EditableElement getParams={getParams} editable={
+                    <h2>Wydarzenia</h2>
+                    <EditableDisplay editableProps={
                 {
                     name: 'new_zielonki_date',
                     type: 'string',
@@ -29,8 +30,8 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                     preorderMax: AddDaysToDate(date, 1).getTime(),
                 }
             } />
-            <h2>Msze</h2>
-            <EditableElement getParams={getParams} editable={
+                    <h2>Msze</h2>
+                    <EditableDisplay editableProps={
                 {
                     name: 'new_zielonki_mass',
                     type: 'datetime',
@@ -52,7 +53,7 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                             dbkey: 'new_intention_admin',
                             description: 'Intencje',
                             isOrdered: true,
-                            display: 'grid',
+                            display: 'single',
                             showdescription: true,
                             break: '\n',
                             children: [
@@ -66,7 +67,7 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                                 },
                                 {
                                     name: 'donated',
-                                    type: 'radio',
+                                    type: 'select',
                                     multiple: false,
                                     description: 'Przyjmujący',
                                     isOrdered: false,
@@ -80,7 +81,7 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                                 },
                                 {
                                     name: 'celebrator',
-                                    type: 'radio',
+                                    type: 'select',
                                     multiple: false,
                                     description: 'Celebrans',
                                     isOrdered: false,
@@ -131,8 +132,8 @@ export default function IntentionEditSubpage    ({ getParams }: { getParams: ({ 
                         }
                     ],
                 }} />
-            <h2>Spotkania</h2>
-            <EditableElement getParams={getParams} editable={
+                    <h2>Spotkania</h2>
+                    <EditableDisplay editableProps={
                 {
                     name: 'new_zielonki_appointment',
                     type: 'datetime',

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import { Editable } from "./Editable";
 import { renderInputField } from "./EditableType";
 
@@ -12,28 +12,28 @@ interface EditablePopupProps {
 const EditablePopup: React.FC<EditablePopupProps> = ({ editable, entry, onClose, onSave }) => {
     const initialData = entry ? [{ id: entry.id, newValue: entry.value, unsaved: false }] : editable.data.map(item => ({
         id: item.id,
-        newValue: item.output,
+        newValue: item.output ?? (editable.type === 'checkbox' ? false : editable.type === 'number' ? 0 : ''), // Default values
         unsaved: false,
     }));
 
     const [updatedData, setUpdatedData] = useState<{ id: string; newValue: any; unsaved: boolean }[]>(initialData);
-    const [newEntry, setNewEntry] = useState<any>("");
+    const [newEntry, setNewEntry] = useState<any>(editable.type === 'checkbox' ? false : editable.type === 'number' ? 0 : ""); // Default value based on type
     const [isExpanded, setIsExpanded] = useState(false);
     const popupContentRef = useRef<HTMLDivElement>(null);
 
-    const handleChange = (id: string, newValue: any) => {
+    const handleChange = useCallback((id: string, newValue: any) => {
         setUpdatedData(prevData =>
             prevData.map(data =>
                 data.id === id ? { ...data, newValue, unsaved: true } : data
             )
         );
-    };
+    }, []);
 
     const handleAddNewEntry = async () => {
-        if (newEntry) {
+        if (newEntry !== "" || editable.type === "checkbox" || editable.type === "number") {  // Ensure default values work even if newEntry is empty
             const newId = await editable.createData(newEntry);
             setUpdatedData([...updatedData, { id: newId, newValue: newEntry, unsaved: true }]);
-            setNewEntry("");
+            setNewEntry(editable.type === 'checkbox' ? false : editable.type === 'number' ? 0 : "");  // Reset to default value
         }
     };
 
@@ -61,7 +61,7 @@ const EditablePopup: React.FC<EditablePopupProps> = ({ editable, entry, onClose,
         setIsExpanded(!isExpanded);
         setUpdatedData(isExpanded ? [{ id: entry!.id, newValue: entry!.value, unsaved: false }] : editable.data.map(item => ({
             id: item.id,
-            newValue: item.output,
+            newValue: item.output ?? (editable.type === 'checkbox' ? false : editable.type === 'number' ? 0 : ''), // Default values
             unsaved: false,
         })));
     };
@@ -78,6 +78,9 @@ const EditablePopup: React.FC<EditablePopupProps> = ({ editable, entry, onClose,
             handleAddNewEntry();
         }
     };
+
+    // Check if there is any data to enable the "Zapisz" button
+    const hasDataToSave = updatedData.some(item => item.unsaved);
 
     return (
         <div className="editable-popup" onClick={handleBackgroundClick}>
@@ -115,10 +118,12 @@ const EditablePopup: React.FC<EditablePopupProps> = ({ editable, entry, onClose,
                     </div>
                 )}
 
-                <div className="editable-popup-actions">
-                    <button onClick={handleSave}>Zapisz</button>
-                    <button className="cancel-button" onClick={onClose}>Zamknij</button>
-                </div>
+                {hasDataToSave && (
+                    <div className="editable-popup-actions">
+                        <button onClick={handleSave}>Zapisz</button>
+                        <button className="cancel-button" onClick={onClose}>Zamknij</button>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -14,10 +14,7 @@ export interface EditableProps {
     showdescription?: boolean;
     display: string;
     break?: string;
-    options?: {
-        label: string;
-        value: object | string;
-    }[];
+    options?: { label: string; value: object | string }[];
     min?: number;
     max?: number;
     children?: EditableProps[];
@@ -43,10 +40,7 @@ export class Editable implements EditableProps {
     showdescription?: boolean;
     display: string;
     break?: string;
-    options?: {
-        label: string;
-        value: object | string;
-    }[];
+    options?: { label: string; value: object | string }[];
     min?: number;
     max?: number;
     children?: Editable[];
@@ -79,24 +73,23 @@ export class Editable implements EditableProps {
         this.listeners.delete(listener);
     }
 
+    // Check permissions for both parent and children
     async checkPermission(): Promise<boolean> {
         const permissionService = PermissionService.getInstance();
-
         this.hasPermission = await permissionService.checkPermission(this.dbkey);
 
-        if (this.children && this.children.length > 0) {
-            await Promise.all(this.children.map(async (child) => {
-                await child.checkPermission();
-            }));
+        if (this.children?.length) {
+            await Promise.all(this.children.map(child => child.checkPermission()));
         }
 
         this.notifyListeners();
         return this.hasPermission;
     }
 
+    // Fetch data for this editable and its children
     async fetchAllData(): Promise<void> {
-        await this.fetchSelfData(this.name);
-        if (this.children && this.children.length > 0) {
+        await this.fetchSelfData();
+        if (this.children?.length) {
             await Promise.all(
                 this._data.map(async parentEntry => {
                     parentEntry.children = await this.fetchChildrenData(parentEntry.id);
@@ -106,77 +99,51 @@ export class Editable implements EditableProps {
         this.notifyListeners();
     }
 
+    // Fetch only data for this editable
     async fetchData(): Promise<void> {
-        await this.fetchSelfData(this.name);
+        await this.fetchSelfData();
         this.notifyListeners();
     }
 
-    private async fetchSelfData(name: string): Promise<void> {
-        if (this.preorderMin !== undefined && this.preorderMax !== undefined && this.preorderKey) {
-            switch (this.type) {
-                case "number":
-                    this._data = await FetchInformationGet("double", name, this.preorderMin, this.preorderMax, this.preorderKey);
-                    break;
-                case "radio":
-                case "string":
-                case "text":
-                case "email":
-                case "tel":
-                case "color":
-                    this._data = await FetchInformationGet("string", name, this.preorderMin, this.preorderMax, this.preorderKey);
-                    break;
-                case "checkbox":
-                    this._data = await FetchInformationGet("bool", name, this.preorderMin, this.preorderMax, this.preorderKey);
-                    break;
-                case "binary":
-                    const fetchedData = await FetchInformationGet("string", name, this.preorderMin, this.preorderMax, this.preorderKey);
-                    this._data = fetchedData.map(output => ({
-                        ...output,
-                        output: (output.output as string).padEnd(this.options?.length ?? 0, "O"),
-                    }));
-                    break;
-                case "date":
-                case "time":
-                case "datetime":
-                    this._data = await FetchInformationGet("datetime", name, this.preorderMin, this.preorderMax, this.preorderKey);
-                    break;
-                default:
-                    this._data = [];
+    // Fetch data for this editable based on type
+    private async fetchSelfData(): Promise<void> {
+        const fetchDataFn = this.preorderMin !== undefined && this.preorderMax !== undefined && this.preorderKey
+            ? FetchInformationGet
+            : FetchInformationGetAll;
+
+        const fetchOptions = {
+            number: "double",
+            string: "string",
+            text: "string",
+            email: "string",
+            tel: "string",
+            color: "string",
+            checkbox: "bool",
+            radio: "string",
+            select: "string",
+            date: "datetime",
+            datetime: "datetime",
+            time: "datetime",
+            binary: "string"
+        };
+
+        try {
+            const fetchType = fetchOptions[this.type] || "string"; // Default to "string"
+            this._data = await fetchDataFn(fetchType, this.name, this.preorderMin, this.preorderMax, this.preorderKey);
+
+            if (this.type === "binary" && this._data.length) {
+                this._data = this._data.map(output => ({
+                    ...output,
+                    output: (output.output as string).padEnd(this.options?.length ?? 0, "O")
+                }));
             }
-        } else {
-            switch (this.type) {
-                case "number":
-                    this._data = await FetchInformationGetAll("double", name);
-                    break;
-                case "radio":
-                case "string":
-                case "text":
-                case "email":
-                case "tel":
-                case "color":
-                    this._data = await FetchInformationGetAll("string", name);
-                    break;
-                case "checkbox":
-                    this._data = await FetchInformationGetAll("bool", name);
-                    break;
-                case "binary":
-                    const fetchedData = await FetchInformationGetAll("string", name);
-                    this._data = fetchedData.map(output => ({
-                        ...output,
-                        output: (output.output as string).padEnd(this.options?.length ?? 0, "O"),
-                    }));
-                    break;
-                case "date":
-                case "time":
-                case "datetime":
-                    this._data = await FetchInformationGetAll("datetime", name);
-                    break;
-                default:
-                    this._data = [];
-            }
+        } catch (error) {
+            console.error(`Error fetching data for ${this.name}:`, error);
+            this._data = [];
         }
     }
 
+    // Fetch children data for a given parent ID
     private async fetchChildrenData(parentId: string): Promise<Editable[]> {
         if (this.children) {
             const childInstances: Editable[] = [];
@@ -191,6 +158,7 @@ export class Editable implements EditableProps {
         return [];
     }
 
+    // Update data for a specific item
     async updateData(id: string, newValue: any): Promise<void> {
         if (!this.hasPermission) {
             throw new Error("Permission denied");
@@ -200,6 +168,7 @@ export class Editable implements EditableProps {
         this.notifyListeners();
     }
 
+    // Delete data for a specific item
     async deleteData(id: string): Promise<void> {
         if (!this.hasPermission) {
             throw new Error("Permission denied");
@@ -209,6 +178,7 @@ export class Editable implements EditableProps {
         this.notifyListeners();
     }
 
+    // Create new data and add it to the list
     async createData(newData: any): Promise<string> {
         if (!this.hasPermission) {
             throw new Error("Permission denied");

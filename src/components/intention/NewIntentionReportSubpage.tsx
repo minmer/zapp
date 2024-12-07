@@ -19,7 +19,7 @@ export default function NewIntentionReportSubpage() {
                     dbkey: 'new_intention_admin',
                     description: 'Msze',
                     isOrdered: true,
-                    display: 'expander',
+                    display: 'grid',
                     showdescription: true,
                     break: '\n',
                     preorderKey: 'new_intention_viewer',
@@ -44,7 +44,7 @@ export default function NewIntentionReportSubpage() {
                             dbkey: 'new_intention_admin',
                             description: 'Intencje',
                             isOrdered: true,
-                            display: 'expander',
+                            display: 'single',
                             showdescription: true,
                             break: '\n',
                             children: [
@@ -59,7 +59,7 @@ export default function NewIntentionReportSubpage() {
                                 },
                                 {
                                     name: 'donated',
-                                    type: 'radio',
+                                    type: 'select',
                                     multiple: false,
                                     dbkey: 'new_intention_admin',
                                     description: 'Przyjmujący',
@@ -74,7 +74,7 @@ export default function NewIntentionReportSubpage() {
                                 },
                                 {
                                     name: 'celebrator',
-                                    type: 'radio',
+                                    type: 'select',
                                     multiple: false,
                                     dbkey: 'new_intention_admin',
                                     description: 'Celebrans',

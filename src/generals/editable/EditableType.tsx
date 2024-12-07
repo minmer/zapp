@@ -76,6 +76,8 @@ export const renderAsString = (itemType: string, value: any, options: any[]) => 
             return (value as Date).toISOString().substring(11, 16);
         case "radio":
             return options.find(v => v.value === value)?.label ?? "Not specified";
+        case "select":
+            return options.find(v => v.value === value)?.label ?? "Not specified";
         case "checkbox":
             return value ? "Checked" : "Unchecked";
         case "link":

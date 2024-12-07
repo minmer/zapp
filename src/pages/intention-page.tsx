@@ -9,12 +9,26 @@ import { User } from '../structs/user';
 import IntentionEditSubpage from '../components/intention/intention-edit-subpage';
 import IntentionReportSubpage from '../components/intention/intention-report-subpage';
 import NewIntentionReportSubpage from '../components/intention/NewIntentionReportSubpage';
+import { GetAdminRole, GetRole } from '../structs/role';
+import { useAuth } from '../generals/permission/AuthContext';
 export default function IntentionPage({ getParams }: { getParams: ({ func, type, show }: { func: (p: string | User) => Promise<unknown>, type: string, show: boolean }) => Promise<unknown> }) {
     const [isAdmin, setIsAdmin] = useState(false)
-
+    const [isRole, setIsRole] = useState(false)
+    const { triggerLoginPopup, triggerUserPopup, isAuthenticated, user, logout } = useAuth()
     useEffect(() => {
-        (async function () { setIsAdmin((await FetchOwnerGet('intention_admin')) != null); })();
-    }, [getParams])
+        (async function () {
+            if (user != null) {
+                setIsRole(await GetRole({ type: 'confirmation', user: user }) != null)
+                setIsAdmin(await GetAdminRole({ type: 'confirmation', user: user }) != null)
+            }
+        })();
+    }, [getParams, user])
+    const selectUser = () => {
+        if (!isAuthenticated)
+            triggerLoginPopup();
+        if (!user)
+            triggerUserPopup();
+    };
 
     return (
 
@@ -52,6 +66,12 @@ export default function IntentionPage({ getParams }: { getParams: ({ func, type,
                         }}>
                             <Link to={`edit/-1`}>Edycja intencji</Link>
                         </li>
+                        {!(isRole || isAdmin) ? <li>
+                            <a onClick={selectUser}>Zaloguj</a>
+                        </li> : null}
+                        {isRole || isAdmin ? <li>
+                            <a onClick={logout}>Wyloguj</a>
+                        </li> : null}
                         <div className="clear"></div>
                     </ul>
                 </div>
@@ -61,7 +81,7 @@ export default function IntentionPage({ getParams }: { getParams: ({ func, type,
                     <Route path="report" element={<IntentionReportSubpage getParams={getParams} />} />
                     <Route path="newreport" element={<NewIntentionReportSubpage />} />
                     <Route path="report/book" element={<IntentionReportBookSubpage getParams={getParams} />} />
-                    <Route path="edit/:init_date" element={<IntentionEditSubpage getParams={getParams} />} />
+                    <Route path="edit/:init_date" element={<IntentionEditSubpage />} />
                 </Routes>
                 <div className="description">
                     <p>Obecnie strona jest w budowie. Ostatecznie na tej stronie powinny się znaleźć następujące funkcjonalności:</p>
