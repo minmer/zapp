@@ -57,7 +57,7 @@ export default function AdventPage() {
     }, {});
 
     const kFactor = 32; // Współczynnik przyrostu/straty punktów
-    const activityFactor = 10; // Współczynnik wpływu aktywności
+    const activityFactor = 16; // Współczynnik wpływu aktywności
     const tolerance = 0.01; // Konwergencja
     const maxIterations = 100; // Limit iteracji
     let iterations = 0;
@@ -112,11 +112,11 @@ export default function AdventPage() {
         scoresArray.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / scoresArray.length // Oblicz odchylenie standardowe
     );
 
-    const k = 4;
+    const k = 2;
 
     const results = users.map(user => ({
         id: user.display,
-        score: Math.floor(1+99 / (1 + Math.exp(-k * (scores[user.id] - mean) / stdDev))), // Normalizacja z uwzględnieniem średniej i odchylenia
+        score: 1+99 / (1 + Math.exp(-k * (scores[user.id] - mean) / stdDev)), // Normalizacja z uwzględnieniem średniej i odchylenia
         scorenom: Math.floor(scores[user.id]), // Normalizacja z uwzględnieniem średniej i odchylenia
         matches: szachy.filter(match => match.winner === user.id || match.looser === user.id).length,
         wins: szachy.filter(match => match.winner === user.id).length,
@@ -178,6 +178,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>06.12.2024 r.</a>
+                        <a href="https://youtu.be/NKuB_GfjN7w" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>07.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
@@ -227,6 +233,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>06.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/07.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>07.12.2024 r.</a>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
                     <div style={{
