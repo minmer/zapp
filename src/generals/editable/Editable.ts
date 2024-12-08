@@ -28,6 +28,7 @@ export interface BaseOutput {
     output: any;
     preorder?: number;
     children?: Editable[];
+    order?: number;
 }
 
 export class Editable implements EditableProps {
@@ -96,6 +97,16 @@ export class Editable implements EditableProps {
                 })
             );
         }
+
+        // Handle ordering of data if 'isOrdered' is true
+        if (this.isOrdered) {
+            this._data = this._data.sort((a, b) => {
+                const orderA = a.output?.order || 999;
+                const orderB = b.output?.order || 999;
+                return orderA - orderB; // Sort based on order value
+            });
+        }
+
         this.notifyListeners();
     }
 
@@ -134,9 +145,20 @@ export class Editable implements EditableProps {
             if (this.type === "binary" && this._data.length) {
                 this._data = this._data.map(output => ({
                     ...output,
-                    output: (output.output as string).padEnd(this.options?.length ?? 0, "O")
+                    output: (output.output as string).padEnd(this.options?.length ?? 0, "O"),
                 }));
             }
+
+            // Ensure default values for number and checkbox types
+            this._data = await Promise.all(this._data.map(async item => ({
+                ...item,
+                output: this.type === 'number' && (item.output === null || item.output === undefined) ? 0 :
+                    this.type === 'checkbox' && (item.output === null || item.output === undefined) ? false :
+                        this.type === 'select' && (item.output === null || item.output === undefined) ? this.options[0]?.value : item.output,
+                order: (this.isOrdered && item.id) && (await FetchInformationGetAll("double", item.id + 'order'))[0]?.output as number,
+            })));
+            console.log(this._data[0]?.output)
+            console.log(this._data)
         } catch (error) {
             console.error(`Error fetching data for ${this.name}:`, error);
             this._data = [];
@@ -163,7 +185,15 @@ export class Editable implements EditableProps {
         if (!this.hasPermission) {
             throw new Error("Permission denied");
         }
+
+        // Update the data, including order if applicable
         await FetchInformationPut(this.dbkey ?? "", id, newValue);
+
+        // Re-sort the data based on updated order
+        if (this.isOrdered && newValue.hasOwnProperty('order')) {
+            this._data = this._data.sort((a, b) => (a.output?.order ?? 0) - (b.output?.order ?? 0));
+        }
+
         this._data = this._data.map(item => item.id === id ? { ...item, output: newValue } : item);
         this.notifyListeners();
     }
@@ -173,17 +203,19 @@ export class Editable implements EditableProps {
         if (!this.hasPermission) {
             throw new Error("Permission denied");
         }
+
         await FetchInformationDelete(this.dbkey ?? "", id);
         this._data = this._data.filter(item => item.id !== id);
         this.notifyListeners();
     }
 
-    // Create new data and add it to the list
+    // Create new data and add it to the list, auto-assigning the "order" value
     async createData(newData: any): Promise<string> {
         if (!this.hasPermission) {
             throw new Error("Permission denied");
         }
-        const newId = await FetchInformationPost(this.dbkey ?? "", [this.name], newData, []);
+
+        const newId = await FetchInformationPost(this.dbkey ?? "", [this.name], newData, [], this.isOrdered ? this._data.length + 1 : null);
         this._data.push({ id: newId, output: newData });
         this.notifyListeners();
         return newId;

@@ -74,7 +74,7 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
         return (
             <>
                 <div
-                    key={item.id}
+                    key={item.id} // Using parentId + itemId to make the key unique
                     className="grid-item"
                     style={{
                         gridColumn: depth + 1,
@@ -89,7 +89,8 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
                         {child.data.length > 0 ? (
                             child.data.map(dataEntry => renderGridItem(dataEntry, depth + index + 1, child))
                         ) : child?.hasPermission && (
-                            <button
+                                <button
+                                    key={item.id + 'button'} // Using parentId + itemId to make the key unique
                                 className="new-entry-button"
                                 onClick={() => openNewEntryPopup(child)}
                                 onFocus={() => openNewEntryPopup(child)}
