@@ -14,9 +14,9 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
     const { isAuthenticated, triggerLoginPopup } = useAuth();
     const [editable, setEditable] = useState<Editable | null>(null);
     const [popupEditable, setPopupEditable] = useState<Editable | null>(null);
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<BaseOutput[]>([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState<{ id: string; value: any } | null>(null);
+    const [selectedItem, setSelectedItem] = useState<{ id: string; value: any; order: number } | null>(null);
     const [hasPermission, setHasPermission] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // Track loading state
 
@@ -45,17 +45,17 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
         };
     }, [editableProps, isAuthenticated]);
 
-    const handleDoubleClick = (id: string, value: any, renderedEditable: Editable) => {
+    const handleDoubleClick = (id: string, value: any, order: number, renderedEditable: Editable) => {
         if (hasPermission) {
-            setSelectedItem({ id, value });
+            setSelectedItem({ id, value, order });
             setPopupEditable(renderedEditable);
             setIsPopupOpen(true);
         }
     };
 
-    const handleSave = async (id: string, newValue: any) => {
+    const handleSave = async (id: string, newValue: any, order: number) => {
         if (editable) {
-            await editable.updateData(id, newValue);
+            await editable.updateData(id, newValue, order);
             setData([...editable.data]);
             setIsPopupOpen(false);
             setSelectedItem(null);
@@ -72,25 +72,23 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
         const rowSpan = calculateRowSpan(item);
 
         return (
-            <>
+            <React.Fragment key={item.id}>
                 <div
-                    key={item.id} // Using parentId + itemId to make the key unique
                     className="grid-item"
                     style={{
                         gridColumn: depth + 1,
                         gridRowEnd: `span ${rowSpan}`,
                     }}
-                    onDoubleClick={() => handleDoubleClick(item.id, item.output, renderedEditable)}
+                    onDoubleClick={() => handleDoubleClick(item.id, item.output, item.order ?? 0, renderedEditable)}
                 >
                     {renderAsString(renderedEditable.type, item.output, renderedEditable.options)}
                 </div>
                 {item.children && item.children.map((child, index) => (
-                    <>
+                    <React.Fragment key={child.name}>
                         {child.data.length > 0 ? (
                             child.data.map(dataEntry => renderGridItem(dataEntry, depth + index + 1, child))
-                        ) : child?.hasPermission && (
-                                <button
-                                    key={item.id + 'button'} // Using parentId + itemId to make the key unique
+                        ) : child.hasPermission && (
+                            <button
                                 className="new-entry-button"
                                 onClick={() => openNewEntryPopup(child)}
                                 onFocus={() => openNewEntryPopup(child)}
@@ -98,9 +96,9 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
                                 Dodaj wpis
                             </button>
                         )}
-                    </>
+                    </React.Fragment>
                 ))}
-            </>
+            </React.Fragment>
         );
     };
 
@@ -140,7 +138,7 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
                 <EditablePopup
                     editable={popupEditable!}
                     entry={selectedItem}
-                    onSave={(newValue) => selectedItem ? handleSave(selectedItem.id, newValue) : handleSave("new", newValue)}
+                    onSave={(newValue) => selectedItem ? handleSave(selectedItem.id, newValue, selectedItem.order) : handleSave("new", newValue, 0)}
                     onClose={() => setIsPopupOpen(false)}
                 />
             )}
