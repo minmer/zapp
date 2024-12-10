@@ -1,16 +1,16 @@
-import React, { useCallback, useState, useRef } from "react";
+import React, { useCallback, useState, useRef, useEffect } from "react";
 import { Editable } from "./Editable";
 import { renderInputField } from "./EditableType";
 
 interface EditablePopupProps {
     editable: Editable;
-    entry?: { id: string; value: any };
+    entry?: { id: string; value: any; order: number };
     onClose: () => void;
     onSave: (data: any) => void;
 }
 
 const EditablePopup: React.FC<EditablePopupProps> = ({ editable, entry, onClose, onSave }) => {
-    const initialData = entry ? [{ id: entry.id, newValue: entry.value, unsaved: false, order: 1 }] : editable.data.map(item => ({
+    const initialData = entry ? [{ id: entry.id, newValue: entry.value, unsaved: false, order: entry.order }] : editable.data.map(item => ({
         id: item.id,
         newValue: item.output ?? (editable.type === 'checkbox' ? false : editable.type === 'number' ? 0 : ''), // Default values
         unsaved: false,
@@ -25,6 +25,14 @@ const EditablePopup: React.FC<EditablePopupProps> = ({ editable, entry, onClose,
         setUpdatedData(prevData =>
             prevData.map(data =>
                 data.id === id ? { ...data, newValue, unsaved: true } : data
+            )
+        );
+    }, []);
+
+    const handleOrderChange = useCallback((id: string, newOrder: number) => {
+        setUpdatedData(prevData =>
+            prevData.map(data =>
+                data.id === id ? { ...data, order: newOrder, unsaved: true } : data
             )
         );
     }, []);
@@ -44,9 +52,9 @@ const EditablePopup: React.FC<EditablePopupProps> = ({ editable, entry, onClose,
     };
 
     const handleSave = async () => {
-        for (const { id, newValue, unsaved } of updatedData) {
+        for (const { id, newValue, unsaved, order } of updatedData) {
             if (unsaved) {
-                await editable.updateData(id, newValue);
+                await editable.updateData(id, newValue, order);
             }
         }
         if (entry && !isExpanded) {
@@ -59,11 +67,11 @@ const EditablePopup: React.FC<EditablePopupProps> = ({ editable, entry, onClose,
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
-        setUpdatedData(isExpanded ? [{ id: entry!.id, newValue: entry!.value, unsaved: false, order: 1 }] : editable.data.map(item => ({
+        setUpdatedData(isExpanded ? [{ id: entry!.id, newValue: entry!.value, unsaved: false, order: entry!.order }] : editable.data.map(item => ({
             id: item.id,
             newValue: item.output ?? (editable.type === 'checkbox' ? false : editable.type === 'number' ? 0 : ''), // Default values
             unsaved: false,
-            order: 1,
+            order: item.order,
         })));
     };
 
@@ -111,8 +119,8 @@ const EditablePopup: React.FC<EditablePopupProps> = ({ editable, entry, onClose,
                                 <label>Order:</label>
                                 <input
                                     type="number"
-                                    value={item?.order || 0}  // Ensure 'order' is used for ordering
-                                    onChange={(e) => handleChange(item.id, { ...item.newValue, order: e.target.value })}
+                                    value={item.order}  // Ensure 'order' is used for ordering
+                                    onChange={(e) => handleOrderChange(item.id, parseInt(e.target.value))}
                                 />
                             </div>
                         )}

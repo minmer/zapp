@@ -101,8 +101,8 @@ export class Editable implements EditableProps {
         // Handle ordering of data if 'isOrdered' is true
         if (this.isOrdered) {
             this._data = this._data.sort((a, b) => {
-                const orderA = a.output?.order || 999;
-                const orderB = b.output?.order || 999;
+                const orderA = a.order || 999;
+                const orderB = b.order || 999;
                 return orderA - orderB; // Sort based on order value
             });
         }
@@ -157,8 +157,6 @@ export class Editable implements EditableProps {
                         this.type === 'select' && (item.output === null || item.output === undefined) ? this.options[0]?.value : item.output,
                 order: (this.isOrdered && item.id) && (await FetchInformationGetAll("double", item.id + 'order'))[0]?.output as number,
             })));
-            console.log(this._data[0]?.output)
-            console.log(this._data)
         } catch (error) {
             console.error(`Error fetching data for ${this.name}:`, error);
             this._data = [];
@@ -181,7 +179,7 @@ export class Editable implements EditableProps {
     }
 
     // Update data for a specific item
-    async updateData(id: string, newValue: any): Promise<void> {
+    async updateData(id: string, newValue: any, order: number): Promise<void> {
         if (!this.hasPermission) {
             throw new Error("Permission denied");
         }
@@ -191,10 +189,10 @@ export class Editable implements EditableProps {
 
         // Re-sort the data based on updated order
         if (this.isOrdered && newValue.hasOwnProperty('order')) {
-            this._data = this._data.sort((a, b) => (a.output?.order ?? 0) - (b.output?.order ?? 0));
+            this._data = this._data.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
         }
 
-        this._data = this._data.map(item => item.id === id ? { ...item, output: newValue } : item);
+        this._data = this._data.map(item => item.id === id ? { ...item, output: newValue, order } : item);
         this.notifyListeners();
     }
 
@@ -206,6 +204,12 @@ export class Editable implements EditableProps {
 
         await FetchInformationDelete(this.dbkey ?? "", id);
         this._data = this._data.filter(item => item.id !== id);
+
+        // Adjust the order of remaining items
+        if (this.isOrdered) {
+            this._data = this._data.map((item, index) => ({ ...item, order: index + 1 }));
+        }
+
         this.notifyListeners();
     }
 
@@ -216,7 +220,7 @@ export class Editable implements EditableProps {
         }
 
         const newId = await FetchInformationPost(this.dbkey ?? "", [this.name], newData, [], this.isOrdered ? this._data.length + 1 : null);
-        this._data.push({ id: newId, output: newData });
+        this._data.push({ id: newId, output: newData, order: this.isOrdered ? this._data.length + 1 : undefined });
         this.notifyListeners();
         return newId;
     }
