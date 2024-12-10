@@ -17,7 +17,7 @@ const EditableExpander: React.FC<EditableExpanderProps> = ({ editableProps }) =>
     const [popupEditable, setPopupEditable] = useState<Editable | null>(null);
     const [data, setData] = useState<BaseOutput[]>([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState<{ id: string; value: any } | null>(null);
+    const [selectedItem, setSelectedItem] = useState<{ id: string; value: any; order: number } | null>(null);
     const [hasPermission, setHasPermission] = useState(false);
     const [expanded, setExpanded] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -51,14 +51,14 @@ const EditableExpander: React.FC<EditableExpanderProps> = ({ editableProps }) =>
         setExpanded(expanded === id ? null : id);
     };
 
-    const handleDoubleClick = (id: string, value: any) => {
+    const handleDoubleClick = (id: string, value: any, order: number) => {
         if (clickTimeoutRef.current) {
             clearTimeout(clickTimeoutRef.current);
             clickTimeoutRef.current = null;
         }
 
         if (hasPermission) {
-            setSelectedItem({ id, value });
+            setSelectedItem({ id, value, order });
             setPopupEditable(editable);
             setIsPopupOpen(true);
         }
@@ -70,9 +70,9 @@ const EditableExpander: React.FC<EditableExpanderProps> = ({ editableProps }) =>
         }, 500);
     };
 
-    const handleSave = async (id: string, newValue: any) => {
+    const handleSave = async (id: string, newValue: any, order: number) => {
         if (editable) {
-            await editable.updateData(id, newValue);
+            await editable.updateData(id, newValue, order);
             setData([...editable.data]);
             setIsPopupOpen(false);
             setSelectedItem(null);
@@ -89,7 +89,7 @@ const EditableExpander: React.FC<EditableExpanderProps> = ({ editableProps }) =>
         <div>
             <h3>{editable?.description}</h3>
             {isAuthenticated ? (
-                loading ?(
+                loading ? (
                     <LoadingComponent />
                 ) : (
                     <div className="expandable-container">
@@ -100,16 +100,16 @@ const EditableExpander: React.FC<EditableExpanderProps> = ({ editableProps }) =>
                                         className="expandable-item"
                                         style={{ cursor: "pointer", borderBottom: "1px solid #ddd", padding: "8px" }}
                                         onClick={() => handleClick(entry.id)}
-                                        onDoubleClick={() => handleDoubleClick(entry.id, entry.output)}
+                                        onDoubleClick={() => handleDoubleClick(entry.id, entry.output, entry.order ?? 0)}
                                     >
                                         <span style={{ fontWeight: expanded === entry.id ? "bold" : "normal" }}>
                                             {expanded === entry.id ? "▼ " : "▶ "}
-                                            {renderAsString(editable.type, entry.output, editable.options)}
+                                            {renderAsString(editable!.type, entry.output, editable!.options)}
                                         </span>
                                     </div>
-                                    {expanded === entry.id && editable.children && editable.children.length > 0 && (
+                                    {expanded === entry.id && editable!.children && editable!.children.length > 0 && (
                                         <div style={{ marginLeft: "20px", paddingLeft: "10px", borderLeft: "1px solid #ddd" }}>
-                                            {editable.children.map(child => (
+                                            {editable!.children.map(child => (
                                                 <EditableDisplay key={child.name} editableProps={{ ...child, name: entry.id + child.name }} />
                                             ))}
                                         </div>
@@ -136,7 +136,7 @@ const EditableExpander: React.FC<EditableExpanderProps> = ({ editableProps }) =>
                 <EditablePopup
                     editable={popupEditable!}
                     entry={selectedItem}
-                    onSave={(newValue) => selectedItem ? handleSave(selectedItem.id, newValue) : handleSave("new", newValue)}
+                    onSave={(newValue) => selectedItem ? handleSave(selectedItem.id, newValue, selectedItem.order) : handleSave("new", newValue, 0)}
                     onClose={() => setIsPopupOpen(false)}
                 />
             )}
