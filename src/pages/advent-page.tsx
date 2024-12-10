@@ -148,7 +148,7 @@ export default function AdventPage() {
                         margin: '6px',
                         width: 'auto',
                     }}>
-                        <a href="https://www.youtube.com/watch?v=iHtxJJsrJN4" target="_blank" style={{
+                        <a href="https://youtu.be/iHtxJJsrJN4" target="_blank" style={{
 
                             margin: '6px',
                             display: 'inline-block',
@@ -190,6 +190,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>09.12.2024 r.</a>
+                        <a href="https://youtu.be/hG7w-_JDEws" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>10.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
