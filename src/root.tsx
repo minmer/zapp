@@ -22,6 +22,7 @@ import { CreateNewUserInformation, User } from "./structs/user";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdventPage from "./pages/advent-page";
+import VisitPage from "./pages/visit-page";
 export default function Root() {
     const [login, setLogin] = useState(false);
     const [selectUser, setSelectUser] = useState(false);
@@ -77,6 +78,7 @@ export default function Root() {
                 <Route path="/user/*" element={<UserPage />} />
                 <Route path="/trip/*" element={<TripPage getParams={getParams} />} />
                 <Route path="/advent" element={<AdventPage />} />
+                <Route path="/visit" element={<VisitPage />} />
             </Routes>
             <ToastContainer position='top-center' autoClose={2500} />
             {(selectUser || login) ? (<div className="popup" onClick={(e) => { if (e.currentTarget == e.target) { setLogin(false); setSelectUser(false) } }} >

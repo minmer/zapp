@@ -126,6 +126,9 @@ export default function Root({ getParams }: { getParams: ({ func, type, show }: 
                                     <Link to={`advent`}>Roraty</Link>
                                 </li>
                                 <li>
+                                    <Link to={`visit`}>Kolęda</Link>
+                                </li>
+                                <li>
                                     <Link to={`finance`}>Sprawozdania</Link>
                                 </li>
                                 <li>
