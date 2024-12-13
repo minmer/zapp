@@ -12,6 +12,7 @@ import EditableTypeRange from "./types/EditableTypeRange";
 import EditableTypeSelect from "./types/EditableTypeSelect";
 import EditableTypeText from "./types/EditableTypeText";
 import EditableTypeTime from "./types/EditableTypeTime";
+import EditableTypeBinary from "./types/EditableTypeBinary";
 
 export interface EditableType<T> {
     value: T;
@@ -29,6 +30,8 @@ export const renderInputField = (
     switch (itemType) {
         case "number":
             return <EditableTypeNumber value={value} setValue={setValue} />;
+        case "binary":
+            return <EditableTypeBinary value={value} setValue={setValue} options={options} />;
         case "color":
             return <EditableTypeColor value={value} setValue={setValue} />;
         case "email":
@@ -62,6 +65,7 @@ export const renderAsString = (itemType: string, value: any, options: any[]) => 
     switch (itemType) {
         case "number":
             return value.toString();
+        case "binary":
         case "color":
         case "email":
         case "tel":
