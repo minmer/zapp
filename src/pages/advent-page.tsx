@@ -15,6 +15,8 @@ export default function AdventPage() {
         { id: 'JZ', display: 'JZ' },
         { id: 'PK', display: 'Proboszcz' },
         { id: 'MS', display: 'MS' },
+        { id: 'AO', display: 'AO' },
+        { id: 'JO', display: 'JO' },
     ]
     const szachy =
         [
@@ -38,10 +40,19 @@ export default function AdventPage() {
             // 06
             { winner: 'BS', looser: 'KR' },
             { winner: 'FK', looser: 'MS' },
-        // 09
-        // 10
+            // 09
+            { winner: 'BS', looser: 'SB' },
+            { winner: 'BS', looser: 'FK' },
+            { winner: 'KR', looser: 'SB' },
+            { winner: 'AO', looser: 'KR' },
+            { winner: 'SB', looser: 'JO' },
+            { winner: 'SB', looser: 'JO' },
+            { winner: 'BS', looser: 'SB' },
+            { winner: 'KR', looser: 'FK' },
         // 11
-        // 12
+            // 12
+            { winner: 'BS', looser: 'SB' },
+            { winner: 'BS', looser: 'SB' },
         // 13
         // 16
         // 17
@@ -196,6 +207,18 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>10.12.2024 r.</a>
+                        <a href="https://youtu.be/pSwGEtTtr3Y" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>11.12.2024 r.</a>
+                        <a href="https://youtu.be/8WfTQ3n3R4k" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>12.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
@@ -269,6 +292,24 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>10.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/11.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>11.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/12.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>12.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/13.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>13.12.2024 r.</a>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
                     <div style={{
