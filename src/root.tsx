@@ -78,7 +78,7 @@ export default function Root() {
                 <Route path="/user/*" element={<UserPage />} />
                 <Route path="/trip/*" element={<TripPage getParams={getParams} />} />
                 <Route path="/advent" element={<AdventPage />} />
-                <Route path="/visit" element={<VisitPage />} />
+                <Route path="/visit/*" element={<VisitPage />} />
             </Routes>
             <ToastContainer position='top-center' autoClose={2500} />
             {(selectUser || login) ? (<div className="popup" onClick={(e) => { if (e.currentTarget == e.target) { setLogin(false); setSelectUser(false) } }} >

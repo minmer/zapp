@@ -59,7 +59,7 @@ export default function IntentionPage() {
             for (let j = 0; j < massData.length; j++) {
 
                 const descriptionData = await FetchInformationGetAll('string', token ?? '', massData[j].id + 'description') as unknown as StringOutput[]
-                if (!descriptions.includes(descriptionData[0].output)) {
+                if (!descriptions.includes(descriptionData[0]?.output)) {
                     descriptions.push(descriptionData[0].output);
                 }
 
