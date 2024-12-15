@@ -44,7 +44,7 @@ export default function NewIntentionReportSubpage() {
                             dbkey: 'new_intention_admin',
                             description: 'Intencje',
                             isOrdered: true,
-                            display: 'single',
+                            display: 'grid',
                             showdescription: true,
                             break: '\n',
                             children: [

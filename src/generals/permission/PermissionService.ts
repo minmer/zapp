@@ -2,7 +2,7 @@ import { FetchOwnerGet } from "../../features/NewFetchOwnerGet";
 
 class PermissionService {
     private static instance: PermissionService;
-    private hasEditPermission: boolean | null = null;
+    private permissions: Map<string, boolean> = new Map();
 
     private constructor() { }
 
@@ -14,16 +14,22 @@ class PermissionService {
     }
 
     async checkPermission(key?: string): Promise<boolean> {
-        if (key == null)
-            this.hasEditPermission = false;
-        if (this.hasEditPermission === null) {
-            this.hasEditPermission = (await FetchOwnerGet(key)) != null;
+        if (!key) return false;
+
+        if (!this.permissions.has(key)) {
+            const hasPermission = (await FetchOwnerGet(key)) != null;
+            this.permissions.set(key, hasPermission);
         }
-        return this.hasEditPermission;
+
+        return this.permissions.get(key) ?? false;
     }
 
-    resetPermission() {
-        this.hasEditPermission = null;
+    resetPermission(key?: string) {
+        if (key) {
+            this.permissions.delete(key);
+        } else {
+            this.permissions.clear();
+        }
     }
 }
 

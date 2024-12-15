@@ -316,6 +316,18 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>13.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/14.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>14.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/15.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>15.12.2024 r.</a>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
                     <div style={{

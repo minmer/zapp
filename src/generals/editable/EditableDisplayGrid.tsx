@@ -56,11 +56,13 @@ const EditableDisplayGrid: React.FC<EditableDisplayGridProps> = ({ editableProps
     const handleSave = async (id: string, newValue: any, order: number) => {
         if (editable) {
             await editable.updateData(id, newValue, order);
+            await editable.fetchAllData(); // Fetch all data including children
             setData([...editable.data]);
             setIsPopupOpen(false);
             setSelectedItem(null);
         }
     };
+
 
     const openNewEntryPopup = (renderedEditable: Editable) => {
         setPopupEditable(renderedEditable);
