@@ -1036,6 +1036,55 @@
 }
 
 
+.visit-register-subpage {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .visit-register-subpage label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .visit-register-subpage .input-field {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .visit-register-subpage .button {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+        .visit-register-subpage .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+    .visit-register-subpage p {
+        margin-top: 0;
+        color: #ff0000;
+        font-size: 0.875rem;
+    }
+
+
 
 .expandable-container {
     display: flex;

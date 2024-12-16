@@ -65,9 +65,9 @@ export default function VisitPage() {
                             <p>Wybierz jedną ze zakładek</p>
                         </div>} />
                     <Route path="check" element={<VisitCheckSubpage />} />
-                    <Route path="register" element={<VisitMinisterSubpage />} />
-                    <Route path="minister" element={<VisitPriestSubpage />} />
-                    <Route path="priest" element={<VisitRegisterSubpage />} />
+                    <Route path="register" element={<VisitRegisterSubpage />} />
+                    <Route path="minister" element={<VisitMinisterSubpage />} />
+                        <Route path="priest" element={<VisitPriestSubpage />} />
                 </Routes>
             </div>
         </>
