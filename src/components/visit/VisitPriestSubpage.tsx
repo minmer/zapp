@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Papa from "papaparse";
 import { FetchInformationPost } from "../../features/FetchInformationPost";
-import { FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
+import { DateOutput, FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
 
 interface VisitData {
     address: string;
@@ -33,11 +33,23 @@ interface VisitData {
     visit2024: string;
 }
 
+interface Route {
+    id: string;
+    title: string;
+    startDateTime: Date;
+    endDateTime: Date;
+}
+
 export default function VisitPriestSubpage() {
     const [file, setFile] = useState<File | null>(null);
-    const [data, setData] = useState<VisitData[]>([]);
+    const [data, setData] = useState<{ id: string, output: string }[]>([]);
     const [search, setSearch] = useState("");
-    const [filteredData, setFilteredData] = useState<VisitData[]>([]);
+    const [filteredData, setFilteredData] = useState<{ id: string, output: string }[]>([]);
+    const [routes, setRoutes] = useState<Route[]>([]);
+    const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
+    const [newRouteTitle, setNewRouteTitle] = useState("");
+    const [startDateTime, setStartDateTime] = useState("");
+    const [endDateTime, setEndDateTime] = useState("");
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -89,10 +101,9 @@ export default function VisitPriestSubpage() {
             visit2024: row["Kolęda 2024"] || "N",
         }));
 
-        setData(processedData);
+        setData(processedData.map(item => ({ id: '', output: item.address })));
 
         // Save the data to the server
-        
         processedData.forEach(async (row, index) => {
             await sleep(250 * index);
 
@@ -100,7 +111,7 @@ export default function VisitPriestSubpage() {
 
             // Generate preorder value for the address
             const preorder = generatePreorderValue(address);
-            console.log(index)
+
             // Save the main address information
             const addressId = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", ["visit_adresses_03"], address, [preorder]);
 
@@ -157,120 +168,91 @@ export default function VisitPriestSubpage() {
         }
 
         return value;
-    }; const fetchDataFromServer = async () => {
+    };
+
+    const fetchDataFromServer = async () => {
         try {
             const fetchedData = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "visit_adresses_03") as StringOutput[];
 
-            const processedData: VisitData[] = await Promise.all(fetchedData.map(async (item) => {
-                const addressId = item.id;
-                const address = item.output;
-                const preorder = item.preorder;
-                const lastName = {output: ""};
-                const husbandName = { output: "" };
-                const husbandBirthPlace = { output: "" };
-                const wifeName = { output: "" };
-                const wifeBirthDate = { output: "" };
-                const wifeBirthPlace = { output: "" };
-                const marriageDate = { output: "" };
-                const marriageType = { output: "" };
-                const marriageParish = { output: "" };
-                const children = { output: "" };
-                const otherFamilyMembers = { output: "" };
-                const additionalInfo = { output: "" };
-                const visit2011 = { output: "" };
-                const visit2012 = { output: "" };
-                const visit2013 = { output: "" };
-                const visit2014 = { output: "" };
-                const visit2015 = { output: "" };
-                const visit2016 = { output: "" };
-                const visit2017 = { output: "" };
-                const visit2018 = { output: "" };
-                const visit2019 = { output: "" };
-                const visit2020 = { output: "" };
-                const visit2021 = { output: "" };
-                const visit2022 = { output: "" };
-                const visit2023 = { output: "" };
-                const visit2024 = { output: "" };
-
-
-                // const lastName = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}lastName`) as StringOutput[];
-                // const husbandName = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}husbandName`) as StringOutput[];
-                // const husbandBirthPlace = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}husbandBirthPlace`) as StringOutput[];
-                // const wifeName = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}wifeName`) as StringOutput[];
-                // const wifeBirthDate = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}wifeBirthDate`) as StringOutput[];
-                // const wifeBirthPlace = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}wifeBirthPlace`) as StringOutput[];
-                // const marriageDate = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}marriageDate`) as StringOutput[];
-                // const marriageType = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}marriageType`) as StringOutput[];
-                // const marriageParish = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}marriageParish`) as StringOutput[];
-                // const children = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}children`) as StringOutput[];
-                // const otherFamilyMembers = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}otherFamilyMembers`) as StringOutput[];
-                // const additionalInfo = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}additionalInfo`) as StringOutput[];
-                // const visit2011 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2011`) as StringOutput[];
-                // const visit2012 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2012`) as StringOutput[];
-                // const visit2013 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2013`) as StringOutput[];
-                // const visit2014 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2014`) as StringOutput[];
-                // const visit2015 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2015`) as StringOutput[];
-                // const visit2016 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2016`) as StringOutput[];
-                // const visit2017 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2017`) as StringOutput[];
-                // const visit2018 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2018`) as StringOutput[];
-                // const visit2019 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2019`) as StringOutput[];
-                // const visit2020 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2020`) as StringOutput[];
-                // const visit2021 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2021`) as StringOutput[];
-                // const visit2022 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2022`) as StringOutput[];
-                // const visit2023 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2023`) as StringOutput[];
-                // const visit2024 = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", `${addressId}visit2024`) as StringOutput[];
-
-                return {
-                    address,
-                    lastName: lastName[0]?.output || "",
-                    husbandName: husbandName[0]?.output || "",
-                    husbandBirthPlace: husbandBirthPlace[0]?.output || "",
-                    wifeName: wifeName[0]?.output || "",
-                    wifeBirthDate: wifeBirthDate[0]?.output || "",
-                    wifeBirthPlace: wifeBirthPlace[0]?.output || "",
-                    marriageDate: marriageDate[0]?.output || "",
-                    marriageType: marriageType[0]?.output || "",
-                    marriageParish: marriageParish[0]?.output || "",
-                    children: children[0]?.output || "",
-                    otherFamilyMembers: otherFamilyMembers[0]?.output || "",
-                    additionalInfo: additionalInfo[0]?.output || "",
-                    visit2011: visit2011[0]?.output || "N",
-                    visit2012: visit2012[0]?.output || "N",
-                    visit2013: visit2013[0]?.output || "N",
-                    visit2014: visit2014[0]?.output || "N",
-                    visit2015: visit2015[0]?.output || "N",
-                    visit2016: visit2016[0]?.output || "N",
-                    visit2017: visit2017[0]?.output || "N",
-                    visit2018: visit2018[0]?.output || "N",
-                    visit2019: visit2019[0]?.output || "N",
-                    visit2020: visit2020[0]?.output || "N",
-                    visit2021: visit2021[0]?.output || "N",
-                    visit2022: visit2022[0]?.output || "N",
-                    visit2023: visit2023[0]?.output || "N",
-                    visit2024: visit2024[0]?.output || "N",
-                };
-            }));
-
-            setData(processedData);
+            setData(fetchedData);
         } catch (error) {
             console.error("Failed to fetch data from server:", error);
         }
     };
 
+    const fetchRoutesFromServer = async () => {
+        try {
+            const fetchedRoutes = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "visit_routes") as StringOutput[];
+            const preparedRoutes = await Promise.all(fetchedRoutes.map(async item => ({
+                id: item.id,
+                title: item.output,
+                startDateTime: (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "visit_routes") as DateOutput[])[0]?.output,
+                endDateTime: (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "visit_routes") as DateOutput[])[0]?.output,
+            })))
 
+            setRoutes(preparedRoutes);
+        } catch (error) {
+            console.error("Failed to fetch routes from server:", error);
+        }
+    };
+
+    const handleCreateRoute = async () => {
+        if (newRouteTitle && startDateTime && endDateTime) {
+            const newRoute: Route = { id: "", title: newRouteTitle, startDateTime: new Date(startDateTime), endDateTime: new Date(endDateTime) };
+            const routeId = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", ["visit_routes"], newRoute.title, [1]);
+            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [routeId + "start"], newRoute.startDateTime, [1]);
+            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [routeId + "end"], newRoute.endDateTime, [1]);
+            newRoute.id = routeId;
+            setRoutes([...routes, newRoute]);
+            setSelectedRoute(routeId);
+        }
+    };
 
     useEffect(() => {
         fetchDataFromServer();
+        fetchRoutesFromServer();
     }, []);
 
     useEffect(() => {
         const filtered = data.filter((item) =>
-            item.address.toLowerCase().startsWith(search.toLowerCase())
+            item.output.toLowerCase().startsWith(search.toLowerCase())
         );
         setFilteredData(filtered);
     }, [search, data]);
+
     return (
         <div>
+            <select value={selectedRoute || ""} onChange={(e) => setSelectedRoute(e.target.value)}>
+                <option value="">Create new route</option>
+                {routes.map((route) => (
+                    <option key={route.id} value={route.id}>
+                        {route.title}
+                    </option>
+                ))}
+            </select>
+            {selectedRoute === "" && (
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Route title"
+                        value={newRouteTitle}
+                        onChange={(e) => setNewRouteTitle(e.target.value)}
+                    />
+                    <input
+                        type="datetime-local"
+                        placeholder="Start date and time"
+                        value={startDateTime}
+                        onChange={(e) => setStartDateTime(e.target.value)}
+                    />
+                    <input
+                        type="datetime-local"
+                        placeholder="End date and time"
+                        value={endDateTime}
+                        onChange={(e) => setEndDateTime(e.target.value)}
+                    />
+                    <button onClick={handleCreateRoute}>Create Route</button>
+                </div>
+            )}
             <input type="file" accept=".csv" onChange={handleFileChange} />
             <button onClick={handleFileUpload}>Upload</button>
             <input
@@ -283,69 +265,16 @@ export default function VisitPriestSubpage() {
                 <thead>
                     <tr>
                         <th>Adres</th>
-                        <th>Nazwisko</th>
-                        <th>Imię męża</th>
-                        <th>Miejsce ur. męża</th>
-                        <th>Imię żony</th>
-                        <th>Data ur. żony</th>
-                        <th>Miejsce ur. żony</th>
-                        <th>Data ślubu</th>
-                        <th>Rodzaj ślubu</th>
-                        <th>Parafia ślubu</th>
-                        <th>Dzieci (imiona, wiek)</th>
-                        <th>Inne osoby w rodzinie</th>
-                        <th>Informacja (1)</th>
-                        <th>Kolęda 2011</th>
-                        <th>Kolęda 2012</th>
-                        <th>Kolęda 2013</th>
-                        <th>Kolęda 2014</th>
-                        <th>Kolęda 2015</th>
-                        <th>Kolęda 2016</th>
-                        <th>Kolęda 2017</th>
-                        <th>Kolęda 2018</th>
-                        <th>Kolęda 2019</th>
-                        <th>Kolęda 2020</th>
-                        <th>Kolęda 2021</th>
-                        <th>Kolęda 2022</th>
-                        <th>Kolęda 2023</th>
-                        <th>Kolęda 2024</th>
                     </tr>
                 </thead>
                 <tbody>
                     {filteredData.map((item, index) => (
                         <tr key={index}>
-                            <td>{item.address}</td>
-                            <td>{item.lastName}</td>
-                            <td>{item.husbandName}</td>
-                            <td>{item.husbandBirthPlace}</td>
-                            <td>{item.wifeName}</td>
-                            <td>{item.wifeBirthDate}</td>
-                            <td>{item.wifeBirthPlace}</td>
-                            <td>{item.marriageDate}</td>
-                            <td>{item.marriageType}</td>
-                            <td>{item.marriageParish}</td>
-                            <td>{item.children}</td>
-                            <td>{item.otherFamilyMembers}</td>
-                            <td>{item.additionalInfo}</td>
-                            <td>{item.visit2011}</td>
-                            <td>{item.visit2012}</td>
-                            <td>{item.visit2013}</td>
-                            <td>{item.visit2014}</td>
-                            <td>{item.visit2015}</td>
-                            <td>{item.visit2016}</td>
-                            <td>{item.visit2017}</td>
-                            <td>{item.visit2018}</td>
-                            <td>{item.visit2019}</td>
-                            <td>{item.visit2020}</td>
-                            <td>{item.visit2021}</td>
-                            <td>{item.visit2022}</td>
-                            <td>{item.visit2023}</td>
-                            <td>{item.visit2024}</td>
+                            <td>{item.output}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
         </div>
     );
-
 }

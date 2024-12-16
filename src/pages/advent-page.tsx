@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import roraty from '../assets/roraty.png'
+import roraty from '../assets/roraty.png';
 import EditableDisplaySingle from '../generals/editable/EditableDisplaySingle';
 import { Editable } from '../generals/editable/Editable';
 import { useAuth } from '../generals/permission/AuthContext';
+
 export default function AdventPage() {
+    const [showAllMatches, setShowAllMatches] = useState(false);
+
     const users = [
         { id: 'BS', display: 'Hetkik' },
         { id: 'SB', display: 'Szymon B' },
@@ -17,51 +21,56 @@ export default function AdventPage() {
         { id: 'MS', display: 'MS' },
         { id: 'AO', display: 'AO' },
         { id: 'JO', display: 'JO' },
-    ]
-    const szachy =
-        [
-            // 02
-            { winner: 'BS', looser: 'SB' },
-            { winner: 'BS', looser: 'KR' },
-            { winner: 'SB', looser: 'KR' },
-            { winner: 'FK', looser: 'SB' },
-            // 03
-            { winner: 'KR', looser: 'MP' },
-            { winner: 'MP', looser: 'KR' },
-            { winner: 'SB', looser: 'KR' },
-            { winner: 'SW', looser: 'FK' },
-            // 04
-            { winner: 'BS', looser: 'DK' },
-            { winner: 'BS', looser: 'FK' },
-            { winner: 'FK', looser: 'SB' },
-            { winner: 'FK', looser: 'JZ' },
-            // 05
-            { winner: 'PK', looser: 'BS' },
-            // 06
-            { winner: 'BS', looser: 'KR' },
-            { winner: 'FK', looser: 'MS' },
-            // 09
-            { winner: 'BS', looser: 'SB' },
-            { winner: 'BS', looser: 'FK' },
-            { winner: 'KR', looser: 'SB' },
-            { winner: 'AO', looser: 'KR' },
-            { winner: 'SB', looser: 'JO' },
-            { winner: 'SB', looser: 'JO' },
-            { winner: 'BS', looser: 'SB' },
-            { winner: 'KR', looser: 'FK' },
+        { id: 'MW', display: 'MW' },
+    ];
+
+    const szachy = [
+        // 02
+        { winner: 'BS', looser: 'SB' },
+        { winner: 'BS', looser: 'KR' },
+        { winner: 'SB', looser: 'KR' },
+        { winner: 'FK', looser: 'SB' },
+        // 03
+        { winner: 'KR', looser: 'MP' },
+        { winner: 'MP', looser: 'KR' },
+        { winner: 'SB', looser: 'KR' },
+        { winner: 'SW', looser: 'FK' },
+        // 04
+        { winner: 'BS', looser: 'DK' },
+        { winner: 'BS', looser: 'FK' },
+        { winner: 'FK', looser: 'SB' },
+        { winner: 'FK', looser: 'JZ' },
+        // 05
+        { winner: 'PK', looser: 'BS' },
+        // 06
+        { winner: 'BS', looser: 'KR' },
+        { winner: 'FK', looser: 'MS' },
+        // 09
+        { winner: 'BS', looser: 'SB' },
+        { winner: 'BS', looser: 'FK' },
+        { winner: 'KR', looser: 'SB' },
+        { winner: 'AO', looser: 'KR' },
+        { winner: 'SB', looser: 'JO' },
+        { winner: 'SB', looser: 'JO' },
+        { winner: 'BS', looser: 'SB' },
+        { winner: 'KR', looser: 'FK' },
         // 11
-            // 12
-            { winner: 'BS', looser: 'SB' },
-            { winner: 'BS', looser: 'SB' },
-            // 13
-            { winner: 'KR', looser: 'FK' },
-            { winner: 'KR', looser: 'SB' },
+        // 12
+        { winner: 'BS', looser: 'SB' },
+        { winner: 'BS', looser: 'SB' },
+        // 13
+        { winner: 'KR', looser: 'FK' },
+        { winner: 'KR', looser: 'SB' },
         // 16
+        { winner: 'BS', looser: 'MW' },
+        { winner: 'BS', looser: 'MW' },
+        { winner: 'BS', looser: 'MW' },
+        { winner: 'BS', looser: 'MW' },
         // 17
         // 18
         // 19
         // 20
-        ]
+    ];
 
     // Inicjalizacja wyników
     let scores = users.reduce((acc, user) => {
@@ -129,15 +138,14 @@ export default function AdventPage() {
 
     const results = users.map(user => ({
         id: user.display,
-        score: 1+99 / (1 + Math.exp(-k * (scores[user.id] - mean) / stdDev)), // Normalizacja z uwzględnieniem średniej i odchylenia
+        score: 1 + 99 / (1 + Math.exp(-k * (scores[user.id] - mean) / stdDev)), // Normalizacja z uwzględnieniem średniej i odchylenia
         scorenom: Math.floor(scores[user.id]), // Normalizacja z uwzględnieniem średniej i odchylenia
         matches: szachy.filter(match => match.winner === user.id || match.looser === user.id).length,
         wins: szachy.filter(match => match.winner === user.id).length,
         looses: szachy.filter(match => match.looser === user.id).length,
     })).sort((a, b) => b.score - a.score);
 
-
-
+    const visibleMatches = showAllMatches ? szachy : szachy.slice(0, 6);
 
 
 
@@ -348,18 +356,40 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>16.12.2024 r.</a>
+                    </div>                    <h2>Roratni turniej szachowy</h2>
+                    <div
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                            gap: '16px',
+                            fontSize: '1.5rem',
+                            textAlign: 'center',
+                            marginTop: '24px',
+                            marginBottom: '24px',
+                        }}
+                    >
+                        {visibleMatches.map(match => (
+                            <div key={`${match.winner}-${match.looser}`}>
+                                <span style={{ fontWeight: 'bold' }}>
+                                    {users.find(user => match.winner === user.id)?.display}
+                                </span>
+                                {' - ' + users.find(user => match.looser === user.id)?.display}
+                            </div>
+                        ))}
                     </div>
-                    <h2>Roratni turniej szachowy</h2>
-                    <div style={{
-                        fontSize: '1.5rem',
-                        textAlign: 'center',
-                        marginTop: '24px',
-                        marginBottom: '24px',
-                    } }>
-                        {szachy.map(match =>
-                            <div><span style={{ fontWeight: 'bold' }}>{users.find(user => match.winner == user.id).display}</span>{' - ' + users.find(user => match.looser == user.id).display}</div>
-                        )}
-                    </div>
+                    <button
+                        onClick={() => setShowAllMatches(!showAllMatches)}
+                        style={{
+                            display: 'block',
+                            margin: '0 auto',
+                            padding: '8px 16px',
+                            fontSize: '1rem',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        {showAllMatches ? 'Pokaż mniej' : 'Pokaż wszystkie partie'}
+                    </button>
+
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr>

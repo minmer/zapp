@@ -1,7 +1,6 @@
 ﻿import { useState, useEffect } from "react";
 import { FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
 import { FetchInformationPost } from "../../features/FetchInformationPost";
-import "../../recreatio.css"; // Ensure the CSS file is imported
 
 const villages = {
     "Zielonki": [
@@ -28,6 +27,7 @@ export default function VisitRegisterSubpage() {
     const [visitTimeTo, setVisitTimeTo] = useState<string>("");
     const [additionalNotes, setAdditionalNotes] = useState<string>("");
     const [contactInfo, setContactInfo] = useState<string>("");
+    const [feedback, setFeedback] = useState<string>("");
 
     const fetchAddresses = async () => {
         try {
@@ -73,6 +73,18 @@ export default function VisitRegisterSubpage() {
         await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "additionalNotes"], additionalNotes, [4]);
         await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "contactInfo"], contactInfo, [5]);
         await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "registrationDate"], new Date().toISOString(), [6]);
+
+        // Provide feedback and clear selections
+        setFeedback("Bardzo dziękujemy - Twoje zgłoszenie zostało wysłane");
+        setSelectedAddress("");
+        setSelectedVillage("");
+        setSelectedStreet("");
+        setHouseNumber("");
+        setVisitOption("");
+        setVisitTimeFrom("");
+        setVisitTimeTo("");
+        setAdditionalNotes("");
+        setContactInfo("");
     };
 
     const generatePreorderValue = (str: string): number => {
@@ -252,6 +264,7 @@ export default function VisitRegisterSubpage() {
                     {!isRegistrationFormValid() && <p>Proszę wybrać opcję wizyty i podać informacje kontaktowe, aby zarejestrować wizytę.</p>}
                 </div>
             )}
+            {feedback && <p>{feedback}</p>}
         </div>
     );
 }
