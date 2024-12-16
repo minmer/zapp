@@ -53,7 +53,9 @@ export default function AdventPage() {
             // 12
             { winner: 'BS', looser: 'SB' },
             { winner: 'BS', looser: 'SB' },
-        // 13
+            // 13
+            { winner: 'KR', looser: 'FK' },
+            { winner: 'KR', looser: 'SB' },
         // 16
         // 17
         // 18
@@ -224,7 +226,19 @@ export default function AdventPage() {
                             margin: '6px',
                             display: 'inline-block',
                             width: 'auto',
-                        }}>12.12.2024 r.</a>
+                        }}>13.12.2024 r.</a>
+                        <a href="https://youtu.be/AcBGIonAA1k" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>14.12.2024 r.</a>
+                        <a href="https://youtu.be/FIA9r7kLPKE" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>16.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
@@ -328,6 +342,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>15.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/16.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>16.12.2024 r.</a>
                     </div>
                     <h2>Roratni turniej szachowy</h2>
                     <div style={{
