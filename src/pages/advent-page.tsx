@@ -25,6 +25,7 @@ export default function AdventPage() {
         { id: 'MG', display: 'MG' },
         { id: 'DB', display: 'DB' },
         { id: 'JK', display: 'JK' },
+        { id: 'MK', display: 'MK' },
     ];
 
     const szachy = [
@@ -74,6 +75,9 @@ export default function AdventPage() {
         // 17
         { winner: 'SW', looser: 'MG' },
         { winner: 'DB', looser: 'JK' },
+        { winner: 'SW', looser: 'MK' },
+        { winner: 'SW', looser: 'MK' },
+        { winner: 'SW', looser: 'MK' },
         // 18
         // 19
         // 20
