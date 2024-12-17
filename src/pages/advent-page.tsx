@@ -22,6 +22,9 @@ export default function AdventPage() {
         { id: 'AO', display: 'AO' },
         { id: 'JO', display: 'JO' },
         { id: 'MW', display: 'MW' },
+        { id: 'MG', display: 'MG' },
+        { id: 'DB', display: 'DB' },
+        { id: 'JK', display: 'JK' },
     ];
 
     const szachy = [
@@ -44,6 +47,7 @@ export default function AdventPage() {
         { winner: 'PK', looser: 'BS' },
         // 06
         { winner: 'BS', looser: 'KR' },
+        { winner: 'BS', looser: 'DB' },
         { winner: 'FK', looser: 'MS' },
         // 09
         { winner: 'BS', looser: 'SB' },
@@ -55,6 +59,7 @@ export default function AdventPage() {
         { winner: 'BS', looser: 'SB' },
         { winner: 'KR', looser: 'FK' },
         // 11
+        { winner: 'SW', looser: 'MS' },
         // 12
         { winner: 'BS', looser: 'SB' },
         { winner: 'BS', looser: 'SB' },
@@ -67,6 +72,8 @@ export default function AdventPage() {
         { winner: 'BS', looser: 'MW' },
         { winner: 'BS', looser: 'MW' },
         // 17
+        { winner: 'SW', looser: 'MG' },
+        { winner: 'DB', looser: 'JK' },
         // 18
         // 19
         // 20
