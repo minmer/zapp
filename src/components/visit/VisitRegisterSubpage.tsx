@@ -218,8 +218,8 @@ export default function VisitRegisterSubpage() {
                         className="input-field"
                     >
                         <option value="">--Proszę wybrać opcję--</option>
-                        <option value="Zapraszamy na kolędę w wyznaczonym terminie">Zapraszamy na kolędę w wyznaczonym terminie</option>
-                        <option value="Tego dnia jesteśmy dostępni">Tego dnia jesteśmy dostępni</option>
+                        <option value="Zapraszamy na kolędę w wyznaczonym terminie">Zapraszamy na kolędę w wyznaczonych godzinach</option>
+                        <option value="Tego dnia jesteśmy dostępni">W dniu kolędy jesteśmy tylko dostępni w następujących godzinach</option>
                         <option value="Prosimy o kolędę w innym dniu">Prosimy o kolędę w innym dniu</option>
                         <option value="Prosimy o poświęcenie nowego mieszkania/domu">Prosimy o poświęcenie nowego mieszkania/domu</option>
                     </select>
@@ -243,7 +243,7 @@ export default function VisitRegisterSubpage() {
                             />
                         </>
                     )}
-                    <label htmlFor="additional-notes">Dodatkowe uwagi:</label>
+                    <label htmlFor="additional-notes">Ewentualne dodatkowe uwagi:</label>
                     <textarea
                         id="additional-notes"
                         value={additionalNotes}
@@ -251,7 +251,7 @@ export default function VisitRegisterSubpage() {
                         placeholder="Wprowadź dodatkowe uwagi"
                         className="input-field"
                     />
-                    <label htmlFor="contact-info">Informacje kontaktowe (telefon lub e-mail):</label>
+                    <label htmlFor="contact-info">Telefon lub e-mail (obowiązkowe):</label>
                     <input
                         id="contact-info"
                         type="text"

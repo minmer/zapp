@@ -62,7 +62,7 @@ export default function VisitPage() {
                 <Routes>
                     <Route path="" element={
                         <div className="description">
-                            <p>Wybierz jedną ze zakładek</p>
+                            <p>Wybierz jedną z zakładek</p>
                         </div>} />
                     <Route path="check" element={<VisitCheckSubpage />} />
                     <Route path="register" element={<VisitRegisterSubpage />} />
