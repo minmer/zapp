@@ -79,8 +79,12 @@ export default function AdventPage() {
         { winner: 'SW', looser: 'MK' },
         { winner: 'SW', looser: 'MK' },
         // 18
+        { winner: 'KR', looser: 'JO' },
         // 19
+        { winner: 'PK', looser: 'KR' },
         // 20
+        { winner: 'PK', looser: 'BS' },
+        { winner: 'PK', looser: 'KR' },
     ];
 
     // Inicjalizacja wyników
@@ -276,6 +280,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>19.12.2024 r.</a>
+                        <a href="https://youtu.be/NXO0To-bfC0" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>20.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
@@ -403,6 +413,12 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>19.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/20.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>20.12.2024 r.</a>
                     </div>                    <h2>Roratni turniej szachowy</h2>
                     <div
                         style={{
