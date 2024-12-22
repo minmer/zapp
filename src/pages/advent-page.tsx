@@ -286,6 +286,18 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>20.12.2024 r.</a>
+                        <a href="https://youtu.be/4bWYQLGoaAI" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>21.12.2024 r.</a>
+                        <a href="https://youtu.be/CJz5jDk16Tw" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>22.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
