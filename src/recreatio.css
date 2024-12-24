@@ -1085,6 +1085,34 @@
     }
 
 
+.visit_priest .container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.visit_priest .column {
+    width: 45%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.visit_priest table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.visit_priest th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.visit_priest th {
+    background-color: #f2f2f2;
+}
+
 
 .expandable-container {
     display: flex;

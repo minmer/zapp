@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Papa from "papaparse";
 import { FetchInformationPost } from "../../features/FetchInformationPost";
 import { DateOutput, FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 interface VisitData {
     address: string;
@@ -50,6 +51,7 @@ export default function VisitPriestSubpage() {
     const [newRouteTitle, setNewRouteTitle] = useState("");
     const [startDateTime, setStartDateTime] = useState("");
     const [endDateTime, setEndDateTime] = useState("");
+    const [routeAddresses, setRouteAddresses] = useState<{ id: string, output: string }[]>([]);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -178,19 +180,20 @@ export default function VisitPriestSubpage() {
         } catch (error) {
             console.error("Failed to fetch data from server:", error);
         }
+        
     };
 
     const fetchRoutesFromServer = async () => {
         try {
             const fetchedRoutes = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "visit_routes") as StringOutput[];
-            const preparedRoutes = await Promise.all(fetchedRoutes.map(async item => ({
+
+
+            setRoutes(await Promise.all(fetchedRoutes.map(async item => ({
                 id: item.id,
                 title: item.output,
-                startDateTime: (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "visit_routes") as DateOutput[])[0]?.output,
-                endDateTime: (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "visit_routes") as DateOutput[])[0]?.output,
-            })))
-
-            setRoutes(preparedRoutes);
+                startDateTime: (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "start") as DateOutput[])[0]?.output,
+                endDateTime: (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "end") as DateOutput[])[0]?.output,
+            }))));
         } catch (error) {
             console.error("Failed to fetch routes from server:", error);
         }
@@ -218,15 +221,48 @@ export default function VisitPriestSubpage() {
             item.output.toLowerCase().startsWith(search.toLowerCase())
         );
         setFilteredData(filtered);
+
     }, [search, data]);
+    const formatDateTime = (inputDate: Date) => {
+        return new Intl.DateTimeFormat('pl-PL', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        }).format(inputDate);
+    };
+
+    // Function to handle drag end event
+    const handleDragEnd = (result) => {
+        const { source, destination } = result;
+
+        if (!destination) {
+            return;
+        }
+
+        if (source.droppableId === "searchResults" && destination.droppableId === "routeAddresses") {
+            // Handle adding address to route
+            const newRouteAddresses = Array.from(routeAddresses);
+            const [movedItem] = filteredData.splice(source.index, 1);
+            newRouteAddresses.splice(destination.index, 0, movedItem);
+            setRouteAddresses(newRouteAddresses);
+        } else if (source.droppableId === "routeAddresses" && destination.droppableId === "routeAddresses") {
+            // Handle reordering addresses within the route
+            const newRouteAddresses = Array.from(routeAddresses);
+            const [movedItem] = newRouteAddresses.splice(source.index, 1);
+            newRouteAddresses.splice(destination.index, 0, movedItem);
+            setRouteAddresses(newRouteAddresses);
+        }
+    };
 
     return (
-        <div>
+        <div className='visit_priest'>
             <select value={selectedRoute || ""} onChange={(e) => setSelectedRoute(e.target.value)}>
                 <option value="">Create new route</option>
                 {routes.map((route) => (
                     <option key={route.id} value={route.id}>
-                        {route.title}
+                        {`${route.title} (${formatDateTime(route.startDateTime)} - ${formatDateTime(route.endDateTime)})`}
                     </option>
                 ))}
             </select>
@@ -261,20 +297,65 @@ export default function VisitPriestSubpage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
             />
-            <table>
-                <thead>
-                    <tr>
-                        <th>Adres</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredData.map((item, index) => (
-                        <tr key={index}>
-                            <td>{item.output}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div className="container">
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <Droppable droppableId="searchResults">
+                        {(provided) => (
+                            <div className="column" ref={provided.innerRef} {...provided.droppableProps}>
+                                <h3>Search Results</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Adres</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredData.map((item, index) => (
+                                            <Draggable key={item.id} draggableId={item.id} index={index}>
+                                                {(provided) => (
+                                                    <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                        <td>{item.output}</td>
+                                                    </tr>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </Droppable>
+                    <Droppable droppableId="routeAddresses">
+                        {(provided) => (
+                            <div className="column" ref={provided.innerRef} {...provided.droppableProps}>
+                                <h3>Route Addresses</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Adres</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {routeAddresses.map((item, index) => (
+                                            <Draggable key={item.id} draggableId={item.id} index={index}>
+                                                {(provided) => (
+                                                    <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                        <td>{item.output}</td>
+                                                    </tr>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+
+
+            </div>
         </div>
     );
+
 }
