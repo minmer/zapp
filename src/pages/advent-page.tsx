@@ -298,6 +298,18 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>22.12.2024 r.</a>
+                        <a href="https://youtu.be/i5vvvc8DOGY" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>23.12.2024 r.</a>
+                        <a href="https://youtu.be/x4_dlFlLqNQ" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>24.12.2024 r.</a>
                     </div>
                     <h2>Materiały</h2>
                     <div style={{
@@ -431,6 +443,30 @@ export default function AdventPage() {
                             display: 'inline-block',
                             width: 'auto',
                         }}>20.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/21.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>21.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/22.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>22.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/23.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>23.12.2024 r.</a>
+                        <a href="https://www.recreatio.eu/roraty/24.pdf" target="_blank" style={{
+
+                            margin: '6px',
+                            display: 'inline-block',
+                            width: 'auto',
+                        }}>24.12.2024 r.</a>
                     </div>                    <h2>Roratni turniej szachowy</h2>
                     <div
                         style={{
