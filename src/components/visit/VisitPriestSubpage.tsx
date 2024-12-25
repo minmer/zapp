@@ -241,8 +241,11 @@ export default function VisitPriestSubpage() {
             if (selectedRoute) {
                 try {
                     const fetchedAddresses = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedRoute.id + 'addresses') as StringOutput[];
+                    console.log('qwe1')
                     const orderedAddresses = await Promise.all(fetchedAddresses.map(async (address) => {
-                        const order = await FetchInformationGetAll("long", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + selectedRoute.id + "order") as NumberOutput[];
+                        console.log('qwe2')
+                        const order = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + selectedRoute.id + "order") as NumberOutput[];
+                        console.log(order)
                         if (order.length == 0) {
                             await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [address.id + selectedRoute.id + "order"], 0, [1]);
                         }
