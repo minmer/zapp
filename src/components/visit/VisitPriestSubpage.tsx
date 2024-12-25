@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import Papa from "papaparse";
 import { FetchInformationPost } from "../../features/FetchInformationPost";
-import { DateOutput, FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
+import { DateOutput, FetchInformationGetAll, NumberOutput, StringOutput } from "../../features/FetchInformationGet";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { FetchContext } from "../../features/FetchPostContext";
+import { FetchInformationPut } from "../../features/FetchInformationPut";
 
 interface VisitData {
     address: string;
@@ -36,7 +38,7 @@ interface VisitData {
 
 interface Route {
     id: string;
-    title: string;
+    output: string;
     startDateTime: Date;
     endDateTime: Date;
 }
@@ -47,7 +49,7 @@ export default function VisitPriestSubpage() {
     const [search, setSearch] = useState("");
     const [filteredData, setFilteredData] = useState<{ id: string, output: string }[]>([]);
     const [routes, setRoutes] = useState<Route[]>([]);
-    const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
+    const [selectedRoute, setSelectedRoute] = useState<{ id:string, output: string} | null>(null);
     const [newRouteTitle, setNewRouteTitle] = useState("");
     const [startDateTime, setStartDateTime] = useState("");
     const [endDateTime, setEndDateTime] = useState("");
@@ -190,7 +192,7 @@ export default function VisitPriestSubpage() {
 
             setRoutes(await Promise.all(fetchedRoutes.map(async item => ({
                 id: item.id,
-                title: item.output,
+                output: item.output,
                 startDateTime: (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "start") as DateOutput[])[0]?.output,
                 endDateTime: (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "end") as DateOutput[])[0]?.output,
             }))));
@@ -201,8 +203,8 @@ export default function VisitPriestSubpage() {
 
     const handleCreateRoute = async () => {
         if (newRouteTitle && startDateTime && endDateTime) {
-            const newRoute: Route = { id: "", title: newRouteTitle, startDateTime: new Date(startDateTime), endDateTime: new Date(endDateTime) };
-            const routeId = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", ["visit_routes"], newRoute.title, [1]);
+            const newRoute: Route = { id: "", output: newRouteTitle, startDateTime: new Date(startDateTime), endDateTime: new Date(endDateTime) };
+            const routeId = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", ["visit_routes"], newRoute.output, [1]);
             await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [routeId + "start"], newRoute.startDateTime, [1]);
             await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [routeId + "end"], newRoute.endDateTime, [1]);
             newRoute.id = routeId;
@@ -233,10 +235,36 @@ export default function VisitPriestSubpage() {
         }).format(inputDate);
     };
 
-    // Function to handle drag end event
-    const handleDragEnd = (result) => {
-        const { source, destination } = result;
 
+    useEffect(() => {
+        const fetchRouteAddresses = async () => {
+            if (selectedRoute) {
+                try {
+                    const fetchedAddresses = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedRoute.id + 'addresses') as StringOutput[];
+                    const orderedAddresses = await Promise.all(fetchedAddresses.map(async (address) => {
+                        const order = await FetchInformationGetAll("long", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + selectedRoute.id + "order") as NumberOutput[];
+                        if (order.length == 0) {
+                            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [address.id + selectedRoute.id + "order"], 0, [1]);
+                        }
+                        return { ...address, order: order[0]?.output || 0 };
+                    }));
+                    orderedAddresses.sort((a, b) => a.order - b.order);
+                    setRouteAddresses(orderedAddresses);
+                } catch (error) {
+                    console.error("Failed to fetch route addresses:", error);
+                }
+            }
+        };
+
+        fetchRouteAddresses();
+    }, [selectedRoute]);
+
+
+
+
+    const handleDragEnd = async (result) => {
+        const { source, destination } = result;
+        console.log(result)
         if (!destination) {
             return;
         }
@@ -245,7 +273,20 @@ export default function VisitPriestSubpage() {
             // Handle adding address to route
             const newRouteAddresses = Array.from(routeAddresses);
             const [movedItem] = filteredData.splice(source.index, 1);
-            newRouteAddresses.splice(destination.index, 0, movedItem);
+
+            // Check if the item already exists in the route addresses
+            const existingIndex = newRouteAddresses.findIndex(item => item.id === movedItem.id);
+            if (existingIndex !== -1) {
+                // Remove the item if it already exists
+                newRouteAddresses.splice(existingIndex, 1);
+            } else {
+                // Add the item if it does not exist
+                newRouteAddresses.splice(destination.index, 0, movedItem);
+                await FetchContext("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", movedItem.id, "public_writer", selectedRoute.id + 'addresses', generatePreorderValue(movedItem.output));
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [movedItem.id + selectedRoute.id + "order"], destination.index, [1]);
+
+            }
+
             setRouteAddresses(newRouteAddresses);
         } else if (source.droppableId === "routeAddresses" && destination.droppableId === "routeAddresses") {
             // Handle reordering addresses within the route
@@ -253,20 +294,32 @@ export default function VisitPriestSubpage() {
             const [movedItem] = newRouteAddresses.splice(source.index, 1);
             newRouteAddresses.splice(destination.index, 0, movedItem);
             setRouteAddresses(newRouteAddresses);
+            // Update the order information
+            await Promise.all(newRouteAddresses.map((item, index) =>
+                FetchInformationPut("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", item.id + selectedRoute.id + "order", index)
+            ));
         }
     };
 
+    // Function to handle deleting an address from the route addresses
+    const handleDeleteAddress = (index: number) => {
+        const newRouteAddresses = Array.from(routeAddresses);
+        newRouteAddresses.splice(index, 1);
+        setRouteAddresses(newRouteAddresses);
+    };
+
+
     return (
         <div className='visit_priest'>
-            <select value={selectedRoute || ""} onChange={(e) => setSelectedRoute(e.target.value)}>
+            <select value={selectedRoute?.id || ""} onChange={(e) => setSelectedRoute(routes.find(item => item.id === e.target.value) || null)}>
                 <option value="">Create new route</option>
                 {routes.map((route) => (
                     <option key={route.id} value={route.id}>
-                        {`${route.title} (${formatDateTime(route.startDateTime)} - ${formatDateTime(route.endDateTime)})`}
+                        {`${route.output} (${formatDateTime(route.startDateTime)} - ${formatDateTime(route.endDateTime)})`}
                     </option>
                 ))}
             </select>
-            {selectedRoute === "" && (
+            {selectedRoute == null && (
                 <div>
                     <input
                         type="text"
@@ -333,6 +386,7 @@ export default function VisitPriestSubpage() {
                                     <thead>
                                         <tr>
                                             <th>Adres</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -341,6 +395,9 @@ export default function VisitPriestSubpage() {
                                                 {(provided) => (
                                                     <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                                         <td>{item.output}</td>
+                                                        <td>
+                                                            <button onClick={() => handleDeleteAddress(index)}>X</button>
+                                                        </td>
                                                     </tr>
                                                 )}
                                             </Draggable>
@@ -352,10 +409,11 @@ export default function VisitPriestSubpage() {
                         )}
                     </Droppable>
                 </DragDropContext>
-
-
             </div>
         </div>
     );
+
+
+
 
 }
