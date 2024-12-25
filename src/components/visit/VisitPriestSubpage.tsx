@@ -246,10 +246,11 @@ export default function VisitPriestSubpage() {
                         if (order.length == 0) {
                             await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [address.id + selectedRoute.id + "order"], 0, [1]);
                         }
-                        return { ...address, order: order[0]?.output || 0 };
+                        return { ...address, order: order[0]?.output || -1 };
                     }));
                     orderedAddresses.sort((a, b) => a.order - b.order);
                     setRouteAddresses(orderedAddresses);
+                    console.log(orderedAddresses)
                 } catch (error) {
                     console.error("Failed to fetch route addresses:", error);
                 }
@@ -264,7 +265,6 @@ export default function VisitPriestSubpage() {
 
     const handleDragEnd = async (result) => {
         const { source, destination } = result;
-        console.log(result)
         if (!destination) {
             return;
         }
@@ -295,9 +295,11 @@ export default function VisitPriestSubpage() {
             newRouteAddresses.splice(destination.index, 0, movedItem);
             setRouteAddresses(newRouteAddresses);
             // Update the order information
+            console.log('asd')
             await Promise.all(newRouteAddresses.map((item, index) =>
                 FetchInformationPut("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", item.id + selectedRoute.id + "order", index)
             ));
+            console.log('asd1')
         }
     };
 
