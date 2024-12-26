@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { FetchInformationGetAll } from "../../features/FetchInformationGet";
 import { StringOutput, DateOutput, NumberOutput } from "../../features/NewFetchInformationGet";
 import { FetchInformationPost } from "../../features/FetchInformationPost";
+import { FetchInformationDelete } from "../../features/FetchInformationDelete";
 
 interface Route {
     id: string;
@@ -10,7 +11,7 @@ interface Route {
     startDateTime: Date;
     endDateTime: Date;
     ministers: ({ id: string, display: string, server: string } | null)[];
-    addresses: { id: string, output: string, order: number, orderid: string, visit2022: string, visit2023: string, visit2024: string, probability: number, probabilityDescription: string, additionalInfo: { option: string[], from: string[], to: string[], notes: string[], contact: string[], reg: Date[] } }[];
+    addresses: { id: string, output: string, order: number, orderid: string, visit2022: string, visit2023: string, visit2024: string, probability: number, probabilityDescription: string, additionalInfo: { option: string[], from: string[], to: string[], notes: string[], contact: string[], reg: Date[] }, visitInfo: string | null, visitTime: Date | null, timeRange?: [Date, Date]}[];
 }
 
 export default function VisitMinisterSubpage() {
@@ -110,6 +111,8 @@ export default function VisitMinisterSubpage() {
                     const visit2023 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2023") as StringOutput[])[0]?.output || "N";
                     const visit2024 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2024") as StringOutput[])[0]?.output || "N";
                     const visitOption = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visitOption") as StringOutput[];
+                    const visitInfo = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit_info") as StringOutput[])[0]?.output || null;
+                    const visitTime = (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit_time") as DateOutput[])[0]?.output || null;
                     let additionalInfo = { option: visitOption.map(info => info.output), from: [], to: [], notes: [], contact: [], reg: [] };
                     let probabilityDescription = null;
                     if (visitOption.length > 0) {
@@ -141,13 +144,14 @@ export default function VisitMinisterSubpage() {
 
                     if (order.length == 0) {
                         const id = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [address.id + routeId + "order"], 0, [1]);
-                        return { ...address, probabilityDescription: probabilityDescription ?? (probability > 95 ? 'Na pewno przyjmują' : probability > 80 ? 'Raczej przyjmują' : probability > 25 ? 'Warto próbować' : probability > 5 ? 'Jeden raz zadzwonić' : 'Nie przyjmują'), order: order[0]?.output || -1, orderid: id as string, visit2022, visit2023, visit2024, probability, additionalInfo: additionalInfo };
+                        return { ...address, probabilityDescription: probabilityDescription ?? (probability > 95 ? 'Na pewno przyjmują' : probability > 80 ? 'Raczej przyjmują' : probability > 25 ? 'Warto próbować' : probability > 5 ? 'Jeden raz zadzwonić' : 'Nie przyjmują'), order: order[0]?.output || -1, orderid: id as string, visit2022, visit2023, visit2024, probability, additionalInfo: additionalInfo, visitInfo, visitTime };
                     }
-                    return { ...address, probabilityDescription: probabilityDescription ?? (probability > 95 ? 'Na pewno przyjmują' : probability > 80 ? 'Raczej przyjmują' : probability > 25 ? 'Warto próbować' : probability > 5 ? 'Jeden raz zadzwonić' : 'Nie przyjmują'), order: order[0]?.output || -1, orderid: order[0]?.id, visit2022, visit2023, visit2024, probability, additionalInfo: additionalInfo };
+                    return { ...address, probabilityDescription: probabilityDescription ?? (probability > 95 ? 'Na pewno przyjmują' : probability > 80 ? 'Raczej przyjmują' : probability > 25 ? 'Warto próbować' : probability > 5 ? 'Jeden raz zadzwonić' : 'Nie przyjmują'), order: order[0]?.output || -1, orderid: order[0]?.id, visit2022, visit2023, visit2024, probability, additionalInfo: additionalInfo, visitInfo, visitTime };
                 }));
                 orderedAddresses.sort((a, b) => a.order - b.order);
                 route.addresses = orderedAddresses;
                 setRoutes([...routes]);
+                calculateSupposedVisitTimeRanges(routes); // Recalculate visit times after loading the route
             } catch (error) {
                 console.error("Failed to fetch addresses from server:", error);
             }
@@ -155,11 +159,32 @@ export default function VisitMinisterSubpage() {
         setExpandedRoute(expandedRoute === routeId ? null : routeId);
     };
 
-
-
-
     const handleExpandAddress = (addressId: string) => {
         setExpandedAddress(expandedAddress === addressId ? null : addressId);
+    };
+
+    const handlePostVisitInfo = async (addressId: string, info: string) => {
+        const visitTime = new Date();
+        await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit_info"], info, [1]);
+        await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit_time"], visitTime.toISOString(), [1]);
+        setRoutes(routes.map(route => {
+            const updatedRoute = {
+                ...route,
+                addresses: route.addresses.map(address => address.id === addressId ? { ...address, visitInfo: info, visitTime } : address)
+            };
+            calculateSupposedVisitTimeRanges([updatedRoute]); // Recalculate visit times after posting visit information
+            return updatedRoute;
+        }));
+    };
+
+
+    const handleDeleteVisitInfo = async (addressId: string) => {
+        await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", addressId + "visit_info");
+        await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", addressId + "visit_time");
+        setRoutes(routes.map(route => ({
+            ...route,
+            addresses: route.addresses.map(address => address.id === addressId ? { ...address, visitInfo: null, visitTime: null } : address)
+        })));
     };
 
     const calculateProbability = (visit2022: string, visit2023: string, visit2024: string): number => {
@@ -191,6 +216,111 @@ export default function VisitMinisterSubpage() {
         const midTime = new Date((startTime + endTime) / 2);
         return midTime;
     };
+
+    const calculateSupposedVisitTimeRanges = (routes: Route[]) => {
+        routes.forEach(route => {
+            const totalRouteDuration = route.endDateTime.getTime() - route.startDateTime.getTime();
+            const addresses = route.addresses;
+
+            // Start with a supposed time of 10 minutes per visit
+            let supposedAverageVisitTime = 10 * 60 * 1000; // 10 minutes in milliseconds
+
+            // Calculate total probability sum (as a fraction)
+            const totalProbabilitySum = addresses.reduce((sum, addr) => sum + addr.probability / 100, 0);
+
+            // If possible, adjust supposedAverageVisitTime based on total probabilities and route duration
+            if (totalProbabilitySum > 0) {
+                supposedAverageVisitTime = totalRouteDuration / totalProbabilitySum;
+            }
+
+            // Check for actual visit times
+            const actualVisitTimes = addresses
+                .filter(addr => addr.visitTime)
+                .map(addr => addr.visitTime!.getTime());
+
+            if (actualVisitTimes.length > 0) {
+                // Find the latest visit time
+                const latestVisitTimeValue = Math.max(...actualVisitTimes);
+                const remainingTime = route.endDateTime.getTime() - latestVisitTimeValue;
+
+                // Get addresses after the latest visit
+                const indexOfLatestVisit = addresses.findIndex(
+                    addr => addr.visitTime && addr.visitTime.getTime() === latestVisitTimeValue
+                );
+                const remainingAddresses = addresses.slice(indexOfLatestVisit + 1);
+
+                // Sum probabilities of remaining addresses
+                const remainingProbabilitySum = remainingAddresses.reduce(
+                    (sum, addr) => sum + addr.probability / 100,
+                    0
+                );
+
+                // Adjust supposedAverageVisitTime based on the remaining time and probabilities
+                if (remainingProbabilitySum > 0) {
+                    supposedAverageVisitTime = remainingTime / remainingProbabilitySum;
+                }
+            }
+
+            // Adjust supposedAverageVisitTime based on the latest visit durations (up to 5% impact)
+            const visitDurations: number[] = [];
+            for (let i = 1; i < addresses.length; i++) {
+                if (addresses[i].visitTime && addresses[i - 1].visitTime) {
+                    const duration =
+                        addresses[i].visitTime!.getTime() - addresses[i - 1].visitTime!.getTime();
+                    visitDurations.push(duration);
+                }
+            }
+            const latestVisitDurations = visitDurations.slice(-10); // Up to 10 latest visits
+            if (latestVisitDurations.length > 0) {
+                const averageActualVisitDuration =
+                    latestVisitDurations.reduce((sum, dur) => sum + dur, 0) /
+                    latestVisitDurations.length;
+
+                // Calculate adjustment (maximum 5% impact)
+                const difference = averageActualVisitDuration - supposedAverageVisitTime;
+                const adjustment = difference * 0.05 * latestVisitDurations.length; // 5% of the difference
+
+                supposedAverageVisitTime += adjustment;
+            }
+
+            // Assign visit times and time ranges to addresses
+            let currentTime: number;
+
+            if (actualVisitTimes.length > 0) {
+                currentTime = Math.max(...actualVisitTimes);
+            } else {
+                currentTime = route.startDateTime.getTime();
+            }
+
+            addresses.forEach(address => {
+                if (address.visitTime) {
+                    // Use actual visit time
+                    address.timeRange = [address.visitTime, address.visitTime];
+                    currentTime = address.visitTime.getTime();
+                } else {
+                    // Calculate adjusted duration based on probability
+                    const adjustedDuration = supposedAverageVisitTime * (address.probability / 100);
+
+                    const range = 10 * 60 * 1000 + 65 * 60 * 1000 * (Math.min(Math.max((currentTime - (route.startDateTime.getTime() > Date.now() ? route.startDateTime.getTime() : Date.now())) / (240 * 60 * 1000), 0), 1));
+
+                    address.timeRange = [
+                        new Date(currentTime - range),
+                        new Date(currentTime + range)
+                    ];
+
+                    if (address.probability > 0) {
+                        currentTime += adjustedDuration;
+                    }
+                }
+            });
+        });
+    };
+
+
+
+
+
+
 
     return (
         <div className='visit_minister'>
@@ -236,6 +366,11 @@ export default function VisitMinisterSubpage() {
                                             <div key={address.id}>
                                                 <p style={{ fontWeight: address.probability !== 0 ? 'bold' : 'normal' }}>
                                                     {address.output} - {address.probabilityDescription}
+                                                    {address.timeRange && (
+                                                        <span className="time-range">
+                                                            {formatTime(address.timeRange[0])} - {formatTime(address.timeRange[1])}
+                                                        </span>
+                                                    )}
                                                     {address.additionalInfo.option.length > 0 && (
                                                         <span className="info-icon" onClick={() => handleExpandAddress(address.id)}> ℹ️ </span>
                                                     )}
@@ -250,8 +385,18 @@ export default function VisitMinisterSubpage() {
                                                         {address.additionalInfo.reg.length > 0 && <p><strong>Registration Date:</strong> {address.additionalInfo.reg.map(date => formatDate(date)).join(", ")}</p>}
                                                     </div>
                                                 )}
+                                                {address.visitInfo ? (
+                                                    <button onClick={() => handleDeleteVisitInfo(address.id)} className="delete-button">Skasuj informację</button>
+                                                ) : (
+                                                    <div className="visit-info-buttons"
+                                                        style={{ opacity: address.probability !== 0 ? '1' : '.2' }}>
+                                                        <button onClick={() => handlePostVisitInfo(address.id, 'Przyjęli')} className="button">Przyjęli</button>
+                                                        <button onClick={() => handlePostVisitInfo(address.id, 'Nie otworzyli')} className="button">Nie otworzyli</button>
+                                                        <button onClick={() => handlePostVisitInfo(address.id, 'Odmówili przyjęcie')} className="button">Odmówili przyjęcie</button>
+                                                        <button onClick={() => handlePostVisitInfo(address.id, 'Proszą o inny termin')} className="button">Proszą o inny termin</button>
+                                                    </div>
+                                                )}
                                             </div>
-
                                         ))}
                                     </div>
                                 )}
@@ -264,5 +409,8 @@ export default function VisitMinisterSubpage() {
             )}
         </div>
     );
+
+
+
 }
 

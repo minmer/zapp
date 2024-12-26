@@ -1080,8 +1080,9 @@
 
     .visit-register-subpage p {
         margin-top: 0;
-        color: #ff0000;
-        font-size: 0.875rem;
+        color: #bf0000;
+        font-size: .875rem;
+        font-weight: bold;
     }
 
 
@@ -1202,9 +1203,212 @@
 }
 
 
+.visit-info-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+    .visit-info-buttons .button {
+        padding: 0.5rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.3s ease;
+        flex: 1;
+        min-width: 120px;
+        max-width: 150px;
+        font-size: 0.875rem;
+    }
+
+        .visit-info-buttons .button:hover {
+            background-color: #0056b3;
+        }
+
+        .visit-info-buttons .button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+.delete-button {
+    padding: 0.5rem;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+    .delete-button:hover {
+        background-color: #c82333;
+    }
 
 
+.visit_minister .time-range {
+    font-weight: normal;
+    margin-left: 10px;
+    color: #555;
+    font-size: 0.875rem;
+}
 
+    .visit_minister .time-range b {
+        font-weight: bold;
+        color: #000;
+    }
+
+.visit-check {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .visit-check label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .visit-check .input-field {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+.expandable-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.expandable-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    cursor: pointer;
+}
+
+    .expandable-item:hover {
+        background-color: #f9f9f9;
+    }
+
+.grayed-out {
+    opacity: 0.5;
+}
+
+.addresses {
+    padding: 8px;
+}
+
+.ministers {
+    display: flex;
+    gap: 10px;
+}
+
+.time-pairs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 8px;
+}
+
+.time-pair {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.time-range {
+    font-weight: normal;
+}
+
+    .time-range b {
+        font-weight: bold;
+    }
+
+.date {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.info-icon {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.additional-info {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+
+.visit-check {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .visit-check label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .visit-check .input-field {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .visit-check .expandable-container {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    .visit-check .expandable-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.3s ease;
+        user-select: none;
+        cursor: pointer;
+    }
+
+        .visit-check .expandable-item:hover {
+            background-color: #f9f9f9;
+        }
 
 
 .expandable-container {

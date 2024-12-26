@@ -1,6 +1,14 @@
 ﻿import { useState, useEffect } from "react";
-import { FetchInformationGetAll, StringOutput } from "../../features/FetchInformationGet";
+import { FetchInformationGetAll, StringOutput, DateOutput, NumberOutput } from "../../features/FetchInformationGet";
 import { FetchInformationPost } from "../../features/FetchInformationPost";
+
+interface Route {
+    id: string;
+    output: string;
+    startDateTime: Date;
+    endDateTime: Date;
+    addresses: { id: string, output: string, order: number, visit2022: string, visit2023: string, visit2024: string, probability: number, visitTime: Date | null, timeRange?: [Date, Date] }[];
+}
 
 const villages = {
     "Zielonki": [
@@ -18,7 +26,7 @@ export default function VisitRegisterSubpage() {
     const [addresses, setAddresses] = useState<StringOutput[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [filteredAddresses, setFilteredAddresses] = useState<StringOutput[]>([]);
-    const [selectedAddress, setSelectedAddress] = useState<string>("");
+    const [selectedAddress, setSelectedAddress] = useState<StringOutput | null>(null);
     const [selectedVillage, setSelectedVillage] = useState<string>("");
     const [selectedStreet, setSelectedStreet] = useState<string>("");
     const [houseNumber, setHouseNumber] = useState<string>("");
@@ -28,6 +36,7 @@ export default function VisitRegisterSubpage() {
     const [additionalNotes, setAdditionalNotes] = useState<string>("");
     const [contactInfo, setContactInfo] = useState<string>("");
     const [feedback, setFeedback] = useState<string>("");
+    const [route, setRoute] = useState<Route | null>(null);
 
     const fetchAddresses = async () => {
         try {
@@ -53,13 +62,53 @@ export default function VisitRegisterSubpage() {
         }
     }, [searchQuery, addresses]);
 
+    useEffect(() => {
+        const fetchRouteID = async () => {
+            if (selectedAddress) {
+                try {
+                    const routeData = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedAddress.id + 'route') as StringOutput[];
+                    if (routeData.length > 0) {
+                        const routeID = routeData[0];
+                        const startDateTime = (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", routeID.id + "start") as DateOutput[])[0]?.output;
+                        const endDateTime = (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", routeID.id + "end") as DateOutput[])[0]?.output;
+                        const fetchedAddresses = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", routeID.id + 'addresses') as StringOutput[];
+                        const orderedAddresses = await Promise.all(fetchedAddresses.map(async (address) => {
+                            const order = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + routeID.id + "order") as NumberOutput[];
+                            const visit2022 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2022") as StringOutput[])[0]?.output || "N";
+                            const visit2023 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2023") as StringOutput[])[0]?.output || "N";
+                            const visit2024 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2024") as StringOutput[])[0]?.output || "N";
+                            const visitTime = (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit_time") as DateOutput[])[0]?.output || null;
+                            const probability = calculateProbability(visit2022, visit2023, visit2024);
+                            return { id: address.id, output: address.output, order: order[0]?.output || -1, visit2022, visit2023, visit2024, probability, visitTime };
+                        }));
+                        orderedAddresses.sort((a, b) => a.order - b.order);
+                        const routeDetails: Route = {
+                            id: routeID.id,
+                            output: routeID.output,
+                            startDateTime: new Date(startDateTime),
+                            endDateTime: new Date(endDateTime),
+                            addresses: orderedAddresses
+                        };
+                        setRoute(routeDetails);
+                        calculateSupposedVisitTimeRanges(routeDetails);
+                    } else {
+                        setRoute(null);
+                    }
+                } catch (error) {
+                    console.error("Nie udało się pobrać ID trasy z serwera:", error);
+                }
+            }
+        };
+        fetchRouteID();
+    }, [selectedAddress]);
+
     const handleAddAddress = async () => {
         const fullAddress = `${selectedVillage} ${selectedStreet} ${houseNumber}`;
         const preorder = generatePreorderValue(fullAddress);
         const addressId = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", ["visit_adresses_03"], fullAddress, [preorder]);
         await handleUploadAddress(addressId);
         setAddresses([...addresses, { id: addressId, output: fullAddress, preorder: 0 }]);
-        setSelectedAddress(fullAddress);
+        setSelectedAddress({ id: addressId, output: fullAddress, preorder: 0 });
         setSelectedVillage("");
         setSelectedStreet("");
         setHouseNumber("");
@@ -76,7 +125,7 @@ export default function VisitRegisterSubpage() {
 
         // Provide feedback and clear selections
         setFeedback("Bardzo dziękujemy - Twoje zgłoszenie zostało wysłane");
-        setSelectedAddress("");
+        setSelectedAddress(null);
         setSelectedVillage("");
         setSelectedStreet("");
         setHouseNumber("");
@@ -120,6 +169,127 @@ export default function VisitRegisterSubpage() {
         return visitOption && contactInfo;
     };
 
+    const calculateProbability = (visit2022: string, visit2023: string, visit2024: string): number => {
+        let probability = 0;
+        if (visit2024 === "T") probability += 65;
+        if (visit2023 === "T") probability += 25;
+        if (visit2022 === "T") probability += 10;
+        return probability;
+    };
+
+    const calculateSupposedVisitTimeRanges = (route: Route) => {
+        const totalRouteDuration = route.endDateTime.getTime() - route.startDateTime.getTime();
+        const addresses = route.addresses;
+
+        // Start with a supposed time of 10 minutes per visit
+        let supposedAverageVisitTime = 10 * 60 * 1000; // 10 minutes in milliseconds
+
+        // Calculate total probability sum (as a fraction)
+        const totalProbabilitySum = addresses.reduce((sum, addr) => sum + addr.probability / 100, 0);
+
+        // If possible, adjust supposedAverageVisitTime based on total probabilities and route duration
+        if (totalProbabilitySum > 0) {
+            supposedAverageVisitTime = totalRouteDuration / totalProbabilitySum;
+        }
+
+        // Check for actual visit times
+        const actualVisitTimes = addresses
+            .filter(addr => addr.visitTime)
+            .map(addr => addr.visitTime!.getTime());
+
+        if (actualVisitTimes.length > 0) {
+            // Find the latest visit time
+            const latestVisitTimeValue = Math.max(...actualVisitTimes);
+            const remainingTime = route.endDateTime.getTime() - latestVisitTimeValue;
+
+            // Get addresses after the latest visit
+            const indexOfLatestVisit = addresses.findIndex(
+                addr => addr.visitTime && addr.visitTime.getTime() === latestVisitTimeValue
+            );
+            const remainingAddresses = addresses.slice(indexOfLatestVisit + 1);
+
+            // Sum probabilities of remaining addresses
+            const remainingProbabilitySum = remainingAddresses.reduce(
+                (sum, addr) => sum + addr.probability / 100,
+                0
+            );
+
+            // Adjust supposedAverageVisitTime based on the remaining time and probabilities
+            if (remainingProbabilitySum > 0) {
+                supposedAverageVisitTime = remainingTime / remainingProbabilitySum;
+            }
+        }
+
+        // Adjust supposedAverageVisitTime based on the latest visit durations (up to 5% impact)
+        const visitDurations: number[] = [];
+        for (let i = 1; i < addresses.length; i++) {
+            if (addresses[i].visitTime && addresses[i - 1].visitTime) {
+                const duration =
+                    addresses[i].visitTime!.getTime() - addresses[i - 1].visitTime!.getTime();
+                visitDurations.push(duration);
+            }
+        }
+        const latestVisitDurations = visitDurations.slice(-10); // Up to 10 latest visits
+        if (latestVisitDurations.length > 0) {
+            const averageActualVisitDuration =
+                latestVisitDurations.reduce((sum, dur) => sum + dur, 0) /
+                latestVisitDurations.length;
+
+            // Calculate adjustment (maximum 5% impact)
+            const difference = averageActualVisitDuration - supposedAverageVisitTime;
+            const adjustment = difference * 0.05 * latestVisitDurations.length; // 5% of the difference
+
+            supposedAverageVisitTime += adjustment;
+        }
+
+        // Assign visit times and time ranges to addresses
+        let currentTime: number;
+
+        if (actualVisitTimes.length > 0) {
+            currentTime = Math.max(...actualVisitTimes);
+        } else {
+            currentTime = route.startDateTime.getTime();
+        }
+
+        addresses.forEach(address => {
+            if (address.visitTime) {
+                // Use actual visit time
+                address.timeRange = [address.visitTime, address.visitTime];
+            } else {
+                // Calculate adjusted duration based on probability
+                const adjustedDuration = supposedAverageVisitTime * (address.probability / 100);
+
+                const range = 10 * 60 * 1000 + 65 * 60 * 1000 * (Math.min(Math.max((currentTime - (route.startDateTime.getTime() > Date.now() ? route.startDateTime.getTime() : Date.now())) / (240 * 60 * 1000), 0), 1));
+
+                address.timeRange = [
+                    new Date(currentTime - range),
+                    new Date(currentTime + range)
+                ];
+
+                if (address.probability > 0) {
+                    currentTime += adjustedDuration;
+                }
+            }
+        });
+
+        setRoute({ ...route, addresses });
+    };
+
+    const formatDate = (inputDate: Date) => {
+        return new Intl.DateTimeFormat('pl-PL', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }).format(inputDate);
+    };
+
+    const formatTime = (inputDate: Date) => {
+        return new Intl.DateTimeFormat('pl-PL', {
+            hour: '2-digit',
+            minute: '2-digit'
+        }).format(inputDate);
+    };
+
     return (
         <div className="visit-register-subpage">
             <label htmlFor="address-search">Szukaj adresu:</label>
@@ -136,13 +306,13 @@ export default function VisitRegisterSubpage() {
                     <label htmlFor="address-select">Wybierz adres:</label>
                     <select
                         id="address-select"
-                        value={selectedAddress}
-                        onChange={(e) => setSelectedAddress(e.target.value)}
+                        value={selectedAddress ? selectedAddress.id : ""}
+                        onChange={(e) => setSelectedAddress(addresses.find(item => item.id === e.target.value) || null)}
                         className="input-field"
                     >
                         <option value="">--Proszę wybrać adres--</option>
                         {filteredAddresses.slice(0, 10).map((address) => (
-                            <option key={address.id} value={address.output}>
+                            <option key={address.id} value={address.id}>
                                 {address.output}
                             </option>
                         ))}
@@ -209,7 +379,19 @@ export default function VisitRegisterSubpage() {
             {selectedAddress && !(searchQuery.length > 5 && filteredAddresses.length === 0) && (
                 <div>
                     <h3>Wybrany adres:</h3>
-                    <p>{selectedAddress}</p>
+                    <p>{selectedAddress.output}</p>
+                    {route && (
+                        <div>
+                            <h4>Oczekiwany zakres czasu wizyty:</h4>
+                            {route.addresses.map(address => (
+                                address.output === selectedAddress.output && address.timeRange && (
+                                    <p key={address.id}>
+                                        {formatTime(address.timeRange[0])} - {formatTime(address.timeRange[1])}
+                                    </p>
+                                )
+                            ))}
+                        </div>
+                    )}
                     <label htmlFor="visit-option">Wybierz opcję wizyty:</label>
                     <select
                         id="visit-option"
@@ -260,7 +442,7 @@ export default function VisitRegisterSubpage() {
                         placeholder="Wprowadź numer telefonu lub e-mail"
                         className="input-field"
                     />
-                    {isRegistrationFormValid() && <button onClick={() => handleUploadAddress(selectedAddress)} disabled={!isRegistrationFormValid()} className="button">Zarejestruj wizytę</button>}
+                    {isRegistrationFormValid() && <button onClick={() => handleUploadAddress(selectedAddress.id)} disabled={!isRegistrationFormValid()} className="button">Zarejestruj wizytę</button>}
                     {!isRegistrationFormValid() && <p>Proszę wybrać opcję wizyty i podać informacje kontaktowe, aby zarejestrować wizytę.</p>}
                 </div>
             )}
