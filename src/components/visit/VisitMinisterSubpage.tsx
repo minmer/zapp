@@ -179,8 +179,10 @@ export default function VisitMinisterSubpage() {
 
 
     const handleDeleteVisitInfo = async (addressId: string) => {
-        await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", addressId + "visit_info");
-        await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", addressId + "visit_time");
+        const visitInfoID = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", addressId + "visit_info") as StringOutput[])[0]?.id;
+        const visitTimeID = (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", addressId + "visit_time") as DateOutput[])[0]?.id;
+        await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", visitInfoID );
+        await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", visitTimeID );
         setRoutes(routes.map(route => ({
             ...route,
             addresses: route.addresses.map(address => address.id === addressId ? { ...address, visitInfo: null, visitTime: null } : address)

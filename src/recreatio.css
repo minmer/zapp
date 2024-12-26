@@ -1128,9 +1128,15 @@
         width: 100%;
         max-width: 300px;
     }
+.visit_priest .select-route {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-.visit_minister .scroll-view {
-    max-height: 300px;
+.visit_priest .scroll-view {
+    max-height: 500px;
     overflow-y: auto;
 }
 

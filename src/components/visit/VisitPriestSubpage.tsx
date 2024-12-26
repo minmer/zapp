@@ -415,7 +415,7 @@ export default function VisitPriestSubpage() {
 
     return (
         <div className='visit_priest'>
-            <select value={selectedRoute?.id || ""} onChange={(e) => setSelectedRoute(routes.find(item => item.id === e.target.value) || null)}>
+            <select className='select-route' value={selectedRoute?.id || ""} onChange={(e) => setSelectedRoute(routes.find(item => item.id === e.target.value) || null)}>
                 <option value="">Create new route</option>
                 {routes.map((route) => (
                     <option key={route.id} value={route.id}>
