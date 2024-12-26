@@ -102,14 +102,14 @@ export default function VisitMinisterSubpage() {
 
     const handleExpandRoute = async (routeId: string) => {
         const route = routes.find(route => route.id === routeId);
-        if (route && route.addresses.length === 0) {
+        if (route && route.addresses.length === 0 && route.ministers.some(item => item.id == minister)) {
             try {
                 const fetchedAddresses = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", routeId + 'addresses') as StringOutput[];
                 const orderedAddresses = await Promise.all(fetchedAddresses.map(async (address) => {
                     const order = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + routeId + "order") as NumberOutput[];
-                    const visit2022 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2022") as StringOutput[])[0]?.output || "N";
-                    const visit2023 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2023") as StringOutput[])[0]?.output || "N";
-                    const visit2024 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2024") as StringOutput[])[0]?.output || "N";
+                    const visit2022 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2022") as StringOutput[])[0]?.output || "X";
+                    const visit2023 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2023") as StringOutput[])[0]?.output || "X";
+                    const visit2024 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2024") as StringOutput[])[0]?.output || "X";
                     const visitOption = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visitOption") as StringOutput[];
                     const visitInfo = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit_info") as StringOutput[])[0]?.output || null;
                     const visitTime = (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit_time") as DateOutput[])[0]?.output || null;
@@ -150,8 +150,9 @@ export default function VisitMinisterSubpage() {
                 }));
                 orderedAddresses.sort((a, b) => a.order - b.order);
                 route.addresses = orderedAddresses;
-                setRoutes([...routes]);
                 calculateSupposedVisitTimeRanges(routes); // Recalculate visit times after loading the route
+                setRoutes([...routes]);
+                console.log(routes)
             } catch (error) {
                 console.error("Failed to fetch addresses from server:", error);
             }
@@ -194,6 +195,9 @@ export default function VisitMinisterSubpage() {
         if (visit2024 === "T") probability += 65;
         if (visit2023 === "T") probability += 25;
         if (visit2022 === "T") probability += 10;
+        if (visit2024 === "X") probability += 30;
+        if (visit2023 === "X") probability += 15;
+        if (visit2022 === "X") probability += 5;
         return probability;
     };
 

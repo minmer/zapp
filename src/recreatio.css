@@ -1325,7 +1325,7 @@
     }
 
 .grayed-out {
-    opacity: 0.5;
+    opacity: 0.33;
 }
 
 .addresses {
@@ -1372,6 +1372,93 @@
     padding-left: 20px;
     margin-top: 10px;
 }
+
+.visit_detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .visit_detail .route-selection,
+    .visit_detail .route-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .visit_detail .select-route,
+    .visit_detail .address-select {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .visit_detail .visit-data {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .visit_detail .visit-data-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .visit_detail .address-info {
+        grid-column: span 2;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .visit_detail .husband-info,
+    .visit_detail .wife-info,
+    .visit_detail .marriage-info,
+    .visit_detail .children-info,
+    .visit_detail .visit-history {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: #fff;
+    }
+
+    .visit_detail .marriage-info,
+    .visit_detail .children-info {
+        grid-column: span 1;
+    }
+
+    .visit_detail .visit-history {
+        grid-column: span 2;
+        text-align: center;
+    }
+
+    .visit_detail .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+        .visit_detail .navigation-buttons button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .visit_detail .navigation-buttons button:hover {
+                background-color: #0056b3;
+            }
+
 
 
 .visit-check {

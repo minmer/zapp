@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { User } from '../structs/user';
 import { GetAdminRole, GetRole } from '../structs/role';
 import { useAuth } from '../generals/permission/AuthContext';
+import VisitDetailSubpage from '../components/visit/VisitDetailSubpage';
 
 export default function VisitPage() {
     const [isMinister, setIsMinister] = useState(false);
@@ -49,6 +50,9 @@ export default function VisitPage() {
                             <Link to={`minister`}>Ministranci</Link>
                         </li> : null}
                         {isAdmin ? <li>
+                            <Link to={`detail`}>Szczegóły</Link>
+                        </li> : null}
+                        {isAdmin ? <li>
                             <Link to={`priest`}>Admin</Link>
                         </li> : null}
                         {!isAuthenticated ? <li>
@@ -66,6 +70,7 @@ export default function VisitPage() {
                         </div>} />
                     <Route path="check" element={<VisitCheckSubpage />} />
                     <Route path="register" element={<VisitRegisterSubpage />} />
+                    <Route path="detail" element={<VisitDetailSubpage />} />
                     <Route path="minister/:minister/:code" element={<VisitMinisterSubpage />} />
                     <Route path="minister" element={<VisitMinisterSubpage />} />
                         <Route path="priest" element={<VisitPriestSubpage />} />
