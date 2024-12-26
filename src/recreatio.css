@@ -1179,13 +1179,31 @@
 }
 
 .visit_minister .time-range {
-    font-weight: bold;
+    font-weight: normal;
 }
+
+    .visit_minister .time-range b {
+        font-weight: bold;
+    }
 
 .visit_minister .date {
     font-weight: bold;
     margin-bottom: 10px;
 }
+
+.visit_minister .info-icon {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.visit_minister .additional-info {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+
+
+
 
 
 

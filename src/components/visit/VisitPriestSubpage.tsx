@@ -49,7 +49,7 @@ interface Route {
 export default function VisitPriestSubpage() {
     const [file, setFile] = useState<File | null>(null);
     const [data, setData] = useState<{ id: string, output: string }[]>([]);
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState("---");
     const [filteredData, setFilteredData] = useState<{ id: string, output: string }[]>([]);
     const [routes, setRoutes] = useState<Route[]>([]);
     const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
@@ -281,12 +281,16 @@ export default function VisitPriestSubpage() {
     }, []);
 
     useEffect(() => {
-        const filtered = data.filter((item) =>
-            item.output.toLowerCase().startsWith(search.toLowerCase())
-        );
+        const filtered = data
+            .filter((item) =>
+                item.output.toLowerCase().startsWith(search.toLowerCase()) &&
+                !routeAddresses.some(routeAddress => routeAddress.id === item.id)
+            )
+            .sort((a, b) => a.output.localeCompare(b.output));
         setFilteredData(filtered);
+    }, [search, data, routeAddresses]);
 
-    }, [search, data]);
+
     const formatDateTime = (inputDate: Date) => {
         return new Intl.DateTimeFormat('pl-PL', {
             day: '2-digit',
@@ -343,9 +347,10 @@ export default function VisitPriestSubpage() {
                 newRouteAddresses.splice(existingIndex, 1);
             } else {
                 // Add the item if it does not exist
+                await FetchContext("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedRoute.id, "public_writer", movedItem.id + 'route', generatePreorderValue(movedItem.output));
                 await FetchContext("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", movedItem.id, "public_writer", selectedRoute.id + 'addresses', generatePreorderValue(movedItem.output));
-                 const id = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [movedItem.id + selectedRoute.id + "order"], destination.index, [1]);
-                newRouteAddresses.splice(destination.index, 0, { ...movedItem , order : 0, orderid: id as string  });
+                const id = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [movedItem.id + selectedRoute.id + "order"], destination.index, [1]);
+                newRouteAddresses.splice(destination.index, 0, { ...movedItem, order: 0, orderid: id as string });
             }
 
             setRouteAddresses(newRouteAddresses);
@@ -372,7 +377,7 @@ export default function VisitPriestSubpage() {
 
         // Perform delete operation on the server
         try {
-            await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", removedItem.id);
+            //await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", removedItem.id);
         } catch (error) {
             console.error("Failed to delete address from server:", error);
         }

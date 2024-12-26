@@ -10,7 +10,7 @@ interface Route {
     startDateTime: Date;
     endDateTime: Date;
     ministers: ({ id: string, display: string, server: string } | null)[];
-    addresses: { id: string, output: string, order: number, orderid: string }[];
+    addresses: { id: string, output: string, order: number, orderid: string, visit2022: string, visit2023: string, visit2024: string, probability: number, probabilityDescription: string, additionalInfo: { option: string[], from: string[], to: string[], notes: string[], contact: string[], reg: Date[] } }[];
 }
 
 export default function VisitMinisterSubpage() {
@@ -18,6 +18,7 @@ export default function VisitMinisterSubpage() {
     const [isChecked, setIsChecked] = useState(false);
     const [routes, setRoutes] = useState<Route[]>([]);
     const [expandedRoute, setExpandedRoute] = useState<string | null>(null);
+    const [expandedAddress, setExpandedAddress] = useState<string | null>(null);
 
     const ministers = [
         { id: '0', display: 'Dawid Polak' },
@@ -105,11 +106,44 @@ export default function VisitMinisterSubpage() {
                 const fetchedAddresses = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", routeId + 'addresses') as StringOutput[];
                 const orderedAddresses = await Promise.all(fetchedAddresses.map(async (address) => {
                     const order = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + routeId + "order") as NumberOutput[];
+                    const visit2022 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2022") as StringOutput[])[0]?.output || "N";
+                    const visit2023 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2023") as StringOutput[])[0]?.output || "N";
+                    const visit2024 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2024") as StringOutput[])[0]?.output || "N";
+                    const visitOption = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visitOption") as StringOutput[];
+                    let additionalInfo = { option: visitOption.map(info => info.output), from: [], to: [], notes: [], contact: [], reg: [] };
+                    let probabilityDescription = null;
+                    if (visitOption.length > 0) {
+                        const [from, to, notes, contact, reg] = await Promise.all([
+                            FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visitTimeFrom") as Promise<StringOutput[]>,
+                            FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visitTimeTo") as Promise<StringOutput[]>,
+                            FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "additionalNotes") as Promise<StringOutput[]>,
+                            FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "contactInfo") as Promise<StringOutput[]>,
+                            FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "registrationDate") as Promise<DateOutput[]>
+                        ]);
+                        additionalInfo = {
+                            option: visitOption.map(info => info.output),
+                            from: from.map(info => info.output),
+                            to: to.map(info => info.output),
+                            notes: notes.map(info => info.output),
+                            contact: contact.map(info => info.output),
+                            reg: reg.map(info => new Date(info.output))
+                        };
+                    }
+
+                    let probability = calculateProbability(visit2022, visit2023, visit2024);
+                    if (visitOption.find(item => item.output == "Zapraszamy na kolędę w wyznaczonym terminie")) {
+                        probability = 100;
+                        probabilityDescription = 'Zapraszają';
+                    } else if (visitOption.find(item => item.output == "Prosimy o kolędę w innym dniu")) {
+                        probability = 0;
+                        probabilityDescription = 'Prosili o kolędę w innym dniu';
+                    }
+
                     if (order.length == 0) {
                         const id = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [address.id + routeId + "order"], 0, [1]);
-                        return { ...address, order: order[0]?.output || -1, orderid: id as string };
+                        return { ...address, probabilityDescription: probabilityDescription ?? (probability > 95 ? 'Na pewno przyjmują' : probability > 80 ? 'Raczej przyjmują' : probability > 25 ? 'Warto próbować' : probability > 5 ? 'Jeden raz zadzwonić' : 'Nie przyjmują'), order: order[0]?.output || -1, orderid: id as string, visit2022, visit2023, visit2024, probability, additionalInfo: additionalInfo };
                     }
-                    return { ...address, order: order[0]?.output || -1, orderid: order[0]?.id };
+                    return { ...address, probabilityDescription: probabilityDescription ?? (probability > 95 ? 'Na pewno przyjmują' : probability > 80 ? 'Raczej przyjmują' : probability > 25 ? 'Warto próbować' : probability > 5 ? 'Jeden raz zadzwonić' : 'Nie przyjmują'), order: order[0]?.output || -1, orderid: order[0]?.id, visit2022, visit2023, visit2024, probability, additionalInfo: additionalInfo };
                 }));
                 orderedAddresses.sort((a, b) => a.order - b.order);
                 route.addresses = orderedAddresses;
@@ -119,6 +153,21 @@ export default function VisitMinisterSubpage() {
             }
         }
         setExpandedRoute(expandedRoute === routeId ? null : routeId);
+    };
+
+
+
+
+    const handleExpandAddress = (addressId: string) => {
+        setExpandedAddress(expandedAddress === addressId ? null : addressId);
+    };
+
+    const calculateProbability = (visit2022: string, visit2023: string, visit2024: string): number => {
+        let probability = 0;
+        if (visit2024 === "T") probability += 65;
+        if (visit2023 === "T") probability += 25;
+        if (visit2022 === "T") probability += 10;
+        return probability;
     };
 
     const formatDate = (inputDate: Date) => {
@@ -140,7 +189,7 @@ export default function VisitMinisterSubpage() {
         const startTime = new Date(start).getTime();
         const endTime = new Date(end).getTime();
         const midTime = new Date((startTime + endTime) / 2);
-        return [new Date(startTime), midTime, new Date(endTime)];
+        return midTime;
     };
 
     return (
@@ -149,37 +198,60 @@ export default function VisitMinisterSubpage() {
                 <div>
                     {routes.map(route => {
                         const isLinked = route.ministers.some(min => min?.id === minister);
-                        const [start, mid, end] = splitTimeRange(route.startDateTime, route.endDateTime);
+                        const mid = splitTimeRange(route.startDateTime, route.endDateTime);
                         return (
                             <div key={route.id} className={`expandable-container ${isLinked ? '' : 'grayed-out'}`}>
                                 <div className="expandable-item" onClick={() => handleExpandRoute(route.id)}>
                                     <h3>{route.output}</h3>
-                                </div>
-                                <div className="time-pairs">
-                                    <div className="date">{formatDate(route.startDateTime)}</div>
-                                    <div className="time-pair">
-                                        <div className="ministers">
-                                            {route.ministers[0] && <span>{route.ministers[0].display}</span>}
-                                            {route.ministers[1] && <span>{route.ministers[1].display}</span>}
-                                        </div>
-                                        <span className="time-range"><b>{formatTime(route.startDateTime)} - {route.ministers[2] && route.ministers[3] ? formatTime(mid) : formatTime(route.endDateTime)}</b></span>
-                                    </div>
-                                    {route.ministers[2] && route.ministers[3] && (
-                                        <div className="time-pair">
-                                            <div className="ministers">
-                                                {route.ministers[2] && <span>{route.ministers[2].display}</span>}
-                                                {route.ministers[3] && <span>{route.ministers[3].display}</span>}
-                                            </div>
-                                            <span className="time-range"><b>{formatTime(mid)} - {formatTime(route.endDateTime)}</b></span>
-                                        </div>
+                                    {isLinked && expandedRoute !== route.id && (
+                                        <span className="time-range">
+                                            <b>{formatDate(route.startDateTime)} {formatTime(route.startDateTime)} - {formatTime(route.endDateTime)}</b>
+                                        </span>
                                     )}
                                 </div>
+                                {expandedRoute === route.id && (
+                                    <div className="time-pairs">
+                                        <div className="date">{formatDate(route.startDateTime)}</div>
+                                        <div className="time-pair">
+                                            <div className="ministers">
+                                                {route.ministers[0] && <span>{route.ministers[0].display}</span>}
+                                                {route.ministers[1] && <span>{route.ministers[1].display}</span>}
+                                            </div>
+                                            <span className="time-range">{route.ministers[0]?.id === minister || route.ministers[1]?.id === minister ? <b>{formatTime(route.startDateTime)} - {route.ministers[2] && route.ministers[3] ? formatTime(mid) : formatTime(route.endDateTime)}</b> : `${formatTime(route.startDateTime)} - ${route.ministers[2] && route.ministers[3] ? formatTime(mid) : formatTime(route.endDateTime)}`}</span>
+                                        </div>
+                                        {route.ministers[2] && route.ministers[3] && (
+                                            <div className="time-pair">
+                                                <div className="ministers">
+                                                    {route.ministers[2] && <span>{route.ministers[2].display}</span>}
+                                                    {route.ministers[3] && <span>{route.ministers[3].display}</span>}
+                                                </div>
+                                                <span className="time-range">{route.ministers[2]?.id === minister || route.ministers[3]?.id === minister ? <b>{formatTime(mid)} - {formatTime(route.endDateTime)}</b> : `${formatTime(mid)} - ${formatTime(route.endDateTime)}`}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                                 {expandedRoute === route.id && isLinked && (
                                     <div className="addresses">
                                         {route.addresses.map(address => (
                                             <div key={address.id}>
-                                                <p>{address.output}</p>
+                                                <p style={{ fontWeight: address.probability !== 0 ? 'bold' : 'normal' }}>
+                                                    {address.output} - {address.probabilityDescription}
+                                                    {address.additionalInfo.option.length > 0 && (
+                                                        <span className="info-icon" onClick={() => handleExpandAddress(address.id)}> ℹ️ </span>
+                                                    )}
+                                                </p>
+                                                {expandedAddress === address.id && (
+                                                    <div className="additional-info">
+                                                        <p><strong>Visit Option:</strong> {address.additionalInfo.option.join(", ")}</p>
+                                                        {address.additionalInfo.from.length > 0 && <p><strong>Available From:</strong> {address.additionalInfo.from.join(", ")}</p>}
+                                                        {address.additionalInfo.to.length > 0 && <p><strong>Available To:</strong> {address.additionalInfo.to.join(", ")}</p>}
+                                                        {address.additionalInfo.notes.length > 0 && <p><strong>Additional Notes:</strong> {address.additionalInfo.notes.join(", ")}</p>}
+                                                        {address.additionalInfo.contact.length > 0 && <p><strong>Contact Info:</strong> {address.additionalInfo.contact.join(", ")}</p>}
+                                                        {address.additionalInfo.reg.length > 0 && <p><strong>Registration Date:</strong> {address.additionalInfo.reg.map(date => formatDate(date)).join(", ")}</p>}
+                                                    </div>
+                                                )}
                                             </div>
+
                                         ))}
                                     </div>
                                 )}
@@ -193,3 +265,4 @@ export default function VisitMinisterSubpage() {
         </div>
     );
 }
+
