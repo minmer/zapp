@@ -22,9 +22,9 @@ export default function VisitMinisterSubpage() {
     const ministers = [
         { id: '0', display: 'Dawid Polak' },
         { id: '1', display: 'Jakub Ludwikowski' },
-        { id: '2', display: 'Marcin Nogieƒá' },
+        { id: '2', display: 'Marcin NogieÊ' },
         { id: '3', display: 'Szymon Wdowiarz' },
-        { id: '4', display: 'Filip ≈ölƒôczka' },
+        { id: '4', display: 'Filip ålÍczka' },
         { id: '5', display: 'Szymon Niemiec' },
         { id: '6', display: 'Piotr Nalepa' },
         { id: '7', display: 'Dawid Klak' },
@@ -35,20 +35,20 @@ export default function VisitMinisterSubpage() {
         { id: '12', display: 'Franciszek Pietrzyk' },
         { id: '13', display: 'Jakub Sztuka' },
         { id: '14', display: 'Patryk Janik' },
-        { id: '15', display: 'Kamil Ku≈õmierczyk' },
+        { id: '15', display: 'Kamil Kuúmierczyk' },
         { id: '16', display: 'Piotr Saramak' },
-        { id: '17', display: 'Micha≈Ç Nowak' },
+        { id: '17', display: 'Micha≥ Nowak' },
         { id: '18', display: 'Mateusz Wons' },
-        { id: '19', display: 'Micha≈Ç Celej' },
+        { id: '19', display: 'Micha≥ Celej' },
         { id: '20', display: 'Jan Niemiec' },
-        { id: '21', display: 'Micha≈Ç Prokop' },
+        { id: '21', display: 'Micha≥ Prokop' },
         { id: '22', display: 'Marek Gruszka' },
-        { id: '23', display: 'Jan Ko≈õcielniak' },
+        { id: '23', display: 'Jan Koúcielniak' },
         { id: '24', display: 'Jan Zawistowski' },
         { id: '25', display: 'Franciszek Klak' },
         { id: '26', display: 'Julian Konik-Korn' },
         { id: '27', display: 'Szymon Wons' },
-        { id: '28', display: 'Kacper W√≥jcicki' },
+        { id: '28', display: 'Kacper WÛjcicki' },
     ];
 
     useEffect(() => {
@@ -188,7 +188,7 @@ export default function VisitMinisterSubpage() {
                     })}
                 </div>
             ) : (
-                <h2>Link jest nieprawid≈Çowy</h2>
+                <h2>Link jest nieprawid≥owy</h2>
             )}
         </div>
     );

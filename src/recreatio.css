@@ -1113,6 +1113,81 @@
     background-color: #f2f2f2;
 }
 
+.visit_priest .minister-pairs {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .visit_priest .minister-pairs select {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 300px;
+    }
+
+.visit_minister .expandable-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.visit_minister .expandable-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease;
+    user-select: none;
+    cursor: pointer;
+}
+
+    .visit_minister .expandable-item:hover {
+        background-color: #f9f9f9;
+    }
+
+.visit_minister .grayed-out {
+    opacity: 0.5;
+}
+
+.visit_minister .addresses {
+    padding: 8px;
+}
+
+.visit_minister .ministers {
+    display: flex;
+    gap: 10px;
+}
+
+.visit_minister .time-pairs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 8px;
+}
+
+.visit_minister .time-pair {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.visit_minister .time-range {
+    font-weight: bold;
+}
+
+.visit_minister .date {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+
 
 .expandable-container {
     display: flex;

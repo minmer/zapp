@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import Papa from "papaparse";
 import { FetchInformationPost } from "../../features/FetchInformationPost";
 import { DateOutput, FetchInformationGetAll, NumberOutput, StringOutput } from "../../features/FetchInformationGet";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { FetchContext } from "../../features/FetchPostContext";
 import { FetchInformationPut } from "../../features/FetchInformationPut";
+import { FetchInformationDelete } from "../../features/FetchInformationDelete";
 
 interface VisitData {
     address: string;
@@ -41,6 +42,8 @@ interface Route {
     output: string;
     startDateTime: Date;
     endDateTime: Date;
+    ministers: ({ id: string, display: string, server: string } | null)[]
+;
 }
 
 export default function VisitPriestSubpage() {
@@ -49,11 +52,44 @@ export default function VisitPriestSubpage() {
     const [search, setSearch] = useState("");
     const [filteredData, setFilteredData] = useState<{ id: string, output: string }[]>([]);
     const [routes, setRoutes] = useState<Route[]>([]);
-    const [selectedRoute, setSelectedRoute] = useState<{ id:string, output: string} | null>(null);
+    const [selectedRoute, setSelectedRoute] = useState<Route | null>(null);
     const [newRouteTitle, setNewRouteTitle] = useState("");
     const [startDateTime, setStartDateTime] = useState("");
     const [endDateTime, setEndDateTime] = useState("");
-    const [routeAddresses, setRouteAddresses] = useState<{ id: string, output: string }[]>([]);
+    const [routeAddresses, setRouteAddresses] = useState<{ id: string, output: string, order: number, orderid: string }[]>([]);
+
+    const ministers = [
+        { id: '0', display: 'Dawid Polak' },
+        { id: '1', display: 'Jakub Ludwikowski' },
+        { id: '2', display: 'Marcin Nogieć' },
+        { id: '3', display: 'Szymon Wdowiarz' },
+        { id: '4', display: 'Filip Ślęczka' },
+        { id: '5', display: 'Szymon Niemiec' },
+        { id: '6', display: 'Piotr Nalepa' },
+        { id: '7', display: 'Dawid Klak' },
+        { id: '8', display: 'Bartosz Saramak' },
+        { id: '9', display: 'Marcel Nowak' },
+        { id: '10', display: 'Adam Jackowski' },
+        { id: '11', display: 'Karol Rydzewski' },
+        { id: '12', display: 'Franciszek Pietrzyk' },
+        { id: '13', display: 'Jakub Sztuka' },
+        { id: '14', display: 'Patryk Janik' },
+        { id: '15', display: 'Kamil Kuśmierczyk' },
+        { id: '16', display: 'Piotr Saramak' },
+        { id: '17', display: 'Michał Nowak' },
+        { id: '18', display: 'Mateusz Wons' },
+        { id: '19', display: 'Michał Celej' },
+        { id: '20', display: 'Jan Niemiec' },
+        { id: '21', display: 'Michał Prokop' },
+        { id: '22', display: 'Marek Gruszka' },
+        { id: '23', display: 'Jan Kościelniak' },
+        { id: '24', display: 'Jan Zawistowski' },
+        { id: '25', display: 'Franciszek Klak' },
+        { id: '26', display: 'Julian Konik-Korn' },
+        { id: '27', display: 'Szymon Wons' },
+        { id: '28', display: 'Kacper Wójcicki' },
+
+    ];
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -189,27 +225,53 @@ export default function VisitPriestSubpage() {
         try {
             const fetchedRoutes = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "visit_routes") as StringOutput[];
 
+            const routesWithMinisters = await Promise.all(fetchedRoutes.map(async item => {
+                const startDateTime = (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "start") as DateOutput[])[0]?.output;
+                const endDateTime = (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "end") as DateOutput[])[0]?.output;
+                const minister1 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "minister1") as StringOutput[]);
+                const minister2 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "minister2") as StringOutput[]);
+                const minister3 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "minister3") as StringOutput[]);
+                const minister4 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "minister4") as StringOutput[]);
 
-            setRoutes(await Promise.all(fetchedRoutes.map(async item => ({
-                id: item.id,
-                output: item.output,
-                startDateTime: (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "start") as DateOutput[])[0]?.output,
-                endDateTime: (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "end") as DateOutput[])[0]?.output,
-            }))));
+                return {
+                    id: item.id,
+                    output: item.output,
+                    startDateTime,
+                    endDateTime,
+                    ministers: [
+                        minister1[0] ? {
+                            ...ministers.find(item => item.id == minister1[0].output), server: minister1[0].id
+                        } : null,
+                        minister2[0] ? {
+                            ...ministers.find(item => item.id == minister2[0].output), server: minister2[0].id
+                        } : null,
+                        minister3[0] ? {
+                            ...ministers.find(item => item.id == minister3[0].output), server: minister3[0].id
+                        } : null,
+                        minister4[0] ? {
+                            ...ministers.find(item => item.id == minister4[0].output), server: minister4[0].id
+                        } : null]
+                };
+            }));
+
+            routesWithMinisters.sort((a, b) => new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime());
+            setRoutes(routesWithMinisters);
+
         } catch (error) {
             console.error("Failed to fetch routes from server:", error);
         }
     };
 
+
     const handleCreateRoute = async () => {
         if (newRouteTitle && startDateTime && endDateTime) {
-            const newRoute: Route = { id: "", output: newRouteTitle, startDateTime: new Date(startDateTime), endDateTime: new Date(endDateTime) };
+            const newRoute: Route = { id: "", output: newRouteTitle, startDateTime: new Date(startDateTime), endDateTime: new Date(endDateTime), ministers: [null, null, null, null] };
             const routeId = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", ["visit_routes"], newRoute.output, [1]);
             await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [routeId + "start"], newRoute.startDateTime, [1]);
             await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [routeId + "end"], newRoute.endDateTime, [1]);
             newRoute.id = routeId;
             setRoutes([...routes, newRoute]);
-            setSelectedRoute(routeId);
+            setSelectedRoute(newRoute);
         }
     };
 
@@ -241,19 +303,16 @@ export default function VisitPriestSubpage() {
             if (selectedRoute) {
                 try {
                     const fetchedAddresses = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedRoute.id + 'addresses') as StringOutput[];
-                    console.log('qwe1')
                     const orderedAddresses = await Promise.all(fetchedAddresses.map(async (address) => {
-                        console.log('qwe2')
                         const order = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + selectedRoute.id + "order") as NumberOutput[];
-                        console.log(order)
                         if (order.length == 0) {
-                            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [address.id + selectedRoute.id + "order"], 0, [1]);
-                        }
-                        return { ...address, order: order[0]?.output || -1 };
+                            const id = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [address.id + selectedRoute.id + "order"], 0, [1]);
+                            return { ...address, order: order[0]?.output || -1, orderid: id as string };
+}
+                        return { ...address, order: order[0]?.output || -1, orderid: order[0]?.id };
                     }));
                     orderedAddresses.sort((a, b) => a.order - b.order);
                     setRouteAddresses(orderedAddresses);
-                    console.log(orderedAddresses)
                 } catch (error) {
                     console.error("Failed to fetch route addresses:", error);
                 }
@@ -275,7 +334,7 @@ export default function VisitPriestSubpage() {
         if (source.droppableId === "searchResults" && destination.droppableId === "routeAddresses") {
             // Handle adding address to route
             const newRouteAddresses = Array.from(routeAddresses);
-            const [movedItem] = filteredData.splice(source.index, 1);
+            const movedItem = filteredData[source.index];
 
             // Check if the item already exists in the route addresses
             const existingIndex = newRouteAddresses.findIndex(item => item.id === movedItem.id);
@@ -284,10 +343,9 @@ export default function VisitPriestSubpage() {
                 newRouteAddresses.splice(existingIndex, 1);
             } else {
                 // Add the item if it does not exist
-                newRouteAddresses.splice(destination.index, 0, movedItem);
                 await FetchContext("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", movedItem.id, "public_writer", selectedRoute.id + 'addresses', generatePreorderValue(movedItem.output));
-                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [movedItem.id + selectedRoute.id + "order"], destination.index, [1]);
-
+                 const id = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [movedItem.id + selectedRoute.id + "order"], destination.index, [1]);
+                newRouteAddresses.splice(destination.index, 0, { ...movedItem , order : 0, orderid: id as string  });
             }
 
             setRouteAddresses(newRouteAddresses);
@@ -297,21 +355,59 @@ export default function VisitPriestSubpage() {
             const [movedItem] = newRouteAddresses.splice(source.index, 1);
             newRouteAddresses.splice(destination.index, 0, movedItem);
             setRouteAddresses(newRouteAddresses);
+
             // Update the order information
-            console.log('asd')
             await Promise.all(newRouteAddresses.map((item, index) =>
-                FetchInformationPut("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", item.id + selectedRoute.id + "order", index)
+                FetchInformationPut("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", item.orderid, index)
             ));
-            console.log('asd1')
         }
     };
 
+
     // Function to handle deleting an address from the route addresses
-    const handleDeleteAddress = (index: number) => {
+    const handleDeleteAddress = async (index: number) => {
         const newRouteAddresses = Array.from(routeAddresses);
-        newRouteAddresses.splice(index, 1);
+        const [removedItem] = newRouteAddresses.splice(index, 1);
         setRouteAddresses(newRouteAddresses);
+
+        // Perform delete operation on the server
+        try {
+            await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", removedItem.id);
+        } catch (error) {
+            console.error("Failed to delete address from server:", error);
+        }
     };
+    
+    const handleMinisterChange = async (event: React.ChangeEvent<HTMLSelectElement>, index: number) => {
+
+
+        if (selectedRoute) {
+            const newSelectedRoute = { ...selectedRoute };
+            const selectedMinisterId = event.target.value;
+            const selectedMinister = ministers.find(item => item.id === selectedMinisterId);
+
+            if (newSelectedRoute.ministers[index] == null) {
+                const id = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [newSelectedRoute.id + `minister${index + 1}`], selectedMinisterId, [1]);
+
+                newSelectedRoute.ministers[index] = {
+                    ...selectedMinister,
+                    server: id
+                };
+            } else {
+                await FetchInformationPut("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", newSelectedRoute.ministers[index].server, selectedMinisterId);
+
+                newSelectedRoute.ministers[index] = {
+                    ...selectedMinister,
+                    server: newSelectedRoute.ministers[index].server
+                };
+            }
+
+            setSelectedRoute(newSelectedRoute);
+            setRoutes(routes.map(route => route.id === newSelectedRoute.id ? newSelectedRoute : route));
+        }
+    };
+
+
 
 
     return (
@@ -347,6 +443,43 @@ export default function VisitPriestSubpage() {
                     <button onClick={handleCreateRoute}>Create Route</button>
                 </div>
             )}
+            {selectedRoute && (
+                <div className="minister-pairs">
+                    <h3>Assign Ministers</h3>
+                    <select value={selectedRoute.ministers[0]?.id || ""} onChange={(e) => handleMinisterChange(e, 0)}>
+                        <option value="">Select Minister 1</option>
+                        {ministers.map((minister) => (
+                            <option key={minister.id} value={minister.id}>
+                                {minister.display}
+                            </option>
+                        ))}
+                    </select>
+                    <select value={selectedRoute.ministers[1]?.id || ""} onChange={(e) => handleMinisterChange(e, 1)}>
+                        <option value="">Select Minister 2</option>
+                        {ministers.map((minister) => (
+                            <option key={minister.id} value={minister.id}>
+                                {minister.display}
+                            </option>
+                        ))}
+                    </select>
+                    <select value={selectedRoute.ministers[2]?.id || ""} onChange={(e) => handleMinisterChange(e, 2)}>
+                        <option value="">Select Minister 3</option>
+                        {ministers.map((minister) => (
+                            <option key={minister.id} value={minister.id}>
+                                {minister.display}
+                            </option>
+                        ))}
+                    </select>
+                    <select value={selectedRoute.ministers[3]?.id || ""} onChange={(e) => handleMinisterChange(e, 3)}>
+                        <option value="">Select Minister 4</option>
+                        {ministers.map((minister) => (
+                            <option key={minister.id} value={minister.id}>
+                                {minister.display}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
             <input type="file" accept=".csv" onChange={handleFileChange} />
             <button onClick={handleFileUpload}>Upload</button>
             <input
@@ -369,7 +502,7 @@ export default function VisitPriestSubpage() {
                                     </thead>
                                     <tbody>
                                         {filteredData.map((item, index) => (
-                                            <Draggable key={item.id} draggableId={item.id} index={index}>
+                                            <Draggable key={item.id} draggableId={item.id + 'a'} index={index}>
                                                 {(provided) => (
                                                     <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                                         <td>{item.output}</td>
@@ -396,7 +529,7 @@ export default function VisitPriestSubpage() {
                                     </thead>
                                     <tbody>
                                         {routeAddresses.map((item, index) => (
-                                            <Draggable key={item.id} draggableId={item.id} index={index}>
+                                            <Draggable key={item.id} draggableId={item.id + 'b'} index={index}>
                                                 {(provided) => (
                                                     <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                                         <td>{item.output}</td>
@@ -417,6 +550,7 @@ export default function VisitPriestSubpage() {
             </div>
         </div>
     );
+
 
 
 

@@ -1,5 +1,5 @@
 export async function FetchInformationPut(token: string, key: string, id: string, data: string | number | boolean | Date) {
-
+    console.log(token, key, id, data)
     return (await fetch('https://zapp.hostingasp.pl/information/',
         {
             method: 'PUT',

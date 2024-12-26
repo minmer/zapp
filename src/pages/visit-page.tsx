@@ -66,6 +66,7 @@ export default function VisitPage() {
                         </div>} />
                     <Route path="check" element={<VisitCheckSubpage />} />
                     <Route path="register" element={<VisitRegisterSubpage />} />
+                    <Route path="minister/:minister/:code" element={<VisitMinisterSubpage />} />
                     <Route path="minister" element={<VisitMinisterSubpage />} />
                         <Route path="priest" element={<VisitPriestSubpage />} />
                 </Routes>
