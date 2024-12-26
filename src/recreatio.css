@@ -1129,6 +1129,12 @@
         max-width: 300px;
     }
 
+.visit_minister .scroll-view {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+
 .visit_minister .expandable-container {
     display: flex;
     flex-direction: column;

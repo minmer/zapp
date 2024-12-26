@@ -384,8 +384,6 @@ export default function VisitPriestSubpage() {
     };
     
     const handleMinisterChange = async (event: React.ChangeEvent<HTMLSelectElement>, index: number) => {
-
-
         if (selectedRoute) {
             const newSelectedRoute = { ...selectedRoute };
             const selectedMinisterId = event.target.value;
@@ -499,25 +497,27 @@ export default function VisitPriestSubpage() {
                         {(provided) => (
                             <div className="column" ref={provided.innerRef} {...provided.droppableProps}>
                                 <h3>Search Results</h3>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Adres</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {filteredData.map((item, index) => (
-                                            <Draggable key={item.id} draggableId={item.id + 'a'} index={index}>
-                                                {(provided) => (
-                                                    <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                        <td>{item.output}</td>
-                                                    </tr>
-                                                )}
-                                            </Draggable>
-                                        ))}
-                                        {provided.placeholder}
-                                    </tbody>
-                                </table>
+                                <div className="scroll-view">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Adres</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {filteredData.map((item, index) => (
+                                                <Draggable key={item.id} draggableId={item.id + 'a'} index={index}>
+                                                    {(provided) => (
+                                                        <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                            <td>{item.output}</td>
+                                                        </tr>
+                                                    )}
+                                                </Draggable>
+                                            ))}
+                                            {provided.placeholder}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         )}
                     </Droppable>
@@ -525,29 +525,31 @@ export default function VisitPriestSubpage() {
                         {(provided) => (
                             <div className="column" ref={provided.innerRef} {...provided.droppableProps}>
                                 <h3>Route Addresses</h3>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Adres</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {routeAddresses.map((item, index) => (
-                                            <Draggable key={item.id} draggableId={item.id + 'b'} index={index}>
-                                                {(provided) => (
-                                                    <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                        <td>{item.output}</td>
-                                                        <td>
-                                                            <button onClick={() => handleDeleteAddress(index)}>X</button>
-                                                        </td>
-                                                    </tr>
-                                                )}
-                                            </Draggable>
-                                        ))}
-                                        {provided.placeholder}
-                                    </tbody>
-                                </table>
+                                <div className="scroll-view">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Adres</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {routeAddresses.map((item, index) => (
+                                                <Draggable key={item.id} draggableId={item.id + 'b'} index={index}>
+                                                    {(provided) => (
+                                                        <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                            <td>{item.output}</td>
+                                                            <td>
+                                                                <button onClick={() => handleDeleteAddress(index)}>X</button>
+                                                            </td>
+                                                        </tr>
+                                                    )}
+                                                </Draggable>
+                                            ))}
+                                            {provided.placeholder}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         )}
                     </Droppable>
@@ -555,6 +557,7 @@ export default function VisitPriestSubpage() {
             </div>
         </div>
     );
+
 
 
 
