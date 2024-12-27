@@ -68,9 +68,9 @@ export default function VisitCheckSubpage() {
                     const fetchedAddresses = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", routeID.id + 'addresses') as StringOutput[];
                     const orderedAddresses = await Promise.all(fetchedAddresses.map(async (address) => {
                         const order = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + routeID.id + "order") as NumberOutput[];
-                        const visit2022 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2022") as StringOutput[])[0]?.output || "N";
-                        const visit2023 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2023") as StringOutput[])[0]?.output || "N";
-                        const visit2024 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2024") as StringOutput[])[0]?.output || "N";
+                        const visit2022 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2022") as StringOutput[])[0]?.output || "X";
+                        const visit2023 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2023") as StringOutput[])[0]?.output || "X";
+                        const visit2024 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit2024") as StringOutput[])[0]?.output || "X";
                         const visitTime = (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", address.id + "visit_time") as DateOutput[])[0]?.output || null;
                         const probability = calculateProbability(visit2022, visit2023, visit2024);
                         return { id: address.id, output: address.output, order: order[0]?.output || -1, visit2022, visit2023, visit2024, probability, visitTime };
@@ -98,6 +98,9 @@ export default function VisitCheckSubpage() {
         if (visit2024 === "T") probability += 65;
         if (visit2023 === "T") probability += 25;
         if (visit2022 === "T") probability += 10;
+        if (visit2024 === "X") probability += 30;
+        if (visit2023 === "X") probability += 15;
+        if (visit2022 === "X") probability += 5;
         return probability;
     };
 

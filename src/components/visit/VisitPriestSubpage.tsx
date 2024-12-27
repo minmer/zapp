@@ -11,6 +11,7 @@ interface VisitData {
     address: string;
     lastName: string;
     husbandName: string;
+    husbandBirthDate: string;
     husbandBirthPlace: string;
     wifeName: string;
     wifeBirthDate: string;
@@ -115,6 +116,7 @@ export default function VisitPriestSubpage() {
             address: row["Adres"] || " ",
             lastName: row["Nazwisko"] || " ",
             husbandName: row["Imię męża"] || " ",
+            husbandBirthDate: row["Data ur. męża"] || " ",
             husbandBirthPlace: row["Miejsce ur. męża"] || " ",
             wifeName: row["Imię żony"] || " ",
             wifeBirthDate: row["Data ur. żony"] || " ",
@@ -125,20 +127,20 @@ export default function VisitPriestSubpage() {
             children: row["Dzieci (imiona wiek)"] || " ",
             otherFamilyMembers: row["Inne osoby w rodzinie"] || " ",
             additionalInfo: row["Informacja (1)"] || " ",
-            visit2011: row["Kolęda 2011"] || "N",
-            visit2012: row["Kolęda 2012"] || "N",
-            visit2013: row["Kolęda 2013"] || "N",
-            visit2014: row["Kolęda 2014"] || "N",
-            visit2015: row["Kolęda 2015"] || "N",
-            visit2016: row["Kolęda 2016"] || "N",
-            visit2017: row["Kolęda 2017"] || "N",
-            visit2018: row["Kolęda 2018"] || "N",
-            visit2019: row["Kolęda 2019"] || "N",
-            visit2020: row["Kolęda 2020"] || "N",
-            visit2021: row["Kolęda 2021"] || "N",
-            visit2022: row["Kolęda 2022"] || "N",
-            visit2023: row["Kolęda 2023"] || "N",
-            visit2024: row["Kolęda 2024"] || "N",
+            visit2011: row["Kolęda 2011"] || "X",
+            visit2012: row["Kolęda 2012"] || "X",
+            visit2013: row["Kolęda 2013"] || "X",
+            visit2014: row["Kolęda 2014"] || "X",
+            visit2015: row["Kolęda 2015"] || "X",
+            visit2016: row["Kolęda 2016"] || "X",
+            visit2017: row["Kolęda 2017"] || "X",
+            visit2018: row["Kolęda 2018"] || "X",
+            visit2019: row["Kolęda 2019"] || "X",
+            visit2020: row["Kolęda 2020"] || "X",
+            visit2021: row["Kolęda 2021"] || "X",
+            visit2022: row["Kolęda 2022"] || "X",
+            visit2023: row["Kolęda 2023"] || "X",
+            visit2024: row["Kolęda 2024"] || "X",
         }));
 
         setData(processedData.map(item => ({ id: '', output: item.address })));
@@ -151,37 +153,125 @@ export default function VisitPriestSubpage() {
 
             // Generate preorder value for the address
             const preorder = generatePreorderValue(address);
-
+            const addressFilter = data.filter(item => item.output == address)
+            const lastNames = await Promise.all(addressFilter.map(async item => (
+                {
+                    id: item.id,
+                    husbandBirthDay: (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + 'husbandBirthPlace') as StringOutput[])[0]?.output
+                })))
+            const selectedName = lastNames.find(item => item.husbandBirthDay == husbandBirthPlace)
+        if (selectedName) {
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'lastName') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "lastName"], lastName, [1]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'husbandName') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "husbandName"], lastName, [2]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'husbandBirthPlace') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "husbandBirthPlace"], husbandBirthPlace, [3]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'wifeName') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "wifeName"], wifeName, [4]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'wifeBirthDate') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "wifeBirthDate"], wifeBirthDate, [5]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'wifeBirthPlace') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "wifeBirthPlace"], wifeBirthPlace, [6]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'marriageDate') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "marriageDate"], marriageDate, [7]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'marriageType') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "marriageType"], marriageType, [8]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'marriageParish') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "marriageParish"], marriageParish, [9]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'children') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "children"], children, [10]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'otherFamilyMembers') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "otherFamilyMembers"], otherFamilyMembers, [11]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'additionalInfo') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "additionalInfo"], additionalInfo, [12]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2011') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2011"], visit2011, [13]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2012') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2012"], visit2012, [14]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2013') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2013"], visit2013, [15]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2014') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2014"], visit2014, [16]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2015') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2015"], visit2015, [17]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2016') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2016"], visit2016, [18]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2017') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2017"], visit2017, [19]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2018') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2018"], visit2018, [20]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2019') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2019"], visit2019, [21]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2020') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2020"], visit2020, [22]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2021') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2021"], visit2021, [23]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2022') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2022"], visit2022, [24]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2023') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2023"], visit2023, [25]);
+            }
+            if ((await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", selectedName.id + 'visit2024') as StringOutput[]).length == 0) {
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [selectedName.id + "visit2024"], visit2024, [26]);
+            }
+        }
+            else {
             // Save the main address information
-            const addressId = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", ["visit_adresses_03"], address, [preorder]);
+                const addressId = await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", ["visit_adresses_03"], address, [preorder]);
 
-            // Save the child information
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "lastName"], lastName, [1]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "husbandName"], husbandName, [2]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "husbandBirthPlace"], husbandBirthPlace, [3]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "wifeName"], wifeName, [4]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "wifeBirthDate"], wifeBirthDate, [5]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "wifeBirthPlace"], wifeBirthPlace, [6]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "marriageDate"], marriageDate, [7]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "marriageType"], marriageType, [8]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "marriageParish"], marriageParish, [9]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "children"], children, [10]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "otherFamilyMembers"], otherFamilyMembers, [11]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "additionalInfo"], additionalInfo, [12]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2011"], visit2011, [13]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2012"], visit2012, [14]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2013"], visit2013, [15]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2014"], visit2014, [16]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2015"], visit2015, [17]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2016"], visit2016, [18]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2017"], visit2017, [19]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2018"], visit2018, [20]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2019"], visit2019, [21]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2020"], visit2020, [22]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2021"], visit2021, [23]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2022"], visit2022, [24]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2023"], visit2023, [25]);
-            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2024"], visit2024, [26]);
+                // Save the child information
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "lastName"], lastName, [1]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "husbandName"], husbandName, [2]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "husbandBirthPlace"], husbandBirthPlace, [3]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "wifeName"], wifeName, [4]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "wifeBirthDate"], wifeBirthDate, [5]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "wifeBirthPlace"], wifeBirthPlace, [6]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "marriageDate"], marriageDate, [7]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "marriageType"], marriageType, [8]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "marriageParish"], marriageParish, [9]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "children"], children, [10]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "otherFamilyMembers"], otherFamilyMembers, [11]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "additionalInfo"], additionalInfo, [12]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2011"], visit2011, [13]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2012"], visit2012, [14]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2013"], visit2013, [15]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2014"], visit2014, [16]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2015"], visit2015, [17]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2016"], visit2016, [18]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2017"], visit2017, [19]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2018"], visit2018, [20]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2019"], visit2019, [21]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2020"], visit2020, [22]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2021"], visit2021, [23]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2022"], visit2022, [24]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2023"], visit2023, [25]);
+                await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit2024"], visit2024, [26]);
+            }
         });
     };
 
