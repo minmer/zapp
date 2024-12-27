@@ -167,7 +167,7 @@ export default function VisitMinisterSubpage() {
     const handlePostVisitInfo = async (addressId: string, info: string) => {
         const visitTime = new Date();
         await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit_info"], info, [1]);
-        await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit_time"], visitTime.toISOString(), [1]);
+        await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit_time"], visitTime, [1]);
         setRoutes(routes.map(route => {
             const updatedRoute = {
                 ...route,
