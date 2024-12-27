@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { FetchInformationGetAll, StringOutput, DateOutput, NumberOutput } from "../../features/FetchInformationGet";
+import { FetchInformationPost } from "../../features/FetchInformationPost";
+import { FetchInformationDelete } from "../../features/FetchInformationDelete";
 
 interface VisitData {
     address: string;
@@ -30,6 +32,8 @@ interface VisitData {
     visit2022: string;
     visit2023: string;
     visit2024: string;
+    visitTime?: Date;
+    timeRange?: [Date, Date];
 }
 
 interface Route {
@@ -117,6 +121,28 @@ export default function VisitDetailSubpage() {
         }
     };
 
+    const handlePostVisitInfo = async (addressId: string, info: string) => {
+        const visitTime = new Date();
+        await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit_info"], info, [1]);
+        await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [addressId + "visit_time"], visitTime.toISOString(), [1]);
+        setVisitData(prevData => prevData ? { ...prevData, visitTime, additionalInfo: info } : null);
+    };
+
+    const handleDeleteVisitInfo = async (addressId: string) => {
+        const visitInfoID = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", addressId + "visit_info") as StringOutput[])[0]?.id;
+        const visitTimeID = (await FetchInformationGetAll("datetime", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", addressId + "visit_time") as DateOutput[])[0]?.id;
+        await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", visitInfoID);
+        await FetchInformationDelete("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", visitTimeID);
+        setVisitData(prevData => prevData ? { ...prevData, visitTime: undefined, additionalInfo: "" } : null);
+    };
+
+    const formatTime = (inputDate: Date) => {
+        return new Intl.DateTimeFormat('pl-PL', {
+            hour: '2-digit',
+            minute: '2-digit'
+        }).format(inputDate);
+    };
+
     useEffect(() => {
         fetchRoutesFromServer();
     }, []);
@@ -150,7 +176,6 @@ export default function VisitDetailSubpage() {
             }
         }
     };
-
 
     return (
         <div className='visit_detail'>
@@ -208,14 +233,24 @@ export default function VisitDetailSubpage() {
                         <div className="visit-history">
                             <p>{`${visitData.visit2011}${visitData.visit2012}${visitData.visit2013}${visitData.visit2014}${visitData.visit2015}${visitData.visit2016}${visitData.visit2017}${visitData.visit2018}${visitData.visit2019}${visitData.visit2020}${visitData.visit2021}${visitData.visit2022}${visitData.visit2023}${visitData.visit2024}`}</p>
                         </div>
+                        {visitData.timeRange && (
+                            <div className="visit-time">
+                                <p>{formatTime(visitData.timeRange[0])} - {formatTime(visitData.timeRange[1])}</p>
+                            </div>
+                        )}
                     </div>
                     <div className="navigation-buttons">
                         <button onClick={handlePreviousAddress}>Previous</button>
                         <button onClick={handleNextAddress}>Next</button>
                     </div>
+                    <div className="visit-info-buttons">
+                        <button onClick={() => handlePostVisitInfo(selectedAddress!, 'Przyjêli')} className="button">Przyjêli</button>
+                        <button onClick={() => handleDeleteVisitInfo(selectedAddress!)} className="button delete-button">Skasuj informacjê</button>
+                    </div>
                 </div>
             )}
         </div>
-
     );
-}
+
+
+                                    };
