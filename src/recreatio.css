@@ -515,6 +515,18 @@
 .intentionbook {
     font-family: Georgia, Times, Times New Roman, serif
 }
+    .intentionbook .print-page {
+        position: relative;
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        page-break-after: always;
+        page-break-inside: avoid;
+        background-color: white;
+        box-shadow: 0 0 10mm rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
     .intentionbook .light {
         color: lightgray;
     }
@@ -563,7 +575,7 @@
     .intentionbook .print-page .date .day {
         position: absolute;
         bottom: 2mm;
-        font-size: 26mm;
+        font-size: 22mm;
     }
 
     .intentionbook .print-page:nth-child(odd) .date .day {
@@ -577,7 +589,7 @@
     .intentionbook .print-page .date .spelling {
         position: absolute;
         bottom: 0mm;
-        font-size: 12mm;
+        font-size: 10mm;
     }
 
     .intentionbook .print-page:nth-child(odd) .date .spelling {
@@ -590,8 +602,8 @@
 
     .intentionbook .print-page .date .month {
         position: absolute;
-        top: 5mm;
-        font-size: 9mm;
+        top: 8mm;
+        font-size: 8mm;
     }
 
     .intentionbook .print-page:nth-child(odd) .date .month {
@@ -726,6 +738,8 @@
 
         .intentionbook .print-page .mass .type {
             font-size: 3.5mm;
+            z-index: 1;
+            position: relative;
         }
 
             .intentionbook .print-page .mass .type span {

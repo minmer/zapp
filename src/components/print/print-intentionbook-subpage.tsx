@@ -10,6 +10,7 @@ export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({
     const [dates, setDates] = useState<{
         date: Date,
         description: string[],
+        height: number, 
         masses: {
             time?: Date,
             description?: string[],
@@ -57,7 +58,7 @@ export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({
                                     donation: ((await FetchInformationGetAll('double', token as string, intention.id + 'donation')) as unknown as NumberOutput[]).map(item => item.output)[0],
                                     donated: ((await FetchInformationGetAll('string', token as string, intention.id + 'donated')) as unknown as StringOutput[]).map(item => item.output)[0],
                                 }))), {}, {}]
-                                const collective = ((await FetchInformationGetAll('bool', token as string, mass.id + 'collective')) as unknown as BooleanOutput[]).map(item => item.output).length > 0
+                                const collective = ((await FetchInformationGetAll('bool', token as string, mass.id + 'collective')) as unknown as BooleanOutput[]).map(item => item.output)[0] ?? false
                                 return {
                                     time: mass.output,
                                     description: ((await FetchInformationGetAll('string', token as string, mass.id + 'description')) as unknown as StringOutput[]).map(item => item.output),
@@ -65,14 +66,14 @@ export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({
                                     intentions: intentions.slice(0, collective ? 1 : intentions.length < 5 ? 2 : intentions.length - 2),
                                     collective: collective,
                                 }
-                            })), { intentions: [{}] }, 
+                            })), { intentions: [{}], description: [], collective: false }, 
                             ]
                         return {
                             date: day,
                             description: ((await FetchInformationGet('string', token as string, 'new_zielonki_date', day.getTime(), AddDaysToDate(day, 1).getTime(), 'new_intention_admin')) as unknown as StringOutput[]).map(item => item.output),
                             masses: masses.slice(0, masses.length > 4 ? masses.length - 1 : masses.length),
                             appointments: appointments.slice(0, appointments.length > 8 ? appointments.length - 1 : appointments.length),
-                            height: masses.reduce((sum, current) => sum + current.intentions.length, 0)*24 + appointments.length*12
+                            height: Math.max(masses.reduce((sum, current) => sum + current.intentions.length, 0) * 24 + masses.reduce((sum, current) => sum + current.description.length, 0) * 8 + appointments.length * 12, 236.25)
                         }
                     }))
                     console.log(asd)
@@ -120,7 +121,7 @@ export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({
                             <div className='mass'>
                                 <div className='type'>
                                     {mass.description?.map(desc => (
-                                        <span>{desc}<br /></span>
+                                        <span style={{ height: (1890 / date.height)+'mm' }}>{desc}<br /></span>
                                     ))}</div>
                                 <div className={mass.time ? 'hour' : 'hour light'}>
                                     {mass.time ? mass.time.getHours() + ':' + mass.time.getMinutes().toString().padStart(2,'0'): 'godz.'}
@@ -130,8 +131,8 @@ export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({
                                 </div>
                                 <div className='intentions'>
                                     {mass.intentions?.map(intention => (
-                                        <div className='intention'>
-                                            <div className='celebrator'>
+                                        <div className='intention' style={{ height: 5670 / date.height + 'mm' }}>
+                                            <div className='celebrator' style={{ paddingTop: Math.min(Math.max(8 - (date.height - 236.35) * .04, 0), 8) + 'mm' }}>
                                                 Cel.
                                             </div>
                                             <div className='lines' >
@@ -141,10 +142,10 @@ export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({
                                             <div className={intention.description?.startsWith('rez') ? 'intention_desc gray' : 'intention_desc'}>
                                                 {mass.collective ? 'Msza Zbiorowa' : intention.description ?? ' '}
                                             </div>
-                                            <div className='donator'>
+                                            <div className='donator' style={{ paddingTop: Math.min(Math.max(2 - (date.height - 236.35) * .02, 0), 2) + 'mm' }}>
                                                 {intention.donation && intention.donator ? intention.donation + intention.donator : 'Ofiara'}
                                             </div>
-                                            <div className='sign'>
+                                            <div className='sign' style={{ paddingTop: Math.min(Math.max(2 - (date.height - 236.35) * .02, 0), 2) + 'mm' }}>
                                                 Podpis
                                             </div>
                                         </div>
@@ -155,14 +156,14 @@ export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({
                     </div>
                     <div className='appointments'>
                         {date.appointments.map(appointment => (
-                            <div className='appointment'>
-                                <div className={appointment.time ? 'hour' : 'hour light'}>
+                            <div className='appointment' style={{ height: 2835 / date.height + 'mm'}}>
+                                <div className={appointment.time ? 'hour' : 'hour light'} style={{ height: 2700 / date.height + 'mm', paddingTop: Math.min(Math.max(2 - (date.height - 236.35) * .02, 0), 2) + 'mm' }}>
                                     {appointment.time ? appointment.time.getHours() + ':' + appointment.time.getMinutes().toString().padStart(2, '0') : 'godz.'}
                                 </div>
-                                <div className={appointment.description ? 'type' : 'type light'}>
+                                <div className={appointment.description ? 'type' : 'type light'} style={{ height: 2700 / date.height + 'mm', paddingTop: Math.min(Math.max(2 - (date.height - 236.35) * .02, 0), 2) + 'mm' }}>
                                     {appointment.description ?? 'Wydarzenie'}
                                 </div>
-                                <div className='responsible' >
+                                <div className='responsible' style={{ height: 2835 / date.height + 'mm', paddingTop: Math.min(Math.max(2 - (date.height - 236.35) * .02, 0), 2) + 'mm' }}>
                                 Odpowiedzialny
                                 </div>
                             </div>
