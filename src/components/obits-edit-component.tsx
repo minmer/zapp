@@ -23,7 +23,7 @@ export default function ObitsEditElement({ getParams }: { getParams: ({ func, ty
                     func: async (param: string | User) => {
                         const token = param as string
                         setIsAdmin(((await FetchInformationGetAll('string', token, 'admin') as []).length == 0 ? false : true))
-                        setObits((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).map(p => ({ id: p.id, name: p.output })  ))
+                        setObits((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).map(p => ({ id: p.id, name: p.output })))
                     }, type: 'token', show: false
                 });
             } catch (e) {
@@ -52,29 +52,34 @@ export default function ObitsEditElement({ getParams }: { getParams: ({ func, ty
 
     return (
         <>
-            <input type="string"
-                onChange={(e) => {
-                    setName(e.target.value)
-                }}
-                value={name} />
-            <input type="button" onClick={createObit} value="Otwórz zapisy" />
-            {obits.map((obit) => (
-                <div className="inline-communion-list">
-                    <Link to={obit.id}>
-                        {obit.name}
-                    </Link>
-                    <input style=
-                        {{
-                            display: isAdmin ? 'block' : 'none',
+            <div className="obits-list-containera">
+                <div className="obits-lista">
+                    <input type="string"
+                        onChange={(e) => {
+                            setName(e.target.value)
                         }}
-                        type="button" onClick={() => { removeObit(obit) }} value='X' />
+                        value={name} />
+                    <input type="button" onClick={createObit} value="Otwórz zapisy" />
+                    <div className="obits-list-container">
+                        <div className="obits-list">
+                            {obits.map((obit) => (
+                                <div className="obit-list" key={obit.id}>
+                                    <Link to={obit.id}>
+                                        {obit.name}
+                                    </Link>
+                                    <input style={{
+                                        display: isAdmin ? 'block' : 'none',
+                                    }}
+                                        type="button" onClick={() => { removeObit(obit) }} value='X' />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
-            ))
-            }
-            <div className="clear" />
+            </div>
             <Routes>
                 <Route path="/:obit" element={<ObitEditElement getParams={getParams} />} />
-            </Routes >
+            </Routes>
         </>
     );
 }

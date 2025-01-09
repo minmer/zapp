@@ -20,6 +20,10 @@ export default function VisitMinisterSubpage() {
     const [routes, setRoutes] = useState<Route[]>([]);
     const [expandedRoute, setExpandedRoute] = useState<string | null>(null);
     const [expandedAddress, setExpandedAddress] = useState<string | null>(null);
+    const [moneyAmounts, setMoneyAmounts] = useState<{ [routeId: string]: { [ministerId: string]: number } }>({});
+    const [winterTripChoice, setWinterTripChoice] = useState<string | null>(null);
+    const [summerTripChoice, setSummerTripChoice] = useState<string | null>(null);
+    const [givenAmounts, setGivenAmounts] = useState<{ [ministerId: string]: number }>({});
 
     const ministers = [
         { id: '0', display: 'Dawid Polak' },
@@ -54,6 +58,31 @@ export default function VisitMinisterSubpage() {
     ];
 
     useEffect(() => {
+        async function fetchChoices() {
+            const winterChoice = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "winter_trip_choice_" + minister) as StringOutput[];
+            const summerChoice = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "summer_trip_choice_" + minister) as StringOutput[];
+            if (winterChoice.length > 0) {
+                setWinterTripChoice(winterChoice[0].output);
+            }
+            if (summerChoice.length > 0) {
+                setSummerTripChoice(summerChoice[0].output);
+            }
+        }
+
+        fetchChoices();
+    }, [minister]);
+
+    const handleWinterTripChoice = async (choice: string) => {
+        setWinterTripChoice(choice);
+        await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", ["winter_trip_choice_" + minister], choice, [1]);
+    };
+
+    const handleSummerTripChoice = async (choice: string) => {
+        setSummerTripChoice(choice);
+        await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", ["summer_trip_choice_" + minister], choice, [1]);
+    };
+
+    useEffect(() => {
         async function checkMinister() {
             const data = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "minister_visit_24_" + minister) as NumberOutput[];
             if (data.length > 0) {
@@ -76,6 +105,13 @@ export default function VisitMinisterSubpage() {
                     const minister3 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "minister3") as StringOutput[]);
                     const minister4 = (await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + "minister4") as StringOutput[]);
 
+                    const moneyAmounts = await Promise.all([
+                        await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + minister1[0]?.output + "money") as NumberOutput[],
+                        await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + minister2[0]?.output + "money") as NumberOutput[],
+                        await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + minister3[0]?.output + "money") as NumberOutput[],
+                        await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", item.id + minister4[0]?.output + "money") as NumberOutput[]
+                    ]);
+
                     return {
                         id: item.id,
                         output: item.output,
@@ -87,7 +123,13 @@ export default function VisitMinisterSubpage() {
                             minister3[0] ? { ...ministers.find(item => item.id == minister3[0].output), server: minister3[0].id } : null,
                             minister4[0] ? { ...ministers.find(item => item.id == minister4[0].output), server: minister4[0].id } : null
                         ],
-                        addresses: []
+                        addresses: [],
+                        moneyAmounts: {
+                            [minister1[0]?.output]: moneyAmounts[0][0]?.output || 0,
+                            [minister2[0]?.output]: moneyAmounts[1][0]?.output || 0,
+                            [minister3[0]?.output]: moneyAmounts[2][0]?.output || 0,
+                            [minister4[0]?.output]: moneyAmounts[3][0]?.output || 0
+                        }
                     };
                 }));
                 routesWithMinisters.sort((a, b) => new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime());
@@ -99,6 +141,48 @@ export default function VisitMinisterSubpage() {
 
         fetchRoutesFromServer();
     }, []);
+
+
+    useEffect(() => {
+        async function fetchMoneyAmounts() {
+            const moneyAmounts = {};
+            for (const route of routes) {
+                for (const minister of route.ministers) {
+                    if (minister) {
+                        const amount = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", route.id + minister.id + "money") as NumberOutput[];
+                        if (amount.length > 0) {
+                            if (!moneyAmounts[route.id]) {
+                                moneyAmounts[route.id] = {};
+                            }
+                            moneyAmounts[route.id][minister.id] = amount[0].output;
+
+
+                            const givenAmountsEntries = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", minister.id + "money") as NumberOutput[];
+                            const totalGiven = givenAmountsEntries.reduce((sum, amount) => sum + amount.output, 0);
+                            givenAmounts[minister.id] = totalGiven;
+                        }
+                    }
+                }
+            }
+            setMoneyAmounts(moneyAmounts);
+        }
+
+        if (routes.length > 0) {
+            fetchMoneyAmounts();
+        }
+    }, [routes]);
+
+    const calculateTotalGiven = () => {
+        return givenAmounts[minister] || 0;
+    };
+
+
+    // Add this function to calculate the total amount of money collected by the logged-in minister
+    const calculateTotalMoney = () => {
+        return Object.values(moneyAmounts).reduce((total, route) => {
+            return total + (route[minister] || 0);
+        }, 0);
+    };
 
     const handleExpandRoute = async (routeId: string) => {
         const route = routes.find(route => route.id === routeId);
@@ -323,9 +407,38 @@ export default function VisitMinisterSubpage() {
     };
 
 
+    const handleMoneyInputChange = (routeId: string, ministerId: string, amount: number) => {
+        setMoneyAmounts(prev => ({
+            ...prev,
+            [routeId]: {
+                ...prev[routeId],
+                [ministerId]: amount
+            }
+        }));
+    };
 
 
+    const handleSaveMoneyAmount = async (routeId: string, ministerId: string) => {
+        const amount = moneyAmounts[routeId]?.[ministerId];
+        if (amount !== undefined) {
+            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [routeId + ministerId + "money"], amount, [1]);
+        }
+    };
 
+    const calculateTotalToGive = () => {
+        const totalMoney = calculateTotalMoney();
+        let totalToGive = totalMoney * 0.2; // 20% for the common amount
+
+        if (winterTripChoice === "Tak") {
+            totalToGive += totalMoney * 0.2; // Additional 20% for the winter trip
+        }
+
+        if (summerTripChoice === "Tak") {
+            totalToGive += totalMoney * 0.1; // Additional 10% for the summer trip
+        }
+
+        return totalToGive;
+    };
 
 
     return (
@@ -345,6 +458,21 @@ export default function VisitMinisterSubpage() {
                                         </span>
                                     )}
                                 </div>
+                                {expandedRoute === route.id && isLinked && (
+                                    <div>
+                                        {route.ministers.map(min => min && min.id === minister && (
+                                            <div key={min.id} className="money-input">
+                                                <input
+                                                    type="number"
+                                                    value={moneyAmounts[route.id]?.[min.id] || ''}
+                                                    onChange={(e) => handleMoneyInputChange(route.id, min.id, parseFloat(e.target.value))}
+                                                    placeholder="Wpisz kwotę, którą Ty osobiście zebrałeś tego dnia"
+                                                />
+                                                <button onClick={() => handleSaveMoneyAmount(route.id, min.id)}>Zapisz</button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                                 {expandedRoute === route.id && (
                                     <div className="time-pairs">
                                         <div className="date">{formatDate(route.startDateTime)}</div>
@@ -409,12 +537,42 @@ export default function VisitMinisterSubpage() {
                             </div>
                         );
                     })}
+                    <div className="total-money">
+                        <h3>Łączna kwota zebrana przez Ciebie: {calculateTotalMoney()} PLN</h3>
+                        <p>Łączna kwota do przekazania: {calculateTotalToGive()} PLN</p>
+                        <p>Łączna kwota już przekazana księdzu: {calculateTotalGiven()} PLN</p>
+                        <p>Łączna kwota jeszcze do przekazania księdzu: {calculateTotalToGive() -calculateTotalGiven()} PLN</p>
+                        <p>20% idzie do wspólnej kasy LSO (m.in. pizza, Michałki, dofinansowanie na wycieczki)</p>
+                        <div className="trip-choice">
+                            <p>Czy chcesz korzystać z dofinansowania na wyjazd feryjny (należy wtedy przekazać dodatkowe 20% do wspólnej kasy)?</p>
+                            {winterTripChoice ? (
+                                <p>Twój wybór: {winterTripChoice}</p>
+                            ) : (
+                                <div>
+                                    <button onClick={() => handleWinterTripChoice("Tak")}>Tak</button>
+                                    <button onClick={() => handleWinterTripChoice("Nie")}>Nie</button>
+                                </div>
+                            )}
+                        </div>
+                        <div className="trip-choice">
+                            <p>Czy chcesz korzystać z dofinansowania na wyjazd wakacyjny (należy wtedy przekazać dodatkowe 10% do wspólnej kasy)?</p>
+                            {summerTripChoice ? (
+                                <p>Twój wybór: {summerTripChoice}</p>
+                            ) : (
+                                <div>
+                                    <button onClick={() => handleSummerTripChoice("Tak")}>Tak</button>
+                                    <button onClick={() => handleSummerTripChoice("Nie")}>Nie</button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
             ) : (
                 <h2>Link jest nieprawidłowy</h2>
             )}
         </div>
     );
+
 
 
 
