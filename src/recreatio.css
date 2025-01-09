@@ -1646,3 +1646,75 @@
         transform: scale(0.01, 1);
     }
 }
+
+.visit_minister .total-money {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.visit_minister .trip-choice {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .visit_minister .trip-choice p {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .visit_minister .trip-choice button {
+        padding: 0.5rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.3s ease;
+        margin-right: 10px;
+    }
+
+        .visit_minister .trip-choice button:hover {
+            background-color: #0056b3;
+        }
+
+    .visit_minister .trip-choice p {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+.visit_minister .money-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+    .visit_minister .money-input input {
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        flex: 1;
+    }
+
+    .visit_minister .money-input button {
+        padding: 0.5rem 1rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .visit_minister .money-input button:hover {
+            background-color: #0056b3;
+        }
