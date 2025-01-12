@@ -4,6 +4,8 @@ import { FetchInformationGetAll } from "../../features/FetchInformationGet";
 import { StringOutput, DateOutput, NumberOutput } from "../../features/NewFetchInformationGet";
 import { FetchInformationPost } from "../../features/FetchInformationPost";
 import { FetchInformationDelete } from "../../features/FetchInformationDelete";
+import { useAuth } from "../../generals/permission/AuthContext";
+import { GetAdminRole } from "../../structs/role";
 
 interface Route {
     id: string;
@@ -24,6 +26,7 @@ export default function VisitMinisterSubpage() {
     const [winterTripChoice, setWinterTripChoice] = useState<string | null>(null);
     const [summerTripChoice, setSummerTripChoice] = useState<string | null>(null);
     const [givenAmounts, setGivenAmounts] = useState<{ [ministerId: string]: number }>({});
+    const [amountToGive, setAmountToGive] = useState<number | null>(null);
 
     const ministers = [
         { id: '0', display: 'Dawid Polak' },
@@ -56,7 +59,15 @@ export default function VisitMinisterSubpage() {
         { id: '27', display: 'Szymon Wons' },
         { id: '28', display: 'Kacper Wójcicki' },
     ];
-
+    const [isAdmin, setIsAdmin] = useState(false)
+    const { user } = useAuth()
+    useEffect(() => {
+        (async function () {
+            if (user != null) {
+                setIsAdmin(await GetAdminRole({ type: 'confirmation', user: user }) != null)
+            }
+        })();
+    }, [user])
     useEffect(() => {
         async function fetchChoices() {
             const winterChoice = await FetchInformationGetAll("string", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "winter_trip_choice_" + minister) as StringOutput[];
@@ -439,6 +450,20 @@ export default function VisitMinisterSubpage() {
 
         return totalToGive;
     };
+    const handleAmountToGiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAmountToGive(parseFloat(e.target.value));
+    };
+
+    const handleSaveAmountToGive = async () => {
+        if (amountToGive !== null) {
+            await FetchInformationPost("bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", "public_writer", [minister + "given"], amountToGive, [1]);
+            setAmountToGive(null);
+            // Refresh the given amounts
+            const givenAmountsEntries = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", minister + "given") as NumberOutput[];
+            const totalGiven = givenAmountsEntries.reduce((sum, amount) => sum + amount.output, 0);
+            setGivenAmounts(prev => ({ ...prev, [minister]: totalGiven }));
+        }
+    };
 
 
     return (
@@ -540,8 +565,7 @@ export default function VisitMinisterSubpage() {
                     <div className="total-money">
                         <h3>Łączna kwota zebrana przez Ciebie: {calculateTotalMoney()} PLN</h3>
                         <p>Łączna kwota do przekazania: {calculateTotalToGive()} PLN</p>
-                        <p>Łączna kwota już przekazana księdzu: {calculateTotalGiven()} PLN</p>
-                        <p>Łączna kwota jeszcze do przekazania księdzu: {calculateTotalToGive() -calculateTotalGiven()} PLN</p>
+                        <p>Łączna kwota przekazana księdzu: {calculateTotalGiven()} PLN</p>
                         <p>20% idzie do wspólnej kasy LSO (m.in. pizza, Michałki, dofinansowanie na wycieczki)</p>
                         <div className="trip-choice">
                             <p>Czy chcesz korzystać z dofinansowania na wyjazd feryjny (należy wtedy przekazać dodatkowe 20% do wspólnej kasy)?</p>
@@ -565,6 +589,20 @@ export default function VisitMinisterSubpage() {
                                 </div>
                             )}
                         </div>
+                        {isAdmin && (
+                            <div className="admin-give-money">
+                                <h3>Dodaj kwotę przekazaną księdzu</h3>
+                                <div className="money-input">
+                                    <input
+                                        type="number"
+                                        value={amountToGive || ''}
+                                        onChange={handleAmountToGiveChange}
+                                        placeholder="Wpisz kwotę"
+                                    />
+                                    <button onClick={handleSaveAmountToGive}>Zapisz</button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             ) : (
@@ -576,5 +614,5 @@ export default function VisitMinisterSubpage() {
 
 
 
-}
 
+}
