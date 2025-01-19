@@ -43,8 +43,9 @@ export async function FetchInformationGetAll(type: string, token: string, contex
                     return predata.json().then((data) => data as StringOutput[])
                 if (type == 'long')
                     return predata.json().then((data) => data as NumberOutput[])
-                if (type == 'double')
+                if (type == 'double') {
                     return predata.json().then((data) => data as NumberOutput[])
+                }
                 if (type == 'bool')
                     return predata.json().then((data) => data as BooleanOutput[])
                 if (type == 'datetime') {

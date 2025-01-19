@@ -6,6 +6,7 @@ import LoginWidget from '../widgets/login-widget';
 import PrintConfirmationaimsSubpage from '../components/print/print-confirmationaims-subpage';
 import UsersWidget from '../widgets/users-widget';
 import PrintIntentionreportSubpage from '../components/print/print-intentionreport-subpage';
+import PrintObitEmpty from '../components/print/PrintObitEmpy';
 export default function PrintPage() {
 
     const [login, setLogin] = useState(false);
@@ -48,6 +49,7 @@ export default function PrintPage() {
                 <Route path="intentionreport/:start/:end" element={<PrintIntentionreportSubpage getParams={getParams} />} />
                 <Route path="intentionbook/:year" element={<PrintIntentionbookSubpage getParams={getParams} />} />
                 <Route path="confirmationaims" element={<PrintConfirmationaimsSubpage getParams={getParams} />} />
+                <Route path="obit" element={<PrintObitEmpty />} />
             </Routes>
             {(selectUser || login) ? (<div className="popup" onClick={(e) => { if (e.currentTarget == e.target) { setLogin(false); setSelectUser(false) } }} >
                 <div>

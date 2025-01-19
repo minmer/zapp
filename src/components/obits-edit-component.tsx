@@ -23,7 +23,8 @@ export default function ObitsEditElement({ getParams }: { getParams: ({ func, ty
                     func: async (param: string | User) => {
                         const token = param as string
                         setIsAdmin(((await FetchInformationGetAll('string', token, 'admin') as []).length == 0 ? false : true))
-                        setObits((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).map(p => ({ id: p.id, name: p.output })))
+                        const fetchedObits = (await FetchInformationGetAll('string', token, 'obit') as StringOutput[])
+                        setObits(fetchedObits.map(p => ({ id: p.id, name: p.output })).sort((a, b) => a.name.localeCompare(b.name)))
                     }, type: 'token', show: false
                 });
             } catch (e) {
@@ -31,6 +32,7 @@ export default function ObitsEditElement({ getParams }: { getParams: ({ func, ty
             }
         })();
     }, [getParams])
+
 
     const removeObit = async (obit: IObit) => {
         getParams({

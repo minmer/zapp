@@ -1718,3 +1718,54 @@
         .visit_minister .money-input button:hover {
             background-color: #0056b3;
         }
+
+.print-obit-empty {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+    .print-obit-empty img {
+        width: 100px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .print-obit-empty .logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .print-obit-empty .title {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+.print-obit {
+    margin: 5mm;
+    width: 200mm;
+}
+
+.intentions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .intentions-table th, .intentions-table td {
+        border: 1px solid black;
+        padding: 20px 10px;
+        text-align: left;
+    }
+
+        .intentions-table th.narrow, .intentions-table td.narrow {
+            width: 5%;
+            text-align: center;
+        }
+
+        .intentions-table th:nth-child(2), .intentions-table td:nth-child(2) {
+            width: 70%;
+        }
+
+        .intentions-table th:nth-child(4), .intentions-table td:nth-child(4) {
+            width: 10%;
+        }

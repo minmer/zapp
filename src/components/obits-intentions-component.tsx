@@ -15,15 +15,17 @@ export default function ObitsIntentionsElement() {
     useEffect(() => {
         (async function () {
             try {
-
                 if (token !== undefined) {
-                    setObits((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).map(p => ({ id: p.id, name: p.output })  ))
+                    const fetchedObits = await FetchInformationGetAll('string', token, 'obit') as StringOutput[];
+                    const sortedObits = fetchedObits.map(p => ({ id: p.id, name: p.output })).sort((a, b) => a.name.localeCompare(b.name));
+                    setObits(sortedObits);
                 }
             } catch (e) {
                 console.error(e);
             }
         })();
-    }, [token])
+    }, [token]);
+
 
     return (
         <>
