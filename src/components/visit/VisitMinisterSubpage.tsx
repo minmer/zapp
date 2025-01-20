@@ -168,7 +168,7 @@ export default function VisitMinisterSubpage() {
                             moneyAmounts[route.id][minister.id] = amount[0].output;
 
 
-                            const givenAmountsEntries = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", minister.id + "money") as NumberOutput[];
+                            const givenAmountsEntries = await FetchInformationGetAll("double", "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U", minister.id + "given") as NumberOutput[];
                             const totalGiven = givenAmountsEntries.reduce((sum, amount) => sum + amount.output, 0);
                             givenAmounts[minister.id] = totalGiven;
                         }
