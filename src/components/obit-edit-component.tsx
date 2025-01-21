@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FetchInformationGet, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
+import { BooleanOutput, FetchInformationGet, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import { FetchInformationDelete } from "../features/FetchInformationDelete";
 import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchContext } from "../features/FetchPostContext";
@@ -104,7 +104,7 @@ export default function ObitEditElement({ getParams }: { getParams: ({ func, typ
                 getParams({
                     func: async (param: string | User) => {
                         const token = param as string;
-                        const id = await FetchInformationPost(token ?? '', 'new_intention_admin', [obit + 'intention'], '+ ' + name + ' / ' + obitIntention, [1]);
+                        const id = await FetchInformationPost(token ?? '', 'new_intention_admin', [obit + 'intention'], '+ ' + name + ' / od ' + obitIntention, [1]);
                         await FetchInformationPost(token ?? '', 'intention_raport_admin', [id + 'donation'], donation, [1]);
 
                         setIndex(index+1)
@@ -137,6 +137,30 @@ export default function ObitEditElement({ getParams }: { getParams: ({ func, typ
                 const id = await FetchInformationPost(token ?? '', 'new_intention_admin', [obit + 'intention'], '+ ' + name + ' / od ' + newIntention, [1])
                 await FetchInformationPost(token ?? '', 'intention_raport_admin', [id + 'donation'], newDonation, [1])
                 newIntention
+            }, type: 'token', show: false
+        });
+    }
+
+    const nextCollective = async () => {
+        getParams({
+            func: async (param: string | User) => {
+                const token = param as string
+                console.log(123)
+                const start = new Date(date.getTime());
+                start.setHours(23, 0, 0, 0)
+                const end = new Date(start.getTime());
+                end.setDate(end.getDate() + 31)
+                const data = (await FetchInformationGet('datetime', token, 'new_zielonki_mass', start.getTime(), end.getTime(), 'new_intention_viewer') as NumberOutput[]).map(p => ({ id: p.id, date: new Date(p.output) }))
+                for (let i = 0; i < data.length; i++) {
+                    const collectivData = (await FetchInformationGetAll('bool', token, data[i].id + 'collective') as BooleanOutput[])
+                    if (collectivData[0]?.output)
+                    {
+                        setDate(data[i].date)
+                        setMasses([data[i]])
+                        setSelectedMass(data[i].id)
+                        break;
+                    }
+                }
             }, type: 'token', show: false
         });
     }
@@ -182,9 +206,10 @@ export default function ObitEditElement({ getParams }: { getParams: ({ func, typ
                     onChange={(e) => setSelectedMass(e.target.value)}
                 >
                     {masses.map((mass) => (
-                        <option value={mass.id}>{mass.date.getHours() + ':' + mass.date.getMinutes().toString().padStart(2, '0')}</option>
+                        <option value={mass.id}>{mass.date.getDate() + '.' + (mass.date.getMonth()+1) + '. - ' + mass.date.getHours() + ':' + mass.date.getMinutes().toString().padStart(2, '0')}</option>
                     ))}
                 </select>
+                <button onClick={nextCollective}>Next colective mass</button>
             </div>
             <div>
                 <input type="file" accept=".csv" onChange={handleFileChange} />

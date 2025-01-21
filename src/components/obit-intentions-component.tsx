@@ -28,7 +28,7 @@ export default function ObitIntentionsElement() {
                         const data = (await FetchInformationGetAll('datetime', token, tempData[i].id + 'mass') as DateOutput[])[0]
                         if (data) {
                             tempData[i].mass = data?.output
-                            tempData[i].isCollective = (await FetchInformationGetAll('bool', token, data.id + 'collective') as BooleanOutput[]).length > 0
+                            tempData[i].isCollective = (await FetchInformationGetAll('bool', token, data.id + 'collective') as BooleanOutput[])[0]?.output ?? false
                         }
                     }
                     tempData.sort((a, b) => a.mass ? (b.mass ? (a.isCollective ? (b.isCollective ? (a.mass.getTime() - b.mass.getTime()) : 1) : (b.isCollective ? -1 : (a.mass.getTime() - b.mass.getTime()))) : -1) : (b.mass ? 1 : 0))
