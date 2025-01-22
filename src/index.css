@@ -883,11 +883,11 @@ i {
     }
     .print-obit .intentions {
         display: grid;
-        grid-template-columns: 1px 96px 1px 176px 1px Auto 1px;
+        grid-template-columns: 1px 96px 1px 176px 1px Auto 1px Auto 1px;
     }
         .print-obit .intentions .horizontal {
             background: black;
-            grid-column: 1/span 7;
+            grid-column: 1/span 9;
         }
         .print-obit .intentions .vertical {
             background: black;
@@ -910,6 +910,14 @@ i {
         font-size: 20px;
         text-align: center;
         grid-column: 4;
+        align-self: center;
+    }
+
+    .print-obit .donation {
+        margin: 6px;
+        font-size: 20px;
+        text-align: center;
+        grid-column: 8;
         align-self: center;
     }
 
@@ -1047,3 +1055,8 @@ i {
         .obit-list input[type="button"]:hover {
             background-color: #c82333;
         }
+
+.inline-communion-list div {
+    display: inline-block;
+    margin: 0 6px;
+}

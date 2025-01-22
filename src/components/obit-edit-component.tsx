@@ -6,6 +6,7 @@ import { FetchInformationPost } from "../features/FetchInformationPost";
 import { FetchContext } from "../features/FetchPostContext";
 import { User } from "../structs/user";
 import Papa from "papaparse";
+import EditableDisplay from "../generals/editable/EditableDisplay";
 
 interface IIntention {
     id: string,
@@ -29,6 +30,7 @@ export default function ObitEditElement({ getParams }: { getParams: ({ func, typ
     const [rr, setRR] = useState(true)
     const [file, setFile] = useState<File | null>(null);
     const [index, setIndex] = useState(0)
+
 
     useEffect(() => {
         (async function () {
@@ -105,7 +107,7 @@ export default function ObitEditElement({ getParams }: { getParams: ({ func, typ
                     func: async (param: string | User) => {
                         const token = param as string;
                         const id = await FetchInformationPost(token ?? '', 'new_intention_admin', [obit + 'intention'], '+ ' + name + ' / od ' + obitIntention, [1]);
-                        await FetchInformationPost(token ?? '', 'intention_raport_admin', [id + 'donation'], donation, [1]);
+                        await FetchInformationPost(token ?? '', 'new_intention_admin', [id + 'donation'], donation, [1]);
 
                         setIndex(index+1)
                     }, type: 'token', show: false
@@ -135,7 +137,7 @@ export default function ObitEditElement({ getParams }: { getParams: ({ func, typ
             func: async (param: string | User) => {
                 const token = param as string
                 const id = await FetchInformationPost(token ?? '', 'new_intention_admin', [obit + 'intention'], '+ ' + name + ' / od ' + newIntention, [1])
-                await FetchInformationPost(token ?? '', 'intention_raport_admin', [id + 'donation'], newDonation, [1])
+                await FetchInformationPost(token ?? '', 'new_intention_admin', [id + 'donation'], newDonation, [1])
                 newIntention
             }, type: 'token', show: false
         });
@@ -172,7 +174,19 @@ export default function ObitEditElement({ getParams }: { getParams: ({ func, typ
             </h4>
             {intentions.map((intention) => (
                 <div className="inline-communion-list">
-                    {intention.name + ' (' + intention.donation + ' )'}
+                    {intention.name}
+                    <EditableDisplay editableProps={
+                        {
+                            name: intention.id + 'donation',
+                            type: 'number',
+                            multiple: false,
+                            dbkey: 'new_intention_admin',
+                            description: '',
+                            isOrdered: false,
+                            display: 'single',
+                            showdescription: false,
+                        }
+                    } />
                     <input style={{
                         display: intention.mass ? 'none' : 'inline',
                     }} type="button" onClick={() => { linkMass(intention) }} value='+' />

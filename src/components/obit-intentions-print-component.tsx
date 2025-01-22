@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
+import { BooleanOutput, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
 import logo from '../assets/logo.png'
 import LoadingComponent from "../generals/LoadingComponent";
 
@@ -29,7 +29,7 @@ export default function ObitIntentionsPrint() {
                         const data = (await FetchInformationGetAll('double', token, tempData[i].id + 'mass') as NumberOutput[])[0]
                         if (data) {
                             tempData[i].mass = new Date(data?.output)
-                            tempData[i].isCollective = (await FetchInformationGetAll('double', token, data.id + 'collective') as NumberOutput[]).length > 0
+                            tempData[i].isCollective = (await FetchInformationGetAll('bool', token, data.id + 'collective') as BooleanOutput[])[0]?.output ?? false
                         }
                     }
                     tempData.sort((a, b) => a.mass ? (b.mass ? (a.isCollective ? (b.isCollective ? (a.mass.getTime() - b.mass.getTime()) : 1) : (b.isCollective ? -1 : (a.mass.getTime() - b.mass.getTime()))) : -1) : (b.mass ? 1 : 0))
@@ -82,7 +82,7 @@ export default function ObitIntentionsPrint() {
                     gridColumn: 3,
                 }} />
                 <div className="vertical" style={{
-                    gridColumn: 7,
+                    gridColumn: 9,
                 }} />
                 <div className="intention-description" style={{
                     display: intentions.some(a => a.mass && !a.isCollective) ? 'block' : 'none',

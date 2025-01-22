@@ -1,33 +1,23 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { BooleanOutput, DateOutput, FetchInformationGetAll, StringOutput } from "../features/FetchInformationGet";
+import { useParams } from "react-router-dom";
+import { BooleanOutput, FetchInformationGetAll, NumberOutput, StringOutput } from "../features/FetchInformationGet";
+import logo from '../assets/logo.png'
 import LoadingComponent from "../generals/LoadingComponent";
-import { useAuth } from "../generals/permission/AuthContext";
-import { GetAdminRole } from "../structs/role";
 
 interface IIntention {
     id: string,
     name: string,
     mass?: Date
     isCollective: boolean
+    donation: number
 }
-export default function ObitIntentionsElement() {
+export default function ObitIntentionsReportPrint() {
     const { obit } = useParams();
     const token = "bpBDPPqY_SwBZ7LTCGqcd51zxCKiO0Oi67tmEA8Uz8U"
     const [intentions, setIntentions] = useState<IIntention[]>([])
     const [name, setName] = useState('')
-    const [isLoading, setIsLoading] = useState(true)
     const [gridRow, setGridRow] = useState('')
-
-    const [isAdmin, setIsAdmin] = useState(false)
-    const { user } = useAuth()
-    useEffect(() => {
-        (async function () {
-            if (user != null) {
-                setIsAdmin(await GetAdminRole({ type: 'confirmation', user: user }) != null)
-            }
-        })();
-    }, [user])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         (async function () {
@@ -35,11 +25,12 @@ export default function ObitIntentionsElement() {
 
                 if (token !== undefined) {
                     setName((await FetchInformationGetAll('string', token, 'obit') as StringOutput[]).filter(p => p.id == obit)[0].output)
-                    const tempData = (await FetchInformationGetAll('string', token, obit + 'intention') as StringOutput[]).map(p => ({ id: p.id, name: p.output, mass: undefined as unknown as Date, isCollective: false}))
+                    const tempData = (await FetchInformationGetAll('string', token, obit + 'intention') as StringOutput[]).map(p => ({ id: p.id, name: p.output, mass: undefined as unknown as Date, isCollective: false, donation: -1 }))
                     for (let i = 0; i < tempData.length; i++) {
-                        const data = (await FetchInformationGetAll('datetime', token, tempData[i].id + 'mass') as DateOutput[])[0]
+                        const data = (await FetchInformationGetAll('double', token, tempData[i].id + 'mass') as NumberOutput[])[0]
+                        tempData[i].donation = (await FetchInformationGetAll('double', token, tempData[i].id + 'donation') as NumberOutput[])[0]?.output ?? -1
                         if (data) {
-                            tempData[i].mass = data?.output
+                            tempData[i].mass = new Date(data?.output)
                             tempData[i].isCollective = (await FetchInformationGetAll('bool', token, data.id + 'collective') as BooleanOutput[])[0]?.output ?? false
                         }
                     }
@@ -48,10 +39,10 @@ export default function ObitIntentionsElement() {
                     for (let i = 0; i < tempData.length; i++) {
                         tempGridRow += ' Auto 1px'
                     }
+                    console.log(tempData)
                     setIntentions(tempData)
                     setGridRow(tempGridRow)
                     setIsLoading(false)
-                        
                 }
             } catch (e) {
                 console.error(e);
@@ -60,9 +51,7 @@ export default function ObitIntentionsElement() {
     }, [token, obit])
 
     return (
-        <>
-            <div className="obit-intentions-page">
-            <div className="title-description">Msze Święte za</div>
+        <div className="print-obit">
             <div className="title">{"śp. " + name}</div>
             <div className="intentions"
                 style={{
@@ -91,6 +80,9 @@ export default function ObitIntentionsElement() {
                 <div className="vertical" style={{
                     gridColumn: 7,
                 }} />
+                <div className="vertical" style={{
+                    gridColumn: 9,
+                }} />
                 <div className="intention-description" style={{
                     display: intentions.some(a => a.mass && !a.isCollective) ? 'block' : 'none',
                     gridRow: '2/span ' + (intentions.filter(a => a.mass && !a.isCollective).length * 2 - 1),
@@ -115,15 +107,13 @@ export default function ObitIntentionsElement() {
                             gridRow: i * 2 + 2,
                         }} >{intention.name.substring(name.length + 3)}
                         </div>
+                        <div className="donation" style={{
+                            gridRow: i * 2 + 2,
+                        }} >{intention.donation}
+                        </div>
                     </>
                 ))}
-            </div>
-            <div className="footer-title">
-                2. listopada o godzinie 18:00 zostanie w kościele w Zielonkach odprawiona Msza Święta w intencji wszystkich zmarłych w ciągu roku - potem nastąpi procesja na cmentarz.
-            </div>
-            <div className="footer-description">
-                Serdecznie zachęcamy do uczestnictwa we Mszach Świętych oraz przyjmowanie Komunii Świętej o dar nieba dla zmarłych.
-            </div>
+        </div>
             <div className="loadingcontainer" style=
                 {{
                     display: isLoading ? 'block' : 'none',
@@ -135,33 +125,6 @@ export default function ObitIntentionsElement() {
                 }}>
                 <LoadingComponent />
             </div>
-
-
-
-
-                <Link to={`/print/` + token + '/obitintentions/' + obit} style=
-                    {{
-                        display: isLoading ? 'none' : 'block',
-                        margin: "36px 72px",
-                        fontSize: "1.5em",
-                    }}>
-                    <h4>
-                        Przygotuj pełną rozpiskę do wydruku
-                    </h4>
-                </Link >
-                {isAdmin &&
-                    <Link to={`/print/` + token + '/obitintentionsreport/' + obit} style=
-                        {{
-                            display: isLoading ? 'none' : 'block',
-                            margin: "36px 72px",
-                            fontSize: "1.5em",
-                        }}>
-                        <h4>
-                            Przygotuj pełną rozpiskę do archiwum
-                        </h4>
-                    </Link >
-                }
-            </div>
-        </>
+        </div>
     );
 }
