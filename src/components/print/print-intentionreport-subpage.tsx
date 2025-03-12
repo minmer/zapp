@@ -31,8 +31,8 @@ export default function PrintIntentionreportSubpage({ getParams }: { getParams: 
                     collective: (await FetchInformationGetAll('bool', token, mass.id + 'collective'))[0]?.output as boolean,
                         intentions: await Promise.all((await FetchInformationGetAll('string', token, mass.id + 'intention')).map(async (intention) => (
                         {
-                            intention: intention.output as string,
-                            donation: (await FetchInformationGetAll('double', token, intention.id + 'donation'))[0]?.output as number,
+                                intention: intention.output as string,
+                                donation: (await FetchInformationGetAll('double', token, intention.id + 'donation'))[0]?.output as number,
                             donated: priests[Number((await FetchInformationGetAll('string', token, intention.id + 'donated'))[0]?.output as string) ?? 6],
                             celebrator: priests[Number((await FetchInformationGetAll('string', token, intention.id + 'celebrator'))[0]?.output as string) ?? 6],
                         })))
@@ -78,13 +78,13 @@ export default function PrintIntentionreportSubpage({ getParams }: { getParams: 
                                     {intention.intention}
                                 </div>
                                 <div>
-                                    {intention.donated == 'ks. Proboszcz' ? intention.donation : ''}
+                                    {intention.donated == 'ks. Proboszcz' ? intention.donation.toString() : ''}
                                 </div>
                                 <div>
-                                    {intention.donated == 'ks. Leszek' ? intention.donation : ''}
+                                    {intention.donated == 'ks. Leszek' ? intention.donation.toString() : ''}
                                 </div>
                                 <div>
-                                    {intention.donated == 'ks. Michał' ? intention.donation : ''}
+                                    {intention.donated == 'ks. Michał' ? intention.donation.toString() : ''}
                                 </div>
                             </>
                         )}

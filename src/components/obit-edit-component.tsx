@@ -100,8 +100,7 @@ export default function ObitEditElement({ getParams }: { getParams: ({ func, typ
     const processCSVData = (data: any[]) => {
         data.forEach(async (row) => {
             const obitIntention = row["intention"];
-            const donation = row["donation"];
-
+            const donation = Number(row["donation"]);
             if (obitIntention && donation) {
                 getParams({
                     func: async (param: string | User) => {

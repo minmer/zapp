@@ -36,8 +36,8 @@ export default function PrintIntentionbookSubpage({ getParams }: { getParams: ({
         (async function () {
             const tempYear = Number(year)
             let tempDates = [] as Date[]
-            let date = new Date(tempYear ?? 0, 0, 1, 0, 0, 0, 0)
-            while (date.getDate() != 31) {
+            let date = new Date(tempYear ?? 0, 8, 1, 0, 0, 0, 0)
+            while (date.getMonth() != 9) {
                 tempDates = [...tempDates, date]
                 date = AddDaysToDate(date, 1)
             }
