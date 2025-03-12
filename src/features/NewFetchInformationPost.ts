@@ -30,7 +30,7 @@ export async function FetchInformationPost(
                 key,
                 information: informationID,
                 context: ctx,
-                preorder: preorder[i],
+                preorder: data instanceof Date ? data.getTime() : preorder[i] ,
             }),
         })
     );
