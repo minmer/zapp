@@ -60,7 +60,7 @@ export default function Root() {
 
     return (
         <h1>
-            Informacje na temat sakramentÃ³w, intencji mszalnych i pogrzebÃ³w moÅ¼na uzyskaÄ‡ w zakrystii oraz w kancelarii parafialnej
+            Informacje na temat sakramentów, intencji mszalnych i pogrzebów mo¿na uzyskaæ w zakrystii oraz w kancelarii parafialnej
             {/*
               <MenuComponent getParams={getParams} />
             <Routes>
