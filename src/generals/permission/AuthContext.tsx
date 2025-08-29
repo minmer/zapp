@@ -78,6 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             } else {
                 console.error("Failed to log in");
+                console.error(response);
             }
         } catch (error) {
             console.error("Error during login:", error);

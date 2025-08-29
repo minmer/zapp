@@ -534,6 +534,77 @@
         color: gray;
     }
 
+    .intentionbook .title {
+        position: absolute;
+        top: 5mm;
+        height: 16mm;
+        border-radius: 6mm;
+        border-style: solid;
+        border-color: black;
+        background-color: white;
+        border-width: 0 0 1mm 1mm;
+        width: 80mm;
+        font-size: 6mm;
+        text-align: center;
+        padding: 4mm;
+        left: 65mm;
+    }
+
+    .intentionbook .collective_intention {
+        position: absolute;
+        left: 5mm;
+        right: 5mm;
+        top: 22mm;
+    }
+
+        .intentionbook .collective_intention .intention {
+            height: 14mm;
+            border-radius: 6mm;
+            border-style: solid;
+            border-color: black;
+            background-color: white;
+            border-width: 0 0 1mm 1mm;
+            font-size: 5mm;
+            text-align: center;
+            padding: 2mm 34mm 2mm 2mm;
+            width: 200mm;
+            position: relative;
+        }
+            .intentionbook .collective_intention .intention .desc {
+                left: 2mm;
+                right: 34mm;
+                position: absolute;
+                text-align: center;
+                margin: -4mm 0 0 0;
+                font-size: 4mm;
+                top: 4mm;
+                bottom: 0;
+                align-self: center;
+            }
+            .intentionbook .collective_intention .intention .lines {
+                height: 50%;
+                border-radius: 6mm;
+                border-style: solid;
+                border-color: lightgray;
+                border-width: 0 0 .5mm 0;
+            }
+
+        .intentionbook .collective_intention .donator {
+            position: absolute;
+            border-radius: 6mm;
+            border-style: solid;
+            border-color: black;
+            background-color: white;
+            border-width: 0 0 1mm 1mm;
+            color: lightgray;
+            font-size: 4mm;
+            text-align: center;
+            padding: 2mm 0 2mm 0;
+            right: 0;
+            width: 32mm;
+            bottom: -.5mm;
+        }
+
     .intentionbook .print-page .date {
         position: absolute;
         top: 0;

@@ -59,8 +59,10 @@ export default function Root() {
 
 
     return (
-        <>
-            <MenuComponent getParams={getParams} />
+        <h1>
+            Informacje na temat sakramentów, intencji mszalnych i pogrzebów mo¿na uzyskaæ w zakrystii oraz w kancelarii parafialnej
+            {/*
+              <MenuComponent getParams={getParams} />
             <Routes>
                 <Route path="/" element={<RootPage getParams={getParams} />} />
                 <Route path="/baptism" element={<BaptismPage />} />
@@ -85,7 +87,8 @@ export default function Root() {
                 <div>
                     {login ? <LoginWidget onLogin={() => setLogin(false)} /> : selectUser ? <UsersWidget onSelected={() => setSelectUser(false)} /> : null}
                 </div>
-            </div>): null}
-        </>
+            </div>) : null}
+            */ }
+        </h1>
     );
 }
