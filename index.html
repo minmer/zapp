@@ -1,14 +1,1049 @@
 <!doctype html>
 <html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="https://www.recreatio.eu/icon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parafia Zielonki</title>
-    <script type="module" crossorigin src="https://www.recreatio.eu/assets/index-NkhynDx2.js"></script>
-    <link rel="stylesheet" crossorigin href="https://www.recreatio.eu/assets/index-Qv_dDSh3.css">
-  </head>
-  <body>
-      <div id="root" translate="no"></div>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b2a55" />
+  <title>Warsztaty muzyki liturgicznej • Kraków • 28.02–01.03.2026</title>
+
+  <style>
+    :root{
+      --blue:#0a2a57;
+      --blue2:#071c3c;
+      --txt:#eaf1ff;
+      --muted:rgba(234,241,255,.78);
+      --muted2:rgba(234,241,255,.58);
+      --line:rgba(234,241,255,.14);
+      --gold:#f1c86d;
+      --gold2:#d8a73a;
+
+      --max:70rem; /* ~1120px */
+      --ease:cubic-bezier(.2,.85,.2,1);
+      --ease2:cubic-bezier(.12,.9,.12,1);
+
+      --headerH:4rem; /* 68px */
+      --padX: clamp(1.125rem, 4vw, 2.125rem);
+      --padY: clamp(1.125rem, 3.2vw, 1.75rem);
+
+      /* type scale (rem, no px) */
+      --fs-brand: .875rem;
+      --fs-brand-sub: .75rem;
+      --fs-nav: .825rem;
+      --fs-btn: .9rem;
+
+      --fs-h2: 1.95rem;
+      --fs-lead: 1.05rem;
+
+      --fs-body: 1rem;
+      --fs-small: .93rem;
+      --fs-tiny: .8rem;
+
+      --radius: 1.375rem;  /* 22px */
+      --radius2: 1.125rem; /* 18px */
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    html{
+      /* Allows user zoom + makes fonts scale nicely on very large/small screens */
+      font-size: clamp(16px, 1.05vw + 12px, 19px);
+    }
+    body{
+      margin:0;
+      color:var(--txt);
+      font-family: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, Arial, sans-serif;
+  background: #061631; /* stałe ciemne tło */
+      overflow-x:hidden;
+      font-size: var(--fs-body);
+      line-height: 1.55;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{width:min(var(--max), calc(100% - 2.5rem)); margin:0 auto;}
+
+    /* ===== Header ===== */
+    header{
+      position:fixed;
+      top:0; left:0; right:0;
+      z-index:100;
+      background: rgba(10,42,87,.92);
+      border-bottom:1px solid rgba(234,241,255,.12);
+      backdrop-filter: blur(.625rem);
+      -webkit-backdrop-filter: blur(.625rem);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:.875rem; padding: .75rem 0;
+    }
+    .brand{display:flex; align-items:center; gap:.75rem; min-width: 14rem;}
+    .mark{
+      width:2.375rem;height:2.375rem; border-radius:.875rem;
+      border:1px solid rgba(234,241,255,.16);
+      background:
+        radial-gradient(circle at 30% 35%, rgba(241,200,109,.28), rgba(241,200,109,0) 55%),
+        linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,0));
+      box-shadow: 0 .75rem 1.875rem rgba(0,0,0,.25);
+      position:relative; overflow:hidden;
+      flex: 0 0 auto;
+    }
+    .mark:after{
+      content:""; position:absolute; inset:-20%;
+      background: radial-gradient(circle at 40% 40%, rgba(241,200,109,.45), rgba(241,200,109,0) 60%);
+      opacity:.7; animation: glow 5.8s var(--ease2) infinite;
+    }
+    @keyframes glow{
+      0%{transform: translate(-10%,-8%) scale(1)}
+      50%{transform: translate(10%,8%) scale(1.05)}
+      100%{transform: translate(-10%,-8%) scale(1)}
+    }
+    .brandText{line-height:1.1}
+    .brandText strong{display:block; font-size: var(--fs-brand); letter-spacing:.01em}
+    .brandText span{display:block; font-size: var(--fs-brand-sub); color:var(--muted2)}
+
+    /* desktop nav links */
+    .navLinks{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; justify-content:flex-end;}
+    .navLinks button{
+      border:1px solid rgba(234,241,255,.14);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      padding: .55rem .65rem;
+      border-radius: .875rem;
+      cursor:pointer;
+      font-weight:650;
+      font-size: var(--fs-nav);
+      transition: transform .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+      white-space:nowrap;
+    }
+    .navLinks button:hover{transform: translateY(-.06rem); background: rgba(255,255,255,.06); border-color: rgba(234,241,255,.20); color:var(--txt)}
+    .navLinks button.active{
+      color: rgba(6,22,49,.95);
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border-color: rgba(241,200,109,.35);
+      box-shadow: 0 .625rem 1.625rem rgba(241,200,109,.10);
+    }
+
+    /* ===== Smoke background (layers 1-3) ===== */
+    .smokeBack{
+      position:fixed;
+      inset:-25vh -25vw;
+      pointer-events:none;
+      z-index:-2;
+      opacity:.20;
+      filter: blur(.03rem);
+    }
+    .smokeBack .s{
+      position:absolute; inset:0;
+      background-repeat:no-repeat;
+      background-size: 92vmax auto;
+      background-position: 78% 12%;
+      mix-blend-mode: screen;
+      opacity:.65;
+      animation: drift1 28s var(--ease2) infinite;
+    }
+    .smokeBack .s.two{
+      background-size: 110vmax auto;
+      background-position: 10% 68%;
+      opacity:.48;
+      animation: drift2 36s var(--ease2) infinite;
+      animation-delay:-12s;
+    }
+    @keyframes drift1{
+      0%{transform: translate3d(-1.4%, -1.0%, 0) scale(1.02); opacity:.35}
+      50%{transform: translate3d(1.6%, 1.0%, 0) scale(1.06); opacity:.65}
+      100%{transform: translate3d(-1.4%, -1.0%, 0) scale(1.02); opacity:.35}
+    }
+    @keyframes drift2{
+      0%{transform: translate3d(1.2%, -1.0%, 0) scale(1.01); opacity:.28}
+      50%{transform: translate3d(-1.4%, 1.2%, 0) scale(1.05); opacity:.52}
+      100%{transform: translate3d(1.2%, -1.0%, 0) scale(1.01); opacity:.28}
+    }
+
+    /* ===== Foreground static smoke for slide 1 (BOTTOM) ===== */
+    .smokeFront{
+      position:absolute;
+      left:-6vw; right:-6vw;
+      bottom:-12vh; top:auto;
+      height: 120vh;
+      pointer-events:none;
+      z-index:6;                  /* above content */
+      opacity:.28;
+      mix-blend-mode: screen;
+      background-repeat:no-repeat;
+      background-size: 140vmax auto;
+      background-position: 50% 100%;
+      filter: blur(.02rem);
+    }
+
+    /* ===== Presentation stage ===== */
+    main{
+      padding-top: var(--headerH);
+      height: 100dvh;
+    }
+    .stage{
+  height: calc(100dvh - var(--headerH));
+  position:relative;
+  overflow:hidden;
+}
+
+/* stałe tło dla całej prezentacji */
+.stage::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  background:
+    radial-gradient(75rem 50rem at 25% 10%, rgba(135,171,255,.16), rgba(135,171,255,0) 60%),
+    radial-gradient(56rem 40rem at 80% 25%, rgba(241,200,109,.10), rgba(241,200,109,0) 58%),
+    linear-gradient(180deg, var(--blue), var(--blue2) 55%, #061631 100%);
+}
+
+    /* slide wrapper */
+    .slide{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transform: translate3d(1.375rem, 0, 0);
+      pointer-events:none;
+      transition: opacity .55s var(--ease), transform .55s var(--ease);
+    }
+    .slide.active{
+      opacity:1;
+      transform: translate3d(0,0,0);
+      pointer-events:auto;
+    }
+
+    /* Each slide is scrollable */
+    .slideScroll{
+      height:100%;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      padding: var(--padY) 0;
+      scroll-behavior:smooth;
+    }
+    .slideScroll::-webkit-scrollbar{width:.625rem}
+    .slideScroll::-webkit-scrollbar-thumb{background: rgba(255,255,255,.10); border-radius:999px}
+    .slideScroll::-webkit-scrollbar-track{background: rgba(255,255,255,.04)}
+
+    /* One-level “sheet” (only one card depth) */
+    .sheet{
+      width:min(var(--max), calc(100% - 2.5rem));
+      margin: 0 auto;
+      border:1px solid rgba(234,241,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow: 0 .875rem 2.5rem rgba(0,0,0,.28);
+      border-radius: var(--radius);
+      padding: var(--padY) var(--padX);
+      position:relative;
+    }
+
+    .h2{
+      margin:0;
+      font-size: var(--fs-h2);
+      letter-spacing: -.015em;
+      font-weight: 700;
+    }
+    .lead{
+      margin: .65rem 0 0;
+      color: var(--muted);
+      font-size: var(--fs-lead);
+      line-height:1.75;
+      max-width: 78ch;
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 1.1rem;
+      margin-top: 1.1rem;
+      align-items:start;
+    }
+    @media (max-width: 61.25rem){
+      .grid2{grid-template-columns: 1fr}
+    }
+
+    .block{
+      border:1px solid rgba(234,241,255,.12);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius2);
+      padding: 1.05rem;
+    }
+    .block h3{margin:0 0 .5rem; font-size: 1.05rem}
+    .block p{margin:0; color:var(--muted); font-size: var(--fs-small); line-height:1.75}
+
+    .list{margin:0; padding:0; list-style:none; display:grid; gap:.65rem}
+    .li{
+      border:1px solid rgba(234,241,255,.12);
+      background: rgba(255,255,255,.03);
+      border-radius: 1rem;
+      padding: .85rem .85rem;
+    }
+    .li b{
+      display:block;
+      color: rgba(241,200,109,.92);
+      font-size: var(--fs-tiny);
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      margin-bottom: .25rem;
+    }
+    .li span{display:block; color: var(--muted); font-size: var(--fs-small); line-height:1.7}
+
+    .timeline{display:grid; gap:.65rem}
+    .slot{
+      display:grid;
+      grid-template-columns: 6.25rem 1fr;
+      gap: .85rem;
+      padding: .85rem;
+      border-radius: var(--radius2);
+      border:1px solid rgba(234,241,255,.12);
+      background: rgba(255,255,255,.03);
+      position:relative;
+      overflow:hidden;
+    }
+    .slot:before{
+      content:"";
+      position:absolute; inset:-45%;
+      background: radial-gradient(circle at 15% 50%, rgba(241,200,109,.16), rgba(241,200,109,0) 60%);
+      opacity:.18;
+      pointer-events:none;
+    }
+    .slot time{
+      font-weight: 800;
+      letter-spacing:.03em;
+      color: rgba(241,200,109,.92);
+      font-size: .85rem;
+    }
+    .slot h4{margin:0 0 .25rem; font-size: 1rem}
+    .slot p{margin:0; color:var(--muted); font-size: .92rem; line-height:1.65}
+
+    .navBtns{
+      display:flex;
+      gap:.65rem;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      margin-top: 1.1rem;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.6rem;
+      padding: .75rem .9rem;
+      border-radius: 1rem;
+      border:1px solid rgba(234,241,255,.14);
+      background: rgba(255,255,255,.04);
+      color: var(--txt);
+      font-weight: 650;
+      font-size: var(--fs-btn);
+      cursor:pointer;
+      transition: transform .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease);
+    }
+    .btn:hover{transform: translateY(-.06rem); background: rgba(255,255,255,.06); border-color: rgba(234,241,255,.20);}
+    .btn.gold{
+      color: rgba(6,22,49,.95);
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border-color: rgba(241,200,109,.35);
+      box-shadow: 0 .75rem 1.875rem rgba(241,200,109,.12);
+      font-weight: 800;
+    }
+
+    details{
+      border:1px solid rgba(234,241,255,.12);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius2);
+      padding: .85rem .85rem;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      font-weight: 700;
+      color: rgba(234,241,255,.92);
+      font-size: 1rem;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:.75rem 0 0; color:var(--muted); font-size: var(--fs-small); line-height:1.75}
+
+
+    /* mobile menu: collapsed by default, toggled by Menu button */
+    .menuBtn{display:none}
+    .mobilePanel{
+      display:none;
+      padding: .65rem 0 .85rem;
+      border-top:1px solid rgba(234,241,255,.10);
+    }
+    .mobilePanel .row{display:flex; flex-wrap:wrap; gap:.5rem}
+    @media (max-width: 55rem){
+      .navLinks{display:none}
+      .menuBtn{display:inline-flex}
+      .mobilePanel{display:block}
+    }
+	
+    /* ===== Slide 1 (poster) ===== */
+    .posterWrap{
+      position:relative;
+      padding: 0;
+      overflow:hidden;
+    }
+    .posterWrap::after{
+      content:"";
+      position:absolute; left:0; right:0; bottom:-.1rem;
+      height: 28%;
+      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.92) 40%, #ffffff 100%);
+      pointer-events:none;
+      z-index:4;
+    }
+    .posterGrid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 1.5rem;
+      align-items:stretch;
+      min-height: calc(100dvh - var(--headerH) - (2 * var(--padY)));
+      padding: var(--padY) var(--padX);
+      position:relative;
+      z-index:3;
+    }
+    @media (max-width: 61.25rem){
+      .posterGrid{grid-template-columns: 1fr; gap: 1rem}
+      .posterWrap::after{height: 24%}
+    }
+
+    .posterLeft{
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      padding-top: .25rem;
+      z-index:3;
+    }
+    .posterTitle{
+      margin:0;
+      font-family: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, Arial, sans-serif;
+      font-weight: 300;
+      font-size: clamp(2.7rem, 5.0vw, 4.15rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+    .posterTitle strong{display:block; font-weight:300;}
+
+    .posterQuote{
+      margin-top: 1.3rem;
+      max-width: 46ch;
+      font-family: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, Arial, sans-serif;
+      font-weight: 600; /* semibold */
+      color: rgba(234,241,255,.72);
+      font-size: clamp(1.25rem, 2.2vw, 1.65rem);
+      line-height: 1.45;
+    }
+    .posterQuote small{
+      display:block;
+      margin-top: .45rem;
+      font-family: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, Arial, sans-serif;
+      font-weight: 600; /* semibold */
+      font-style: normal;
+      font-size: .95rem;
+      color: rgba(234,241,255,.55);
+    }
+
+    .posterRight{
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding: 0 0 .75rem;
+      z-index:3;
+    }
+    .monGlow{
+      position:absolute;
+      width:min(35rem, 76%);
+      aspect-ratio:1/1;
+      border-radius: 999px;
+      background: radial-gradient(circle at 50% 50%, rgba(241,200,109,.24), rgba(241,200,109,0) 65%);
+      filter: blur(.12rem);
+      opacity:.85;
+      transform: translateY(14%);
+      pointer-events:none;
+    }
+    .mon{
+      width: min(35rem, 92%);
+      height:auto;
+      filter: drop-shadow(0 1.625rem 3.75rem rgba(0,0,0,.55));
+      transform: translateY(.5rem);
+      animation: float 7.8s var(--ease2) infinite;
+      position:relative;
+      z-index:3;
+    }
+    @keyframes float{
+      0%{transform: translateY(.75rem)}
+      50%{transform: translateY(.125rem)}
+      100%{transform: translateY(.75rem)}
+    }
+
+    .posterCtaRow{
+      margin-top:auto;
+      display:flex;
+      gap:.75rem;
+      flex-wrap:wrap;
+      padding-bottom: 1.25rem;
+      position:relative;
+      z-index:5; /* above white bottom fade */
+    }
+
+    /* Responsive image (Plan) */
+    .imgWrap{
+      margin-top: 1.1rem;
+      border:1px solid rgba(234,241,255,.12);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius);
+      overflow:hidden;
+    }
+    .imgWrap img{display:block; width:100%; height:auto}
+    .caption{
+      padding: .85rem 1rem;
+      border-top:1px solid rgba(234,241,255,.10);
+      color: var(--muted);
+      font-size: var(--fs-small);
+      line-height: 1.7;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important; transition:none !important}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- BACKGROUND smoke layers -->
+  <div class="smokeBack" aria-hidden="true">
+    <div class="s" style="background-image:url('assets/Plakat_26_01.png')"></div>
+    <div class="s two" style="background-image:url('assets/Plakat_26_02.png')"></div>
+  </div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#" onclick="return false;">
+          <span class="mark" aria-hidden="true"></span>
+          <span class="brandText">
+            <strong>Warsztaty muzyki liturgicznej</strong>
+            <span>Kraków • 28.02–01.03.2026</span>
+          </span>
+        </a>
+
+        <div class="navLinks" aria-label="Menu slajdów">
+          <button data-go="0" class="active">Start</button>
+          <button data-go="1">Zapisy</button>
+          <button data-go="2">O warsztatach</button>
+          <button data-go="3">Program</button>
+          <button data-go="4">Informacje</button>
+          <button data-go="5">Plan</button>
+          <button data-go="6">Prowadzący</button>
+          <button data-go="7">FAQ</button>
+          <button data-go="8">Kontakt</button>
+          <button data-go="9">RODO</button>
+        </div>
+
+        <button class="btn menuBtn" id="menuBtn" aria-expanded="false" aria-controls="mobilePanel">Menu</button>
+      </div>
+
+      <div class="mobilePanel" id="mobilePanel" hidden>
+        <div class="row">
+          <button class="btn active" data-go="0">Start</button>
+          <button class="btn" data-go="1">Zapisy</button>
+          <button class="btn" data-go="2">O warsztatach</button>
+          <button class="btn" data-go="3">Program</button>
+          <button class="btn" data-go="4">Informacje</button>
+          <button class="btn" data-go="5">Plan</button>
+          <button class="btn" data-go="6">Prowadzący</button>
+          <button class="btn" data-go="7">FAQ</button>
+          <button class="btn" data-go="8">Kontakt</button>
+          <button class="btn" data-go="9">RODO</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="stage" id="stage">
+
+      <!-- SLIDE 0: poster -->
+      <section class="slide active" aria-label="Start">
+        <div class="slideScroll" data-scroll-snap>
+          <div class="posterWrap">
+            <!-- FOREGROUND static smoke (BOTTOM) -->
+            <div class="smokeFront" aria-hidden="true" style="background-image:url('assets/Plakat_26_04.png')"></div>
+
+            <div class="posterGrid">
+              <div class="posterLeft">
+                <h1 class="posterTitle">
+                  <strong>Warsztaty</strong>
+                  <strong>muzyki liturgicznej</strong>
+                </h1>
+
+                <div class="posterQuote">
+                  Niech moja modlitwa<br/>stale wznosi się przed Tobą<br/>jak kadzidło
+                  <small>por. Ps 141,2</small>
+                </div>
+
+                <div class="posterCtaRow">
+                  <button class="btn gold" data-next>Dowiedz się więcej</button>
+                </div>
+              </div>
+
+              <div class="posterRight" aria-label="Monstrancja">
+                <div class="monGlow" aria-hidden="true"></div>
+                <img class="mon" src="assets/Plakat_26_00.png" alt="Monstrancja" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 1: Zapisy -->
+      <section class="slide" aria-label="Zapisy">
+        <div class="slideScroll" data-scroll-snap>
+          <div class="sheet">
+            <h2 class="h2">Zapisy</h2>
+            <p class="lead">
+              Zapisy prowadzone są przez formularz Google. Po wysłaniu zgłoszenia otrzymasz wiadomość z potwierdzeniem.
+              Nie ma terminu końcowego zapisów — prosimy jedynie o wcześniejsze zgłoszenie, jeśli chcesz mieć zapewniony obiad.
+            </p>
+
+            <div class="grid2">
+              <div class="block">
+                <h3>Co podać w zgłoszeniu?</h3>
+                <p>
+                  W formularzu prosimy o: <b>imię i nazwisko</b> oraz <b>kontakt</b> (numer telefonu lub e-mail) — wyłącznie do spraw organizacyjnych.
+                  Jeśli planujesz udział częściowy, dopisz w polu „uwagi”, na które bloki planujesz przyjść.
+                </p>
+              </div>
+
+              <ul class="list" aria-label="Zapisy – ważne">
+                <li class="li"><b>Potwierdzenie</b><span>Po wysłaniu zgłoszenia przyjdzie e-mail z potwierdzeniem.</span></li>
+                <li class="li"><b>Obiad</b><span>Osoby zapisane do <b>27.02</b> mają zapewniony obiad w sobotę.</span></li>
+                <li class="li"><b>Udział częściowy</b><span>Możliwy — prosimy to zaznaczyć w zgłoszeniu.</span></li>
+              </ul>
+            </div>
+
+            <div class="navBtns">
+              <!-- TODO: wstaw swój prawdziwy link do formularza -->
+              <a class="btn gold" href="#" id="signupLink" target="_blank" rel="noopener">Przejdź do formularza zgłoszeń</a>
+              <button class="btn" data-prev>Wróć</button>
+              <button class="btn" data-next>Dalej</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: O warsztatach -->
+      <section class="slide" aria-label="O warsztatach">
+        <div class="slideScroll" data-scroll-snap>
+          <div class="sheet">
+            <h2 class="h2">O warsztatach</h2>
+            <p class="lead">
+              Celem warsztatów jest zachwyt nad Bogiem przez liturgię i jej integralną część, którą jest muzyka.
+              Pracujemy nad śpiewem wielogłosowym (SATB), a zwieńczeniem są Msze Święte, podczas których wykonamy przygotowane utwory.
+              Tematyka: wielkopostna i eucharystyczna; po Mszy przewidziany jest czas adoracji.
+            </p>
+
+            <div class="grid2">
+              <div class="block">
+                <h3>Dla kogo?</h3>
+                <p>
+                  Dla pasjonatów, początkujących i doświadczonych. Warto mieć doświadczenie ze śpiewaniem,
+                  ale można też zacząć bez niego, jeśli ktoś śpiewa ze słuchu i chce się uczyć.
+                  Zapraszamy także młodszych uczestników, jeśli mają doświadczenie śpiewu i zapewnioną opiekę osoby dorosłej.
+                </p>
+              </div>
+
+              <ul class="list" aria-label="Najważniejsze w skrócie">
+                <li class="li"><b>Materiały</b><span>Nuty będą przygotowane na warsztaty — nie trzeba nic drukować.</span></li>
+                <li class="li"><b>Podział na głosy</b><span>SATB — ustalany na miejscu.</span></li>
+                <li class="li"><b>Msza jako zwieńczenie</b><span>Msza Święta to okazja, by wykonać przećwiczone utwory w liturgii.</span></li>
+              </ul>
+            </div>
+
+            <div class="navBtns">
+              <button class="btn" data-prev>Wróć</button>
+              <button class="btn gold" data-next>Dalej</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: Program -->
+      <section class="slide" aria-label="Program">
+        <div class="slideScroll" data-scroll-snap>
+          <div class="sheet">
+            <h2 class="h2">Program</h2>
+            <p class="lead">
+              Układ jest praktyczny: rozśpiewka, praca w głosach, składanie całości i próba generalna.
+              Msza Święta jest zwieńczeniem — śpiewamy przećwiczone utwory w liturgii.
+            </p>
+
+            <div class="grid2">
+              <div class="block">
+                <h3>Sobota • 28.02.2026 (9:30–18:30 + Msza 18:30)</h3>
+                <div class="timeline">
+                  <div class="slot"><time>09:00</time><div><h4>Otwarcie sali</h4><p>Wejście do budynku, zgłoszenia, sprawy organizacyjne.</p></div></div>
+                  <div class="slot"><time>09:30</time><div><h4>Rozśpiewka</h4><p>Oddech, emisja, przygotowanie do wielogłosu.</p></div></div>
+                  <div class="slot"><time>10:15</time><div><h4>Praca w SATB</h4><p>Nauka materiału w sekcjach, intonacja i tekst.</p></div></div>
+                  <div class="slot"><time>11:30</time><div><h4>Przerwa</h4><p>Herbata, ciastka, owoce.</p></div></div>
+                  <div class="slot"><time>13:10</time><div><h4>Obiad</h4><p>Dla zapisanych do 27.02 • prosty posiłek.</p></div></div>
+                  <div class="slot"><time>16:20</time><div><h4>Próba całości</h4><p>Pełne przejścia, wejścia, zakończenia.</p></div></div>
+                  <div class="slot"><time>18:30</time><div><h4>Msza Święta</h4><p>Zwieńczenie dnia • wykonanie przećwiczonych utworów.</p></div></div>
+                </div>
+              </div>
+
+              <div class="block">
+                <h3>Niedziela • 01.03.2026 (9:30–12:00 + Msza 12:00)</h3>
+                <div class="timeline">
+                  <div class="slot"><time>09:30</time><div><h4>Rozśpiewka</h4><p>Reset intonacji, wspólne brzmienie.</p></div></div>
+                  <div class="slot"><time>10:05</time><div><h4>Powtórka repertuaru</h4><p>Dopracowanie szczegółów, stabilność wejść.</p></div></div>
+                  <div class="slot"><time>11:10</time><div><h4>Próba generalna</h4><p>Ostatnie wskazówki, kolejność śpiewów.</p></div></div>
+                  <div class="slot"><time>12:00</time><div><h4>Msza Święta</h4><p>Zwieńczenie warsztatów • po Mszy adoracja.</p></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="navBtns">
+              <button class="btn" data-prev>Wróć</button>
+              <button class="btn gold" data-next>Dalej</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: Informacje -->
+      <section class="slide" aria-label="Informacje">
+        <div class="slideScroll" data-scroll-snap>
+          <div class="sheet">
+            <h2 class="h2">Informacje praktyczne</h2>
+            <p class="lead">
+              Sala znajduje się w budynku parafialnym przy parkingu obok kościoła. Budynek jest otwarty od 9:00.
+              Wejdź przez główne drzwi, idź prosto i skręć w lewo — na końcu jest sala.
+            </p>
+
+            <div class="grid2">
+              <ul class="list" aria-label="Organizacja">
+                <li class="li"><b>Co zabrać</b><span>Wygodne ubranie na próby, coś do picia. Na Mszę — strój schludny.</span></li>
+                <li class="li"><b>Przerwy</b><span>Herbata, ciastka i owoce w przerwach.</span></li>
+                <li class="li"><b>Parking</b><span>Duży parking • wjazd przez dość wąską bramę — prosimy o ostrożność.</span></li>
+                <li class="li"><b>Dostępność</b><span>Wejście bez progów • miejsce dostępne dla osób z niepełnosprawnościami.</span></li>
+              </ul>
+
+              <ul class="list" aria-label="Jedzenie">
+                <li class="li"><b>Obiad w sobotę</b><span>Dla zapisanych do 27.02 • podstawowy posiłek • bez wariantów diet.</span></li>
+                <li class="li"><b>Niedziela</b><span>Brak organizowanego posiłku • będą przekąski i owoce.</span></li>
+                <li class="li"><b>Materiały</b><span>Nuty będą przygotowane; później uczestnicy otrzymają też materiały ułatwiające naukę.</span></li>
+              </ul>
+            </div>
+
+            <div class="navBtns">
+              <button class="btn" data-prev>Wróć</button>
+              <button class="btn gold" data-next>Dalej</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: Plan -->
+      <section class="slide" aria-label="Plan">
+        <div class="slideScroll" data-scroll-snap>
+          <div class="sheet">
+            <h2 class="h2">Plan i orientacja</h2>
+            <p class="lead">
+              Poniżej znajduje się grafika z orientacyjnym planem terenu. Sala warsztatowa jest w budynku parafialnym przy parkingu.
+              Prosimy o ostrożność przy wjeździe — brama wjazdowa jest dość wąska.
+            </p>
+
+            <div class="imgWrap">
+              <img src="assets/Parafia.png" alt="Plan terenu parafii – orientacja" />
+              <div class="caption">
+                Jeśli nie masz pewności, gdzie wejść: wejdź przez główne drzwi budynku parafialnego, idź prosto i skręć w lewo — na końcu jest sala.
+              </div>
+            </div>
+
+            <div class="navBtns">
+              <button class="btn" data-prev>Wróć</button>
+              <button class="btn gold" data-next>Dalej</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: Prowadzący -->
+      <section class="slide" aria-label="Prowadzący">
+        <div class="slideScroll" data-scroll-snap>
+          <div class="sheet">
+            <h2 class="h2">Prowadzący • Paweł Bębenek</h2>
+            <p class="lead">
+              Warsztaty poprowadzi Paweł Bębenek. Będziemy pracować nad wspólnym brzmieniem chóru, precyzją intonacji, rytmem,
+              dykcją oraz muzycznym prowadzeniem frazy — tak, aby śpiew w liturgii był jednocześnie piękny i modlitewny.
+            </p>
+
+            <div class="grid2">
+              <div class="block">
+                <h3>Jak pracujemy?</h3>
+                <p>
+                  Zaczynamy od rozśpiewki i ustawienia głosu, potem przechodzimy do nauki repertuaru w głosach SATB,
+                  a następnie składamy całość. W trakcie łączymy technikę (oddech, emisja, intonacja) z tym,
+                  co najważniejsze: sensem tekstu i liturgicznym charakterem śpiewu.
+                </p>
+              </div>
+
+              <ul class="list" aria-label="Ważne">
+                <li class="li"><b>Wielogłos</b><span>Śpiew wielogłosowy SATB — podział ustalamy na miejscu.</span></li>
+                <li class="li"><b>Repertuar</b><span>Tematyka wielkopostna i eucharystyczna; przygotowany na warsztaty.</span></li>
+                <li class="li"><b>Zwieńczenie</b><span>Msza Święta jest naturalnym finałem — wykonujemy przećwiczone utwory.</span></li>
+              </ul>
+            </div>
+
+            <div class="navBtns">
+              <button class="btn" data-prev>Wróć</button>
+              <button class="btn gold" data-next>Dalej</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: FAQ -->
+      <section class="slide" aria-label="FAQ">
+        <div class="slideScroll" data-scroll-snap>
+          <div class="sheet">
+            <h2 class="h2">FAQ</h2>
+            <p class="lead">Najczęstsze pytania — krótkie odpowiedzi.</p>
+
+            <div style="display:grid; gap:.75rem; margin-top:1.05rem">
+              <details>
+                <summary>Czy trzeba umieć czytać nuty?</summary>
+                <p>Nie. To pomaga, ale nie jest wymagane. Jeśli śpiewasz ze słuchu i chcesz się uczyć, dasz radę.</p>
+              </details>
+
+              <details>
+                <summary>Czy mogę przyjść tylko na część warsztatów?</summary>
+                <p>Tak. Udział częściowy jest możliwy — przyjdź na tyle, na ile możesz.</p>
+              </details>
+
+              <details>
+                <summary>Czy są ograniczenia wiekowe?</summary>
+                <p>Zapraszamy także młodszych, jeśli mają doświadczenie śpiewu i są pod opieką osoby dorosłej.</p>
+              </details>
+
+              <details>
+                <summary>Czy trzeba coś przynieść?</summary>
+                <p>Nuty będą przygotowane. Warto zabrać coś do picia oraz wygodny strój na próby.</p>
+              </details>
+
+              <details>
+                <summary>Co jeśli muszę zrezygnować?</summary>
+                <p>Prosimy o kontakt mailowy — pomoże to w organizacji.</p>
+              </details>
+            </div>
+
+            <div class="navBtns">
+              <button class="btn" data-prev>Wróć</button>
+              <button class="btn gold" data-next>Dalej</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: Kontakt -->
+      <section class="slide" aria-label="Kontakt">
+        <div class="slideScroll" data-scroll-snap>
+          <div class="sheet">
+            <h2 class="h2">Kontakt</h2>
+            <p class="lead">
+              W sprawach organizacyjnych (zapisy, pytania, udział częściowy, odwołania) prosimy o kontakt mailowy.
+            </p>
+
+            <div class="grid2">
+              <div class="block">
+                <h3>Kontakt organizacyjny</h3>
+                <p>
+                  E-mail: <a href="mailto:mleczek_pradnik@outlook.com">mleczek_pradnik@outlook.com</a><br/>
+                  Miejsce: Parafia św. Jana Chrzciciela • ul. Dobrego Pasterza 117 • Kraków
+                </p>
+              </div>
+
+              <ul class="list">
+                <li class="li"><b>W razie rezygnacji</b><span>Prosimy o wiadomość mailową — ułatwi to organizację.</span></li>
+                <li class="li"><b>Wejście do sali</b><span>Główne drzwi → prosto → w lewo → na końcu sala.</span></li>
+                <li class="li"><b>Parking</b><span>Duży parking • wjazd przez wąską bramę — prosimy o ostrożność.</span></li>
+              </ul>
+            </div>
+
+            <div class="navBtns">
+              <button class="btn" data-prev>Wróć</button>
+              <button class="btn gold" data-next>Dalej</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: RODO -->
+      <section class="slide" aria-label="RODO">
+        <div class="slideScroll" data-scroll-snap>
+          <div class="sheet">
+            <h2 class="h2">RODO i zdjęcia</h2>
+            <p class="lead">
+              Zbieramy minimum danych i używamy ich wyłącznie do organizacji warsztatów. Poniższe teksty można wykorzystać w formularzu.
+            </p>
+
+            <div class="grid2">
+              <div class="block">
+                <h3>Klauzula informacyjna</h3>
+                <p>
+                  Administratorem danych osobowych jest Parafia Rzymskokatolicka św. Jana Chrzciciela w Krakowie,
+                  ul. Dobrego Pasterza 117, 31-416 Kraków. Dane podane w zgłoszeniu (imię i nazwisko oraz kontakt:
+                  telefon lub e-mail) przetwarzane są wyłącznie w celu organizacji warsztatów: potwierdzenia zgłoszenia,
+                  przekazania informacji organizacyjnych oraz kontaktu w sprawach dotyczących wydarzenia.
+                  Podanie danych jest dobrowolne, ale niezbędne do udziału.
+                </p>
+              </div>
+
+              <div class="block">
+                <h3>Zgoda na zdjęcia i nagrania (tekst do checkboxa)</h3>
+                <p>
+                  „Wyrażam zgodę na nieodpłatne utrwalanie i rozpowszechnianie mojego wizerunku w postaci zdjęć i krótkich nagrań
+                  wykonanych podczas warsztatów (dokumentacja wydarzenia), publikowanych na kanałach parafialnych/organizatora.
+                  Zgoda jest dobrowolna i może zostać cofnięta poprzez kontakt mailowy.”
+                </p>
+              </div>
+            </div>
+
+            <div class="navBtns">
+              <button class="btn" data-prev>Wróć</button>
+              <button class="btn gold" data-go="0">Na początek</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    // ===== Mobile menu: show/hide only after clicking Menu =====
+    const menuBtn = document.getElementById("menuBtn");
+    const mobilePanel = document.getElementById("mobilePanel");
+
+    function closeMobileMenu(){
+      if(!mobilePanel || !menuBtn) return;
+      mobilePanel.hidden = true;
+      menuBtn.setAttribute("aria-expanded","false");
+    }
+    function toggleMobileMenu(){
+      if(!mobilePanel || !menuBtn) return;
+      const open = menuBtn.getAttribute("aria-expanded") === "true";
+      menuBtn.setAttribute("aria-expanded", String(!open));
+      mobilePanel.hidden = open;
+    }
+
+    if(menuBtn && mobilePanel){
+      closeMobileMenu();
+      menuBtn.addEventListener("click", toggleMobileMenu);
+    }
+
+    // close menu when clicking outside (mobile)
+    document.addEventListener("click", (e) => {
+      if(!menuBtn || !mobilePanel) return;
+      const isMobile = window.matchMedia("(max-width: 55rem)").matches;
+      if(!isMobile) return;
+      const insideHeader = e.target.closest("header");
+      if(!insideHeader) closeMobileMenu();
+    });
+
+    // ===== Slides controller =====
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const goButtons = Array.from(document.querySelectorAll("[data-go]"));
+    const nextButtons = Array.from(document.querySelectorAll("[data-next]"));
+    const prevButtons = Array.from(document.querySelectorAll("[data-prev]"));
+    const scrollViews = Array.from(document.querySelectorAll(".slideScroll"));
+
+    let idx = 0;
+    let lock = false;
+    const LOCK_MS = 700;
+
+    function setActive(i, opts={resetScroll:true}){
+      const next = Math.max(0, Math.min(slides.length - 1, i));
+      if(next === idx) return;
+
+      idx = next;
+      slides.forEach((s, k) => s.classList.toggle("active", k === idx));
+
+      // update nav active state (desktop + mobile)
+      document.querySelectorAll("[data-go]").forEach(b => {
+        b.classList.toggle("active", Number(b.getAttribute("data-go")) === idx);
+      });
+
+      // close mobile menu
+      closeMobileMenu();
+
+      // reset scroll for new slide
+      if(opts.resetScroll){
+        const sv = scrollViews[idx];
+        if(sv) sv.scrollTo({top:0, behavior:"auto"});
+      }
+
+      lock = true;
+      setTimeout(() => lock = false, LOCK_MS);
+    }
+
+    // menu navigation
+    goButtons.forEach(b => b.addEventListener("click", () => setActive(Number(b.getAttribute("data-go")))));
+    nextButtons.forEach(b => b.addEventListener("click", () => setActive(idx + 1)));
+    prevButtons.forEach(b => b.addEventListener("click", () => setActive(idx - 1)));
+
+    // keyboard
+    window.addEventListener("keydown", (e) => {
+      if(lock) return;
+      if(e.key === "ArrowRight" || e.key === "PageDown") setActive(idx + 1);
+      if(e.key === "ArrowLeft" || e.key === "PageUp") setActive(idx - 1);
+      if(e.key === "Home") setActive(0);
+    });
+
+    // ===== Scroll at bottom/top => next/prev slide =====
+    function nearBottom(el){ return (el.scrollTop + el.clientHeight) >= (el.scrollHeight - 2); }
+    function nearTop(el){ return el.scrollTop <= 0; }
+
+    scrollViews.forEach((sv) => {
+      sv.addEventListener("wheel", (e) => {
+        if(lock) return;
+        const activeSv = scrollViews[idx];
+        if(sv !== activeSv) return;
+
+        const dy = e.deltaY;
+
+        if(dy > 0 && nearBottom(activeSv)){
+          e.preventDefault();
+          setActive(idx + 1);
+        }else if(dy < 0 && nearTop(activeSv)){
+          e.preventDefault();
+          setActive(idx - 1);
+        }
+      }, {passive:false});
+    });
+
+    // touch overscroll (mobile)
+    let touchStartY = 0;
+    scrollViews.forEach((sv) => {
+      sv.addEventListener("touchstart", (e) => {
+        touchStartY = e.touches?.[0]?.clientY ?? 0;
+      }, {passive:true});
+
+      sv.addEventListener("touchmove", (e) => {
+        if(lock) return;
+        const activeSv = scrollViews[idx];
+        if(sv !== activeSv) return;
+
+        const y = e.touches?.[0]?.clientY ?? 0;
+        const dy = touchStartY - y;
+
+        if(dy > 8 && nearBottom(activeSv)) setActive(idx + 1);
+        if(dy < -8 && nearTop(activeSv)) setActive(idx - 1);
+      }, {passive:true});
+    });
+
+    // init
+    setActive(0, {resetScroll:false});
+  </script>
+</body>
 </html>
