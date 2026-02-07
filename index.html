@@ -165,7 +165,7 @@
       height: 120vh;
       pointer-events:none;
       z-index:6;                  /* above content */
-      opacity:.28;
+      opacity:1;
       mix-blend-mode: screen;
       background-repeat:no-repeat;
       background-size: 140vmax auto;
@@ -218,6 +218,7 @@
       -webkit-overflow-scrolling: touch;
       padding: var(--padY) 0;
       scroll-behavior:smooth;
+	  padding-top: 4rem;
     }
     .slideScroll::-webkit-scrollbar{width:.625rem}
     .slideScroll::-webkit-scrollbar-thumb{background: rgba(255,255,255,.10); border-radius:999px}
@@ -386,7 +387,7 @@
       content:"";
       position:absolute; left:0; right:0; bottom:-.1rem;
       height: 28%;
-      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.92) 40%, #ffffff 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.7) 40%, #ffffff 100%);
       pointer-events:none;
       z-index:4;
     }
@@ -404,13 +405,18 @@
       .posterGrid{grid-template-columns: 1fr; gap: 1rem}
       .posterWrap::after{height: 24%}
     }
-
+	
+	.mobilePanel[hidden]{
+	  display:none !important;
+	}
+	
     .posterLeft{
       display:flex;
       flex-direction:column;
       justify-content:flex-start;
       padding-top: .25rem;
       z-index:3;
+	  padding-left: 15%;
     }
     .posterTitle{
       margin:0;
@@ -476,7 +482,7 @@
     }
 
     .posterCtaRow{
-      margin-top:auto;
+      margin-top:5rem;
       display:flex;
       gap:.75rem;
       flex-wrap:wrap;
@@ -616,14 +622,14 @@
 
               <ul class="list" aria-label="Zapisy – ważne">
                 <li class="li"><b>Potwierdzenie</b><span>Po wysłaniu zgłoszenia przyjdzie e-mail z potwierdzeniem.</span></li>
-                <li class="li"><b>Obiad</b><span>Osoby zapisane do <b>27.02</b> mają zapewniony obiad w sobotę.</span></li>
+                <li class="li"><b>Obiad</b><span>Osoby zapisane do <b>24.02</b> mają zapewniony obiad w sobotę.</span></li>
                 <li class="li"><b>Udział częściowy</b><span>Możliwy — prosimy to zaznaczyć w zgłoszeniu.</span></li>
               </ul>
             </div>
 
             <div class="navBtns">
               <!-- TODO: wstaw swój prawdziwy link do formularza -->
-              <a class="btn gold" href="#" id="signupLink" target="_blank" rel="noopener">Przejdź do formularza zgłoszeń</a>
+              <a class="btn gold" href="https://forms.gle/cnQXzSToiUKvgkUD6" id="signupLink" target="_blank" rel="noopener">Przejdź do formularza zgłoszeń</a>
               <button class="btn" data-prev>Wróć</button>
               <button class="btn" data-next>Dalej</button>
             </div>
@@ -685,7 +691,7 @@
                   <div class="slot"><time>09:30</time><div><h4>Rozśpiewka</h4><p>Oddech, emisja, przygotowanie do wielogłosu.</p></div></div>
                   <div class="slot"><time>10:15</time><div><h4>Praca w SATB</h4><p>Nauka materiału w sekcjach, intonacja i tekst.</p></div></div>
                   <div class="slot"><time>11:30</time><div><h4>Przerwa</h4><p>Herbata, ciastka, owoce.</p></div></div>
-                  <div class="slot"><time>13:10</time><div><h4>Obiad</h4><p>Dla zapisanych do 27.02 • prosty posiłek.</p></div></div>
+                  <div class="slot"><time>13:10</time><div><h4>Obiad</h4><p>Dla zapisanych do 24.02 • prosty posiłek.</p></div></div>
                   <div class="slot"><time>16:20</time><div><h4>Próba całości</h4><p>Pełne przejścia, wejścia, zakończenia.</p></div></div>
                   <div class="slot"><time>18:30</time><div><h4>Msza Święta</h4><p>Zwieńczenie dnia • wykonanie przećwiczonych utworów.</p></div></div>
                 </div>
@@ -694,10 +700,10 @@
               <div class="block">
                 <h3>Niedziela • 01.03.2026 (9:30–12:00 + Msza 12:00)</h3>
                 <div class="timeline">
-                  <div class="slot"><time>09:30</time><div><h4>Rozśpiewka</h4><p>Reset intonacji, wspólne brzmienie.</p></div></div>
-                  <div class="slot"><time>10:05</time><div><h4>Powtórka repertuaru</h4><p>Dopracowanie szczegółów, stabilność wejść.</p></div></div>
-                  <div class="slot"><time>11:10</time><div><h4>Próba generalna</h4><p>Ostatnie wskazówki, kolejność śpiewów.</p></div></div>
-                  <div class="slot"><time>12:00</time><div><h4>Msza Święta</h4><p>Zwieńczenie warsztatów • po Mszy adoracja.</p></div></div>
+                  <div class="slot"><time>09:30</time><div><h4>Rozśpiewka</h4><p>Wprowadzenie i przygotowanie do prób.</p></div></div>
+                  <div class="slot"><time>10:05</time><div><h4>Powtórka repertuaru</h4><p>Praca nad utworami liturgicznymi.</p></div></div>
+                  <div class="slot"><time>11:10</time><div><h4>Próba generalna</h4><p>Ostatnie przygotowanie przed Mszą.</p></div></div>
+                  <div class="slot"><time>12:00</time><div><h4>Msza Święta</h4><p>Wykonanie przygotowanych utworów. Po Mszy krótka adoracja.</p></div></div>
                 </div>
               </div>
             </div>
@@ -729,9 +735,9 @@
               </ul>
 
               <ul class="list" aria-label="Jedzenie">
-                <li class="li"><b>Obiad w sobotę</b><span>Dla zapisanych do 27.02 • podstawowy posiłek • bez wariantów diet.</span></li>
+                <li class="li"><b>Obiad w sobotę</b><span>Dla zapisanych do 24.02 • podstawowy posiłek • bez wariantów diet.</span></li>
                 <li class="li"><b>Niedziela</b><span>Brak organizowanego posiłku • będą przekąski i owoce.</span></li>
-                <li class="li"><b>Materiały</b><span>Nuty będą przygotowane; później uczestnicy otrzymają też materiały ułatwiające naukę.</span></li>
+                <li class="li"><b>Materiały</b><span>Nuty będą przygotowane; planowane są też materiały przygotowujące śpiew, które będą opublikowane w późniejszym terminie.</span></li>
               </ul>
             </div>
 
@@ -774,24 +780,28 @@
           <div class="sheet">
             <h2 class="h2">Prowadzący • Paweł Bębenek</h2>
             <p class="lead">
-              Warsztaty poprowadzi Paweł Bębenek. Będziemy pracować nad wspólnym brzmieniem chóru, precyzją intonacji, rytmem,
-              dykcją oraz muzycznym prowadzeniem frazy — tak, aby śpiew w liturgii był jednocześnie piękny i modlitewny.
+              Paweł Bębenek to znany i ceniony polski dyrygent, kompozytor i wokalista, którego twórczość łączy głęboką duchowość z bogatą tradycją muzyki liturgicznej.
+			  Jest absolwentem podyplomowych studiów z chóremistrzostwa i emisji głosu oraz członkiem Stowarzyszenia Polskich Muzyków Kościelnych,
+			  a jego doświadczenie obejmuje dziesięciolecia pracy z chórami i scholami w Polsce i za granicą. Jego muzyka — zarówno kompozycje, jak i aranżacje —
+			  była wykonywana przez chóry i zespoły w wielu krajach, od Polski przez Europę aż po Stany Zjednoczone.
+			  Bębenek jest również autorem licznych nagrań i wydawnictw nutowych, które znalazły szerokie zastosowanie w środowisku muzyki sakralnej.
+		  
             </p>
 
             <div class="grid2">
               <div class="block">
-                <h3>Jak pracujemy?</h3>
+                <h3>Dlaczego warto przyjść?</h3>
                 <p>
-                  Zaczynamy od rozśpiewki i ustawienia głosu, potem przechodzimy do nauki repertuaru w głosach SATB,
-                  a następnie składamy całość. W trakcie łączymy technikę (oddech, emisja, intonacja) z tym,
-                  co najważniejsze: sensem tekstu i liturgicznym charakterem śpiewu.
+		Jako prowadzący warsztaty liturgiczno-muzyczne, Paweł Bębenek inspiruje uczestników do odkrywania piękna śpiewu w kontekście liturgii.
+		Jego podejście łączy solidne umiejętności techniczne z troską o duchowe przeżycie muzyczne — tak, aby każdy uczestnik mógł wzrastać zarówno artystycznie,
+		jak i w modlitwie przez muzykę.
                 </p>
               </div>
 
               <ul class="list" aria-label="Ważne">
-                <li class="li"><b>Wielogłos</b><span>Śpiew wielogłosowy SATB — podział ustalamy na miejscu.</span></li>
-                <li class="li"><b>Repertuar</b><span>Tematyka wielkopostna i eucharystyczna; przygotowany na warsztaty.</span></li>
-                <li class="li"><b>Zwieńczenie</b><span>Msza Święta jest naturalnym finałem — wykonujemy przećwiczone utwory.</span></li>
+                <li class="li"><b>Doświadczenie międzynarodowe</b><span>Prowadził chóralne warsztaty muzyczne w wielu krajach Europy i poza nią.</span></li>
+                <li class="li"><b>Bogaty dorobek kompozytorski</b><span>Jego utwory i aranżacje znajdują się w śpiewnikach i repertuarach scholi oraz chórów.</span></li>
+                <li class="li"><b>Muzyka sakralna</b><span>Skupiona na pięknie liturgii, łącząca tradycję z głębokim przeżyciem wiary.</span></li>
               </ul>
             </div>
 
