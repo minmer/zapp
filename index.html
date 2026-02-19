@@ -1179,9 +1179,9 @@
 	  // ===== Voice availability (edit counts here) =====
 const voiceModel = [
   { key:"S", name:"Sopran", count:26, cap:30 },
-  { key:"A", name:"Alt",    count:18, cap:30 },
-  { key:"T", name:"Tenor",  count:4,  cap:30 },
-  { key:"B", name:"Bas",    count:5,  cap:30 },
+  { key:"A", name:"Alt",    count:22, cap:30 },
+  { key:"T", name:"Tenor",  count:6,  cap:30 },
+  { key:"B", name:"Bas",    count:7,  cap:30 },
 ];
 
 function renderVoices(){
@@ -1201,7 +1201,7 @@ function renderVoices(){
         <div class="voiceName">${v.key} • ${v.name}</div>
         <div class="voiceMeta">${v.count}/${v.cap}</div>
       </div>
-      <div class="voiceRemaining">Pozostało: <b>${remaining}</b> miejsc</div>
+      <div class="voiceRemaining">Pozostało: ok. <b>${remaining}</b> miejsc</div>
       <div class="barWrap" aria-label="Wykres obsady">
         <div class="barFill" style="height:${pct}%"></div>
       </div>
