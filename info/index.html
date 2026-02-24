@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#0a2a57"/>
+  <title>Materiały dla uczestników • Warsztaty Muzyki Liturgicznej</title>
+
+  <style>
+    :root{
+      --bg:#071c3c;
+      --bg2:#061631;
+      --txt:#eaf1ff;
+      --muted: rgba(234,241,255,.78);
+      --muted2: rgba(234,241,255,.58);
+      --line: rgba(234,241,255,.14);
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.09);
+      --gold:#f1c86d;
+      --gold2:#d8a73a;
+      --max: 72rem;
+      --r: 1.25rem;
+      --r2: 1rem;
+      --shadow: 0 18px 55px rgba(0,0,0,.38);
+      --ease: cubic-bezier(.2,.85,.2,1);
+    }
+
+    *{box-sizing:border-box}
+    html{font-size: clamp(16px, 1.0vw + 12px, 19px);}
+    body{
+      margin:0;
+      font-family: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, Arial, sans-serif;
+      color: var(--txt);
+      background:
+        radial-gradient(70rem 45rem at 22% 10%, rgba(135,171,255,.18), rgba(135,171,255,0) 60%),
+        radial-gradient(54rem 38rem at 78% 22%, rgba(241,200,109,.10), rgba(241,200,109,0) 58%),
+        linear-gradient(180deg, var(--bg), var(--bg2) 70%);
+      min-height:100vh;
+      overflow-x:hidden;
+      line-height:1.55;
+    }
+
+    a{color:inherit; text-decoration:none}
+    .container{width:min(var(--max), calc(100% - 2.5rem)); margin:0 auto;}
+
+    header{
+      position:sticky; top:0; z-index:50;
+      background: rgba(7,28,60,.88);
+      border-bottom:1px solid rgba(234,241,255,.12);
+      backdrop-filter: blur(.65rem);
+      -webkit-backdrop-filter: blur(.65rem);
+    }
+    .top{
+      display:flex; align-items:center; justify-content:space-between; gap:1rem;
+      padding: .9rem 0;
+    }
+    .brand{display:flex; gap:.75rem; align-items:center; min-width: 14rem;}
+    .mark{
+      width:2.35rem;height:2.35rem;border-radius:.9rem;
+      border:1px solid rgba(234,241,255,.16);
+      background:
+        radial-gradient(circle at 30% 35%, rgba(241,200,109,.28), rgba(241,200,109,0) 55%),
+        linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,0));
+      box-shadow: 0 .75rem 1.875rem rgba(0,0,0,.25);
+      flex: 0 0 auto;
+    }
+    .brandText{line-height:1.1}
+    .brandText strong{display:block; font-size:.95rem}
+    .brandText span{display:block; color: var(--muted2); font-size:.8rem}
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+      padding: .7rem .9rem; border-radius: 1rem;
+      border:1px solid rgba(234,241,255,.14);
+      background: rgba(255,255,255,.04);
+      color: var(--txt);
+      font-weight: 650;
+      cursor:pointer;
+      text-decoration:none;
+      transition: transform .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease);
+      white-space:nowrap;
+    }
+    .btn:hover{transform: translateY(-.06rem); background: rgba(255,255,255,.06); border-color: rgba(234,241,255,.20);}
+    .btn.gold{
+      color: rgba(6,22,49,.95);
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border-color: rgba(241,200,109,.35);
+      box-shadow: 0 .75rem 1.875rem rgba(241,200,109,.12);
+      font-weight: 800;
+    }
+
+    main{padding: 1.2rem 0 2.2rem;}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 1rem;
+      align-items:start;
+    }
+    @media (max-width: 60rem){ .grid{grid-template-columns: 1fr;} }
+
+    .card{
+      border:1px solid rgba(234,241,255,.12);
+      background: rgba(255,255,255,.04);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      padding: 1.05rem;
+      overflow:hidden;
+      position:relative;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:-55%;
+      background: radial-gradient(circle at 20% 40%, rgba(241,200,109,.12), rgba(241,200,109,0) 60%);
+      opacity:.22;
+      pointer-events:none;
+    }
+    .card > *{position:relative; z-index:1;}
+
+    h1{margin:0 0 .35rem; font-size:1.7rem; letter-spacing:-.01em;}
+    h2{margin:0 0 .5rem; font-size:1.25rem;}
+    h3{margin:0 0 .45rem; font-size:1.05rem;}
+    p{margin:.35rem 0; color: var(--muted); line-height:1.7;}
+    .small{color: var(--muted2); font-size:.92rem; line-height:1.6;}
+
+    .hr{height:1px; background: rgba(234,241,255,.10); margin: .9rem 0;}
+
+    .list{margin:.6rem 0 0; padding-left: 1.1rem; color: var(--muted); line-height:1.7;}
+    .note{
+      border:1px solid rgba(234,241,255,.12);
+      background: rgba(6,22,49,.22);
+      border-radius: var(--r2);
+      padding: .85rem;
+      margin-top:.75rem;
+    }
+    .note strong{color: rgba(234,241,255,.92);}
+    .pillRow{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.75rem;}
+    .pill{
+      border:1px solid rgba(234,241,255,.14);
+      background: rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:.45rem .6rem;
+      font-size:.88rem;
+      color: var(--muted);
+    }
+
+    /* ===== YouTube ===== */
+    .yt{margin-top:.75rem;}
+    .ytBox{
+      border:1px solid rgba(234,241,255,.12);
+      border-radius: var(--r2);
+      overflow:hidden;
+      background: rgba(0,0,0,.18);
+      aspect-ratio: 16 / 9;
+    }
+    iframe{width:100%; height:100%; border:0; display:block;}
+
+    /* ===== Mixer ===== */
+    .mixerTop{
+      display:flex; flex-wrap:wrap; gap:.6rem;
+      align-items:center; justify-content:space-between;
+      margin-bottom:.75rem;
+    }
+    .select{
+      width:100%;
+      padding:.7rem .8rem;
+      border-radius: .95rem;
+      border:1px solid rgba(234,241,255,.14);
+      background: rgba(6,22,49,.22);
+      color: var(--txt);
+      outline:none;
+    }
+    .controls{
+      display:flex; flex-wrap:wrap; gap:.6rem; align-items:center;
+      margin-top:.75rem;
+    }
+    .row{
+      display:grid;
+      grid-template-columns: 3.2rem 1fr 4.4rem;
+      gap:.65rem;
+      align-items:center;
+      padding:.55rem .6rem;
+      border:1px solid rgba(234,241,255,.10);
+      background: rgba(6,22,49,.18);
+      border-radius: .95rem;
+      margin-top:.55rem;
+    }
+    .row b{letter-spacing:.06em;}
+    input[type="range"]{width:100%;}
+    .miniBtns{display:flex; gap:.45rem; justify-content:flex-end;}
+    .mini{
+      padding:.38rem .55rem;
+      border-radius:.8rem;
+      border:1px solid rgba(234,241,255,.14);
+      background: rgba(255,255,255,.04);
+      color: var(--txt);
+      cursor:pointer;
+      font-weight:650;
+      font-size:.85rem;
+    }
+    .mini.active{
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border-color: rgba(241,200,109,.35);
+      color: rgba(6,22,49,.95);
+    }
+    .status{
+      margin-top:.6rem;
+      color: var(--muted2);
+      font-size:.9rem;
+      line-height:1.6;
+    }
+    .progress{
+      width:100%;
+      margin-top:.6rem;
+    }
+    .songMeta{
+      display:flex; flex-wrap:wrap; gap:.5rem;
+      margin-top:.55rem;
+      color: var(--muted2);
+      font-size:.9rem;
+    }
+
+    /* small helper */
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:.86rem;
+      padding:.2rem .35rem;
+      border:1px solid rgba(234,241,255,.18);
+      border-radius:.55rem;
+      background: rgba(255,255,255,.04);
+      color: rgba(234,241,255,.85);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="top">
+        <div class="brand">
+          <div class="mark" aria-hidden="true"></div>
+          <div class="brandText">
+            <strong>Materiały dla uczestników</strong>
+            <span>Warsztaty Muzyki Liturgicznej • Kraków</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap; justify-content:flex-end;">
+          <a class="btn" href="../" title="Powrót do strony głównej">Strona główna</a>
+          <a class="btn gold" id="downloadSongbook" href="#" download>Pobierz PDF</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <!-- LEFT: info + playlist -->
+      <section class="card">
+        <h1>Ważne informacje dla uczestników</h1>
+        <p>
+          Ta strona jest przygotowana dla osób zapisanych na warsztaty. Znajdziesz tutaj śpiewnik (PDF),
+          nagrania do osłuchania oraz praktyczne informacje organizacyjne.
+        </p>
+
+        <div class="note">
+          <strong>Śpiewnik:</strong> każdy uczestnik otrzyma śpiewnik <strong>w wersji drukowanej</strong>.
+          Poniższy PDF służy do wcześniejszego zapoznania się z materiałem.
+        </div>
+
+        <h2 style="margin-top:1rem;">Organizacja dnia (ważne)</h2>
+        <ul class="list" id="practicalList"></ul>
+
+        <div class="note">
+          <strong>Uwaga organizacyjna:</strong> będzie nas ok. <strong>100 osób</strong>.
+          Bardzo prosimy, aby na początku podejść do osób zapisujących (lista będzie podzielona na:
+          <strong>soprany</strong>, <strong>alty</strong> oraz <strong>głosy męskie</strong>) — to znacznie usprawni start.
+          Wejście do budynku od <strong>9:00</strong>, żeby o <strong>9:30</strong> zakończyć sprawy organizacyjne i rozpocząć warsztaty.
+        </div>
+
+        <h2 style="margin-top:1rem;">Charakter spotkania</h2>
+        <p>
+          Warsztaty będą miały charakter rekolekcyjny. Zwieńczeniem jest Msza Święta i adoracja.
+          W czasie wieczornej adoracji będzie możliwość skorzystania ze spowiedzi (udział dobrowolny).
+        </p>
+        <div class="note">
+          <strong>Zaproszenie:</strong> na Mszę wieczorną i adorację zapraszamy także osoby,
+          które nie uczestniczą w warsztatach.
+        </div>
+
+        <h2 style="margin-top:1rem;">Koszty i dobrowolne ofiary</h2>
+        <p>
+          Kilka osób pytało o koszty: planowany koszt warsztatów to ok. <strong>45 zł / osoba</strong>
+          (ok. 32 zł organizacja, 7 zł jedzenie, 6 zł materiały).
+          <strong>Udział w kosztach jest dobrowolny</strong> — warsztaty są sfinansowane dzięki wsparciu sponsora.
+          Ewentualne ofiary będą przeznaczone na organizację kolejnych dzieł w przyszłości.
+        </p>
+
+        <h2 style="margin-top:1rem;">Dojazd i parking</h2>
+        <p>
+          Parking jest obszerny, ale nie ma wyznaczonych miejsc. Prosimy o parkowanie tak,
+          aby było miejsce dla innych oraz możliwość swobodnego wyjazdu.
+          <strong>Prosimy nie parkować na trawnikach</strong>. Zachęcamy do korzystania z komunikacji miejskiej.
+        </p>
+        <div class="note">
+          <strong>Wjazd:</strong> prosimy o ostrożność przy wjeździe przez bramę (jest dość wąska).
+        </div>
+
+        <h2 style="margin-top:1rem;">Nagrania (YouTube)</h2>
+        <p class="small">
+          Zachęcamy (bez obowiązku), aby przed warsztatami skorzystać z nagrań i osłuchać się z utworami.
+          To ułatwia wspólną pracę od pierwszych minut.
+        </p>
+
+        <div class="yt">
+          <div class="ytBox" id="ytBox"></div>
+          <p class="status" id="ytNote"></p>
+        </div>
+
+        <div class="hr"></div>
+        <p class="small">
+          Wskazówka: jeśli coś się nie ładuje, sprawdź czy link jest poprawny oraz czy pliki są na hostingu w tym samym folderze.
+        </p>
+      </section>
+
+      <!-- RIGHT: mixer -->
+      <section class="card">
+        <div class="mixerTop">
+          <div>
+            <h2 style="margin:0;">Mikser utworów (SATB)</h2>
+            <p class="small" style="margin:.35rem 0 0;">
+              Wybierz utwór i ustaw proporcje głosów. Możesz użyć „Solo” albo „Mute”.
+            </p>
+          </div>
+          <div class="controls">
+            <button class="btn gold" id="btnPlay">Odtwórz</button>
+            <button class="btn" id="btnPause">Pauza</button>
+            <button class="btn" id="btnStop">Stop</button>
+          </div>
+        </div>
+
+        <label class="small" for="songSelect">Utwór:</label>
+        <select class="select" id="songSelect"></select>
+
+        <div class="songMeta" id="songMeta"></div>
+
+        <input class="progress" id="seek" type="range" min="0" max="1000" value="0" />
+
+        <div class="row" style="margin-top:.75rem;">
+          <b>MASTER</b>
+          <input id="master" type="range" min="0" max="1" step="0.01" value="0.90" />
+          <div class="miniBtns">
+            <button class="mini" id="allReset">Reset</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <b>S</b>
+          <input data-voice="S" class="vol" type="range" min="0" max="1" step="0.01" value="0.85" />
+          <div class="miniBtns">
+            <button class="mini mute" data-voice="S">Mute</button>
+            <button class="mini solo" data-voice="S">Solo</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <b>A</b>
+          <input data-voice="A" class="vol" type="range" min="0" max="1" step="0.01" value="0.85" />
+          <div class="miniBtns">
+            <button class="mini mute" data-voice="A">Mute</button>
+            <button class="mini solo" data-voice="A">Solo</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <b>T</b>
+          <input data-voice="T" class="vol" type="range" min="0" max="1" step="0.01" value="0.95" />
+          <div class="miniBtns">
+            <button class="mini mute" data-voice="T">Mute</button>
+            <button class="mini solo" data-voice="T">Solo</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <b>B</b>
+          <input data-voice="B" class="vol" type="range" min="0" max="1" step="0.01" value="0.95" />
+          <div class="miniBtns">
+            <button class="mini mute" data-voice="B">Mute</button>
+            <button class="mini solo" data-voice="B">Solo</button>
+          </div>
+        </div>
+
+        <p class="status" id="status">
+          Jeśli odtwarzanie nie startuje na telefonie, kliknij najpierw „Odtwórz” (wymóg przeglądarek mobilnych).
+        </p>
+
+        <div class="note">
+          <strong>Podpowiedź:</strong> możesz przygotować się wybierając swój głos (np. Tenor) i użyć <span class="kbd">Solo</span>.
+          Potem stopniowo dodawaj pozostałe głosy, żeby usłyszeć proporcje.
+        </div>
+
+        <div class="note">
+          <strong>Zachęta:</strong> warto omadlać czas warsztatów i intencje uczestników — aby śpiew prowadził do modlitwy.
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // =========================
+    // CONFIG (edytuj tylko to)
+    // =========================
+
+    // 1) PDF śpiewnika (w tym samym folderze)
+    const SONGBOOK_URL = "./songbook.pdf";
+
+    // 2) YouTube playlist ID (wstaw np. "PLxxxx...")
+    const YOUTUBE_PLAYLIST_ID = "PLI8T5QBcKRwMwW7M4QeUHyPCPRQHj56V0"; // <- UZUPEŁNIJ
+
+    // 3) Utwory – prosta lista: tytuł + slug
+    //    Ścieżki budują się automatycznie:
+    //    ./audio/<slug>/S.mp3, ./audio/<slug>/A.mp3, ./audio/<slug>/T.mp3, ./audio/<slug>/B.mp3
+    //    Przy 20 utworach dopisujesz tylko 20 linijek.
+    const SONGS = [
+      { title: "Tak bowiem Bóg", slug: "0" },
+      { title: "Błogosławcie Pana", slug: "1" },
+      // { title: "Utwór 3 — ...", slug: "utwor-3" },
+      // ...
+    ];
+
+    // 4) Ważne informacje (lista punktów)
+    const PRACTICAL_INFO = [
+      "Wejście do budynku od 9:00, aby o 9:30 zakończyć sprawy organizacyjne i rozpocząć warsztaty.",
+      "Na początku prosimy zgłosić się do osób zapisujących (oddzielne listy: soprany, alty i głosy męskie).",
+      "W przerwach będzie możliwość przygotowania herbaty oraz drobny poczęstunek.",
+      "Warsztaty mają charakter rekolekcji; wieczorem adoracja i możliwość spowiedzi (dobrowolnie).",
+      "Na Mszę wieczorną i adorację zapraszamy również osoby spoza warsztatów.",
+      "Zachęcamy (bez obowiązku) do wcześniejszego odsłuchania nagrań, aby osłuchać się z repertuarem.",
+      "Parking jest duży, ale bez wyznaczonych miejsc – prosimy parkować tak, by inni mogli wjechać i wyjechać.",
+      "Prosimy nie parkować na trawnikach; zachęcamy do komunikacji miejskiej; ostrożnie przy wjeździe przez bramę."
+    ];
+
+    // =========================
+    // UI: PDF + lista + YouTube
+    // =========================
+    document.getElementById("downloadSongbook").href = SONGBOOK_URL;
+
+    const list = document.getElementById("practicalList");
+    PRACTICAL_INFO.forEach(t => {
+      const li = document.createElement("li");
+      li.textContent = t;
+      list.appendChild(li);
+    });
+
+    const ytBox = document.getElementById("ytBox");
+    const ytNote = document.getElementById("ytNote");
+    if(YOUTUBE_PLAYLIST_ID){
+      ytBox.innerHTML = `
+        <iframe
+          src="https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(YOUTUBE_PLAYLIST_ID)}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>`;
+      ytNote.textContent = "Playlista: możesz odsłuchać nagrania przed warsztatami (zachęta, bez obowiązku).";
+    }else{
+      ytNote.textContent = "Uzupełnij YOUTUBE_PLAYLIST_ID w konfiguracji, aby wyświetlić playlistę.";
+    }
+
+    // =========================
+    // Mikser: Web Audio
+    // =========================
+    let ctx = null;
+    let masterGain = null;
+    let buffers = null; // {S,A,T,B}
+    let sources = null; // {S,A,T,B}
+    let gains = null;   // {S,A,T,B}
+    let isPlaying = false;
+    let startTime = 0;
+    let pauseOffset = 0;
+    let duration = 0;
+
+    const status = document.getElementById("status");
+    const seek = document.getElementById("seek");
+    const songMeta = document.getElementById("songMeta");
+
+    const voiceSliders = Array.from(document.querySelectorAll(".vol"));
+    const muteBtns = Array.from(document.querySelectorAll(".mute"));
+    const soloBtns = Array.from(document.querySelectorAll(".solo"));
+    const masterSlider = document.getElementById("master");
+
+    const state = {
+      mute: {S:false, A:false, T:false, B:false},
+      solo: {S:false, A:false, T:false, B:false},
+      vol:  {S:0.85, A:0.85, T:0.95, B:0.95},
+      master: 0.90
+    };
+
+    function buildStemPath(slug, voice){
+      return `./audio/${slug}/${voice}.mp3`;
+    }
+
+    function ensureCtx(){
+      if(ctx) return;
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = ctx.createGain();
+      masterGain.gain.value = state.master;
+      masterGain.connect(ctx.destination);
+    }
+
+    async function fetchBuffer(url){
+      const res = await fetch(url, {cache:"no-store"});
+      if(!res.ok) throw new Error(`Nie można pobrać: ${url}`);
+      const arr = await res.arrayBuffer();
+      return await ctx.decodeAudioData(arr);
+    }
+
+    async function loadSong(index){
+      ensureCtx();
+      stopAll(true);
+
+      const s = SONGS[index];
+      if(!s) return;
+
+      const stems = {
+        S: buildStemPath(s.slug, "S"),
+        A: buildStemPath(s.slug, "A"),
+        T: buildStemPath(s.slug, "T"),
+        B: buildStemPath(s.slug, "B")
+      };
+
+      songMeta.innerHTML = `
+        <span>Slug: <b style="color:rgba(241,200,109,.95)">${s.slug}</b></span>
+        <span>Pliki: audio/${s.slug}/(S,A,T,B).mp3</span>
+      `;
+
+      status.textContent = "Ładowanie utworu…";
+      buffers = {
+        S: await fetchBuffer(stems.S),
+        A: await fetchBuffer(stems.A),
+        T: await fetchBuffer(stems.T),
+        B: await fetchBuffer(stems.B)
+      };
+
+      duration = Math.max(buffers.S.duration, buffers.A.duration, buffers.T.duration, buffers.B.duration);
+      pauseOffset = 0;
+      seek.value = 0;
+      status.textContent = "Gotowe. Ustaw proporcje głosów i kliknij „Odtwórz”.";
+    }
+
+    function makeGraph(offsetSec){
+      sources = {};
+      gains = {};
+
+      ["S","A","T","B"].forEach(v => {
+        const src = ctx.createBufferSource();
+        src.buffer = buffers[v];
+
+        const g = ctx.createGain();
+        gains[v] = g;
+
+        src.connect(g);
+        g.connect(masterGain);
+        sources[v] = src;
+      });
+
+      applyMix();
+      startTime = ctx.currentTime - offsetSec;
+
+      Object.values(sources).forEach(src => src.start(0, offsetSec));
+
+      const stopAt = ctx.currentTime + (duration - offsetSec) + 0.05;
+      Object.values(sources).forEach(src => { try{ src.stop(stopAt); }catch(e){} });
+
+      sources.S.onended = () => {
+        if(isPlaying){
+          isPlaying = false;
+          pauseOffset = 0;
+          seek.value = 0;
+          status.textContent = "Odtwarzanie zakończone.";
+        }
+      };
+    }
+
+    function currentPos(){
+      if(!ctx) return pauseOffset;
+      if(!isPlaying) return pauseOffset;
+      return Math.max(0, Math.min(duration, ctx.currentTime - startTime));
+    }
+
+    function applyMix(){
+      if(!gains) return;
+      const anySolo = Object.values(state.solo).some(Boolean);
+
+      ["S","A","T","B"].forEach(v => {
+        let vol = state.vol[v];
+        if(state.mute[v]) vol = 0;
+        if(anySolo) vol = state.solo[v] ? vol : 0;
+        gains[v].gain.value = vol;
+      });
+
+      if(masterGain) masterGain.gain.value = state.master;
+    }
+
+    function stopAll(keepLoaded=false){
+      if(sources){
+        Object.values(sources).forEach(src => { try{ src.stop(0);}catch(e){} });
+      }
+      sources = null;
+      gains = null;
+      isPlaying = false;
+      if(!keepLoaded){
+        buffers = null;
+        duration = 0;
+      }
+    }
+
+    function play(){
+      if(!buffers){
+        status.textContent = "Najpierw wybierz utwór (ładowanie).";
+        return;
+      }
+      ensureCtx();
+      if(ctx.state === "suspended") ctx.resume();
+      if(isPlaying) return;
+
+      makeGraph(pauseOffset);
+      isPlaying = true;
+      status.textContent = "Odtwarzanie…";
+    }
+
+    function pause(){
+      if(!isPlaying) return;
+      pauseOffset = currentPos();
+      stopAll(true);
+      status.textContent = "Pauza.";
+    }
+
+    function stop(){
+      pauseOffset = 0;
+      stopAll(true);
+      seek.value = 0;
+      status.textContent = "Zatrzymano.";
+    }
+
+    // seek UI update
+    function raf(){
+      if(buffers && duration > 0){
+        const p = currentPos();
+        seek.value = Math.round((p / duration) * 1000);
+      }
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // seek handler
+    seek.addEventListener("change", () => {
+      if(!buffers) return;
+      const target = (Number(seek.value) / 1000) * duration;
+      pauseOffset = target;
+      if(isPlaying){
+        stopAll(true);
+        makeGraph(pauseOffset);
+        isPlaying = true;
+      }
+    });
+
+    // sliders
+    voiceSliders.forEach(sl => {
+      sl.addEventListener("input", () => {
+        const v = sl.dataset.voice;
+        state.vol[v] = Number(sl.value);
+        applyMix();
+      });
+    });
+    masterSlider.addEventListener("input", () => {
+      state.master = Number(masterSlider.value);
+      applyMix();
+    });
+
+    // mute/solo
+    muteBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const v = btn.dataset.voice;
+        state.mute[v] = !state.mute[v];
+        btn.classList.toggle("active", state.mute[v]);
+        applyMix();
+      });
+    });
+    soloBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const v = btn.dataset.voice;
+        state.solo[v] = !state.solo[v];
+        btn.classList.toggle("active", state.solo[v]);
+        applyMix();
+      });
+    });
+
+    // reset
+    document.getElementById("allReset").addEventListener("click", () => {
+      state.mute = {S:false, A:false, T:false, B:false};
+      state.solo = {S:false, A:false, T:false, B:false};
+      state.vol  = {S:0.85, A:0.85, T:0.95, B:0.95};
+      state.master = 0.90;
+
+      masterSlider.value = state.master;
+      voiceSliders.forEach(sl => sl.value = state.vol[sl.dataset.voice]);
+
+      muteBtns.forEach(b => b.classList.remove("active"));
+      soloBtns.forEach(b => b.classList.remove("active"));
+
+      applyMix();
+      status.textContent = "Ustawienia zresetowane.";
+    });
+
+    // song select
+    const sel = document.getElementById("songSelect");
+    SONGS.forEach((s, i) => {
+      const opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = s.title;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener("change", () => loadSong(Number(sel.value)));
+
+    // transport
+    document.getElementById("btnPlay").addEventListener("click", play);
+    document.getElementById("btnPause").addEventListener("click", pause);
+    document.getElementById("btnStop").addEventListener("click", stop);
+
+    // init
+    (async () => {
+      if(!SONGS.length){
+        status.textContent = "Brak utworów w konfiguracji.";
+        return;
+      }
+      await loadSong(0);
+    })().catch(err => {
+      status.textContent = "Błąd ładowania: " + err.message + " (sprawdź ścieżki plików i hosting/CORS).";
+    });
+  </script>
+</body>
+</html>
