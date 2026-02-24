@@ -185,7 +185,7 @@
       margin-top:.55rem;
     }
     .row b{letter-spacing:.06em;}
-    input[type="range"]{width:100%;}
+    input[type="range"]{  margin-right: 2rem;}
     .miniBtns{display:flex; gap:.45rem; justify-content:flex-end;}
     .mini{
       padding:.38rem .55rem;
@@ -304,10 +304,9 @@
           <strong>Wjazd:</strong> prosimy o ostrożność przy wjeździe przez bramę (jest dość wąska).
         </div>
 
-        <h2 style="margin-top:1rem;">Nagrania (YouTube)</h2>
+        <h2 style="margin-top:1rem;">Zaproszenie i inne materiały</h2>
         <p class="small">
-          Zachęcamy (bez obowiązku), aby przed warsztatami skorzystać z nagrań i osłuchać się z utworami.
-          To ułatwia wspólną pracę od pierwszych minut.
+          Zachęcamy, aby przed warsztatami skorzystać z nagrań i osłuchać się z utworami. Można także zapoznać się materiałami przygotowanymi o warsztatach.
         </p>
 
         <div class="yt">
@@ -316,9 +315,6 @@
         </div>
 
         <div class="hr"></div>
-        <p class="small">
-          Wskazówka: jeśli coś się nie ładuje, sprawdź czy link jest poprawny oraz czy pliki są na hostingu w tym samym folderze.
-        </p>
       </section>
 
       <!-- RIGHT: mixer -->
@@ -345,7 +341,7 @@
         <input class="progress" id="seek" type="range" min="0" max="1000" value="0" />
 
         <div class="row" style="margin-top:.75rem;">
-          <b>MASTER</b>
+          <b>Vol.</b>
           <input id="master" type="range" min="0" max="1" step="0.01" value="0.90" />
           <div class="miniBtns">
             <button class="mini" id="allReset">Reset</button>
@@ -410,7 +406,7 @@
     // =========================
 
     // 1) PDF śpiewnika (w tym samym folderze)
-    const SONGBOOK_URL = "./songbook.pdf";
+    const SONGBOOK_URL = "https://drive.google.com/file/d/1FdTDl8-7raXAzC_yvirv0qEBP_HQDnfn/view";
 
     // 2) YouTube playlist ID (wstaw np. "PLxxxx...")
     const YOUTUBE_PLAYLIST_ID = "PLI8T5QBcKRwMwW7M4QeUHyPCPRQHj56V0"; // <- UZUPEŁNIJ
